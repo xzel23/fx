@@ -1,6 +1,8 @@
 module com.dua3.fx.samples {
     exports com.dua3.fx.samples;
 
+    requires java.logging;
+    
     requires com.dua3.utility;
     requires com.dua3.fx.util;
     requires com.dua3.fx.application;

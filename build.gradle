@@ -1,6 +1,6 @@
 plugins {
   id 'com.github.spotbugs'  version '1.6.8' apply false
-  id 'com.dua3.gradle.jpms' version '0.5.1' apply false
+  id 'com.dua3.gradle.jpms' version '0.6' apply false
   id 'com.jfrog.bintray'    version '1.8.4' apply false
 }
 
