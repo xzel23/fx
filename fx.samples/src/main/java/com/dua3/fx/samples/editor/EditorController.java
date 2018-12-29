@@ -9,7 +9,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.logging.Level;
 
-import com.dua3.fx.application.FxApplication;
 import com.dua3.fx.application.FxController;
 import com.dua3.fx.editors.CodeEditor;
 import com.dua3.fx.util.Dialogs;
