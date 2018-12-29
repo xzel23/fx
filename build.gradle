@@ -1,0 +1,190 @@
+plugins {
+  id 'com.github.spotbugs'  version '1.6.8' apply false
+  id 'com.dua3.gradle.jpms' version '0.5.1' apply false
+  id 'com.jfrog.bintray'    version '1.8.4' apply false
+}
+
+subprojects {
+
+  apply plugin:  'java'
+  apply plugin:  'java-library'
+  apply plugin:  'maven'
+  apply plugin:  'maven-publish'
+  apply plugin:  'eclipse'
+  apply plugin:  'com.github.spotbugs'
+  apply plugin:  'com.dua3.gradle.jpms'
+  apply plugin:  'com.jfrog.bintray'
+
+/////////////////////////////////////////////////////////////////////////////
+	group              = 'com.dua3.fx'
+	version            = '0.2'
+	
+	ext.moduleName     = project.group 
+	ext.scm            = ''
+	ext.repo           = 'private'
+	ext.description    = 'Java FX application utilities'
+	
+	ext.developerId    = 'axh'
+	ext.developerName  = 'Axel Howind'
+	ext.developerEmail = 'axel@dua3.com'
+/////////////////////////////////////////////////////////////////////////////
+
+repositories {
+    jcenter()
+    maven { url  "https://dl.bintray.com/dua3/public" }
+    mavenLocal()
+}
+
+// get OS (because JavaFX packages are OS dependent)
+def currentOS = org.gradle.internal.os.OperatingSystem.current()
+def platform
+if (currentOS.isWindows()) {
+    platform = 'win'
+} else if (currentOS.isLinux()) {
+    platform = 'linux'
+} else if (currentOS.isMacOsX()) {
+    platform = 'mac'
+}
+
+dependencies {
+    implementation "com.dua3.utility:utility:2.0"
+
+    // JavaFX
+    def javafxversion = '11.0.1'
+    api "org.openjfx:javafx-base:${javafxversion}:${platform}"
+    api "org.openjfx:javafx-fxml:${javafxversion}:${platform}"
+    api "org.openjfx:javafx-graphics:${javafxversion}:${platform}"
+    api "org.openjfx:javafx-controls:${javafxversion}:${platform}"
+    api "org.openjfx:javafx-web:${javafxversion}:${platform}"
+    api "org.openjfx:javafx-media:${javafxversion}:${platform}"
+
+    // JUnit
+    def junitVersion = '5.3.1'
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+}
+
+test {
+    useJUnitPlatform()
+
+    filter {
+        exclude '**/module-info.class'
+    }
+}
+
+javadoc {
+    doFirst {
+        options.addStringOption('-module-path', classpath.asPath)
+    }
+}
+
+sourceCompatibility = 11
+targetCompatibility = 11
+
+// === BINTRAY === >
+
+bintray {
+    user = findProperty('BINTRAY_USER') ?: 'NONE'
+    key = findProperty('BINTRAY_KEY') ?: 'NONE'
+
+    configurations = ['archives']
+
+    dryRun = false //[Default: false] Whether to run this as dry-run, without deploying
+    publish = true //[Default: false] Whether version should be auto published after an upload    
+    override = true //[Default: false] Whether to override version artifacts already published    
+
+    pkg {
+        repo = project.repo
+        name = project.group
+        userOrg = findProperty('BINTRAY_USER_ORG') ?: 'NONE'
+        licenses = ['Apache-2.0']
+        vcsUrl = project.scm
+
+	    version {
+	        name = project.version
+	        desc = project.name+version
+	        released  = new Date()
+	        vcsTag = project.version
+	    }
+    }
+}
+
+// === ARTIFACTS === >
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+	archives jar
+    archives sourcesJar
+    archives javadocJar
+}
+
+// === MAVEN publication === >
+
+// Create the pom configuration:
+def pomConfig = {
+    licenses {
+        license {
+            name "The Apache Software License, Version 2.0"
+            url "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        }
+    }
+    developers {
+        developer {
+            id    project.developerId
+            name  project.developerName
+            email project.developerEmail
+        }
+    }
+    
+    scm {
+       url project.scm
+    }
+}
+
+// Create the publication with the pom configuration:
+publishing {
+    publications {
+        Publication(MavenPublication) {
+            from components.java
+            artifact sourcesJar
+            artifact javadocJar
+            groupId project.group
+            artifactId project.name
+            version version
+            pom.withXml {
+                def root = asNode()
+                root.appendNode('description', project.description)
+                root.appendNode('name', project.group)
+                root.appendNode('url', project.scm)
+                root.children().last() + pomConfig
+            }
+        }
+    }
+}
+
+// === SPOTBUGS === >
+
+spotbugs.toolVersion = '3.1.10'
+
+tasks.withType(com.github.spotbugs.SpotBugsTask) {
+    reports {
+        xml.enabled false
+        html.enabled true
+    }
+    // ignore failures until spotbugs bug is fixed: https://github.com/spotbugs/spotbugs/issues/756
+    ignoreFailures = true
+}
+
+// === DEFAULT TASKS === >
+
+defaultTasks 'build', 'publishToMavenLocal', 'install'
+}
