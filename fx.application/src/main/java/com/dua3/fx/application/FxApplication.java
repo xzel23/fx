@@ -1,4 +1,4 @@
-package com.dua3.fx.app;
+package com.dua3.fx.application;
 
 import java.io.IOException;
 import java.net.URI;
@@ -17,7 +17,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-public abstract class FxApp<A extends FxApp<A, C>, C extends FxController<A, C>> extends Application {
+public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxController<A, C>> extends Application {
 
 	// - constants -
 
@@ -32,7 +32,7 @@ public abstract class FxApp<A extends FxApp<A, C>, C extends FxController<A, C>>
 	// - static -
 
 	/** Logger */
-	protected static final Logger LOG = Logger.getLogger(FxApp.class.getSimpleName());
+	protected static final Logger LOG = Logger.getLogger(FxApplication.class.getSimpleName());
 
 	// - instance -
 
@@ -61,7 +61,7 @@ public abstract class FxApp<A extends FxApp<A, C>, C extends FxController<A, C>>
 	 * @param fxmlFile        the path to the FXML file to load, relative to the
 	 *                        application class
 	 */
-	protected FxApp(String applicationName, String fxmlFile) {
+	protected FxApplication(String applicationName, String fxmlFile) {
 		this.applicationName = Objects.requireNonNull(applicationName);
 		this.fxmlFile = Objects.requireNonNull(fxmlFile);
 	}

@@ -8,7 +8,6 @@ subprojects {
 
   apply plugin:  'java'
   apply plugin:  'java-library'
-  apply plugin:  'maven'
   apply plugin:  'maven-publish'
   apply plugin:  'eclipse'
   apply plugin:  'com.github.spotbugs'
@@ -87,9 +86,7 @@ bintray {
     user = findProperty('BINTRAY_USER') ?: 'NONE'
     key = findProperty('BINTRAY_KEY') ?: 'NONE'
 
-    configurations = ['archives']
-
-    dryRun = false //[Default: false] Whether to run this as dry-run, without deploying
+    dryRun = true //[Default: false] Whether to run this as dry-run, without deploying
     publish = true //[Default: false] Whether version should be auto published after an upload    
     override = true //[Default: false] Whether to override version artifacts already published    
 
@@ -184,7 +181,7 @@ tasks.withType(com.github.spotbugs.SpotBugsTask) {
     ignoreFailures = true
 }
 
-// === DEFAULT TASKS === >
-
-defaultTasks 'build', 'publishToMavenLocal', 'install'
 }
+
+// === DEFAULT TASKS === >
+defaultTasks 'build', 'publishToMavenLocal'

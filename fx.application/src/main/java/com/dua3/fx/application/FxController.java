@@ -1,4 +1,4 @@
-package com.dua3.fx.app;
+package com.dua3.fx.application;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -16,7 +16,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 
-public abstract class FxController<A extends FxApp<A, C>, C extends FxController<A, C>> {
+public abstract class FxController<A extends FxApplication<A, C>, C extends FxController<A, C>> {
 
 	// - static -
 

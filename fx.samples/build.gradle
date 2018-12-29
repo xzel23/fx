@@ -11,14 +11,8 @@ mainClassName = 'com.dua3.fx.samples.Editor'
 
 dependencies {
     compile project(':fx.util')
-    compile project(':fx.app')
     compile project(':fx.editors')
-
-	// ControlsFX
-	compile group: 'org.controlsfx', name: 'controlsfx', version: '9.0.1-SNAPSHOT'
-
-    // FontAwesomeFX - icon collection [FontAweSomeFX: ASL 2.0, FontAweSome: SIL OFL 1.1 / Creative Commons]
-    compile 'de.jensd:fontawesomefx-fontawesome:4.7.0-9.1.2-jpms'
+    compile project(':fx.application')
 }
 
 jlink {
