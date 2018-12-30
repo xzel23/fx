@@ -248,7 +248,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 			openDocument(uri);
 			setDocument(uri);
 			return true;
-		} catch (IOException e) {
+		} catch (Exception e) {
 			LOG.log(Level.WARNING, "error opening document", e);
 			Dialogs.alert(AlertType.ERROR)
 			.title("Error")
@@ -280,20 +280,21 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 			return false;
 		}
 		
+		// save document content
 		return saveDocumentAndHandleErrors(file.get().toURI());
 	}
 
 	private boolean saveDocumentAndHandleErrors(URI uri) {
 		try {
 			saveDocument(uri);
-			setDocument(uri);
+			setDocument(uri);			
 			return true;
-		} catch (IOException e) {
+		} catch (Exception e) {
 			LOG.log(Level.WARNING, "error saving document", e);
 			Dialogs.alert(AlertType.ERROR)
 			.title("Error")
 			.header("'%s' could not be saved.", getDisplayName(uri))
-			.text(e.getMessage())
+			.text("%s: %s", e.getClass().getSimpleName(), e.getMessage())
 			.build()
 			.showAndWait();
 			return false;

@@ -26,19 +26,23 @@ public class EditorController extends FxController<EditorApp, EditorController> 
 	}
 	
 	@Override
-	protected void saveDocument(URI uri) throws IOException {
-		String text = editor.getText();
-		Path path = Paths.get(getDocument());
-		Files.write(path, text.getBytes(StandardCharsets.UTF_8), StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING);
-	}
-
-	@Override
 	protected void openDocument(URI uri) throws IOException {
 		Path path = Paths.get(uri);
 		String content = Files.readString(path);
 		String extension = IOUtil.getExtension(path);
 		editor.setText(content, extension);
 		editor.setReadOnly(!Files.isWritable(path));
+		editor.setDirty(false);
+		LOG.info(() -> String.format("document read from '%s'", uri));
+	}
+
+	@Override
+	protected void saveDocument(URI uri) throws IOException {
+		String text = editor.getText();
+		Path path = Paths.get(uri);
+		Files.write(path, text.getBytes(StandardCharsets.UTF_8));
+		editor.setDirty(false);
+		LOG.info(() -> String.format("document written to '%s'", uri));
 	}
 
 	@FXML
