@@ -1,7 +1,6 @@
 package com.dua3.fx.application;
 
 import java.io.IOException;
-import java.net.URI;
 import java.net.URL;
 import java.util.Objects;
 import java.util.Optional;
@@ -133,8 +132,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
 	}
 
     protected void updateApplicationTitle() {
-    	URI doc = controller.getDocument();
-    	String name = controller.hasDocument() ? doc.getPath() : "";
+    	String name = controller.getDisplayName(controller.getDocument());
     	boolean dirty = controller.isDirty();
     	
     	StringBuilder title = new StringBuilder();

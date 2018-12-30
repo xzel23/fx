@@ -1,6 +1,7 @@
 package com.dua3.fx.application;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -8,6 +9,7 @@ import java.nio.file.Paths;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.dua3.fx.util.Dialogs;
@@ -20,6 +22,7 @@ import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 
 public abstract class FxController<A extends FxApplication<A, C>, C extends FxController<A, C>> {
@@ -221,8 +224,23 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 			LOG.fine("open(): no file was chosen");
 			return false;
 		}
-		
-		return openDocument(file.get().toURI());
+
+		// open the document and handle errors
+		URI uri = file.get().toURI();
+		try {
+			openDocument(uri);
+			setDocument(uri);
+			return true;
+		} catch (IOException e) {
+			LOG.log(Level.WARNING, "error opening document", e);
+			Dialogs.alert(AlertType.ERROR)
+			.title("Error")
+			.header("'%s' could not be opened.", getDisplayName(uri))
+			.text(e.getMessage())
+			.build()
+			.showAndWait();
+			return false;
+		}
 	}
 	
 	@FXML
@@ -232,7 +250,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 			return saveAs();
 		}
 		
-		return saveDocument(getDocument());
+		return saveDocumentAndHandleErrors(getDocument());
 	}
 
 	@FXML
@@ -245,15 +263,36 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 			return false;
 		}
 		
-		return saveDocument(file.get().toURI());
+		return saveDocumentAndHandleErrors(file.get().toURI());
 	}
 
-	protected boolean openDocument(URI uri) {
-		throw new UnsupportedOperationException("openDocument()");
+	private boolean saveDocumentAndHandleErrors(URI uri) {
+		try {
+			saveDocument(uri);
+			setDocument(uri);
+			return true;
+		} catch (IOException e) {
+			LOG.log(Level.WARNING, "error saving document", e);
+			Dialogs.alert(AlertType.ERROR)
+			.title("Error")
+			.header("'%s' could not be saved.", getDisplayName(uri))
+			.text(e.getMessage())
+			.build()
+			.showAndWait();
+			return false;
+		}		
+	}
+	
+	protected String getDisplayName(URI uri) {
+		return uri.toString();
+	}
+	
+	protected void openDocument(URI uri) throws IOException {
+		throw new IOException("not implemented");
 	}
 
-	protected boolean saveDocument(URI uri) {
-		throw new UnsupportedOperationException("saveDocument()");
+	protected void saveDocument(URI uri) throws IOException {
+		throw new IOException("not implemented");
 	}
 
 }
