@@ -128,6 +128,11 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
 		controller.documentProperty().addListener((v,o,n) -> updateApplicationTitle());
 		controller.dirtyProperty().addListener((v,o,n) -> updateApplicationTitle());
 		
+        stage.setOnCloseRequest(e -> {
+            e.consume();
+            controller.closeApplication();
+        });
+        
 		LOG.fine(() -> "done.");
 	}
 
@@ -150,10 +155,12 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
     }
 
     /**
-     * Request application close.
+     * Close the application.
+     * 
+     * Don't ask the user if he wants to save his work first - this should be handled by the controller.
      */
 	public void close() {
-		mainStage.fireEvent(new WindowEvent(mainStage, javafx.stage.WindowEvent.WINDOW_CLOSE_REQUEST));
+		mainStage.close();
 	}
 	
 	/**

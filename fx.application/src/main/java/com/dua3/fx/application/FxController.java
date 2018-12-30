@@ -87,6 +87,27 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	 */
 	@FXML
 	public void closeApplication() {
+		// handle dirty state
+		if (isDirty()) {
+			AtomicBoolean goOn = new AtomicBoolean(false);
+			Dialogs.confirmation("Save changes in '%s'?", getDocumentName())
+			.cancelable(true)
+			.showAndWait()
+			.ifPresent(btn -> {
+				if (btn==ButtonType.YES) {
+					goOn.set(save()); // only continue if save was successful
+				}
+				if (btn==ButtonType.NO) {
+					goOn.set(true);   // don't save, just go on
+				}
+			});
+			
+			if (!goOn.get()) {
+				LOG.fine("close aborted because of dirty state");
+				return;
+			}
+		}
+		
 		app.close();
 	}
 	
