@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import com.dua3.fx.editors.CodeEditor?>
 <?import com.dua3.fx.samples.editor.EditorController?>
+<?import javafx.scene.control.SeparatorMenuItem?>
 
 <VBox fx:controller="com.dua3.fx.samples.editor.EditorController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
@@ -14,8 +15,11 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-              <MenuItem mnemonicParsing="false" text="Open" onAction="#open" />
+              <MenuItem mnemonicParsing="false" text="Open File..." onAction="#open" />
+              <SeparatorMenuItem />
               <MenuItem mnemonicParsing="false" text="Save" onAction="#save" />
+              <MenuItem mnemonicParsing="false" text="Save as ..." onAction="#saveAs" />
+              <SeparatorMenuItem />
               <MenuItem mnemonicParsing="false" text="Close" onAction="#closeApplication" />
             </items>
           </Menu>
