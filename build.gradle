@@ -4,6 +4,11 @@ plugins {
   id 'com.jfrog.bintray'    version '1.8.4' apply false
 }
 
+boolean isModule(entry) {
+    // filter java 9 modules
+	entry.kind == 'lib'  // Only libraries can be modules
+}
+
 subprojects {
 
   apply plugin:  'java'
@@ -181,6 +186,18 @@ tasks.withType(com.github.spotbugs.SpotBugsTask) {
     ignoreFailures = true
 }
 
+// === ECLIPSE === >
+
+eclipse {
+    classpath {
+        file {
+            whenMerged {
+                entries.findAll { isModule(it) }.each { it.entryAttributes['module'] = 'true' }
+            }
+        }
+    }
+}
+ 
 }
 
 // === DEFAULT TASKS === >
