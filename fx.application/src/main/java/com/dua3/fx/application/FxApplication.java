@@ -46,7 +46,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
 	private C controller;
 
 	/** The main stage. */
-	private Stage stage;
+	private Stage mainStage;
 	
 	// - UI -
 
@@ -97,7 +97,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
 		LOG.log(Level.FINE, () -> "starting application ...");
 
 		// store reference to stage
-		this.stage = stage;
+		this.mainStage = stage;
 
 		// handle program arguments
 		getParameterValue("log").ifPresent(level -> LangUtil.setLogLevel(Level.parse(level)));
@@ -148,11 +148,11 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
         
     	title.append(marker).append(name).append(marker);
     	
-        stage.setTitle(title.toString());
+        mainStage.setTitle(title.toString());
     }
 
 	public void close() {
-		stage.fireEvent(new WindowEvent(stage, javafx.stage.WindowEvent.WINDOW_CLOSE_REQUEST));
+		mainStage.fireEvent(new WindowEvent(mainStage, javafx.stage.WindowEvent.WINDOW_CLOSE_REQUEST));
 	}
 	
 	/**
@@ -161,6 +161,6 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
 	 *  the application's primary stage
 	 */
 	public Stage getStage() {
-		return stage;
+		return mainStage;
 	}
 }

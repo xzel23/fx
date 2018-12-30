@@ -168,4 +168,5 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	public boolean hasDocument() {
 		return documentProperty.get() != VOID_URI;
 	}
+	
 }
