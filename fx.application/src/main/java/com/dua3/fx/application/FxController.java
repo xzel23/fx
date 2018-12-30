@@ -159,11 +159,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	 *  name of the current document, or "" if no document loaded
 	 */
 	public String getDocumentName() {
-		if (!hasDocument()) {
-			return "";
-		}
-		
-		return Paths.get(getDocument()).getFileName().toString();
+		return getDisplayName(getDocument());
 	}
 	
 	/**
@@ -305,7 +301,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	}
 	
 	protected String getDisplayName(URI uri) {
-		return uri.toString();
+		return uri != VOID_URI ? uri.toString() : "<unnamed>";
 	}
 	
 	protected void openDocument(URI uri) throws IOException {

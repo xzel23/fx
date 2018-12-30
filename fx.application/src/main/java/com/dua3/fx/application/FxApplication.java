@@ -14,7 +14,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxController<A, C>> extends Application {
 
@@ -143,13 +142,13 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
     	StringBuilder title = new StringBuilder();
     	title.append(applicationName);
     	
-    	if (!name.isEmpty()) {
+    	if (!name.isEmpty() || controller.isDirty()) {
     		title.append(" - ");
     	}
         
     	String marker = dirty ? MARKER_MODIFIED : MARKER_UNMODIFIED;
         
-    	title.append(marker).append(name).append(marker);
+    	title.append(marker).append(name);
     	
         mainStage.setTitle(title.toString());
     }
