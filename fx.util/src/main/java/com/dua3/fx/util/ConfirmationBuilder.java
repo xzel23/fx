@@ -1,5 +1,7 @@
 package com.dua3.fx.util;
 
+import java.util.Optional;
+
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -12,10 +14,6 @@ import javafx.scene.control.Alert.AlertType;
  * Provides a fluent interface to create Alerts. 
  */
 public class ConfirmationBuilder {
-	public enum ConfirmationResult {
-		YES, NO, CANCEL
-	}
-	
 	ConfirmationBuilder(String fmt, Object... args) {
 		this.question = String.format(fmt, args);
 	}
@@ -110,4 +108,17 @@ public class ConfirmationBuilder {
 		this.defaultButton = button;
 		return this;
 	}
+
+	/**
+	 * Build and show the alert.
+	 * 
+	 * This is equivalent to calling build().showAndWait().
+	 * 
+	 * @return
+	 *  Optinal containingg the button pressed as returned by Alert.showAndWait()
+	 */
+	public Optional<ButtonType> showAndWait() {
+		return build().showAndWait();
+	}
+	
 }

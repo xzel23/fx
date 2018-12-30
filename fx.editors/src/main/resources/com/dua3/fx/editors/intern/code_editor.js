@@ -43,7 +43,7 @@ function jReplaceSelection(text) {
 // Save the current document. Called from Java _and_ JavaScript.
 function jSave() {
 	trace("SAVE: requested");
-	var ok = bridge.save(editor.getValue());
+	var ok = bridge.save();
 
 	if (ok) {
 		bridge.setDirty(false);

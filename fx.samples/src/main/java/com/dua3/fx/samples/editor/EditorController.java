@@ -2,6 +2,7 @@ package com.dua3.fx.samples.editor;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -29,54 +30,49 @@ public class EditorController extends FxController<EditorApp, EditorController> 
 		dirtyProperty.bind(editor.dirtyProperty());
 	}
 	
-	private boolean save(String text) {
-		LOG.info("save");
-		if (hasDocument()) {
-			Path path = Paths.get(getDocument());
-			try {
-				Files.write(path, text.getBytes(StandardCharsets.UTF_8), StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING);
-			} catch (IOException e) {
-				LOG.log(Level.WARNING, "error writing file", e);
-				Dialogs.alert(AlertType.ERROR)
-				.title("File could not be saved.")
-				.header(path.toString())
-				.text(e.getMessage())
-				.build()
-				.showAndWait();
-				return false;
-			}
-		}
-		return true;
-	}
+	@Override
+	protected boolean saveDocument(URI uri) {
+		String text = editor.getText();
+		Path path = Paths.get(getDocument());
 
-	@FXML
-	void open() {
-		FileChooser chooser = new FileChooser();
-		File file = chooser.showOpenDialog(getApp().getStage());
-		
-		if (file!=null) {
-			try {
-				load(file);
-			} catch (IOException e) {
-				LOG.log(Level.WARNING, "error loading file: "+e.getMessage(), e);
-				Dialogs.alert(AlertType.ERROR)
-				.title("Error")
-				.header("Error loading file.")
-				.text(e.getMessage())
-				.build()
-				.showAndWait();
-			}
+		try {
+			Files.write(path, text.getBytes(StandardCharsets.UTF_8), StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING);
+			setDocument(uri);
+			return true;
+		} catch (IOException e) {
+			LOG.log(Level.WARNING, "error writing file", e);
+			Dialogs.alert(AlertType.ERROR)
+			.title("File could not be saved.")
+			.header(path.toString())
+			.text(e.getMessage())
+			.build()
+			.showAndWait();
+			return false;
 		}
 	}
 
-	private void load(File file) throws IOException {
-		String content = Files.readString(file.toPath());
-		String extension = IOUtil.getExtension(file.getName());
-		editor.setText(content, extension);
-		editor.setReadOnly(!file.canWrite());
-		setDocument(file.toURI());
+	@Override
+	protected boolean openDocument(URI uri) {
+		try {
+			Path path = Paths.get(uri);
+			String content = Files.readString(path);
+			String extension = IOUtil.getExtension(path);
+			editor.setText(content, extension);
+			editor.setReadOnly(!Files.isWritable(path));
+			setDocument(uri);
+			return true;
+		} catch (IOException e) {
+			LOG.log(Level.WARNING, "error loading file: "+e.getMessage(), e);
+			Dialogs.alert(AlertType.ERROR)
+			.title("Error")
+			.header("Error loading file.")
+			.text(e.getMessage())
+			.build()
+			.showAndWait();
+			return false;
+		}
 	}
-	
+
 	@FXML
 	void copy() {
 		editor.copy();
@@ -88,9 +84,5 @@ public class EditorController extends FxController<EditorApp, EditorController> 
 	@FXML
 	void paste() {
 		editor.paste();
-	}
-	@FXML
-	void save() {
-		editor.save();
 	}
 }

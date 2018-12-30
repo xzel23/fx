@@ -5,7 +5,6 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
-<?import org.controlsfx.control.StatusBar?>
 <?import com.dua3.fx.editors.CodeEditor?>
 <?import com.dua3.fx.samples.editor.EditorController?>
 
@@ -35,6 +34,5 @@
         </menus>
       </MenuBar>
       <CodeEditor fx:id="editor" VBox.vgrow="ALWAYS" />
-      <StatusBar />
    </children>
 </VBox>

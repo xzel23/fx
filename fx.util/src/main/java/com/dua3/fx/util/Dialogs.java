@@ -34,4 +34,12 @@ public class Dialogs {
 		return new ConfirmationBuilder(fmt, args);
 	}
 
+	/**
+	 * Start definition of new FileChooser.
+	 * @return 
+	 * 	new {@link FileChooserBuilder} instance
+	 */
+	public static FileChooserBuilder chooseFile() {
+		return new FileChooserBuilder();
+	}
 }

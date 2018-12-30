@@ -1,6 +1,7 @@
 package com.dua3.fx.editors.intern;
 
 import java.util.Collections;
+import java.util.function.BooleanSupplier;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.logging.Level;
@@ -44,7 +45,7 @@ public class JavaScriptBridge {
 	final StringProperty promptTextProperty = new SimpleStringProperty("");
 	
 	/** Callback: save document. */
-	Function<String,Boolean> onSave = text -> Boolean.FALSE;
+	BooleanSupplier onSave = () -> false;
 
     /**
      * Backslash-escape a string.
@@ -192,12 +193,10 @@ public class JavaScriptBridge {
 	/**
 	 * Save buffer. Called from JavaScript.
 	 *
-	 * @param text
-	 *  content of editor
 	 * @return true, if save was successful.
 	 */
-	public boolean save(String text) {
-		return onSave .apply(text).booleanValue();
+	public boolean save() {
+		return onSave.getAsBoolean();
 	}
 
 	/**

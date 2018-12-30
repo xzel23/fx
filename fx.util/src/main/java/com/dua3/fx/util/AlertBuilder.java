@@ -1,5 +1,7 @@
 package com.dua3.fx.util;
 
+import java.util.Optional;
+
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -121,4 +123,17 @@ public class AlertBuilder {
 		this.defaultButton = button;
 		return this;
 	}
+	
+	/**
+	 * Build and show the alert.
+	 * 
+	 * This is equivalent to calling build().showAndWait().
+	 * 
+	 * @return
+	 *  Optinal containingg the button pressed as returned by Alert.showAndWait()
+	 */
+	public Optional<ButtonType> showAndWait() {
+		return build().showAndWait();
+	}
+	
 }

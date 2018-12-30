@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.function.BooleanSupplier;
 import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,7 +37,7 @@ public abstract class EditorBase extends BorderPane {
 		return bridge;
 	}
 	
-	public void setOnSave(Function<String, Boolean> onSave) {
+	public void setOnSave(BooleanSupplier onSave) {
 		bridge.onSave = onSave;
 	}
 

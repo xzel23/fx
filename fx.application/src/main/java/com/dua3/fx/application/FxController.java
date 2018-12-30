@@ -1,11 +1,16 @@
 package com.dua3.fx.application;
 
+import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
+import com.dua3.fx.util.Dialogs;
 import com.dua3.utility.lang.LangUtil;
 
 import javafx.beans.property.BooleanProperty;
@@ -15,6 +20,7 @@ import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
+import javafx.scene.control.ButtonType;
 
 public abstract class FxController<A extends FxApplication<A, C>, C extends FxController<A, C>> {
 
@@ -48,7 +54,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	 * @param app
 	 *  the application instance
 	 */
-	public void setApp(A app) {
+	void setApp(A app) {
 		LangUtil.check(this.app==null, "app instance was already set");
 		this.app = Objects.requireNonNull(app, "app instance must not be null");
 		init(app);
@@ -116,8 +122,24 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		}
 	}
 	
+	/**
+	 * Clear the document, i.e. inform application that no document is loaded.
+	 */
 	protected void clearDocument() {
 		documentProperty.set(VOID_URI);
+	}
+	
+	/**
+	 * Get the current document's name.
+	 * @return
+	 *  name of the current document, or "" if no document loaded
+	 */
+	public String getDocumentName() {
+		if (!hasDocument()) {
+			return "";
+		}
+		
+		return Paths.get(getDocument()).getFileName().toString();
 	}
 	
 	/**
@@ -169,4 +191,69 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		return documentProperty.get() != VOID_URI;
 	}
 	
+	@FXML
+	protected boolean open() {
+		// handle dirty state
+		if (isDirty()) {
+			AtomicBoolean goOn = new AtomicBoolean(false);
+			Dialogs.confirmation("Save changes in '%s'?", getDocumentName())
+			.cancelable(true)
+			.showAndWait()
+			.ifPresent(btn -> {
+				if (btn==ButtonType.YES) {
+					goOn.set(save()); // only continue if save was successful
+				}
+				if (btn==ButtonType.NO) {
+					goOn.set(true);   // don't save, just go on
+				}
+			});
+			
+			if (!goOn.get()) {
+				LOG.fine("open aborted because of dirty state");
+				return false;
+			}
+		}
+		
+		// choose file to open
+		Optional<File> file = Dialogs.chooseFile().showOpenDialog(getApp().getStage());
+		
+		if (file.isEmpty()) {
+			LOG.fine("open(): no file was chosen");
+			return false;
+		}
+		
+		return openDocument(file.get().toURI());
+	}
+	
+	@FXML
+	protected boolean save() {
+		if (!hasDocument()) {
+			LOG.fine("save: no document set, delegating to saveAs()");
+			return saveAs();
+		}
+		
+		return saveDocument(getDocument());
+	}
+
+	@FXML
+	protected boolean saveAs() {
+		// choose file to open
+		Optional<File> file = Dialogs.chooseFile().showSaveDialog(getApp().getStage());
+		
+		if (file.isEmpty()) {
+			LOG.fine("saveAs(): no file was chosen");
+			return false;
+		}
+		
+		return saveDocument(file.get().toURI());
+	}
+
+	protected boolean openDocument(URI uri) {
+		throw new UnsupportedOperationException("openDocument()");
+	}
+
+	protected boolean saveDocument(URI uri) {
+		throw new UnsupportedOperationException("saveDocument()");
+	}
+
 }

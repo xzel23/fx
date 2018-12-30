@@ -151,6 +151,9 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
         mainStage.setTitle(title.toString());
     }
 
+    /**
+     * Request application close.
+     */
 	public void close() {
 		mainStage.fireEvent(new WindowEvent(mainStage, javafx.stage.WindowEvent.WINDOW_CLOSE_REQUEST));
 	}
@@ -163,4 +166,5 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
 	public Stage getStage() {
 		return mainStage;
 	}
+	
 }
