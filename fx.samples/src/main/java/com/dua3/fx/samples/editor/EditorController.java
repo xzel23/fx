@@ -19,7 +19,6 @@ public class EditorController extends FxController<EditorApp, EditorController> 
 	
 	@Override
 	protected void init(EditorApp app) {
-		editor.setOnSave(this::save);
 		dirtyProperty.bind(editor.dirtyProperty());
 	}
 	

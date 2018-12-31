@@ -40,19 +40,6 @@ function jReplaceSelection(text) {
 	trace("PASTED");
 }
 
-// Save the current document. Called from Java _and_ JavaScript.
-function jSave() {
-	trace("SAVE: requested");
-	var ok = bridge.save();
-
-	if (ok) {
-		bridge.setDirty(false);
-		console.log("SAVE: success");
-	} else {
-		console.log("SAVE: failure");
-	}
-}
-
 const mode_info_text = CodeMirror.findModeByExtension('txt');
 function getModeFromExtension(ext) {
 	var info = CodeMirror.findModeByExtension(ext);
@@ -83,10 +70,6 @@ function jSetPromptText(text) {
 }
 
 // commands
-
-CodeMirror.commands.save = function(cm) {
-    jSave();
-  };
 
 // use the system clipboard for cut & paste
 function jPaste() {
@@ -122,11 +105,15 @@ function jGetText() {
 }
 
 function jGetLineCount() {
-	return editor.getLineCount();
+	return editor.lineCount();
 }
 
 function jGetLine(idx) {
 	return editor.getLine(idx);
+}
+
+function jGetLineNumber(idx) {
+	return editor.getCursor(idx).line;
 }
 
 // track dirty state

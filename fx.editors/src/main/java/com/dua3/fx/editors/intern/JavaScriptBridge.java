@@ -1,7 +1,6 @@
 package com.dua3.fx.editors.intern;
 
 import java.util.Collections;
-import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,9 +42,6 @@ public class JavaScriptBridge {
 	/** Property for the prompt/placeholder that is displayed when the editor is empty. */
 	final StringProperty promptTextProperty = new SimpleStringProperty("");
 	
-	/** Callback: save document. */
-	BooleanSupplier onSave = () -> false;
-
     /**
      * Backslash-escape a string.
      * @param s the string
@@ -187,15 +183,6 @@ public class JavaScriptBridge {
 	 */
 	public void setDirty(boolean dirty) {
 		dirtyProperty.set(dirty);
-	}
-
-	/**
-	 * Save buffer. Called from JavaScript.
-	 *
-	 * @return true, if save was successful.
-	 */
-	public boolean save() {
-		return onSave.getAsBoolean();
 	}
 
 	/**

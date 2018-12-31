@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import java.util.function.BooleanSupplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -36,10 +35,6 @@ public abstract class EditorBase extends BorderPane {
 		return bridge;
 	}
 	
-	public void setOnSave(BooleanSupplier onSave) {
-		bridge.onSave = onSave;
-	}
-
 	/**
 	 * Constructor.
 	 * @param fxml
@@ -182,28 +177,27 @@ public abstract class EditorBase extends BorderPane {
 		promptTextProperty().set(text);;
 	}
 	
-	@FXML
 	public void cut() {
 		bridge.executeScript("jCut();");
 	}
-	@FXML
+
 	public void copy() {
 		bridge.executeScript("jCopy();");
 	}
-	@FXML
+
 	public void paste() {
 		bridge.executeScript("jPaste();");
 	}
-	@FXML
-	public void save() {
-		bridge.executeScript("jSave();");
-	}
-	
+
 	public int getLineCount() {
 		return (int) bridge.callScript("jGetLineCount();");
 	}
 	
-	public String getLine(String idx) {
+	public int getLineNumber() {
+		return (int) bridge.callScript("jGetLineNumber();");
+	}
+	
+	public String getLine(int idx) {
 		return (String) bridge.callScript("jGetLine("+idx+");");
 	}
 	
