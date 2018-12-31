@@ -10,6 +10,7 @@ subprojects {
   apply plugin:  'java-library'
   apply plugin:  'maven-publish'
   apply plugin:  'eclipse'
+  apply plugin:  'idea'
   apply plugin:  'com.github.spotbugs'
   apply plugin:  'com.dua3.gradle.jpms'
   apply plugin:  'com.jfrog.bintray'
