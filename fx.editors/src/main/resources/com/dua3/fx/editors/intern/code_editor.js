@@ -121,6 +121,14 @@ function jGetText() {
 	return editor.getDoc().getValue();
 }
 
+function jGetLineCount() {
+	return editor.getLineCount();
+}
+
+function jGetLine(idx) {
+	return editor.getLine(idx);
+}
+
 // track dirty state
 editor.on('change', function() {
 	bridge.setDirty(true);

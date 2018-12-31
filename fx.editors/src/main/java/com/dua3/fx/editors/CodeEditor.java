@@ -24,6 +24,6 @@ public class CodeEditor extends EditorBase {
 	public void setModeFromExtension(String extension) {
 		LOG.fine(() -> String.format("setting mode by file extension: %s", extension));
 		String script = String.format("jSetModeFromExtension('%s');", escape(extension));
-		getBridge().executeEditorScript(script);
+		getBridge().executeScript(script);
 	}	
 }

@@ -2,7 +2,6 @@ package com.dua3.fx.editors.intern;
 
 import java.util.Collections;
 import java.util.function.BooleanSupplier;
-import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -211,24 +210,40 @@ public class JavaScriptBridge {
 
 		logs(() -> String.format("paste(): '%s'", content));
 		String script = "jReplaceSelection('" + escape(content) + "');";
-		executeEditorScript(script);
+		executeScript(script);
 	}
 
 	/**
-	 * Execute JavaScript code.
+	 * Execute JavaScript code asynchronously.
 	 * @param script
 	 *  the code to execute
 	 */
-	public void executeEditorScript(String script) {
+	public void executeScript(String script) {
 		Platform.runLater(() -> {
 			try {
-				log("executing editorscript ...");			
 				engine.executeScript(script);
 			} catch (JSException e) {
 				logger.log(Level.WARNING, e.getMessage()+" - script: "+script);
 				throw e;
 			}
 		});
+	}
+
+	/**
+	 * Execute JavaScript code synchronously and return result.
+	 * @param script
+	 *  the code to execute
+	 *  
+	 *  @return
+	 *   the value returned by the script
+	 */
+	public Object callScript(String script) {
+		try {
+			return engine.executeScript(script);
+		} catch (JSException e) {
+			logger.log(Level.WARNING, e.getMessage()+" - script: "+script);
+			throw e;
+		}
 	}
 
 	/**
@@ -249,7 +264,7 @@ public class JavaScriptBridge {
 	public void cut(JSObject arg) {
 		// 1. paste the empty string to remove current selection
 		String script = "jReplaceSelection('');";
-		executeEditorScript(script);
+		executeScript(script);
 
 		// 2. copy content to system clipboard
 		copyToSystemClipboard("cut()", arg);
@@ -287,31 +302,4 @@ public class JavaScriptBridge {
 		return content == null ? null : String.valueOf(content);
 	}
 
-	/**
-	 * Set editor content.
-	 * 
-	 * @param text
-	 *  the new content
-	 */
-	public void setText(String text) {
-		log("setting editor content");
-		String script = String.format("jSetContent('%s');", escape(text));
-		executeEditorScript(script);
-	}
-	
-	public void setText(String text, String ext) {
-		log("setting editor content");
-		String script = String.format("jSetContent('%s','%s');", escape(text), escape(ext));
-		executeEditorScript(script);
-		executeEditorScript(script);
-	}
-	
-	/**
-	 * Get text in editor.
-	 * @return
-	 *  editor content
-	 */
-	public String getText() {
-		return String.valueOf(engine.executeScript("jGetText()"));
-	}
 }

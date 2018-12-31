@@ -5,7 +5,6 @@ import java.io.UncheckedIOException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BooleanSupplier;
-import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -140,15 +139,19 @@ public abstract class EditorBase extends BorderPane {
 	}
 	
 	public void setText(String text) {
-		bridge.setText(text);
+		LOG.fine("setting editor content");
+		String script = String.format("jSetContent('%s');", escape(text));
+		bridge.executeScript(script);
 	}
 
 	public void setText(String text, String ext) {
-		bridge.setText(text, ext);
+		LOG.fine("setting editor content");
+		String script = String.format("jSetContent('%s','%s');", escape(text), escape(ext));
+		bridge.executeScript(script);
 	}
 
 	public String getText() {
-		return  bridge.getText();
+		return  (String) bridge.callScript("jGetText()");
 	}
 
 	public boolean isDirty() {
@@ -181,18 +184,27 @@ public abstract class EditorBase extends BorderPane {
 	
 	@FXML
 	public void cut() {
-		bridge.executeEditorScript("jCut();");
+		bridge.executeScript("jCut();");
 	}
 	@FXML
 	public void copy() {
-		bridge.executeEditorScript("jCopy();");
+		bridge.executeScript("jCopy();");
 	}
 	@FXML
 	public void paste() {
-		bridge.executeEditorScript("jPaste();");
+		bridge.executeScript("jPaste();");
 	}
 	@FXML
 	public void save() {
-		bridge.executeEditorScript("jSave();");
+		bridge.executeScript("jSave();");
 	}
+	
+	public int getLineCount() {
+		return (int) bridge.callScript("jGetLineCount();");
+	}
+	
+	public String getLine(String idx) {
+		return (String) bridge.callScript("jGetLine("+idx+");");
+	}
+	
 }
