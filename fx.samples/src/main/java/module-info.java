@@ -14,4 +14,5 @@ module com.dua3.fx.samples {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.graphics;
+	requires java.desktop;
 }

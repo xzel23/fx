@@ -6,6 +6,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.logging.Level;
+
 import com.dua3.fx.application.FxController;
 import com.dua3.fx.editors.CodeEditor;
 import com.dua3.utility.io.IOUtil;
@@ -55,7 +57,15 @@ public class EditorController extends FxController<EditorApp, EditorController> 
 		editor.paste();
 	}
 	@FXML
-	void about() {
-		// TODO
+	public void about() {
+		LOG.fine("about()");
+
+		try {
+			AboutDialog about = new AboutDialog();
+			about.showAndWait();
+			about.close();
+		} catch (IOException e) {
+			LOG.log(Level.WARNING, "could not show 'about' dialog", e);
+		}
 	}
 }
