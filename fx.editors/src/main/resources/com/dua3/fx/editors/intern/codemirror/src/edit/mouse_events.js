@@ -313,6 +313,7 @@ function leftButtonSelect(cm, event, start, behavior) {
   }
 
   let move = operation(cm, e => {
+    //if (e.buttons === 0 || !e_button(e)) done(e)
     if (!e_button(e)) done(e)
     else extend(e)
   })

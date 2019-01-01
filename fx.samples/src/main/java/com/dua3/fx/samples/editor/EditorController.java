@@ -54,4 +54,8 @@ public class EditorController extends FxController<EditorApp, EditorController> 
 	void paste() {
 		editor.paste();
 	}
+	@FXML
+	void about() {
+		// TODO
+	}
 }
