@@ -111,12 +111,8 @@ export default class ContentEditableInput {
     this.showMultipleSelections(info)
   }
 
-  getSelection() {
-    return this.cm.display.wrapper.ownerDocument.getSelection()
-  }
-
   showPrimarySelection() {
-    let sel = this.getSelection(), cm = this.cm, prim = cm.doc.sel.primary()
+    let sel = window.getSelection(), cm = this.cm, prim = cm.doc.sel.primary()
     let from = prim.from(), to = prim.to()
 
     if (cm.display.viewTo == cm.display.viewFrom || from.line >= cm.display.viewTo || to.line < cm.display.viewFrom) {
@@ -181,13 +177,13 @@ export default class ContentEditableInput {
   }
 
   rememberSelection() {
-    let sel = this.getSelection()
+    let sel = window.getSelection()
     this.lastAnchorNode = sel.anchorNode; this.lastAnchorOffset = sel.anchorOffset
     this.lastFocusNode = sel.focusNode; this.lastFocusOffset = sel.focusOffset
   }
 
   selectionInEditor() {
-    let sel = this.getSelection()
+    let sel = window.getSelection()
     if (!sel.rangeCount) return false
     let node = sel.getRangeAt(0).commonAncestorContainer
     return contains(this.div, node)
@@ -222,14 +218,14 @@ export default class ContentEditableInput {
   }
 
   selectionChanged() {
-    let sel = this.getSelection()
+    let sel = window.getSelection()
     return sel.anchorNode != this.lastAnchorNode || sel.anchorOffset != this.lastAnchorOffset ||
       sel.focusNode != this.lastFocusNode || sel.focusOffset != this.lastFocusOffset
   }
 
   pollSelection() {
     if (this.readDOMTimeout != null || this.gracePeriod || !this.selectionChanged()) return
-    let sel = this.getSelection(), cm = this.cm
+    let sel = window.getSelection(), cm = this.cm
     // On Android Chrome (version 56, at least), backspacing into an
     // uneditable block element will put the cursor in that element,
     // and then, because it's not editable, hide the virtual keyboard.
@@ -400,13 +396,12 @@ function isInGutter(node) {
 function badPos(pos, bad) { if (bad) pos.bad = true; return pos }
 
 function domTextBetween(cm, from, to, fromLine, toLine) {
-  let text = "", closing = false, lineSep = cm.doc.lineSeparator(), extraLinebreak = false
+  let text = "", closing = false, lineSep = cm.doc.lineSeparator()
   function recognizeMarker(id) { return marker => marker.id == id }
   function close() {
     if (closing) {
       text += lineSep
-      if (extraLinebreak) text += lineSep
-      closing = extraLinebreak = false
+      closing = false
     }
   }
   function addText(str) {
@@ -418,8 +413,8 @@ function domTextBetween(cm, from, to, fromLine, toLine) {
   function walk(node) {
     if (node.nodeType == 1) {
       let cmText = node.getAttribute("cm-text")
-      if (cmText) {
-        addText(cmText)
+      if (cmText != null) {
+        addText(cmText || node.textContent.replace(/\u200b/g, ""))
         return
       }
       let markerID = node.getAttribute("cm-marker"), range
@@ -430,24 +425,19 @@ function domTextBetween(cm, from, to, fromLine, toLine) {
         return
       }
       if (node.getAttribute("contenteditable") == "false") return
-      let isBlock = /^(pre|div|p|li|table|br)$/i.test(node.nodeName)
-      if (!/^br$/i.test(node.nodeName) && node.textContent.length == 0) return
-
+      let isBlock = /^(pre|div|p)$/i.test(node.nodeName)
       if (isBlock) close()
       for (let i = 0; i < node.childNodes.length; i++)
         walk(node.childNodes[i])
-
-      if (/^(pre|p)$/i.test(node.nodeName)) extraLinebreak = true
       if (isBlock) closing = true
     } else if (node.nodeType == 3) {
-      addText(node.nodeValue.replace(/\u200b/g, "").replace(/\u00a0/g, " "))
+      addText(node.nodeValue)
     }
   }
   for (;;) {
     walk(from)
     if (from == to) break
     from = from.nextSibling
-    extraLinebreak = false
   }
   return text
 }
