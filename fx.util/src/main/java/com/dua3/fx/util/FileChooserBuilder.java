@@ -1,6 +1,7 @@
 package com.dua3.fx.util;
 
 import java.io.File;
+import java.util.Objects;
 import java.util.Optional;
 
 import javafx.stage.FileChooser;
@@ -12,6 +13,9 @@ import javafx.stage.Window;
  * Provides a fluent interface to create Alerts. 
  */
 public class FileChooserBuilder {
+	private File initialDir = new File(System.getProperty("user.home"));
+	private String initialFileName = "";
+
 	FileChooserBuilder() {
 	}
 	
@@ -27,6 +31,18 @@ public class FileChooserBuilder {
 
 	private FileChooser build() {
 		FileChooser chooser = new FileChooser();
+		chooser.setInitialDirectory(initialDir);
+		chooser.setInitialFileName(initialFileName);
 		return chooser;
+	}
+
+	public FileChooserBuilder initialDir(File initialDir) {
+		this.initialDir = Objects.requireNonNull(initialDir);
+		return this;
+	}
+
+	public FileChooserBuilder initialFileName(String initialFileName) {
+		this.initialFileName = Objects.requireNonNull(initialFileName);
+		return this;
 	}
 }

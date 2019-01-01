@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -234,7 +236,14 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		}
 		
 		// choose file to open
-		Optional<File> file = Dialogs.chooseFile().showOpenDialog(getApp().getStage());
+		File initialDir = new File(System.getProperty("user.home"));
+		if (hasDocument()) {
+			initialDir = Paths.get(getDocument()).getParent().toFile();
+		}
+		Optional<File> file = Dialogs
+				.chooseFile()
+				.initialDir(initialDir)
+				.showOpenDialog(getApp().getStage());
 		
 		if (file.isEmpty()) {
 			LOG.fine("open(): no file was chosen");
@@ -272,7 +281,18 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	@FXML
 	protected boolean saveAs() {
 		// choose file to open
-		Optional<File> file = Dialogs.chooseFile().showSaveDialog(getApp().getStage());
+		File initialDir = new File(System.getProperty("user.home"));
+		String initialFileName = "";
+		if (hasDocument()) {
+			Path path = Paths.get(getDocument());
+			initialDir = path.getParent().toFile();
+			initialFileName = path.getFileName().toString();
+		}
+		Optional<File> file = Dialogs
+				.chooseFile()
+				.initialDir(initialDir)
+				.initialFileName(initialFileName)
+				.showSaveDialog(getApp().getStage());
 		
 		if (file.isEmpty()) {
 			LOG.fine("saveAs(): no file was chosen");

@@ -1,5 +1,6 @@
 package com.dua3.fx.util;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import javafx.scene.control.Alert;
@@ -15,7 +16,7 @@ import javafx.scene.control.Alert.AlertType;
  */
 public class AlertBuilder {
 	AlertBuilder(AlertType type) {
-		this.type = type;
+		this.type = Objects.requireNonNull(type);
 	}
 
 	private AlertType type;
@@ -108,7 +109,7 @@ public class AlertBuilder {
 	 * 	{@code this}
 	 */
 	public AlertBuilder buttons(ButtonType... buttons) {
-		this.buttons = buttons;
+		this.buttons = Objects.requireNonNull(buttons);
 		return this;
 	}
 
@@ -120,7 +121,7 @@ public class AlertBuilder {
 	 * 	{@code this}
 	 */
 	public AlertBuilder defaultButton(ButtonType button) {
-		this.defaultButton = button;
+		this.defaultButton = Objects.requireNonNull(button);
 		return this;
 	}
 	
