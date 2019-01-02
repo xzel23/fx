@@ -217,10 +217,8 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	public boolean hasDocument() {
 		return documentProperty.get() != VOID_URI;
 	}
-	
-	@FXML
-	protected boolean open() {
-		// handle dirty state
+
+	protected boolean handleDirtyState() {
 		if (isDirty()) {
 			AtomicBoolean goOn = new AtomicBoolean(false);
 			Dialogs.confirmation("Save changes in '%s'?", getDocumentName())
@@ -239,6 +237,40 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 				LOG.fine("open aborted because of dirty state");
 				return false;
 			}
+		}
+		return true;
+	}
+
+	@FXML
+	public boolean newDocument() {
+		// handle dirty state
+		if (!handleDirtyState()) {
+			LOG.fine("open aborted because of dirty state");
+			return false;			
+		}
+		
+		clearDocument();
+		try {
+			createDocument();
+			return true;
+		} catch (Exception e) {
+			LOG.log(Level.WARNING, "error creating document", e);
+			Dialogs.alert(AlertType.ERROR)
+			.title("Error")
+			.header("Could not create a new document.")
+			.text(e.getMessage())
+			.build()
+			.showAndWait();
+			return false;
+		}
+	}
+	
+	@FXML
+	protected boolean open() {
+		// handle dirty state
+		if (!handleDirtyState()) {
+			LOG.fine("open aborted because of dirty state");
+			return false;			
 		}
 		
 		// choose file to open
@@ -347,6 +379,10 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		return uri != VOID_URI ? uri.toString() : "<unnamed>";
 	}
 	
+	protected void createDocument() throws IOException {
+		throw new IOException("not implemented");
+	}
+
 	@SuppressWarnings("static-method")
 	protected void openDocument(URI uri) throws IOException {
 		throw new IOException("not implemented");

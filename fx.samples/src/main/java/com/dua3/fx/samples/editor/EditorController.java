@@ -48,6 +48,11 @@ public class EditorController extends FxController<EditorApp, EditorController> 
 		LOG.info(() -> String.format("document written to '%s' using charset", uri, charset));
 	}
 
+	@Override
+	protected void createDocument() throws IOException {
+		editor.setText("", "txt");
+	}
+	
 	@FXML
 	void copy() {
 		editor.copy();
