@@ -37,7 +37,11 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	/** The application instance. */
 	private A app;
 
+	/** The void URI that represents "no document". */
 	private static final URI VOID_URI = URI.create("");
+
+	/** Preferece: last document. */
+	protected static final String PREF_DOCUMENT = "document_uri";
 	
 	/** The URI of the currently opened document. */
 	protected ObjectProperty<URI> documentProperty = new SimpleObjectProperty<URI>(VOID_URI);
@@ -131,6 +135,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	 */
 	protected void setDocument(URI uri) {
 		documentProperty.set(uri);
+		setPreferenceOptional(PREF_DOCUMENT, uri.toString());
 	}
 	
 	/**
@@ -238,12 +243,29 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		
 		// choose file to open
 		File initialDir = new File(System.getProperty("user.home"));
-		if (hasDocument()) {
-			initialDir = Paths.get(getDocument()).getParent().toFile();
+		String initialFileName = "";
+		try {
+			if (hasDocument()) {
+				initialDir = Paths.get(getDocument()).getParent().toFile();
+			} else {
+				String lastDocument = getPreference(PREF_DOCUMENT, "");
+				if (lastDocument.isBlank()) {
+					initialDir = new File(System.getProperty("user.home"));
+				} else {
+					Path path = Paths.get(URI.create(lastDocument));
+					initialDir = path.getParent().toFile();
+					initialFileName = path.getFileName().toString();
+				}
+			}
+		} catch (IllegalStateException e) {
+			// might for example be thrown by URI.create()
+			LOG.log(Level.WARNING, "could not determine initial folder", e);
 		}
+		
 		Optional<File> file = Dialogs
 				.chooseFile()
 				.initialDir(initialDir)
+				.initialFileName(initialFileName)
 				.showOpenDialog(getApp().getStage());
 		
 		if (file.isEmpty()) {
@@ -325,10 +347,12 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		return uri != VOID_URI ? uri.toString() : "<unnamed>";
 	}
 	
+	@SuppressWarnings("static-method")
 	protected void openDocument(URI uri) throws IOException {
 		throw new IOException("not implemented");
 	}
 
+	@SuppressWarnings("static-method")
 	protected void saveDocument(URI uri) throws IOException {
 		throw new IOException("not implemented");
 	}
@@ -341,4 +365,21 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		return getApp().getPreferences();
 	}
 	
+	protected boolean setPreferenceOptional(String key, String value) {
+		if (hasPreferences()) {
+			LOG.fine(() -> String.format("setting preference '%s'", key));
+			setPreference(key, value);
+			return true;
+		}
+		LOG.fine(() -> String.format("not setting preference '%s': preferences not initialised", key));
+		return false;
+	}
+
+	protected void setPreference(String key, String value) {
+		getPreferences().put(key, value);
+	}
+	
+	protected String getPreference(String key, String def) {
+		return hasPreferences() ? getPreferences().get(key, def) : def;
+	}
 }

@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
 import com.dua3.utility.lang.LangUtil;
@@ -163,6 +164,14 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      * Don't ask the user if he wants to save his work first - this should be handled by the controller.
      */
 	public void close() {
+		if (hasPreferences()) {
+			try {
+				getPreferences().flush();
+			} catch (BackingStoreException e) {
+				LOG.log(Level.WARNING, "could not update preferences", e);
+			}
+		}
+		
 		mainStage.close();
 	}
 	
@@ -187,7 +196,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
 		if (!hasPreferences()) {
 			Class<?> cls = getClass();
 			LOG.fine("creating preferences for class "+cls.getName());
-			preferences = Preferences.userNodeForPackage(cls);
+			preferences = Preferences.userRoot().node(getClass().getName());
 		}
 		return preferences;
 	}
@@ -199,4 +208,5 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
 	protected boolean hasPreferences() {
 		return preferences != null;
 	}
+	
 }
