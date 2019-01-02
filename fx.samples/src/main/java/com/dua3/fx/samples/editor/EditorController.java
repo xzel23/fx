@@ -2,32 +2,18 @@ package com.dua3.fx.samples.editor;
 
 import java.io.IOException;
 import java.net.URI;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
-import java.nio.charset.CoderMalfunctionError;
-import java.nio.charset.CoderResult;
-import java.nio.charset.CodingErrorAction;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.function.Consumer;
 import java.util.logging.Level;
 
 import com.dua3.fx.application.FxController;
 import com.dua3.fx.editors.CodeEditor;
-import com.dua3.fx.util.Dialogs;
 import com.dua3.utility.io.IOUtil;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Alert.AlertType;
 
 public class EditorController extends FxController<EditorApp, EditorController> {
 
