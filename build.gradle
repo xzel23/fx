@@ -47,7 +47,7 @@ if (currentOS.isWindows()) {
 }
 
 dependencies {
-    implementation "com.dua3.utility:utility:2.0"
+    implementation "com.dua3.utility:utility:2.1"
 
     // JavaFX
     def javafxversion = '11.0.1'
