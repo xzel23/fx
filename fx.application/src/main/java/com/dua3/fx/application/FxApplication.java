@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.prefs.Preferences;
 
 import com.dua3.utility.lang.LangUtil;
 
@@ -32,6 +33,9 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
 	/** Logger */
 	protected static final Logger LOG = Logger.getLogger(FxApplication.class.getSimpleName());
 
+	/** Preferences */
+	private Preferences preferences = null;
+	
 	// - instance -
 
 	/** The application name. */
@@ -171,4 +175,28 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
 		return mainStage;
 	}
 	
+	/**
+	 * Get the Preferences instance for this application.
+	 * 
+	 * The Preferences instance will be created on demand if it doesn't exist yet,
+	 * 
+	 * @return
+	 *  the preferences object for this application
+	 */
+	public Preferences getPreferences() {
+		if (!hasPreferences()) {
+			Class<?> cls = getClass();
+			LOG.fine("creating preferences for class "+cls.getName());
+			preferences = Preferences.userNodeForPackage(cls);
+		}
+		return preferences;
+	}
+
+	/**
+	 * Check whether a preferences object for this class has been created.
+	 * @return true, if a Preferences object has been created
+	 */
+	protected boolean hasPreferences() {
+		return preferences != null;
+	}
 }

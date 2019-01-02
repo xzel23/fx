@@ -9,4 +9,5 @@ module com.dua3.fx.application {
     requires transitive javafx.graphics;
 	requires javafx.controls;
 	requires javafx.fxml;
+	requires transitive java.prefs;
 }

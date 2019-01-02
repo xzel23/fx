@@ -12,6 +12,7 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.prefs.Preferences;
 
 import com.dua3.fx.util.Dialogs;
 import com.dua3.utility.lang.LangUtil;
@@ -332,4 +333,12 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		throw new IOException("not implemented");
 	}
 
+	boolean hasPreferences() {
+		return getApp().hasPreferences();
+	}
+	
+	protected Preferences getPreferences() {
+		return getApp().getPreferences();
+	}
+	
 }
