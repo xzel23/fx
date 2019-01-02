@@ -379,18 +379,18 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		return uri != VOID_URI ? uri.toString() : "<unnamed>";
 	}
 	
-	protected void createDocument() throws IOException {
-		throw new IOException("not implemented");
+	protected void createDocument() {
+		throw new UnsupportedOperationException("not implemented");
 	}
 
 	@SuppressWarnings("static-method")
 	protected void openDocument(URI uri) throws IOException {
-		throw new IOException("not implemented");
+		throw new UnsupportedOperationException("not implemented");
 	}
 
 	@SuppressWarnings("static-method")
 	protected void saveDocument(URI uri) throws IOException {
-		throw new IOException("not implemented");
+		throw new UnsupportedOperationException("not implemented");
 	}
 
 	boolean hasPreferences() {

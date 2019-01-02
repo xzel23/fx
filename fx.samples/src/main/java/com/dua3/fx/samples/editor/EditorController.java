@@ -25,6 +25,10 @@ public class EditorController extends FxController<EditorApp, EditorController> 
 	@Override
 	protected void init(EditorApp app) {
 		dirtyProperty.bind(editor.dirtyProperty());
+		
+		editor.editorReadyProperty().addListener((v,o,n) -> {
+			createDocument();
+		});
 	}
 	
 	@Override
@@ -49,7 +53,7 @@ public class EditorController extends FxController<EditorApp, EditorController> 
 	}
 
 	@Override
-	protected void createDocument() throws IOException {
+	protected void createDocument() {
 		editor.setText("", "txt");
 	}
 	
