@@ -375,20 +375,22 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		}		
 	}
 	
+	@SuppressWarnings("static-method")
 	protected String getDisplayName(URI uri) {
 		return uri != VOID_URI ? uri.toString() : "<unnamed>";
 	}
 	
+	@SuppressWarnings("static-method")
 	protected void createDocument() {
 		throw new UnsupportedOperationException("not implemented");
 	}
 
-	@SuppressWarnings("static-method")
+	@SuppressWarnings({ "static-method", "unused" })
 	protected void openDocument(URI uri) throws IOException {
 		throw new UnsupportedOperationException("not implemented");
 	}
 
-	@SuppressWarnings("static-method")
+	@SuppressWarnings({ "static-method", "unused" })
 	protected void saveDocument(URI uri) throws IOException {
 		throw new UnsupportedOperationException("not implemented");
 	}
