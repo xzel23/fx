@@ -14,16 +14,23 @@ import com.dua3.fx.editors.CodeEditor;
 import com.dua3.utility.io.IOUtil;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.MenuBar;
 
 public class EditorController extends FxController<EditorApp, EditorController> {
 
 	private Charset charset = StandardCharsets.UTF_8;
 
 	@FXML
+	MenuBar menubar;
+
+	@FXML
 	CodeEditor editor;
 	
 	@Override
 	protected void init(EditorApp app) {
+		// use system menubar
+		menubar.setUseSystemMenuBar(true);
+
 		dirtyProperty.bind(editor.dirtyProperty());
 		
 		editor.editorReadyProperty().addListener((v,o,n) -> {
