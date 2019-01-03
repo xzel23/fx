@@ -40,8 +40,17 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
 	// - instance -
 
 	/** The application name. */
-	private final String applicationName;
+	private String applicationName = "";
 
+	/** The application name. */
+	private String versionString = "snapshot version";
+
+	/** The contact email. */
+	private String contactMail = "";
+
+	/** The copyright text. */
+	private String copyright = "";
+	
 	/** Path to FXML file. */
 	private final String fxmlFile;
 
@@ -50,7 +59,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
 
 	/** The main stage. */
 	private Stage mainStage;
-	
+
 	// - UI -
 
 	// - static initialization -
@@ -59,13 +68,10 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
 
 	/**
 	 * Constructor.
-	 * 
-	 * @param applicationName the name of the application to show in title bar
 	 * @param fxmlFile        the path to the FXML file to load, relative to the
 	 *                        application class
 	 */
-	protected FxApplication(String applicationName, String fxmlFile) {
-		this.applicationName = Objects.requireNonNull(applicationName);
+	protected FxApplication(String fxmlFile) {
 		this.fxmlFile = Objects.requireNonNull(fxmlFile);
 	}
 
@@ -208,5 +214,42 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
 	protected boolean hasPreferences() {
 		return preferences != null;
 	}
+
+	/** 
+	 * Get application name.
+	 * 
+	 * @return the name of the application
+	 */
+	public String getApplicationName() {
+		return !applicationName.isEmpty() ? applicationName : getClass().getSimpleName();
+	}
 	
+	protected void setContactMail(String value) {
+		this.contactMail = value;
+	}
+
+	protected void setCopyright(String value) {
+		this.copyright = value;
+	}
+
+	protected void setVersionString(String value) {
+		this.versionString = value;
+	}
+
+	protected void setApplicationName(String value) {
+		this.applicationName = value;
+	}
+
+	public String getVersionString() {
+		return versionString;
+	}
+	
+	public String getContactMail() {
+		return contactMail;
+	}
+	
+	public String getCopyright() {
+		return copyright;
+	}
+
 }

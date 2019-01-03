@@ -2,9 +2,12 @@ package com.dua3.fx.application;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
@@ -14,6 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 
+import com.dua3.fx.util.AboutDialog;
 import com.dua3.fx.util.Dialogs;
 import com.dua3.utility.lang.LangUtil;
 
@@ -419,5 +423,25 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	
 	protected String getPreference(String key, String def) {
 		return hasPreferences() ? getPreferences().get(key, def) : def;
+	}
+	
+	protected AboutDialog createAboutDialog() {		
+		try {
+			return Dialogs.about()
+				.title("About")
+				.name(getApp().getApplicationName())
+				.version(getApp().getVersionString())
+				.copyright("©2018 Axel Howind")
+				.mail(
+						getApp().getContactMail(), 
+					String.format(
+							"mailto:%s?subject=%s", 
+							getApp().getContactMail(),
+							URLEncoder.encode(getApp().getApplicationName()+" "+getApp().getVersionString(), StandardCharsets.UTF_8.name())))
+				.build();
+		} catch (UnsupportedEncodingException e) {
+			LOG.log(Level.WARNING, "unsupported encoding", e);
+			throw new IllegalStateException(e);
+		}
 	}
 }

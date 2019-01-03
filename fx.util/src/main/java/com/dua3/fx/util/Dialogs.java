@@ -42,4 +42,13 @@ public class Dialogs {
 	public static FileChooserBuilder chooseFile() {
 		return new FileChooserBuilder();
 	}
+	
+	/**
+	 * Start definition of new AboutDialog.
+	 * @return 
+	 * 	new {@link AboutDialogBuilder} instance
+	 */
+	public static AboutDialogBuilder about() {
+		return new AboutDialogBuilder();
+	}
 }
