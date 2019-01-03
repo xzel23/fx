@@ -431,7 +431,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 				.title("About")
 				.name(getApp().getApplicationName())
 				.version(getApp().getVersionString())
-				.copyright("©2018 Axel Howind")
+				.copyright(getApp().getCopyright())
 				.mail(
 						getApp().getContactMail(), 
 					String.format(

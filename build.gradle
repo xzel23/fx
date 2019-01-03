@@ -80,6 +80,10 @@ javadoc {
 
 sourceCompatibility = 11
 targetCompatibility = 11
+compileJava {
+    options.encoding = 'UTF-8'
+    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+}
 
 // === BINTRAY === >
 
