@@ -1,8 +1,9 @@
-package com.dua3.fx.samples.editor;
+package com.dua3.fx.application;
 
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javafx.fxml.FXML;
@@ -11,13 +12,20 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
+import javafx.scene.control.Label;
 
 public class AboutDialog extends Dialog<Void> {
     /** Logger instance */
     private static final Logger LOG = Logger.getLogger(AboutDialog.class.getName());
 
-    private static final URI URI_MAIL_ME = URI.create("mailto:axel@dua3.com?subject=Document%20Viewer");
+    private URI mailUri = null;
 
+    @FXML
+    Label labelCopyright;
+    
+    @FXML
+    Label labelVersion;
+    
     @FXML
     Button btnOk;
 
@@ -26,14 +34,19 @@ public class AboutDialog extends Dialog<Void> {
     }
 
     public AboutDialog() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("about_editor.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("about.fxml"));
         loader.setController(this);
         DialogPane dialogPane = loader.load();
         setDialogPane(dialogPane);
         dialogPane.getButtonTypes().addAll(ButtonType.OK);
      }
 
-    public void mailMe() {
+    public void mail() {
+    	if (mailUri==null) {
+            LOG.warning("email not configured");
+            return;    		
+    	}
+    	
         if (!Desktop.isDesktopSupported()) {
             LOG.warning("Dekstop API is not supported");
             return;
@@ -43,9 +56,9 @@ public class AboutDialog extends Dialog<Void> {
         if (desktop.isSupported(Desktop.Action.MAIL)) {
             try {
                 LOG.info("opening mail application");
-                desktop.mail(URI_MAIL_ME);
+                desktop.mail(mailUri);
             } catch (IOException e) {
-                LOG.warning("could not open mail application");
+                LOG.log(Level.WARNING, "could not open mail application", e);
             }
         }
     }
