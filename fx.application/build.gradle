@@ -1,5 +1,3 @@
 dependencies {
     api project(':fx.util')
-
-    implementation "com.dua3.utility:utility:2.0"
 }

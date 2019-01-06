@@ -46,11 +46,15 @@ if (currentOS.isWindows()) {
     platform = 'mac'
 }
 
+ext {
+    dua3UtilityVersion = "3.0-SNAPSHOT"
+    javafxversion = '11.0.1'
+}
+
 dependencies {
-    implementation "com.dua3.utility:utility:2.1"
+    implementation "com.dua3.utility:utility:${dua3UtilityVersion}"
 
     // JavaFX
-    def javafxversion = '11.0.1'
     api "org.openjfx:javafx-base:${javafxversion}:${platform}"
     api "org.openjfx:javafx-fxml:${javafxversion}:${platform}"
     api "org.openjfx:javafx-graphics:${javafxversion}:${platform}"

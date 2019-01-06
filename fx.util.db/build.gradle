@@ -1,0 +1,4 @@
+dependencies {
+    implementation project(':fx.util')
+    implementation "com.dua3.utility:utility.db:${dua3UtilityVersion}"
+}
