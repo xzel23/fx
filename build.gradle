@@ -47,7 +47,7 @@ if (currentOS.isWindows()) {
 }
 
 ext {
-    dua3UtilityVersion = "3.0-SNAPSHOT"
+    dua3UtilityVersion = "3.0"
     javafxversion = '11.0.1'
 }
 
