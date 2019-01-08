@@ -83,4 +83,10 @@ public class EditorController extends FxController<EditorApp, EditorController> 
 		LOG.fine("about()");
 		createAboutDialog().showAndWait();
 	}
+	
+	@FXML
+	public void search() {
+		LOG.fine("search()");
+		SearchDialog dlg = new SearchDialog(getApp().getStage());
+	}
 }
