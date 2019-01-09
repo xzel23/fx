@@ -23,9 +23,9 @@ public class SearchDialog extends Pane {
 	private static final Logger LOG = Logger.getLogger(SearchDialog.class.getName());
 
 	@FXML
-	TextField inputSearch;
+	TextField inputSearchPattern;
 	@FXML
-	TextField inputReplace;
+	TextField inputReplacement;
 	@FXML
 	CheckBox ctlIgnoreCase;
 	@FXML
@@ -46,7 +46,7 @@ public class SearchDialog extends Pane {
 
 		try {
 			// load FXML
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("search_dialog.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("intern/search_dialog.fxml"));
 			loader.setController(this);
 			VBox root = loader.load();
 
@@ -63,17 +63,12 @@ public class SearchDialog extends Pane {
 		}
 	}
 
-	@FXML
-	public void search() {
-		editor.search(getPattern(), isIgnoreCase(), isRegExp(), isWrapAround());
-	}
-
 	public String getPattern() {
-		return inputSearch.getText();
+		return inputSearchPattern.getText();
 	}
 
 	public String getReplacement() {
-		return inputReplace.getText();
+		return inputReplacement.getText();
 	}
 
 	public boolean isIgnoreCase() {
@@ -86,6 +81,11 @@ public class SearchDialog extends Pane {
 
 	public boolean isWrapAround() {
 		return ctlWrapAround.isSelected();
+	}
+
+	@FXML
+	public void search() {
+		editor.search(getPattern(), isIgnoreCase(), isRegExp(), isWrapAround());
 	}
 
 	@FXML
