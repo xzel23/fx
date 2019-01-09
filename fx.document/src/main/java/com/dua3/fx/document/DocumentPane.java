@@ -35,10 +35,6 @@ public abstract class DocumentPane extends BorderPane {
 	
 	/**
 	 * Constructor.
-	 * @param fxml
-	 *  the FXML resource to load the user interface definition from (filename)
-	 * @param html
-	 *  the HTML resource to load (filename)
 	 */
 	protected DocumentPane() {
 		LOG.fine(() -> "DocumentPane()");
