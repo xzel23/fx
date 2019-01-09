@@ -1,6 +1,7 @@
 package com.dua3.fx.editors;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,7 +18,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class SearchDialog extends Pane {
+public class SearchDialog {
 
 	/** Logger instance */
 	private static final Logger LOG = Logger.getLogger(SearchDialog.class.getName());
@@ -37,9 +38,11 @@ public class SearchDialog extends Pane {
 	@FXML
 	Button btnReplace;
 	@FXML
-	Button btnCancel;
+	Button btnClose;
 
 	private final EditorBase editor;
+
+	private final VBox root;
 
 	public SearchDialog(EditorBase editor) {
 		this.editor = Objects.requireNonNull(editor);
@@ -48,7 +51,7 @@ public class SearchDialog extends Pane {
 			// load FXML
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("intern/search_dialog.fxml"));
 			loader.setController(this);
-			VBox root = loader.load();
+			this.root = loader.load();
 
 			Scene scene = new Scene(root);
 
@@ -60,6 +63,7 @@ public class SearchDialog extends Pane {
 
 		} catch (IOException e) {
 			LOG.log(Level.WARNING, "could not create dialog", e);
+			throw new UncheckedIOException(e);
 		}
 	}
 
@@ -90,5 +94,10 @@ public class SearchDialog extends Pane {
 
 	@FXML
 	public void replace() {
+	}
+
+	@FXML public void close() {
+		Stage stage = (Stage) root.getScene().getWindow();
+		stage.close();
 	}
 }

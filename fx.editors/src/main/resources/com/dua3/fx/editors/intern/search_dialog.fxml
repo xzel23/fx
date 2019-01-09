@@ -41,7 +41,7 @@
         <buttons>
           <Button fx:id="btnSearch" defaultButton="true" mnemonicParsing="false" onAction="#search" text="Search" />
             <Button fx:id="btnReplace" mnemonicParsing="false" onAction="#replace" text="Replace" />
-            <Button fx:id="btnCancel" cancelButton="true" mnemonicParsing="false" text="Cancel" />
+            <Button fx:id="btnClose" mnemonicParsing="false" text="Close" onAction="#close" />
         </buttons>
       </ButtonBar>
    </children>

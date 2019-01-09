@@ -116,9 +116,24 @@ function jGetLineNumber(idx) {
 	return editor.getCursor(idx).line;
 }
 
+// search/replace
+
+var searchcursor = null;
+
 function jSearch(pattern, ignoreCase, regExp, wrapAround) {
+	if (searchcursor==null) {
+		searchcursor = getSearchCursor(
+			pattern, 
+			null,
+			{
+			  caseFold : ignoreCase
+			});
+	} else {
+		searchcursor.findNext();
+	}
 	trace("search");	
 }
+
 
 // track dirty state
 editor.on('change', function() {
