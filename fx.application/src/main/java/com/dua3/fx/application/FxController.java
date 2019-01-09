@@ -278,7 +278,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		}
 		
 		// choose file to open
-		File initialDir = new File(System.getProperty("user.home"));
+		File initialDir = null;
 		String initialFileName = "";
 		try {
 			if (hasDocument()) {
@@ -296,6 +296,10 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		} catch (IllegalStateException e) {
 			// might for example be thrown by URI.create()
 			LOG.log(Level.WARNING, "could not determine initial folder", e);
+		}
+		
+		if (initialDir == null || !initialDir.isDirectory()) {
+			initialDir = new File(System.getProperty("user.home"));
 		}
 		
 		Optional<File> file = Dialogs
@@ -340,19 +344,36 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	@FXML
 	protected boolean saveAs() {
 		// choose file to open
-		File initialDir = new File(System.getProperty("user.home"));
+		File initialDir = null;
 		String initialFileName = "";
-		if (hasDocument()) {
-			Path path = Paths.get(getDocument());
-			initialDir = path.getParent().toFile();
-			initialFileName = path.getFileName().toString();
+		try {
+			if (hasDocument()) {
+				initialDir = Paths.get(getDocument()).getParent().toFile();
+			} else {
+				String lastDocument = getPreference(PREF_DOCUMENT, "");
+				if (lastDocument.isBlank()) {
+					initialDir = new File(System.getProperty("user.home"));
+				} else {
+					Path path = Paths.get(URI.create(lastDocument));
+					initialDir = path.getParent().toFile();
+					initialFileName = path.getFileName().toString();
+				}
+			}
+		} catch (IllegalStateException e) {
+			// might for example be thrown by URI.create()
+			LOG.log(Level.WARNING, "could not determine initial folder", e);
 		}
+		
+		if (initialDir == null || !initialDir.isDirectory()) {
+			initialDir = new File(System.getProperty("user.home"));
+		}
+		
 		Optional<File> file = Dialogs
 				.chooseFile()
 				.initialDir(initialDir)
 				.initialFileName(initialFileName)
 				.showSaveDialog(getApp().getStage());
-		
+
 		if (file.isEmpty()) {
 			LOG.fine("saveAs(): no file was chosen");
 			return false;
