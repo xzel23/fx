@@ -116,8 +116,14 @@ function jGetLineNumber(idx) {
 	return editor.getCursor(idx).line;
 }
 
+var searchCursor = null;
 function jSearch(pattern, ignoreCase, regExp, wrapAround) {
 	trace("search");	
+	if (searchCursor==null) {
+		searchCursor = editor.getSearchCursor(pattern);		
+	} else {
+		searchCursor = editor.findNext();
+	}
 }
 
 // track dirty state

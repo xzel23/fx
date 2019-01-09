@@ -1,6 +1,7 @@
 package com.dua3.fx.editors;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,10 +23,12 @@ public class SearchDialog extends Pane {
 	/** Logger instance */
 	private static final Logger LOG = Logger.getLogger(SearchDialog.class.getName());
 
+	private final VBox root;
+	
 	@FXML
-	TextField inputSearch;
+	TextField inputSearchPattern;
 	@FXML
-	TextField inputReplace;
+	TextField inputReplacement;
 	@FXML
 	CheckBox ctlIgnoreCase;
 	@FXML
@@ -37,7 +40,7 @@ public class SearchDialog extends Pane {
 	@FXML
 	Button btnReplace;
 	@FXML
-	Button btnCancel;
+	Button btnClose;
 
 	private final EditorBase editor;
 
@@ -46,9 +49,9 @@ public class SearchDialog extends Pane {
 
 		try {
 			// load FXML
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("search_dialog.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("intern/search_dialog.fxml"));
 			loader.setController(this);
-			VBox root = loader.load();
+			root = loader.load();
 
 			Scene scene = new Scene(root);
 
@@ -59,21 +62,16 @@ public class SearchDialog extends Pane {
 			stage.show();
 
 		} catch (IOException e) {
-			LOG.log(Level.WARNING, "could not create dialog", e);
+			throw new UncheckedIOException("could not create dialog", e);
 		}
 	}
 
-	@FXML
-	public void search() {
-		editor.search(getPattern(), isIgnoreCase(), isRegExp(), isWrapAround());
-	}
-
 	public String getPattern() {
-		return inputSearch.getText();
+		return inputSearchPattern.getText();
 	}
 
 	public String getReplacement() {
-		return inputReplace.getText();
+		return inputReplacement.getText();
 	}
 
 	public boolean isIgnoreCase() {
@@ -89,6 +87,17 @@ public class SearchDialog extends Pane {
 	}
 
 	@FXML
+	public void search() {
+		editor.search(getPattern(), isIgnoreCase(), isRegExp(), isWrapAround());
+	}
+	
+	@FXML
 	public void replace() {
+	}
+	
+	@FXML 
+	public void close() {
+		Stage stage = (Stage) root.getScene().getWindow();
+		stage.close();
 	}
 }
