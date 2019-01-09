@@ -29,6 +29,14 @@ subprojects {
 	ext.developerEmail = 'axel@dua3.com'
 /////////////////////////////////////////////////////////////////////////////
 
+// remove module-info.java from eclipse source folder because eclipse 
+// chokes if module-info is present in both main and test
+eclipse.classpath.file.whenMerged {
+    for (item in entries.findAll{ it.path.matches('src/test/[^/]+/java') }) {
+    	item.excludes += '*.java'
+    }
+}
+
 repositories {
     jcenter()
     maven { url  "https://dl.bintray.com/dua3/public" }
