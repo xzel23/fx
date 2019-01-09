@@ -121,11 +121,9 @@ function jGetLineNumber(idx) {
 var searchcursor = null;
 
 function jSearch(pattern, ignoreCase, regExp, wrapAround) {
+	trace("search ...");
 	if (searchcursor==null) {
-		searchcursor = getSearchCursor(
-			pattern, 
-			null,
-			{
+		searchcursor = editor.getSearchCursor(pattern, null, {
 			  caseFold : ignoreCase
 			});
 	} else {
