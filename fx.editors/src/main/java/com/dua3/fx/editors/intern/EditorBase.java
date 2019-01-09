@@ -200,5 +200,10 @@ public abstract class EditorBase extends BorderPane {
 	public String getLine(int idx) {
 		return (String) bridge.callScript("jGetLine("+idx+");");
 	}
+
+	public void search(String pattern, boolean ignoreCase, boolean regExp, boolean wrapAround) {
+		String script = String.format("jSearch('%s',%s,%s,%s);", pattern, ignoreCase, regExp, wrapAround);
+		bridge.executeScript(script);
+	}
 	
 }

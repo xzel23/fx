@@ -116,6 +116,10 @@ function jGetLineNumber(idx) {
 	return editor.getCursor(idx).line;
 }
 
+function jSearch(pattern, ignoreCase, regExp, wrapAround) {
+	trace("search");	
+}
+
 // track dirty state
 editor.on('change', function() {
 	bridge.setDirty(true);
