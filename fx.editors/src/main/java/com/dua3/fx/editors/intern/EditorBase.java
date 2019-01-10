@@ -85,8 +85,10 @@ public abstract class EditorBase extends BorderPane {
 		engine.setConfirmHandler( s -> 
 			Dialogs.confirmation()
 				.header("%s", s)
+				.buttons(ButtonType.YES, ButtonType.NO)
+				.defaultButton(ButtonType.NO)
 				.showAndWait()
-				.filter(b -> b.equals(ButtonType.OK))
+				.filter(b -> b.equals(ButtonType.YES))
 				.isPresent());
 		
 		engine.setPromptHandler(p -> 
