@@ -15,49 +15,41 @@ subprojects {
   apply plugin:  'com.dua3.gradle.jpms'
   apply plugin:  'com.jfrog.bintray'
 
-/////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////
 	group              = 'com.dua3.fx'
 	version            = '0.3-SNAPSHOT'
-	
+		
 	ext.moduleName     = project.group 
 	ext.scm            = ''
 	ext.repo           = 'private'
 	ext.description    = 'Java FX application utilities'
-	
+		
 	ext.developerId    = 'axh'
 	ext.developerName  = 'Axel Howind'
 	ext.developerEmail = 'axel@dua3.com'
-/////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////
 
-// remove module-info.java from eclipse source folder because eclipse 
-// chokes if module-info is present in both main and test
-eclipse.classpath.file.whenMerged {
-    for (item in entries.findAll{ it.path.matches('src/test/[^/]+/java') }) {
-    	item.excludes += '*.java'
-    }
-}
-
-repositories {
+  repositories {
     jcenter()
     maven { url  "https://dl.bintray.com/dua3/public" }
     mavenLocal()
-}
+  }
 
-// get OS (because JavaFX packages are OS dependent)
-def currentOS = org.gradle.internal.os.OperatingSystem.current()
-def platform
-if (currentOS.isWindows()) {
+  // get OS (because JavaFX packages are OS dependent)
+  def currentOS = org.gradle.internal.os.OperatingSystem.current()
+  def platform
+  if (currentOS.isWindows()) {
     platform = 'win'
-} else if (currentOS.isLinux()) {
+  } else if (currentOS.isLinux()) {
     platform = 'linux'
-} else if (currentOS.isMacOsX()) {
+  } else if (currentOS.isMacOsX()) {
     platform = 'mac'
-}
+  }
 
-ext {
+  ext {
     dua3UtilityVersion = "3.0"
     javafxversion = '11.0.1'
-}
+  }
 
 dependencies {
     implementation "com.dua3.utility:utility:${dua3UtilityVersion}"

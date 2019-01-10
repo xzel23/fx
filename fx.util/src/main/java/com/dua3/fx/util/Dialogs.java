@@ -9,29 +9,38 @@ public class Dialogs {
 
 	/**
 	 * Start definition of new Alert dialog.
-	 * @param type
-	 * 	the type of the Alert
 	 * @return 
 	 * 	new {@link AlertBuilder} instance
 	 */
-	public static AlertBuilder alert(AlertType type) {
-		return new AlertBuilder(type);
+	public static AlertBuilder warning() {
+		return new AlertBuilder(AlertType.WARNING);
 	}
 
 	/**
-	 * Start definition of new Confirmation dialog.
-	 * 
-	 * The confirmation text should be a closed question (i.e. the answered being either
-	 * 'yes' or 'no').
-	 * @param fmt
-	 * 	the format String for building the confirmation text.
-	 * @param args
-	 *  the format arguments for building the confirmation text
+	 * Start definition of new Alert dialog.
 	 * @return 
-	 * 	new {@link ConfirmationBuilder} instance
+	 * 	new {@link AlertBuilder} instance
 	 */
-	public static ConfirmationBuilder confirmation(String fmt, Object... args) {
-		return new ConfirmationBuilder(fmt, args);
+	public static AlertBuilder error() {
+		return new AlertBuilder(AlertType.ERROR);
+	}
+
+	/**
+	 * Start definition of new Alert dialog.
+	 * @return 
+	 * 	new {@link AlertBuilder} instance
+	 */
+	public static AlertBuilder information() {
+		return new AlertBuilder(AlertType.INFORMATION);
+	}
+
+	/**
+	 * Start definition of new Alert dialog.
+	 * @return 
+	 * 	new {@link AlertBuilder} instance
+	 */
+	public static AlertBuilder confirmation() {
+		return new AlertBuilder(AlertType.CONFIRMATION);
 	}
 
 	/**
@@ -50,5 +59,9 @@ public class Dialogs {
 	 */
 	public static AboutDialogBuilder about() {
 		return new AboutDialogBuilder();
+	}
+
+	public static PromptBuilder prompt() {
+		return new PromptBuilder();
 	}
 }

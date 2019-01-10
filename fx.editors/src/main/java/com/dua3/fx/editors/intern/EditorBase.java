@@ -14,9 +14,13 @@ import javafx.beans.value.ChangeListener;
 import javafx.concurrent.Worker.State;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.web.PromptData;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+
+import com.dua3.fx.util.Dialogs;
 
 public abstract class EditorBase extends BorderPane {
     private static final Logger LOG = Logger.getLogger(EditorBase.class.getSimpleName());
@@ -76,6 +80,23 @@ public abstract class EditorBase extends BorderPane {
 			evt -> LOG.warning("[webengine] " + evt.getMessage())
 		);
 
+		// enable alert, prompt, and confirmation
+		engine.setOnAlert( e -> Dialogs.warning().header("%s", e.getData()).showAndWait() );
+
+		engine.setConfirmHandler( s -> 
+			Dialogs.confirmation()
+				.header("%s", s)
+				.showAndWait()
+				.filter(b -> b.equals(ButtonType.OK))
+				.isPresent());
+		
+		engine.setPromptHandler(p -> 
+			Dialogs.prompt()
+				.header("%s", p.getMessage())
+				.defaultValue("%s", p.getDefaultValue())
+				.showAndWait().orElse("")
+		);
+		
 		// inject JavaScript bridge after loading
 		engine.getLoadWorker().stateProperty().addListener((observable, oldState, newState) -> {
 			if (newState == State.SUCCEEDED) {

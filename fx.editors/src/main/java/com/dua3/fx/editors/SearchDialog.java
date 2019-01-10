@@ -18,13 +18,11 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class SearchDialog extends Pane {
+public class SearchDialog {
 
 	/** Logger instance */
 	private static final Logger LOG = Logger.getLogger(SearchDialog.class.getName());
 
-	private final VBox root;
-	
 	@FXML
 	TextField inputSearchPattern;
 	@FXML
@@ -43,6 +41,8 @@ public class SearchDialog extends Pane {
 	Button btnClose;
 
 	private final EditorBase editor;
+
+	private final VBox root;
 
 	public SearchDialog(EditorBase editor) {
 		this.editor = Objects.requireNonNull(editor);
@@ -92,11 +92,21 @@ public class SearchDialog extends Pane {
 	}
 	
 	@FXML
+	public void search() {
+		editor.search(getPattern(), isIgnoreCase(), isRegExp(), isWrapAround());
+	}
+
+	@FXML
 	public void replace() {
 	}
 	
 	@FXML 
 	public void close() {
+		Stage stage = (Stage) root.getScene().getWindow();
+		stage.close();
+	}
+
+	@FXML public void close() {
 		Stage stage = (Stage) root.getScene().getWindow();
 		stage.close();
 	}
