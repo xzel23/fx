@@ -7,6 +7,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.dua3.fx.util.Dialogs;
+
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.StringProperty;
@@ -14,13 +16,10 @@ import javafx.beans.value.ChangeListener;
 import javafx.concurrent.Worker.State;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.web.PromptData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
-
-import com.dua3.fx.util.Dialogs;
 
 public abstract class EditorBase extends BorderPane {
     private static final Logger LOG = Logger.getLogger(EditorBase.class.getSimpleName());
@@ -222,9 +221,8 @@ public abstract class EditorBase extends BorderPane {
 		return (String) bridge.callScript("jGetLine("+idx+");");
 	}
 
-	public void search(String pattern, boolean ignoreCase, boolean regExp, boolean wrapAround) {
-		String script = String.format("jSearch('%s',%s,%s,%s);", pattern, ignoreCase, regExp, wrapAround);
-		bridge.executeScript(script);
+	public void search() {
+		bridge.executeScript("jSearch();");
 	}
 	
 }

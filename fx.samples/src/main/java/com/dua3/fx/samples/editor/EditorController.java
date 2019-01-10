@@ -10,7 +10,6 @@ import java.nio.file.Paths;
 
 import com.dua3.fx.application.FxController;
 import com.dua3.fx.editors.CodeEditor;
-import com.dua3.fx.editors.SearchDialog;
 import com.dua3.utility.io.IOUtil;
 
 import javafx.fxml.FXML;
@@ -88,6 +87,6 @@ public class EditorController extends FxController<EditorApp, EditorController> 
 	@FXML
 	public void search() {
 		LOG.fine("search()");
-		SearchDialog dlg = new SearchDialog(editor);
+		editor.search();
 	}
 }
