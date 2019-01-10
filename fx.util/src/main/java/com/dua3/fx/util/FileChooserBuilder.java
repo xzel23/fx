@@ -12,6 +12,7 @@ import javafx.stage.Window;
  * 
  * Provides a fluent interface to create Alerts. 
  */
+@SuppressWarnings("exports")
 public class FileChooserBuilder {
 	private File initialDir = new File(System.getProperty("user.home"));
 	private String initialFileName = "";

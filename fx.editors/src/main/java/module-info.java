@@ -10,4 +10,5 @@ module com.dua3.fx.editors {
 	requires javafx.web;
 	requires jdk.jsobject;
 	requires jdk.xml.dom;
+	requires com.dua3.fx.util;
 }

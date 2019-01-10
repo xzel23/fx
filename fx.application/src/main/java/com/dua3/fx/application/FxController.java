@@ -100,8 +100,11 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		// handle dirty state
 		if (isDirty()) {
 			AtomicBoolean goOn = new AtomicBoolean(false);
-			Dialogs.confirmation("Save changes in '%s'?", getDocumentName())
-			.cancelable(true)
+			Dialogs.confirmation()
+			.header("Save changes?")
+			.text(getDocumentName())
+			.buttons(ButtonType.YES, ButtonType.NO, ButtonType.CANCEL)
+			.defaultButton(ButtonType.YES)
 			.showAndWait()
 			.ifPresent(btn -> {
 				if (btn==ButtonType.YES) {
@@ -225,8 +228,10 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	protected boolean handleDirtyState() {
 		if (isDirty()) {
 			AtomicBoolean goOn = new AtomicBoolean(false);
-			Dialogs.confirmation("Save changes in '%s'?", getDocumentName())
-			.cancelable(true)
+			Dialogs.confirmation()
+			.header("Save changes?")
+			.buttons(ButtonType.YES, ButtonType.NO, ButtonType.CANCEL)
+			.defaultButton(ButtonType.YES)
 			.showAndWait()
 			.ifPresent(btn -> {
 				if (btn==ButtonType.YES) {
@@ -259,7 +264,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 			return true;
 		} catch (Exception e) {
 			LOG.log(Level.WARNING, "error creating document", e);
-			Dialogs.alert(AlertType.ERROR)
+			Dialogs.error()
 			.title("Error")
 			.header("Could not create a new document.")
 			.text(e.getMessage())
@@ -321,7 +326,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 			return true;
 		} catch (Exception e) {
 			LOG.log(Level.WARNING, "error opening document", e);
-			Dialogs.alert(AlertType.ERROR)
+			Dialogs.error()
 			.title("Error")
 			.header("'%s' could not be opened.", getDisplayName(uri))
 			.text(e.getMessage())
@@ -390,7 +395,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 			return true;
 		} catch (Exception e) {
 			LOG.log(Level.WARNING, "error saving document", e);
-			Dialogs.alert(AlertType.ERROR)
+			Dialogs.error()
 			.title("Error")
 			.header("'%s' could not be saved.", getDisplayName(uri))
 			.text("%s: %s", e.getClass().getSimpleName(), e.getMessage())
