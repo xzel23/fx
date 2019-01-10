@@ -117,7 +117,7 @@ function jGetLineNumber(idx) {
 }
 
 function jSearch() {
-	editor.search();
+	editor.execCommand("find");
 }
 
 // track dirty state
