@@ -92,20 +92,9 @@ public class SearchDialog {
 	}
 	
 	@FXML
-	public void search() {
-		editor.search(getPattern(), isIgnoreCase(), isRegExp(), isWrapAround());
-	}
-
-	@FXML
 	public void replace() {
 	}
 	
-	@FXML 
-	public void close() {
-		Stage stage = (Stage) root.getScene().getWindow();
-		stage.close();
-	}
-
 	@FXML public void close() {
 		Stage stage = (Stage) root.getScene().getWindow();
 		stage.close();
