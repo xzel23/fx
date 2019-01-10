@@ -8,6 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.dua3.fx.util.Dialogs;
+import com.dua3.fx.util.WebViews;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyBooleanProperty;
@@ -80,23 +81,9 @@ public abstract class EditorBase extends BorderPane {
 		);
 
 		// enable alert, prompt, and confirmation
-		engine.setOnAlert( e -> Dialogs.warning().header("%s", e.getData()).showAndWait() );
-
-		engine.setConfirmHandler( s -> 
-			Dialogs.confirmation()
-				.header("%s", s)
-				.buttons(ButtonType.YES, ButtonType.NO)
-				.defaultButton(ButtonType.NO)
-				.showAndWait()
-				.filter(b -> b.equals(ButtonType.YES))
-				.isPresent());
-		
-		engine.setPromptHandler(p -> 
-			Dialogs.prompt()
-				.header("%s", p.getMessage())
-				.defaultValue("%s", p.getDefaultValue())
-				.showAndWait().orElse("")
-		);
+		WebViews.setAlertHandler(engine);
+		WebViews.setConfirmationHandler(engine);
+		WebViews.setPromptHandler(engine);
 		
 		// inject JavaScript bridge after loading
 		engine.getLoadWorker().stateProperty().addListener((observable, oldState, newState) -> {
