@@ -9,5 +9,4 @@ module com.dua3.fx.util {
 	requires javafx.fxml;
 	requires java.desktop;
 	requires javafx.graphics;
-	requires javafx.web;
 }

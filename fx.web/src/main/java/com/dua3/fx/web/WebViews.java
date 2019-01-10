@@ -1,5 +1,7 @@
 
-package com.dua3.fx.util;
+package com.dua3.fx.web;
+
+import com.dua3.fx.util.Dialogs;
 
 import javafx.scene.control.ButtonType;
 import javafx.scene.web.WebEngine;

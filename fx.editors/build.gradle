@@ -1,3 +1,4 @@
 dependencies {
     compile project(':fx.util')
+    compile project(':fx.web')
 }
