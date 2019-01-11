@@ -7,7 +7,6 @@ import javafx.scene.control.TextInputDialog;
  * 
  * Provides a fluent interface to create Alerts. 
  */
-@SuppressWarnings("exports")
 public class PromptBuilder extends AbstractDialogBuilder<String, TextInputDialog, PromptBuilder> {
 	public PromptBuilder() {
 		super(TextInputDialog::new);

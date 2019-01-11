@@ -13,7 +13,6 @@ import javafx.scene.control.DialogPane;
  * 
  * Provides a fluent interface to create Alerts. 
  */
-@SuppressWarnings("exports") 
 public class AlertBuilder 
 extends AbstractDialogBuilder<ButtonType, Alert, AlertBuilder> {
 	AlertBuilder(AlertType type) {

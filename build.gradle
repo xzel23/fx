@@ -29,6 +29,13 @@ subprojects {
 	ext.developerEmail = 'axel@dua3.com'
   ////////////////////////////////////////////////////////////////////////////
 
+  // remove module-info.java from eclipse source folder
+  eclipse.classpath.file.whenMerged {
+    for (item in entries.findAll{ it.path.matches('src/[^/]+/java') }) {
+      item.excludes += 'module-info.java'
+    }
+  }
+
   repositories {
     jcenter()
     maven { url  "https://dl.bintray.com/dua3/public" }

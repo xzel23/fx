@@ -7,6 +7,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 import com.dua3.fx.application.FxController;
 import com.dua3.fx.editors.CodeEditor;
@@ -14,6 +15,7 @@ import com.dua3.utility.io.IOUtil;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuBar;
+import javafx.stage.FileChooser;
 
 public class EditorController extends FxController<EditorApp, EditorController> {
 
@@ -35,6 +37,13 @@ public class EditorController extends FxController<EditorApp, EditorController> 
 		editor.editorReadyProperty().addListener((v,o,n) -> {
 			createDocument();
 		});
+	}
+	
+	@Override
+	protected List<FileChooser.ExtensionFilter> openFilters() {
+		List<javafx.stage.FileChooser.ExtensionFilter> filters = super.openFilters();
+		filters.add(new FileChooser.ExtensionFilter("Text files", "*.txt"));
+		return filters;
 	}
 	
 	@Override

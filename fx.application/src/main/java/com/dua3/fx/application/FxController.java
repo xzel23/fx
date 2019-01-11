@@ -10,6 +10,8 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -28,8 +30,8 @@ import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.stage.FileChooser;
 
 public abstract class FxController<A extends FxApplication<A, C>, C extends FxController<A, C>> {
 
@@ -311,6 +313,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 				.chooseFile()
 				.initialDir(initialDir)
 				.initialFileName(initialFileName)
+				.filter(openFilters())
 				.showOpenDialog(getApp().getStage());
 		
 		if (file.isEmpty()) {
@@ -346,6 +349,18 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		return saveDocumentAndHandleErrors(getDocument());
 	}
 
+	protected List<FileChooser.ExtensionFilter> openFilters() {
+		List<FileChooser.ExtensionFilter> filters = new LinkedList<>();
+		filters.add(new FileChooser.ExtensionFilter("all files", "*.*"));
+		return filters;
+	}
+	
+	protected List<FileChooser.ExtensionFilter> saveFilters() {
+		List<FileChooser.ExtensionFilter> filters = new LinkedList<>();
+		filters.add(new FileChooser.ExtensionFilter("all files", "*.*"));
+		return filters;
+	}
+	
 	@FXML
 	protected boolean saveAs() {
 		// choose file to open
@@ -377,6 +392,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 				.chooseFile()
 				.initialDir(initialDir)
 				.initialFileName(initialFileName)
+				.filter(saveFilters())
 				.showSaveDialog(getApp().getStage());
 
 		if (file.isEmpty()) {
