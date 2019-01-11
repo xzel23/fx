@@ -20,10 +20,11 @@ public class TableViews {
      * 
      * @param tv the TableView
      */
-    public static void Clear(TableView<?> tv) {
+    public static <T> void clear(TableView<T> tv) {
         Platform.runLater(() -> {
         	tv.getItems().clear();
             tv.getColumns().clear();
         });
     }
+
 }
