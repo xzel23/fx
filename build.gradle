@@ -31,7 +31,7 @@ subprojects {
 
   // remove module-info.java from eclipse source folder
   eclipse.classpath.file.whenMerged {
-    for (item in entries.findAll{ it.path.matches('src/[^/]+/java') }) {
+    for (item in entries.findAll{ it.path.matches('src/.*/java') }) {
       item.excludes += 'module-info.java'
     }
   }
@@ -55,19 +55,19 @@ subprojects {
 
   ext {
     dua3UtilityVersion = "3.0"
-    javafxversion = '11.0.1'
+    javafxversion = '12-ea+8'
   }
 
 dependencies {
     implementation "com.dua3.utility:utility:${dua3UtilityVersion}"
 
     // JavaFX
-    api "org.openjfx:javafx-base:${javafxversion}:${platform}"
-    api "org.openjfx:javafx-fxml:${javafxversion}:${platform}"
-    api "org.openjfx:javafx-graphics:${javafxversion}:${platform}"
-    api "org.openjfx:javafx-controls:${javafxversion}:${platform}"
-    api "org.openjfx:javafx-web:${javafxversion}:${platform}"
-    api "org.openjfx:javafx-media:${javafxversion}:${platform}"
+    implementation "org.openjfx:javafx-base:${javafxversion}:${platform}"
+    implementation "org.openjfx:javafx-fxml:${javafxversion}:${platform}"
+    implementation "org.openjfx:javafx-graphics:${javafxversion}:${platform}"
+    implementation "org.openjfx:javafx-controls:${javafxversion}:${platform}"
+    implementation "org.openjfx:javafx-web:${javafxversion}:${platform}"
+    implementation "org.openjfx:javafx-media:${javafxversion}:${platform}"
 
     // JUnit
     def junitVersion = '5.3.1'
