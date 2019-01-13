@@ -16,12 +16,15 @@ import javafx.beans.value.ChangeListener;
 import javafx.concurrent.Worker.State;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
 
 public abstract class EditorBase extends BorderPane {
-    private static final Logger LOG = Logger.getLogger(EditorBase.class.getSimpleName());
+    public static final Logger LOG = Logger.getLogger(EditorBase.class.getName());
 
     protected static String escape(String text) {
     	return JavaScriptBridge.escape(text);

@@ -5,8 +5,6 @@ import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.dua3.fx.editors.CodeEditor;
-
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -25,7 +23,7 @@ import netscape.javascript.JSObject;
  */
 public class JavaScriptBridge {
 	/** The logger instance. */
-	private final Logger logger;
+	public static final Logger LOG = Logger.getLogger(JavaScriptBridge.class.getName());
 	
 	/** The WebEngine instance. */
 	private final WebEngine engine;
@@ -117,7 +115,6 @@ public class JavaScriptBridge {
 	 *  the WebView instance where the editor is displayed
 	 */
 	public JavaScriptBridge(WebView webView) {
-		this.logger = Logger.getLogger(CodeEditor.class.getSimpleName()+"[JS]");
 		this.engine = webView.getEngine();
 	}
 
@@ -169,11 +166,11 @@ public class JavaScriptBridge {
 	 * @param msg the message
 	 */
 	public void log(String msg) {
-		logger.log(level, msg);
+		LOG.log(level, msg);
 	}
 
 	public void logs(Supplier<String> msgSupplier) {
-		logger.log(level, msgSupplier);
+		LOG.log(level, msgSupplier);
 	}
 
 	/**
@@ -210,7 +207,7 @@ public class JavaScriptBridge {
 			try {
 				engine.executeScript(script);
 			} catch (JSException e) {
-				logger.log(Level.WARNING, e.getMessage()+" - script: "+script);
+				LOG.log(Level.WARNING, e.getMessage()+" - script: "+script);
 				throw e;
 			}
 		});
@@ -228,7 +225,7 @@ public class JavaScriptBridge {
 		try {
 			return engine.executeScript(script);
 		} catch (JSException e) {
-			logger.log(Level.WARNING, e.getMessage()+" - script: "+script);
+			LOG.log(Level.WARNING, e.getMessage()+" - script: "+script);
 			throw e;
 		}
 	}

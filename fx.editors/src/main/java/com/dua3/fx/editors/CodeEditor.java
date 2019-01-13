@@ -6,7 +6,7 @@ import com.dua3.fx.editors.intern.EditorBase;
 
 public class CodeEditor extends EditorBase {
 	/** Logger */
-    private static final Logger LOG = Logger.getLogger(CodeEditor.class.getSimpleName());
+    public static final Logger LOG = Logger.getLogger(CodeEditor.class.getName());
 
     /**
      * Default constructor.
