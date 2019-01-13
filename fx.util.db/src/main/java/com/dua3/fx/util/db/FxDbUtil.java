@@ -42,10 +42,12 @@ public class FxDbUtil {
      *  the TableView
      * @param rs
      *  the ResultSet
+     * @return 
+     *  the number of rows read
      * @throws SQLException
      *  if an error occurs while reading from the ResultSet.
      */
-    public static void fill(TableView<ObservableList<Object>> tv, ResultSet rs) throws SQLException {
+    public static int fill(TableView<ObservableList<Object>> tv, ResultSet rs) throws SQLException {
         LOG.fine("populating TableView with ResultSet data");
         ObservableList<TableColumn<ObservableList<Object>, ?>> columns = tv.getColumns();
         var items = tv.getItems();
@@ -144,6 +146,8 @@ public class FxDbUtil {
 
         LOG.finer("setting rows ...");
         Platform.runLater(() -> items.setAll(newItems));
+        
+        return newItems.size();
     }
     
 }
