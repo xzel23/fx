@@ -69,35 +69,30 @@ function jSetPromptText(text) {
 	trace("jSetPromptText: promptText = '"+text+"'");
 }
 
-// commands
-
 // use the system clipboard for cut & paste
 function jPaste() {
-	trace("paste [BEGIN]");
+	trace("jPaste()");
 	bridge.paste();
-	trace("paste [END]");
 }
 
 function jCopy() {
-	trace("copy [BEGIN]");
 	var text = editor.getSelection();
+	trace("jCopy(): '"+text+"'");
 	var arg = {
 		'format' : 'text',
 		'content' : text
 	};
 	bridge.copy(arg);
-	trace("copy [END]");
 }
 
 function jCut() {
-	trace("cut [BEGIN]");
 	var text = editor.getSelection();
+	trace("jCut(): '"+text+"'");
 	var arg = {
 		'format' : 'text',
 		'content' : text
 	};
 	bridge.cut(arg);
-	trace("cut [END]");
 }
 
 function jGetText() {
