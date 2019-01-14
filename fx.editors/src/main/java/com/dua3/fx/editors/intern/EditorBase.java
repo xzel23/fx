@@ -16,12 +16,9 @@ import javafx.beans.value.ChangeListener;
 import javafx.concurrent.Worker.State;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
 
 public abstract class EditorBase extends BorderPane {
     public static final Logger LOG = Logger.getLogger(EditorBase.class.getName());
@@ -214,5 +211,20 @@ public abstract class EditorBase extends BorderPane {
 	public void search() {
 		bridge.executeScript("jSearch();");
 	}
+
+	public void showSettings() {
+		new EditorSettingsDialog(this).showAndWait();
+	}
+
+	public abstract void setShowLineNumbers(Boolean flag);
 	
+	public abstract boolean isShowLineNumbers();
+	
+	public abstract void setFontSize(int szz);
+	
+	public abstract int getFontSize();
+	
+	public abstract void setTheme(String theme);
+	
+	public abstract String getTheme();
 }

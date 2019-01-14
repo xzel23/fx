@@ -13,6 +13,8 @@ dependencies {
     compile project(':fx.util')
     compile project(':fx.editors')
     compile project(':fx.application')
+
+	compile group: 'org.controlsfx', name: 'controlsfx', version: '9.0.1-SNAPSHOT'
 }
 
 jlink {

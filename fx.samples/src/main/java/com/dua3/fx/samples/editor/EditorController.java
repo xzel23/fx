@@ -98,4 +98,10 @@ public class EditorController extends FxController<EditorApp, EditorController> 
 		LOG.fine("search()");
 		editor.search();
 	}
+	
+	@FXML
+	public void preferences() {
+		LOG.fine("preferences()");
+		editor.showSettings();
+	}
 }

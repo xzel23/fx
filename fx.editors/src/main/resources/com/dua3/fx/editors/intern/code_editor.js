@@ -18,7 +18,8 @@ CodeMirror.modeURL = "codemirror/mode/%N/%N.js";
 const editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
 	fullScreen : true,
 	scrollbarStyle : 'native',
-	mode : 'text'
+	mode : 'text',
+	lineNumbers : false
 });
 
 // Set the editor content. Called from Java.
@@ -115,9 +116,37 @@ function jSearch() {
 	editor.execCommand("find");
 }
 
+function jSetShowLineNumbers(flag) {
+	trace('lineNumbers: '+flag);
+	editor.setOption('lineNumbers', flag);
+}
+
+function jIsShowLineNumbers() {
+	return editor.getOption('lineNumbers');
+}
+
+function jSetFontSize(size) {
+	editor.getWrapperElement().style["font-size"] = size+"px";
+}
+
+function jGetFontSize() {
+	szs = editor.getWrapperElement().style["font-size"];
+	return parseFloat(szs.replace("px",""));
+}
+
+function jSetTheme(theme) {
+	editor.setOption('theme', theme);
+}
+
+function jGetTheme() {
+	return editor.getOption('theme');
+}
+
 // track dirty state
 editor.on('change', function() {
 	bridge.setDirty(true);
 });
+
+jSetFontSize(14);
 
 const editor_initialised = true; 

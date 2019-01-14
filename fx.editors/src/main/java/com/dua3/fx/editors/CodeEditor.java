@@ -25,5 +25,42 @@ public class CodeEditor extends EditorBase {
 		LOG.fine(() -> String.format("setting mode by file extension: %s", extension));
 		String script = String.format("jSetModeFromExtension('%s');", escape(extension));
 		getBridge().executeScript(script);
-	}	
+	}
+	
+	@Override
+	public void setShowLineNumbers(Boolean flag) {
+		LOG.fine(() -> String.format("setting line number mode: %s", flag));
+		String script = String.format("jSetShowLineNumbers(%s);", flag);
+		getBridge().executeScript(script);
+	}
+	
+	public boolean isShowLineNumbers() {
+		return Boolean.TRUE.equals(getBridge().callScript("jIsShowLineNumbers()"));
+	}
+	
+	@Override
+	public void setFontSize(int size) {
+		LOG.fine(() -> String.format("setting font size: %d", size));
+		String script = String.format("jSetFontSize(%s);", size);
+		getBridge().executeScript(script);
+	}
+
+	@Override
+	public int getFontSize() {
+		int size = ((Number) getBridge().callScript("jGetFontSize()")).intValue();
+		LOG.fine(() -> String.format("font size: %d", size));		
+		return size;
+	}
+	
+	@Override
+	public void setTheme(String theme) {
+		LOG.fine(() -> String.format("setting theme: %s", theme));
+		String script = String.format("jSetTheme(%s);", theme);
+		getBridge().executeScript(script);
+	}
+	
+	@Override
+	public String getTheme() {
+		return String.valueOf(getBridge().callScript("jGetTheme()"));
+	}
 }
