@@ -5,6 +5,8 @@ import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.dua3.fx.editors.EditorSetting;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ButtonType;
@@ -28,6 +30,8 @@ public class EditorSettingsDialog extends Dialog<ButtonType> {
 
 	private static final int FONT_SIZE_MAJOR_TICK = 10;
 	
+	private EditorSetting oldSetting;
+
     // -- button types
 	public final ButtonType OK = ButtonType.OK;
     public final ButtonType RESET = new ButtonType("RESET");
@@ -60,6 +64,9 @@ public class EditorSettingsDialog extends Dialog<ButtonType> {
 	        
 	        // define buttons
 	        dialogPane.getButtonTypes().addAll(RESET, OK);
+	        
+	        // store current seeting
+	        oldSetting = EditorSetting.copyOf(editor.getSetting());
 	        
 	        // finally set the pane
 	        setDialogPane(dialogPane);
@@ -97,5 +104,17 @@ public class EditorSettingsDialog extends Dialog<ButtonType> {
 				editor.setFontSize(newSize);
 			}
         });	
+	}
+
+	public EditorSetting getSetting() {
+		EditorSetting s = new EditorSetting();
+		s.setTheme(comboTheme.getValue());
+		s.setFontSize((int)sliderFontSize.getValue());
+		s.setShowLineNumbers(toggleShowLineNumbers.isSelected());
+		return s;
+	}
+
+	public EditorSetting getOldSetting() {
+		return oldSetting;
 	}
 }

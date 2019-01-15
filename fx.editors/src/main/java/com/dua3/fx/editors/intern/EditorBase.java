@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.dua3.fx.editors.EditorSetting;
 import com.dua3.fx.web.WebViews;
 
 import javafx.beans.property.BooleanProperty;
@@ -212,8 +213,8 @@ public abstract class EditorBase extends BorderPane {
 		bridge.executeScript("jSearch();");
 	}
 
-	public void showSettings() {
-		new EditorSettingsDialog(this).showAndWait();
+	public EditorSettingsDialog settingsDialog() {
+		return new EditorSettingsDialog(this);
 	}
 
 	public abstract void setShowLineNumbers(Boolean flag);
@@ -227,4 +228,18 @@ public abstract class EditorBase extends BorderPane {
 	public abstract void setTheme(String theme);
 	
 	public abstract String getTheme();
+
+	public EditorSetting getSetting() {
+		EditorSetting setting = new EditorSetting();
+		setting.setTheme(getTheme());
+		setting.setFontSize(getFontSize());
+		setting.setShowLineNumbers(isShowLineNumbers());
+		return setting;
+	}
+	
+	public void apply(EditorSetting setting) {
+		setTheme(setting.getTheme());
+		setFontSize(setting.getFontSize());
+		setShowLineNumbers(setting.isShowLineNumbers());
+	}
 }

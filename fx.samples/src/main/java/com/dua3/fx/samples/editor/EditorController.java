@@ -8,16 +8,22 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.prefs.Preferences;
 
 import com.dua3.fx.application.FxController;
 import com.dua3.fx.editors.CodeEditor;
+import com.dua3.fx.editors.EditorSetting;
+import com.dua3.fx.editors.intern.EditorSettingsDialog;
 import com.dua3.utility.io.IOUtil;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuBar;
 import javafx.stage.FileChooser;
 
 public class EditorController extends FxController<EditorApp, EditorController> {
+
+	private static final String PREF_EDITOR_PATH = "/editor";
 
 	private Charset charset = StandardCharsets.UTF_8;
 
@@ -35,8 +41,12 @@ public class EditorController extends FxController<EditorApp, EditorController> 
 		dirtyProperty.bind(editor.dirtyProperty());
 		
 		editor.editorReadyProperty().addListener((v,o,n) -> {
+			// restore editor settings from preferences
+			Preferences editorPref = getPreferences().node(PREF_EDITOR_PATH);
+			editor.apply(EditorSetting.fromPreference(editorPref));
+			// create a new document
 			createDocument();
-		});
+		});		
 	}
 	
 	@Override
@@ -102,6 +112,18 @@ public class EditorController extends FxController<EditorApp, EditorController> 
 	@FXML
 	public void preferences() {
 		LOG.fine("preferences()");
-		editor.showSettings();
+		EditorSettingsDialog dlg = editor.settingsDialog();
+		dlg.showAndWait()
+		.filter(b -> b==ButtonType.OK)
+		.ifPresentOrElse(
+			b -> { 
+				EditorSetting s = dlg.getSetting();
+				editor.apply(s);
+				s.store(getPreferences().node(PREF_EDITOR_PATH));
+			},
+			() -> { 
+				EditorSetting s = dlg.getOldSetting();
+				editor.apply(s);
+			});
 	}
 }
