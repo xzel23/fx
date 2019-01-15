@@ -40,7 +40,7 @@
   }
 
   function SearchState() {
-    this.posFrom = this.posTo = this.lastQuery = this.query = null;
+    this.posFrom = this.posTo = this.lastQuery = this.query = "";
     this.overlay = null;
   }
 
