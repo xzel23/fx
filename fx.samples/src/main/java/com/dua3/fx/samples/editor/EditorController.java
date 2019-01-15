@@ -13,7 +13,7 @@ import java.util.prefs.Preferences;
 import com.dua3.fx.application.FxController;
 import com.dua3.fx.editors.CodeEditor;
 import com.dua3.fx.editors.EditorSetting;
-import com.dua3.fx.editors.intern.EditorSettingsDialog;
+import com.dua3.fx.editors.EditorSettingsDialog;
 import com.dua3.utility.io.IOUtil;
 
 import javafx.fxml.FXML;

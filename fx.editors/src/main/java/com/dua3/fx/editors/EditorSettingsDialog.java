@@ -1,11 +1,11 @@
-package com.dua3.fx.editors.intern;
+package com.dua3.fx.editors;
 
 import java.io.IOException;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.dua3.fx.editors.EditorSetting;
+import com.dua3.fx.editors.intern.EditorBase;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

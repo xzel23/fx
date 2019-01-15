@@ -8,6 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.dua3.fx.editors.EditorSetting;
+import com.dua3.fx.editors.EditorSettingsDialog;
 import com.dua3.fx.web.WebViews;
 
 import javafx.beans.property.BooleanProperty;
