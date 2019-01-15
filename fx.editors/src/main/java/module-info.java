@@ -7,6 +7,7 @@ module com.dua3.fx.editors {
 	requires com.dua3.fx.web;
 
 	requires java.logging;
+	requires java.prefs;
 	requires javafx.base;
 	requires javafx.fxml;
 	requires javafx.graphics;
