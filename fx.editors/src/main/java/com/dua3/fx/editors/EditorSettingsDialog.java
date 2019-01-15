@@ -48,10 +48,6 @@ public class EditorSettingsDialog extends Dialog<ButtonType> {
 	 * 
 	 * @param editor
 	 *  the editor instance
-	 * @param sampleText
-	 *  the sample text to show as preview
-	 * @param extension
-	 *  the extension for syntax highlighting
 	 */
 	public EditorSettingsDialog(EditorBase editor) {
 		this.editor = Objects.requireNonNull(editor);
