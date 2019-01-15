@@ -55,7 +55,7 @@ public class CodeEditor extends EditorBase {
 	@Override
 	public void setTheme(String theme) {
 		LOG.fine(() -> String.format("setting theme: %s", theme));
-		String script = String.format("jSetTheme(%s);", theme);
+		String script = String.format("jSetTheme('%s');", escape(theme));
 		getBridge().executeScript(script);
 	}
 	

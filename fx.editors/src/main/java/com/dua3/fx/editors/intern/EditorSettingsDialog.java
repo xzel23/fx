@@ -70,18 +70,32 @@ public class EditorSettingsDialog extends Dialog<ButtonType> {
 
 	@FXML
 	private void initialize() {
+		// theme
+		String theme = editor.getTheme();
+		comboTheme.getItems().setAll("default", "xq-light", "xq-dark");
+		comboTheme.setValue(theme);
+		comboTheme.valueProperty().addListener( (ov,o,n) -> {
+			editor.setTheme(n);
+		});
+		
+		// line numbers
 		toggleShowLineNumbers.setSelected(editor.isShowLineNumbers());
 		toggleShowLineNumbers.selectedProperty().addListener( (ov,o,n) -> {
         	editor.setShowLineNumbers(n);
         });	
 
+		// font size
 		sliderFontSize.setMin(FONT_SIZE_MIN);
 		sliderFontSize.setMax(FONT_SIZE_MAX);
 		sliderFontSize.setMajorTickUnit(FONT_SIZE_MAJOR_TICK);
 		sliderFontSize.setMinorTickCount(FONT_SIZE_MAJOR_TICK);
 		sliderFontSize.setValue(editor.getFontSize());
 		sliderFontSize.valueProperty().addListener( (ov,o,n) -> {
-        	editor.setFontSize(n.intValue());
+			int oldSize = o.intValue();
+			int newSize = n.intValue();
+			if (newSize!=oldSize) {
+				editor.setFontSize(newSize);
+			}
         });	
 	}
 }
