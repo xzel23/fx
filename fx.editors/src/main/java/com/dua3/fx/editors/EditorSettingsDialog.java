@@ -54,7 +54,7 @@ public class EditorSettingsDialog extends Dialog<ButtonType> {
 
 		try {
     		// load FXML
-	        FXMLLoader loader = new FXMLLoader(getClass().getResource("editor_settings.fxml"));
+	        FXMLLoader loader = new FXMLLoader(getClass().getResource("intern/editor_settings.fxml"));
 	        loader.setController(this);
 	        DialogPane dialogPane = loader.load();
 	        
