@@ -9268,12 +9268,12 @@
       input.poll();
     });
 
-    on(te, "paste", function (e) {
-      if (signalDOMEvent(cm, e) || handlePaste(e, cm)) { return }
-
-      cm.state.pasteIncoming = true;
-      input.fastPoll();
-    });
+//    on(te, "paste", function (e) {
+//      if (signalDOMEvent(cm, e) || handlePaste(e, cm)) { return }
+//
+//      cm.state.pasteIncoming = true;
+//      input.fastPoll();
+//    });
 
     function prepareCopyCut(e) {
       if (signalDOMEvent(cm, e)) { return }

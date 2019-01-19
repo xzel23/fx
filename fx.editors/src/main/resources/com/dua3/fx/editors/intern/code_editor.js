@@ -19,7 +19,8 @@ const editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
 	fullScreen : true,
 	scrollbarStyle : 'native',
 	mode : 'text',
-	lineNumbers : false
+	lineNumbers : false,
+	inputStyle : 'textarea'
 });
 
 // Set the editor content. Called from Java.
