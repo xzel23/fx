@@ -1,12 +1,12 @@
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
-// Distributed under an MIT license: https://codemirror.net/LICENSE
+// Distributed under an MIT license: http://codemirror.net/LICENSE
 
 (function() {
   var mode = CodeMirror.getMode({indentUnit: 2}, "css");
   function MT(name) { test.mode(name, mode, Array.prototype.slice.call(arguments, 1)); }
 
   // Error, because "foobarhello" is neither a known type or property, but
-  // property was expected (after "and"), and it should be in parentheses.
+  // property was expected (after "and"), and it should be in parenthese.
   MT("atMediaUnknownType",
      "[def @media] [attribute screen] [keyword and] [error foobarhello] { }");
 
@@ -17,15 +17,6 @@
   // Make sure nesting works with media queries
   MT("atMediaMaxWidthNested",
      "[def @media] [attribute screen] [keyword and] ([property max-width]: [number 25px]) { [tag foo] { } }");
-
-  MT("atMediaFeatureValueKeyword",
-     "[def @media] ([property orientation]: [keyword landscape]) { }");
-
-  MT("atMediaUnknownFeatureValueKeyword",
-     "[def @media] ([property orientation]: [error upsidedown]) { }");
-
-  MT("atMediaUppercase",
-     "[def @MEDIA] ([property orienTAtion]: [keyword landScape]) { }");
 
   MT("tagSelector",
      "[tag foo] { }");
@@ -58,17 +49,11 @@
   MT("tagColorHex3",
      "[tag foo] { [property background]: [atom #fff]; }");
 
-  MT("tagColorHex4",
-     "[tag foo] { [property background]: [atom #ffff]; }");
-
   MT("tagColorHex6",
      "[tag foo] { [property background]: [atom #ffffff]; }");
 
-  MT("tagColorHex8",
-     "[tag foo] { [property background]: [atom #ffffffff]; }");
-
-  MT("tagColorHex5Invalid",
-     "[tag foo] { [property background]: [atom&error #fffff]; }");
+  MT("tagColorHex4",
+     "[tag foo] { [property background]: [atom&error #ffff]; }");
 
   MT("tagColorHexInvalid",
      "[tag foo] { [property background]: [atom&error #ffg]; }");
@@ -129,7 +114,7 @@
      "}");
 
   MT("empty_url",
-     "[def @import] [atom url]() [attribute screen];");
+     "[def @import] [tag url]() [tag screen];");
 
   MT("parens",
      "[qualifier .foo] {",
@@ -149,14 +134,6 @@
      "  [property color]: [atom var]([variable-2 --main-color]);",
      "}");
 
-  MT("blank_css_variable",
-     ":[variable-3 root] {",
-     "  [variable-2 --]: [atom #06c];",
-     "}",
-     "[tag h1][builtin #foo] {",
-     "  [property color]: [atom var]([variable-2 --]);",
-     "}");
-
   MT("supports",
      "[def @supports] ([keyword not] (([property text-align-last]: [atom justify]) [keyword or] ([meta -moz-][property text-align-last]: [atom justify])) {",
      "  [property text-align-last]: [atom justify];",
@@ -173,7 +150,7 @@
       "    [tag foo] {",
       "      [property font-family]: [variable Verdana], [atom sans-serif];",
       "    }",
-      "}");
+      "  }");
 
    MT("document_url",
       "[def @document] [tag url]([string http://blah]) { [qualifier .class] { } }");
@@ -208,10 +185,4 @@
 
    MT("counter-style-symbols",
       "[tag ol] { [property list-style]: [atom symbols]([atom cyclic] [string \"*\"] [string \"\\2020\"] [string \"\\2021\"] [string \"\\A7\"]); }");
-
-  MT("comment-does-not-disrupt",
-     "[def @font-face] [comment /* foo */] {",
-     "  [property src]: [atom url]([string x]);",
-     "  [property font-family]: [variable One];",
-     "}")
 })();

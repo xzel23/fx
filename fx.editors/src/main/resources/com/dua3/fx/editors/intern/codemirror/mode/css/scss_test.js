@@ -1,5 +1,5 @@
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
-// Distributed under an MIT license: https://codemirror.net/LICENSE
+// Distributed under an MIT license: http://codemirror.net/LICENSE
 
 (function() {
   var mode = CodeMirror.getMode({indentUnit: 2}, "text/x-scss");
@@ -95,7 +95,7 @@
 
   MT('indent_parentheses',
      "[tag foo] {",
-     "  [property color]: [atom darken]([variable-2 $blue],",
+     "  [property color]: [variable darken]([variable-2 $blue],",
      "    [number 9%]);",
      "}");
 

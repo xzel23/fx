@@ -1,5 +1,5 @@
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
-// Distributed under an MIT license: https://codemirror.net/LICENSE
+// Distributed under an MIT license: http://codemirror.net/LICENSE
 
 (function(mod) {
   if (typeof exports == "object" && typeof module == "object") // CommonJS
@@ -10,14 +10,6 @@
     mod(CodeMirror);
 })(function(CodeMirror) {
 "use strict";
-
-function forEach(arr, f) {
-  for (var i = 0; i < arr.length; i++) f(arr[i], i)
-}
-function some(arr, f) {
-  for (var i = 0; i < arr.length; i++) if (f(arr[i], i)) return true
-  return false
-}
 
 CodeMirror.defineMode("dylan", function(_config) {
   // Words
@@ -144,13 +136,13 @@ CodeMirror.defineMode("dylan", function(_config) {
   var wordLookup = {};
   var styleLookup = {};
 
-  forEach([
+  [
     "keyword",
     "definition",
     "simpleDefinition",
     "signalingCalls"
-  ], function(type) {
-    forEach(words[type], function(word) {
+  ].forEach(function(type) {
+    words[type].forEach(function(word) {
       wordLookup[word] = type;
       styleLookup[word] = styles[type];
     });
@@ -177,16 +169,15 @@ CodeMirror.defineMode("dylan", function(_config) {
       } else if (stream.eat("/")) {
         stream.skipToEnd();
         return "comment";
+      } else {
+        stream.skipTo(" ");
+        return "operator";
       }
-      stream.backUp(1);
     }
     // Decimal
-    else if (/[+\-\d\.]/.test(ch)) {
-      if (stream.match(/^[+-]?[0-9]*\.[0-9]*([esdx][+-]?[0-9]+)?/i) ||
-          stream.match(/^[+-]?[0-9]+([esdx][+-]?[0-9]+)/i) ||
-          stream.match(/^[+-]?\d+/)) {
-        return "number";
-      }
+    else if (/\d/.test(ch)) {
+      stream.match(/^\d*(?:\.\d*)?(?:e[+\-]?\d+)?/);
+      return "number";
     }
     // Hash
     else if (ch == "#") {
@@ -195,7 +186,7 @@ CodeMirror.defineMode("dylan", function(_config) {
       ch = stream.peek();
       if (ch == '"') {
         stream.next();
-        return chain(stream, state, tokenString('"', "string"));
+        return chain(stream, state, tokenString('"', "string-2"));
       }
       // Binary number
       else if (ch == "b") {
@@ -215,73 +206,29 @@ CodeMirror.defineMode("dylan", function(_config) {
         stream.eatWhile(/[0-7]/);
         return "number";
       }
-      // Token concatenation in macros
-      else if (ch == '#') {
-        stream.next();
-        return "punctuation";
-      }
-      // Sequence literals
-      else if ((ch == '[') || (ch == '(')) {
-        stream.next();
-        return "bracket";
       // Hash symbol
-      } else if (stream.match(/f|t|all-keys|include|key|next|rest/i)) {
-        return "atom";
-      } else {
+      else {
         stream.eatWhile(/[-a-zA-Z]/);
-        return "error";
+        return "keyword";
       }
-    } else if (ch == "~") {
-      stream.next();
-      ch = stream.peek();
-      if (ch == "=") {
-        stream.next();
-        ch = stream.peek();
-        if (ch == "=") {
-          stream.next();
-          return "operator";
-        }
-        return "operator";
-      }
-      return "operator";
-    } else if (ch == ":") {
-      stream.next();
-      ch = stream.peek();
-      if (ch == "=") {
-        stream.next();
-        return "operator";
-      } else if (ch == ":") {
-        stream.next();
-        return "punctuation";
-      }
-    } else if ("[](){}".indexOf(ch) != -1) {
-      stream.next();
-      return "bracket";
-    } else if (".,".indexOf(ch) != -1) {
-      stream.next();
-      return "punctuation";
     } else if (stream.match("end")) {
       return "keyword";
     }
     for (var name in patterns) {
       if (patterns.hasOwnProperty(name)) {
         var pattern = patterns[name];
-        if ((pattern instanceof Array && some(pattern, function(p) {
+        if ((pattern instanceof Array && pattern.some(function(p) {
           return stream.match(p);
         })) || stream.match(pattern))
           return patternStyles[name];
       }
-    }
-    if (/[+\-*\/^=<>&|]/.test(ch)) {
-      stream.next();
-      return "operator";
     }
     if (stream.match("define")) {
       return "def";
     } else {
       stream.eatWhile(/[\w\-]/);
       // Keyword
-      if (wordLookup.hasOwnProperty(stream.current())) {
+      if (wordLookup[stream.current()]) {
         return styleLookup[stream.current()];
       } else if (stream.current().match(symbol)) {
         return "variable";
@@ -293,37 +240,29 @@ CodeMirror.defineMode("dylan", function(_config) {
   }
 
   function tokenComment(stream, state) {
-    var maybeEnd = false, maybeNested = false, nestedCount = 0, ch;
+    var maybeEnd = false,
+    ch;
     while ((ch = stream.next())) {
       if (ch == "/" && maybeEnd) {
-        if (nestedCount > 0) {
-          nestedCount--;
-        } else {
-          state.tokenize = tokenBase;
-          break;
-        }
-      } else if (ch == "*" && maybeNested) {
-        nestedCount++;
+        state.tokenize = tokenBase;
+        break;
       }
       maybeEnd = (ch == "*");
-      maybeNested = (ch == "/");
     }
     return "comment";
   }
 
   function tokenString(quote, style) {
     return function(stream, state) {
-      var escaped = false, next, end = false;
+      var next, end = false;
       while ((next = stream.next()) != null) {
-        if (next == quote && !escaped) {
+        if (next == quote) {
           end = true;
           break;
         }
-        escaped = !escaped && next == "\\";
       }
-      if (end || !escaped) {
+      if (end)
         state.tokenize = tokenBase;
-      }
       return style;
     };
   }
