@@ -14,7 +14,7 @@ public class PromptBuilder extends AbstractDialogBuilder<String, TextInputDialog
 	}
 	
 	public PromptBuilder defaultValue(String fmt, Object... args) {
-		String defaultValue = String.format(fmt, args);
+		String defaultValue = args.length==0 ? fmt : String.format(fmt, args);
 		setSupplier(() -> new TextInputDialog(defaultValue));
 		return this;
 	}

@@ -58,7 +58,7 @@ public abstract class AbstractDialogBuilder<R, T extends Dialog<R>, B extends Ab
 	 */
 	@SuppressWarnings("unchecked")
 	public B title(String fmt, Object... args) {
-		this.title = String.format(fmt, args);
+		this.title = args.length==0 ? fmt : String.format(fmt, args);
 		return (B) this;
 	}
 
@@ -73,7 +73,7 @@ public abstract class AbstractDialogBuilder<R, T extends Dialog<R>, B extends Ab
 	 */
 	@SuppressWarnings("unchecked")
 	public B header(String fmt, Object... args) {
-		this.header = String.format(fmt, args);
+		this.header = args.length==0 ? fmt : String.format(fmt, args);
 		return (B) this;
 	}
 
@@ -88,7 +88,7 @@ public abstract class AbstractDialogBuilder<R, T extends Dialog<R>, B extends Ab
 	 */
 	@SuppressWarnings("unchecked")
 	public B text(String fmt, Object... args) {
-		this.text = fmt != null ? String.format(fmt, args) : "";
+		this.text = args.length==0 ? fmt : String.format(fmt, args);
 		return (B) this;
 	}
 
