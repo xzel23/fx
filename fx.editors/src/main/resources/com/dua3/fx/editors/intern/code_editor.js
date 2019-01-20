@@ -27,7 +27,14 @@ const editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
 function jSetContent(text, ext) {
 	var mode = getModeFromExtension(ext);
 	CodeMirror.autoLoadMode(editor, mode.mode);
+	
+	// force reset of placeholder (because it sometime fails to update when setting content)
+	var placeholder = editor.getOption("placeholder");
+	editor.setOption("placeholder", "");
+
 	editor.swapDoc(CodeMirror.Doc(text, mode.mime));
+	
+	editor.setOption("placeholder", placeholder);
 
 	// inform Java code that the buffer is clean
 	bridge.setDirty(false);
