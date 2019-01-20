@@ -239,6 +239,7 @@ public abstract class EditorBase extends BorderPane {
 		setting.setTheme(getTheme());
 		setting.setFontSize(getFontSize());
 		setting.setShowLineNumbers(isShowLineNumbers());
+		setting.setHighlightCurrentLine(isHighlightCurrentLine());
 		return setting;
 	}
 	
@@ -246,5 +247,6 @@ public abstract class EditorBase extends BorderPane {
 		setTheme(setting.getTheme());
 		setFontSize(setting.getFontSize());
 		setShowLineNumbers(setting.isShowLineNumbers());
+		setHighlightCurrentLine(setting.isHighlightCurrentLine());
 	}
 }
