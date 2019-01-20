@@ -23,7 +23,7 @@ import javafx.stage.FileChooser;
 
 public class EditorController extends FxController<EditorApp, EditorController> {
 
-	private static final String PREF_EDITOR_PATH = "/editor";
+	private static final String PREF_EDITOR_PATH = "editor";
 
 	private Charset charset = StandardCharsets.UTF_8;
 
