@@ -17,7 +17,7 @@ function trace(m) {
 CodeMirror.modeURL = "codemirror/mode/%N/%N.js";
 const editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
 	fullScreen : true,
-	scrollbarStyle : 'native',
+	scrollbarStyle : 'overlay',
 	mode : 'text',
 	lineNumbers : false,
 	inputStyle : 'textarea'
@@ -124,6 +124,15 @@ function jSetShowLineNumbers(flag) {
 
 function jIsShowLineNumbers() {
 	return editor.getOption('lineNumbers');
+}
+
+function jSetHighlightCurrentLine(flag) {
+	trace('styleActiveLine: '+flag);
+	editor.setOption('styleActiveLine', flag);
+}
+
+function jIsHighlightCurrentLine() {
+	return editor.getOption('styleActiveLine');
 }
 
 function jSetFontSize(size) {

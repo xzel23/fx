@@ -22,14 +22,17 @@
          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
        </rowConstraints>
         <children>
            <Label text="theme" />
            <Label text="font size" GridPane.rowIndex="1" />
            <Label text="show line numbers" GridPane.rowIndex="2" />
+           <Label text="highlight current line" GridPane.rowIndex="3" />
            <ComboBox fx:id="comboTheme" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" />
            <Slider fx:id="sliderFontSize" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
-            <CheckBox fx:id="toggleShowLineNumbers" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+           <CheckBox fx:id="toggleShowLineNumbers" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+           <CheckBox fx:id="toggleHighlightCurrentLine" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
         </children>
         <VBox.margin>
            <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />

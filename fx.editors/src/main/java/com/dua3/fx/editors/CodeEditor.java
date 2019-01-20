@@ -34,6 +34,17 @@ public class CodeEditor extends EditorBase {
 		getBridge().executeScript(script);
 	}
 	
+	public boolean isHighlightCurrentLine() {
+		return Boolean.TRUE.equals(getBridge().callScript("jIsHighlightCurrentLine()"));
+	}
+	
+	@Override
+	public void setHighlightCurrentLine(Boolean flag) {
+		LOG.fine(() -> String.format("setting highlight current line mode: %s", flag));
+		String script = String.format("jSetHighlightCurrentLine(%s);", flag);
+		getBridge().executeScript(script);
+	}
+	
 	public boolean isShowLineNumbers() {
 		return Boolean.TRUE.equals(getBridge().callScript("jIsShowLineNumbers()"));
 	}

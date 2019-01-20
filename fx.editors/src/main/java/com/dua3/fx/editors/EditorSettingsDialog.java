@@ -40,6 +40,7 @@ public class EditorSettingsDialog extends Dialog<ButtonType> {
 	@FXML ComboBox<String> comboTheme;
 	@FXML Slider sliderFontSize;
 	@FXML CheckBox toggleShowLineNumbers;
+	@FXML CheckBox toggleHighlightCurrentLine;
 
 	private final EditorBase editor;
 		
@@ -87,6 +88,12 @@ public class EditorSettingsDialog extends Dialog<ButtonType> {
         	editor.setShowLineNumbers(n);
         });	
 
+		// highlight current line
+		toggleHighlightCurrentLine.setSelected(editor.isHighlightCurrentLine());
+		toggleHighlightCurrentLine.selectedProperty().addListener( (ov,o,n) -> {
+        	editor.setHighlightCurrentLine(n);
+        });	
+
 		// font size
 		sliderFontSize.setMin(FONT_SIZE_MIN);
 		sliderFontSize.setMax(FONT_SIZE_MAX);
@@ -107,6 +114,7 @@ public class EditorSettingsDialog extends Dialog<ButtonType> {
 		s.setTheme(comboTheme.getValue());
 		s.setFontSize((int)sliderFontSize.getValue());
 		s.setShowLineNumbers(toggleShowLineNumbers.isSelected());
+		s.setHighlightCurrentLine(toggleHighlightCurrentLine.isSelected());
 		return s;
 	}
 

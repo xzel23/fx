@@ -222,6 +222,10 @@ public abstract class EditorBase extends BorderPane {
 	
 	public abstract boolean isShowLineNumbers();
 	
+	public abstract void setHighlightCurrentLine(Boolean flag);
+
+	public abstract boolean isHighlightCurrentLine();
+
 	public abstract void setFontSize(int szz);
 	
 	public abstract int getFontSize();
