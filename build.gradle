@@ -55,7 +55,7 @@ subprojects {
 
   ext {
     dua3UtilityVersion = "3.0"
-    javafxversion = '12-ea+8'
+    javafxversion = '11.0.2'
   }
 
 dependencies {
