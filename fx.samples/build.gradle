@@ -18,9 +18,12 @@ dependencies {
 }
 
 jlink {
-	module = 'com.dua3.fx.samples'
+	mainModule = 'com.dua3.fx.samples'
 	main = 'com.dua3.fx.samples.Editor'
 	application = 'Application'
-	compress = 2
-    debug = false
+}
+
+bundle {
+	name = 'CodeEditor'	
+    appClass = 'com.dua3.fx.samples.editor.EditorApp'
 }

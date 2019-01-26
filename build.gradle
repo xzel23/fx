@@ -1,5 +1,5 @@
 plugins {
-  id 'com.dua3.gradle.jpms' version '0.7.1' apply false
+  id 'com.dua3.gradle.jpms' version '0.8.0' apply false
   id 'com.github.spotbugs'  version '1.6.8' apply false
   id 'com.jfrog.bintray'    version '1.8.4' apply false
 }
@@ -91,6 +91,7 @@ javadoc {
 
 sourceCompatibility = 11
 targetCompatibility = 11
+
 compileJava {
     options.encoding = 'UTF-8'
     options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
