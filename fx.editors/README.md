@@ -1,4 +1,5 @@
-# CodeMirrorFX
+# CodeEditor
 
-A JavaFX code editor control that supports syntax highlighting.
-Uses WebView and CodeMirror WebJar.
+A JavaFX editor component based on [CodeMirror](https://codemirror.net).
+
+CodeMirror is licensed under an [MIT license](https://codemirror.net/LICENSE).
