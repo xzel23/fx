@@ -67,7 +67,7 @@ subprojects {
   }
 
   ext {
-    dua3UtilityVersion = "3.0"
+    dua3UtilityVersion = "3.0.1"
     javafxversion = '11.0.2'
   }
 
@@ -119,6 +119,8 @@ bintray {
     dryRun = false //[Default: false] Whether to run this as dry-run, without deploying
     publish = true //[Default: false] Whether version should be auto published after an upload    
     override = true //[Default: false] Whether to override version artifacts already published    
+
+    publications = ['projectPublication']
 
     pkg {
         repo = project.repo
@@ -180,7 +182,7 @@ def pomConfig = {
 // Create the publication with the pom configuration:
 publishing {
     publications {
-        Publication(MavenPublication) {
+        projectPublication(MavenPublication) {
             from components.java
             artifact sourcesJar
             artifact javadocJar
