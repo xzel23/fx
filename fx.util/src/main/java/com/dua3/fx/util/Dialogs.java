@@ -75,7 +75,21 @@ public class Dialogs {
 		return new AboutDialogBuilder();
 	}
 
+	/**
+	 * Start definition of new prompt dialog.
+	 * @return 
+	 * 	new {@link PromptBuilder} instance
+	 */
 	public static PromptBuilder prompt() {
 		return new PromptBuilder();
+	}
+
+	/**
+	 * Start definition of new input dialog.
+	 * @return 
+	 * 	new {@link InputBuilder} instance
+	 */
+	public static InputBuilder input() {
+		return new InputBuilder();
 	}
 }
