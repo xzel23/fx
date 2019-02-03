@@ -53,6 +53,17 @@ public class DialogSample extends Application {
                 .showAndWait();
         }));
 
+        // Input
+        root.getChildren().add(createButton("Input", () -> {
+            Dialogs.input()
+                .title("Input")
+                .header("This is an input dialog.")
+                .text("Enter data here: ")
+                .text("txt", "enter text", "dflt")
+                .integer("integer", "enter number", 0)
+                .showAndWait();
+        }));
+
      Scene scene = new Scene(root, 300, 250);
 
         primaryStage.setTitle("Hello World!");
