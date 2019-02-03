@@ -28,8 +28,8 @@ import javafx.scene.control.TextField;
  * 
  * Provides a fluent interface to create Alerts.
  */
-public class InputBuilder
-		extends AbstractDialogBuilder<Map<String, Object>, InputDialog, InputBuilder> {
+public class InputBuilder extends AbstractDialogBuilder<Map<String, Object>, InputDialog, InputBuilder> {
+
 	public InputBuilder() {
 		super(InputDialog::new);
 		title("");
@@ -46,9 +46,7 @@ public class InputBuilder
 	}
 
 	public InputBuilder text(String id, String label, String dflt) {
-		data.put(id, 
-			new InputDialog.Meta<String>(
-				id, label, String.class, dflt, 
+		data.put(id, new InputDialog.Meta<String>(id, label, String.class, dflt,
 				() -> new InputDialog.InputControl<String>() {
 					final TextField control = new TextField();
 
@@ -71,47 +69,49 @@ public class InputBuilder
 	}
 
 	public InputBuilder integer(String id, String label, Integer dflt) {
-		var prev = data.put(id, new InputDialog.Meta<Integer>(id, label, Integer.class, dflt, () -> new InputDialog.InputControl<Integer>() {
-			final TextField control = new TextField();
+		var prev = data.put(id, new InputDialog.Meta<Integer>(id, label, Integer.class, dflt,
+				() -> new InputDialog.InputControl<Integer>() {
+					final TextField control = new TextField();
 
-			@Override
-			public Control control() {
-				return control;
-			}
+					@Override
+					public Control control() {
+						return control;
+					}
 
-			@Override
-			public Integer get() {
-				return Integer.parseInt(control.getText());
-			}
+					@Override
+					public Integer get() {
+						return Integer.parseInt(control.getText());
+					}
 
-			@Override
-			public void set(Integer arg) {
-				control.setText(Integer.toString(arg));
-			}
-		}));
-		LangUtil.check(prev==null, "Input with id '"+id+"' already defined");
+					@Override
+					public void set(Integer arg) {
+						control.setText(Integer.toString(arg));
+					}
+				}));
+		LangUtil.check(prev == null, "Input with id '" + id + "' already defined");
 		return this;
 	}
 
 	public InputBuilder decimal(String id, String label, Double dflt) {
-		data.put(id, new InputDialog.Meta<Double>(id, label, Double.class, dflt, () -> new InputDialog.InputControl<Double>() {
-			final TextField control = new TextField();
+		data.put(id, new InputDialog.Meta<Double>(id, label, Double.class, dflt,
+				() -> new InputDialog.InputControl<Double>() {
+					final TextField control = new TextField();
 
-			@Override
-			public Control control() {
-				return control;
-			}
+					@Override
+					public Control control() {
+						return control;
+					}
 
-			@Override
-			public Double get() {
-				return Double.parseDouble(control.getText());
-			}
+					@Override
+					public Double get() {
+						return Double.parseDouble(control.getText());
+					}
 
-			@Override
-			public void set(Double arg) {
-				control.setText(Double.toString(arg));
-			}
-		}));
+					@Override
+					public void set(Double arg) {
+						control.setText(Double.toString(arg));
+					}
+				}));
 		return this;
 	}
 
