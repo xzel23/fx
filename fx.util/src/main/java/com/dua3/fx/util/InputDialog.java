@@ -15,12 +15,15 @@
 package com.dua3.fx.util;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Control;
 import javafx.scene.control.Dialog;
@@ -35,6 +38,10 @@ import javafx.scene.layout.GridPane;
  */
 public class InputDialog extends Dialog<Map<String, Object>> {
 
+	private static final String MARKER_INITIAL = "";
+	private static final String MARKER_ERROR = "\u274E";
+	private static final String MARKER_OK = "";
+	
 	/**
 	 * Interface for an input field.
 	 *
@@ -81,24 +88,23 @@ public class InputDialog extends Dialog<Map<String, Object>> {
 	 */
 	static class Meta<T> {
 		final String id;
-		final String label;
 		final Class<T> cls;
 		final T dflt;
 		final InputControl<T> control;
-		T value;
+		Label label = new Label();
+		Label marker = new Label();
 
 		Meta(String id, String label, Class<T> cls, T dflt, InputControl<T> control) {
 			this.id = id;
-			this.label = label;
+			this.label.setText(label);
+			this.marker.setText(MARKER_INITIAL);
 			this.cls = cls;
 			this.dflt = dflt;
-			this.value = dflt;
 			this.control = control;
 		}
 		
 		void reset() {
-			value = dflt;
-			control.set(value);
+			control.set(dflt);
 		}
 		
 		Optional<String> validate() {
@@ -113,7 +119,12 @@ public class InputDialog extends Dialog<Map<String, Object>> {
 			if (btn != ButtonType.OK) {
 				return null;
 			}
-			return data.stream().collect(Collectors.toMap(e -> e.id, e -> e.value));
+			
+			// Collecors.toMap() does not support null values!
+			Map<String,Object> result = new HashMap<>();
+			data.stream().forEach(e -> result.put(e.id, e.control.get()));
+			
+			return result;
 		});
 	}
 
@@ -128,11 +139,13 @@ public class InputDialog extends Dialog<Map<String, Object>> {
 		// create grid with input controls
 		GridPane grid = new GridPane();
 		Insets insets = new Insets(2);
+		Insets markerInsets = new Insets(0);
 		int r = 0, c = 0;
 		for (var entry : data) {
 			// add label and control
-			addToGrid(grid, new Label(entry.label), 2 * c, r, insets);
-			addToGrid(grid, entry.control.control(), 2 * c + 1, r, insets);
+			addToGrid(grid, entry.label, 3 * c, r, insets);
+			addToGrid(grid, entry.control.control(), 3 * c + 1, r, insets);
+			addToGrid(grid, entry.marker, 3 * c + 2, r, markerInsets);
 
 			// move to next position in grid
 			c = (c + 1) % columns;
@@ -142,10 +155,33 @@ public class InputDialog extends Dialog<Map<String, Object>> {
 		}
 
 		DialogPane dialogPane = getDialogPane();
-
 		dialogPane.setContent(grid);
 
+		// buttons
 		dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+		
+		final Button okButton = (Button) dialogPane.lookupButton(ButtonType.OK);
+		okButton.addEventFilter(ActionEvent.ACTION, ae -> {
+		    if (!validate()) {
+		        ae.consume(); //not valid
+		    }
+		});
+	}
+
+	private boolean validate() {
+		// validate all input fields. validation succeeds if no validation returns an error message.
+		// do not use allMatches() because it might not process all items
+		return data.stream()
+			.map(item -> validateAndMark(item))
+			.filter(Optional::isPresent)
+			.count() == 0;
+	}
+
+	private Optional<String> validateAndMark(Meta<?> item) {
+		Optional<String> result = item.validate();
+		boolean ok = result.isEmpty();
+		item.marker.setText(ok ? MARKER_OK : MARKER_ERROR);
+		return result;
 	}
 
 }

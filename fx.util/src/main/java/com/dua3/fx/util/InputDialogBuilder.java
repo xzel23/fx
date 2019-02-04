@@ -16,6 +16,9 @@ package com.dua3.fx.util;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Function;
 
 import com.dua3.fx.util.InputDialog.Meta;
 import com.dua3.utility.lang.LangUtil;
@@ -40,7 +43,9 @@ public class InputDialogBuilder extends AbstractDialogBuilder<Map<String, Object
 	private LinkedHashMap<String, InputDialog.Meta<?>> data = new LinkedHashMap<>();
 
 	public <T> InputDialogBuilder add(String id, String label, Class<T> type, T dflt, InputDialog.InputControl<T> control) {
-		Meta<?> prev = data.put(id, new InputDialog.Meta<T>(id, label, type, dflt, control));		
+		Objects.requireNonNull(id);
+		Meta<T> meta = new InputDialog.Meta<T>(id, label, type, dflt, control);
+		Meta<?> prev = data.put(id, meta);		
 		LangUtil.check(prev == null, "Input with id '" + id + "' already defined");
 		return this;
 	}
@@ -52,6 +57,10 @@ public class InputDialogBuilder extends AbstractDialogBuilder<Map<String, Object
 	}
 
 	public InputDialogBuilder text(String id, String label, String dflt) {
+		return text(id, label, dflt, s -> Optional.empty());
+	}
+	
+	public InputDialogBuilder text(String id, String label, String dflt, Function<String,Optional<String>> validate) {
 		return add(id, label, String.class, dflt,
 				new InputDialog.InputControl<String>() {
 					final TextField control = new TextField();
@@ -70,10 +79,19 @@ public class InputDialogBuilder extends AbstractDialogBuilder<Map<String, Object
 					public void set(String arg) {
 						control.setText(arg);
 					}
+					
+					@Override
+					public Optional<String> validate() {
+						return validate.apply(get());
+					}
 				});
 	}
 
 	public InputDialogBuilder integer(String id, String label, Integer dflt) {
+		return integer(id, label, dflt, i -> Optional.empty());
+	}
+	
+	public InputDialogBuilder integer(String id, String label, Integer dflt, Function<Integer,Optional<String>> validate) {
 		return add(id, label, Integer.class, dflt,
 				new InputDialog.InputControl<Integer>() {
 					final TextField control = new TextField();
@@ -92,10 +110,25 @@ public class InputDialogBuilder extends AbstractDialogBuilder<Map<String, Object
 					public void set(Integer arg) {
 						control.setText(Integer.toString(arg));
 					}
+					
+					@Override
+					public Optional<String> validate() {
+						String t = control.getText();
+						try {
+							int i = Integer.parseInt(t);
+							return validate.apply(i);
+						} catch (NumberFormatException e) {
+							return Optional.of("'"+t+"' is not a valid integer number.");
+						}
+					}
 				});
 	}
 
 	public InputDialogBuilder decimal(String id, String label, Double dflt) {
+		return decimal(id, label, dflt, d -> Optional.empty());
+	}
+	
+	public InputDialogBuilder decimal(String id, String label, Double dflt, Function<Double,Optional<String>> validate) {
 		return add(id, label, Double.class, dflt,
 				new InputDialog.InputControl<Double>() {
 					final TextField control = new TextField();
@@ -113,6 +146,17 @@ public class InputDialogBuilder extends AbstractDialogBuilder<Map<String, Object
 					@Override
 					public void set(Double arg) {
 						control.setText(Double.toString(arg));
+					}
+
+					@Override
+					public Optional<String> validate() {
+						String t = control.getText();
+						try {
+							double d = Double.parseDouble(t);
+							return validate.apply(d);
+						} catch (NumberFormatException e) {
+							return Optional.of("'"+t+"' is not a valid number.");
+						}
 					}
 				});
 	}
