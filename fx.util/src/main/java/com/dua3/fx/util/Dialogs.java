@@ -87,9 +87,9 @@ public class Dialogs {
 	/**
 	 * Start definition of new input dialog.
 	 * @return 
-	 * 	new {@link InputBuilder} instance
+	 * 	new {@link InputDialogBuilder} instance
 	 */
-	public static InputBuilder input() {
-		return new InputBuilder();
+	public static InputDialogBuilder input() {
+		return new InputDialogBuilder();
 	}
 }

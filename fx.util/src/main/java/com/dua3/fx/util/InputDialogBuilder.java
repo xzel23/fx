@@ -16,8 +16,8 @@ package com.dua3.fx.util;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Optional;
 
+import com.dua3.fx.util.InputDialog.Meta;
 import com.dua3.utility.lang.LangUtil;
 
 import javafx.scene.control.Control;
@@ -28,9 +28,9 @@ import javafx.scene.control.TextField;
  * 
  * Provides a fluent interface to create Alerts.
  */
-public class InputBuilder extends AbstractDialogBuilder<Map<String, Object>, InputDialog, InputBuilder> {
+public class InputDialogBuilder extends AbstractDialogBuilder<Map<String, Object>, InputDialog, InputDialogBuilder> {
 
-	public InputBuilder() {
+	public InputDialogBuilder() {
 		super(InputDialog::new);
 		title("");
 	}
@@ -39,15 +39,21 @@ public class InputBuilder extends AbstractDialogBuilder<Map<String, Object>, Inp
 
 	private LinkedHashMap<String, InputDialog.Meta<?>> data = new LinkedHashMap<>();
 
-	public InputBuilder columns(int columns) {
+	public <T> InputDialogBuilder add(String id, String label, Class<T> type, T dflt, InputDialog.InputControl<T> control) {
+		Meta<?> prev = data.put(id, new InputDialog.Meta<T>(id, label, type, dflt, control));		
+		LangUtil.check(prev == null, "Input with id '" + id + "' already defined");
+		return this;
+	}
+	
+	public InputDialogBuilder columns(int columns) {
 		LangUtil.check(columns > 0);
 		this.columns = columns;
 		return this;
 	}
 
-	public InputBuilder text(String id, String label, String dflt) {
-		data.put(id, new InputDialog.Meta<String>(id, label, String.class, dflt,
-				() -> new InputDialog.InputControl<String>() {
+	public InputDialogBuilder text(String id, String label, String dflt) {
+		return add(id, label, String.class, dflt,
+				new InputDialog.InputControl<String>() {
 					final TextField control = new TextField();
 
 					@Override
@@ -64,13 +70,12 @@ public class InputBuilder extends AbstractDialogBuilder<Map<String, Object>, Inp
 					public void set(String arg) {
 						control.setText(arg);
 					}
-				}));
-		return this;
+				});
 	}
 
-	public InputBuilder integer(String id, String label, Integer dflt) {
-		var prev = data.put(id, new InputDialog.Meta<Integer>(id, label, Integer.class, dflt,
-				() -> new InputDialog.InputControl<Integer>() {
+	public InputDialogBuilder integer(String id, String label, Integer dflt) {
+		return add(id, label, Integer.class, dflt,
+				new InputDialog.InputControl<Integer>() {
 					final TextField control = new TextField();
 
 					@Override
@@ -87,14 +92,12 @@ public class InputBuilder extends AbstractDialogBuilder<Map<String, Object>, Inp
 					public void set(Integer arg) {
 						control.setText(Integer.toString(arg));
 					}
-				}));
-		LangUtil.check(prev == null, "Input with id '" + id + "' already defined");
-		return this;
+				});
 	}
 
-	public InputBuilder decimal(String id, String label, Double dflt) {
-		data.put(id, new InputDialog.Meta<Double>(id, label, Double.class, dflt,
-				() -> new InputDialog.InputControl<Double>() {
+	public InputDialogBuilder decimal(String id, String label, Double dflt) {
+		return add(id, label, Double.class, dflt,
+				new InputDialog.InputControl<Double>() {
 					final TextField control = new TextField();
 
 					@Override
@@ -111,8 +114,7 @@ public class InputBuilder extends AbstractDialogBuilder<Map<String, Object>, Inp
 					public void set(Double arg) {
 						control.setText(Double.toString(arg));
 					}
-				}));
-		return this;
+				});
 	}
 
 	/*
