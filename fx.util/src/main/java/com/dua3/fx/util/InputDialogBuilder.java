@@ -25,6 +25,7 @@ import com.dua3.fx.util.InputDialog.Meta;
 import com.dua3.utility.lang.LangUtil;
 
 import javafx.collections.FXCollections;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.TextField;
@@ -164,17 +165,37 @@ public class InputDialogBuilder extends AbstractDialogBuilder<Map<String, Object
 				});
 	}
 
-	/*
-	 * public InputBuilder date(String id, String label, LocalDate dflt) { return
-	 * input(id, label, () -> new TextField()); }
-	 * 
-	 * public InputBuilder time(String id, String label, LocalTime dflt) { return
-	 * input(id, label, () -> new TextField()); }
-	 * 
-	 * public InputBuilder bool(String id, String label, Boolean dflt) { return
-	 * input(id, label, () -> new TextField()); }
-	 */
-	
+	public InputDialogBuilder checkBox(String id, String label, boolean dflt, String text) {
+		return add(id, label, Boolean.class, dflt,
+				new InputDialog.InputControl<Boolean>() {
+					final CheckBox control = new CheckBox(text);
+
+					{
+						control.setSelected(dflt);
+					}
+					
+					@Override
+					public Control control() {
+						return control;
+					}
+
+					@Override
+					public Boolean get() {
+						return control.isSelected();
+					}
+
+					@Override
+					public void set(Boolean arg) {
+						control.setSelected(arg);;
+					}
+
+					@Override
+					public Optional<String> validate() {
+						return Optional.empty();
+					}
+				});
+	}
+
 	public <T> InputDialogBuilder list(String id, String label, T dflt, Class<T> cls, Collection<T> items) {
 		return add(id, label, cls, dflt,
 				new InputDialog.InputControl<T>() {
@@ -211,6 +232,8 @@ public class InputDialogBuilder extends AbstractDialogBuilder<Map<String, Object
 				});
 	}
 
+	// TODO: add date and time inputs
+	
 	@Override
 	public InputDialog build() {
 		InputDialog dlg = super.build();
