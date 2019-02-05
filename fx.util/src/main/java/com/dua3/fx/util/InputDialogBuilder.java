@@ -14,6 +14,7 @@
 
 package com.dua3.fx.util;
 
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -23,6 +24,8 @@ import java.util.function.Function;
 import com.dua3.fx.util.InputDialog.Meta;
 import com.dua3.utility.lang.LangUtil;
 
+import javafx.collections.FXCollections;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.TextField;
 
@@ -170,10 +173,44 @@ public class InputDialogBuilder extends AbstractDialogBuilder<Map<String, Object
 	 * 
 	 * public InputBuilder bool(String id, String label, Boolean dflt) { return
 	 * input(id, label, () -> new TextField()); }
-	 * 
-	 * public InputBuilder list(String id, String label, Object dflt, Object...
-	 * options) { return input(id, label, () -> new TextField()); }
 	 */
+	
+	public <T> InputDialogBuilder list(String id, String label, T dflt, Class<T> cls, Collection<T> items) {
+		return add(id, label, cls, dflt,
+				new InputDialog.InputControl<T>() {
+					final ComboBox<T> control = new ComboBox<>();
+ 
+					{
+						control.setItems(FXCollections.observableArrayList(items));
+						control.setValue(dflt);
+					}
+					
+					@Override
+					public Control control() {
+						return control;
+					}
+
+					@Override
+					public T get() {
+						return control.getValue();
+					}
+
+					@Override
+					public void set(T arg) {
+						control.setValue(arg);
+					}
+
+					@Override
+					public Optional<String> validate() {
+						T t = control.getValue();
+						if (t == null) {
+							return Optional.of("No value selected.");
+						}
+						return Optional.empty();
+					}
+				});
+	}
+
 	@Override
 	public InputDialog build() {
 		InputDialog dlg = super.build();
