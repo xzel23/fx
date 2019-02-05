@@ -14,6 +14,7 @@
 
 package com.dua3.fx.util.db;
 
+import java.sql.Clob;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -27,6 +28,7 @@ import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.dua3.fx.util.PlatformHelper;
 import com.dua3.utility.db.DbUtil;
 
 import javafx.application.Platform;
@@ -44,6 +46,7 @@ public class FxDbUtil {
 
     /** Logger */
     protected static final Logger LOG = Logger.getLogger(FxDbUtil.class.getSimpleName());
+	private static final String ERROR_TEXT = "###";
 
     // utility - no instances
 	private FxDbUtil() {}
@@ -144,24 +147,44 @@ public class FxDbUtil {
 			column.setCellFactory(cellFactory);
             newColumns.add(column);
         }
-        LOG.finer("defining columns ...");
-        Platform.runLater(() -> columns.setAll(newColumns));
 
         // read result
         LOG.finer("reading result data ...");
         while (rs.next()) {
             var list = FXCollections.observableArrayList();
             for (int i = 1; i <= nColumns; i++) {
-                list.add(rs.getObject(i));
+                list.add(getObject(rs, i));
             }
             newItems.add(list);
         }
         LOG.finer(() -> "read "+newItems.size()+" rows of data");
 
         LOG.finer("setting rows ...");
-        Platform.runLater(() -> items.setAll(newItems));
+        PlatformHelper.runAndWait(() -> {
+        	columns.setAll(newColumns);
+        	items.setAll(newItems);
+        });
         
         return newItems.size();
     }
+
+	private static Object getObject(ResultSet rs, int i) throws SQLException {
+		Object obj = rs.getObject(i);
+		
+		if (obj instanceof Clob) {
+			obj = toString((Clob) obj);
+		}
+		
+		return obj;
+	}
+
+	private static String toString(Clob clob) {
+		try {
+			return clob.getSubString(1, (int) Math.min(Integer.MAX_VALUE, clob.length()));
+		} catch (SQLException e) {
+			LOG.log(Level.WARNING, "could no convert Clob to String", e);
+			return ERROR_TEXT;
+		}
+	}
     
 }
