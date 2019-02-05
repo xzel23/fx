@@ -118,7 +118,7 @@ public class InputDialogBuilder extends AbstractDialogBuilder<Map<String, Object
 							int i = Integer.parseInt(t);
 							return validate.apply(i);
 						} catch (NumberFormatException e) {
-							return Optional.of("'"+t+"' is not a valid integer number.");
+							return Optional.of("'"+t+"' is no valid integer.");
 						}
 					}
 				});
@@ -155,7 +155,7 @@ public class InputDialogBuilder extends AbstractDialogBuilder<Map<String, Object
 							double d = Double.parseDouble(t);
 							return validate.apply(d);
 						} catch (NumberFormatException e) {
-							return Optional.of("'"+t+"' is not a valid number.");
+							return Optional.of("'"+t+"' is no valid number.");
 						}
 					}
 				});

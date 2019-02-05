@@ -27,6 +27,7 @@ import javafx.scene.control.Control;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
 
 /**
@@ -178,7 +179,13 @@ public class InputDialog extends Dialog<Map<String, Object>> {
 	private Optional<String> validateAndMark(Meta<?> item) {
 		Optional<String> result = item.validate();
 		boolean ok = result.isEmpty();
-		item.marker.setText(ok ? MARKER_OK : MARKER_ERROR);
+		if (ok) {
+			item.marker.setText(MARKER_OK);
+			item.marker.setTooltip(null);
+		} else {
+			item.marker.setText(MARKER_ERROR);
+			item.marker.setTooltip(new Tooltip(result.get()));			
+		}
 		return result;
 	}
 
