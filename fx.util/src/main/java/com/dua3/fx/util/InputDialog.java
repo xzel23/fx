@@ -37,7 +37,7 @@ import javafx.scene.layout.GridPane;
 public class InputDialog extends Dialog<Map<String, Object>> {
 
 	private static final String MARKER_INITIAL = "";
-	private static final String MARKER_ERROR = "\u274E";
+	private static final String MARKER_ERROR = "\u26A0";
 	private static final String MARKER_OK = "";
 	
 	/**
