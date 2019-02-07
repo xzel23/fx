@@ -108,7 +108,7 @@ public class FxDbUtil {
             // numbers that have scale
             case DECIMAL:
             case NUMERIC:
-                if (scale >= 0) {
+                if (scale > 0) {
                     format = item -> String.format(
                                 locale, 
                                 "%.0"+scale+"f", 
