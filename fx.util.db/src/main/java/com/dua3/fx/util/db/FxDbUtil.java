@@ -15,10 +15,12 @@
 package com.dua3.fx.util.db;
 
 import java.sql.Clob;
+import java.sql.JDBCType;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.LinkedList;
@@ -78,6 +80,7 @@ public class FxDbUtil {
         Locale locale = Locale.getDefault();
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM);
         DateTimeFormatter timestampFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM);
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM);
         
         // read result metadata
         LOG.finer("reading result meta data ...");
@@ -88,29 +91,42 @@ public class FxDbUtil {
 
             String label = meta.getColumnLabel(i);
             String name = meta.getColumnName(i);
-            int sqlType = meta.getColumnType(i);
+            JDBCType sqlType = JDBCType.valueOf(meta.getColumnType(i));
             int scale = meta.getScale(i);
 
             // define the formatting
             Function<Object, String> format;
             switch (sqlType) {
-            case Types.DATE:
+            case DATE:
             	format = item -> DbUtil.toLocalDate(item).format(dateFormatter);
             	break;
-            case Types.TIMESTAMP:
+            case TIMESTAMP:
             	format = item -> DbUtil.toLocalDateTime(item).format(timestampFormatter);
-            	break;
-            case Types.DOUBLE:
-            case Types.REAL:
-            case Types.FLOAT:
-            case Types.DECIMAL:
-            case Types.NUMERIC:
-            	format = item -> String.format(
-            				locale, 
-            				"%.0"+scale+"f", 
-            				((Number)item).doubleValue());
-            	break;
-            case Types.TIME: // TODO (fallthrough)
+                break;
+            case TIME: // TODO (fallthrough)
+                format = item ->  DbUtil.toLocalDateTime(item).from(timeFormatter);
+                break;
+
+            // numbers that have scale
+            case DECIMAL:
+            case NUMERIC:
+                if (scale >= 0) {
+                    format = item -> String.format(
+                                locale, 
+                                "%.0"+scale+"f", 
+                                ((Number)item).doubleValue());
+                } else {
+                    format = String::valueOf;
+                }
+                break;
+                
+            // numbers that do not have scale
+            case DOUBLE:
+            case REAL:
+            case FLOAT:
+                format = String::valueOf;
+                break;
+
             default:
             	format = String::valueOf;
             	break;
