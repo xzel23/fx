@@ -104,7 +104,7 @@ public class FxDbUtil {
             	format = item -> DbUtil.toLocalDateTime(item).format(timestampFormatter);
                 break;
             case TIME: // TODO (fallthrough)
-                format = item ->  DbUtil.toLocalDateTime(item).from(timeFormatter);
+                format = item ->  DbUtil.toLocalDateTime(item).format(timeFormatter);
                 break;
 
             // numbers that have scale
