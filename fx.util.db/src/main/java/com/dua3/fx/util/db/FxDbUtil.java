@@ -103,7 +103,7 @@ public class FxDbUtil {
             case TIMESTAMP:
             	format = item -> DbUtil.toLocalDateTime(item).format(timestampFormatter);
                 break;
-            case TIME: // TODO (fallthrough)
+            case TIME:
                 format = item ->  DbUtil.toLocalDateTime(item).format(timeFormatter);
                 break;
 
