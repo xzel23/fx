@@ -13,7 +13,7 @@
 // limitations under the License.
 
 plugins {
-  id 'com.dua3.gradle.jpms' version '0.8.1' apply false
+  id 'com.dua3.gradle.jpms' version '0.8.2' apply false
   id 'com.github.spotbugs'  version '1.6.9' apply false
   id 'com.jfrog.bintray'    version '1.8.4' apply false
 }
@@ -30,10 +30,10 @@ subprojects {
 
   /////////////////////////////////////////////////////////////////////////////
 	group              = 'com.dua3.fx'
-	version            = '0.3.1-SNAPSHOT'
+	version            = '0.3.1'
 		
 	ext.moduleName     = project.group 
-	ext.scm            = ''
+	ext.scm            = 'https://gitlab.com/com.dua3/lib/fx.git'
 	ext.repo           = 'public'
 	ext.description    = 'Java FX application utilities'
 		
@@ -67,7 +67,7 @@ subprojects {
   }
 
   ext {
-    dua3UtilityVersion = "3.0.1"
+    dua3UtilityVersion = "3.1.1"
     javafxversion = '11.0.2'
   }
 
