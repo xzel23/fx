@@ -30,7 +30,7 @@ subprojects {
 
   /////////////////////////////////////////////////////////////////////////////
 	group              = 'com.dua3.fx'
-	version            = '0.3.1'
+	version            = '0.3.2'
 		
 	ext.moduleName     = project.group 
 	ext.scm            = 'https://gitlab.com/com.dua3/lib/fx.git'
@@ -51,7 +51,6 @@ subprojects {
 
   repositories {
     jcenter()
-    maven { url  "https://dl.bintray.com/dua3/public" }
     mavenLocal()
   }
 
@@ -72,15 +71,16 @@ subprojects {
   }
 
 dependencies {
-    implementation "com.dua3.utility:utility:${dua3UtilityVersion}"
+    api "com.dua3.utility:utility:${dua3UtilityVersion}"
+    api "com.dua3.utility:utility.db:${dua3UtilityVersion}"
 
     // JavaFX
-    implementation "org.openjfx:javafx-base:${javafxversion}:${platform}"
-    implementation "org.openjfx:javafx-fxml:${javafxversion}:${platform}"
-    implementation "org.openjfx:javafx-graphics:${javafxversion}:${platform}"
-    implementation "org.openjfx:javafx-controls:${javafxversion}:${platform}"
-    implementation "org.openjfx:javafx-web:${javafxversion}:${platform}"
-    implementation "org.openjfx:javafx-media:${javafxversion}:${platform}"
+    api "org.openjfx:javafx-base:${javafxversion}:${platform}"
+    api "org.openjfx:javafx-fxml:${javafxversion}:${platform}"
+    api "org.openjfx:javafx-graphics:${javafxversion}:${platform}"
+    api "org.openjfx:javafx-controls:${javafxversion}:${platform}"
+    api "org.openjfx:javafx-web:${javafxversion}:${platform}"
+    api "org.openjfx:javafx-media:${javafxversion}:${platform}"
 
     // JUnit
     def junitVersion = '5.3.1'
