@@ -16,6 +16,9 @@ module com.dua3.fx.util {
 	exports com.dua3.fx.util;
 	opens com.dua3.fx.util;
 	
+	provides com.dua3.utility.text.FontUtil
+	with com.dua3.fx.util.FxFontUtil;
+	
 	requires java.logging;
     requires com.dua3.utility;
 
