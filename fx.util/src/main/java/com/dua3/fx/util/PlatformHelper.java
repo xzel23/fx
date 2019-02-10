@@ -12,8 +12,14 @@ public class PlatformHelper {
 	/**
 	 * Run task on the JavaFX application thread and return result.
 	 *
-	 * @param action the task to run
-	 * @throws NullPointerException if {@code action} is {@code null}
+	 * @param <T>
+	 *  the result type
+	 * @param action
+	 *  the task to run
+	 * @return
+	 *  the result returned by action
+	 * @throws NullPointerException 
+	 *  if {@code action} is {@code null}
 	 */
 	public static <T> T runAndWait(Supplier<T> action) {
 		Objects.requireNonNull(action);
@@ -46,8 +52,10 @@ public class PlatformHelper {
 	/**
 	 * Run task on the JavaFX application thread and wait for completion.
 	 *
-	 * @param action the task to run
-	 * @throws NullPointerException if {@code action} is {@code null}
+	 * @param action
+	 *  the task to run
+	 * @throws NullPointerException
+	 *  if {@code action} is {@code null}
 	 */
 	public static void runAndWait(Runnable action) {
 		runAndWait(() -> { action.run(); return null; });
