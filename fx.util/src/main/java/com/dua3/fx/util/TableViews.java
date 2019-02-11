@@ -32,7 +32,10 @@ public class TableViews {
      * 
      * Clears both items and columns of the TableView instance.
      * 
-     * @param tv the TableView
+     * @param tv
+     *  the TableView
+     * @param <T>
+     *  the TableView type parameter
      */
     public static <T> void clear(TableView<T> tv) {
         Platform.runLater(() -> {
