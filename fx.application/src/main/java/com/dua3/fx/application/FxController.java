@@ -299,25 +299,26 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		}
 		
 		// choose file to open
-		File initialDir = null;
+		Path parent = null;
 		String initialFileName = "";
 		try {
 			if (hasDocument()) {
-				initialDir = Paths.get(getDocument()).getParent().toFile();
+				parent = Paths.get(getDocument()).getParent();
 			} else {
 				String lastDocument = getPreference(PREF_DOCUMENT, "");
 				if (lastDocument.isBlank()) {
-					initialDir = new File(System.getProperty("user.home"));
+					parent = new File(System.getProperty("user.home")).toPath();
 				} else {
 					Path path = Paths.get(URI.create(lastDocument));
-					initialDir = path.getParent().toFile();
-					initialFileName = path.getFileName().toString();
+					parent = path.getParent();
+					initialFileName = Objects.toString(path.getFileName(), "");
 				}
 			}
 		} catch (IllegalStateException e) {
 			// might for example be thrown by URI.create()
 			LOG.log(Level.WARNING, "could not determine initial folder", e);
 		}
+		File initialDir = parent != null ? parent.toFile() : null;
 		
 		if (initialDir == null || !initialDir.isDirectory()) {
 			initialDir = new File(System.getProperty("user.home"));
@@ -378,19 +379,19 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	@FXML
 	protected boolean saveAs() {
 		// choose file to open
-		File initialDir = null;
+		Path parent = null;
 		String initialFileName = "";
 		try {
 			if (hasDocument()) {
-				initialDir = Paths.get(getDocument()).getParent().toFile();
+				parent = Paths.get(getDocument()).getParent();
 			} else {
 				String lastDocument = getPreference(PREF_DOCUMENT, "");
 				if (lastDocument.isBlank()) {
-					initialDir = new File(System.getProperty("user.home"));
+					parent = new File(System.getProperty("user.home")).toPath();
 				} else {
 					Path path = Paths.get(URI.create(lastDocument));
-					initialDir = path.getParent().toFile();
-					initialFileName = path.getFileName().toString();
+					parent = path.getParent();
+					initialFileName = Objects.toString(path.getFileName(), "");
 				}
 			}
 		} catch (IllegalStateException e) {
@@ -398,6 +399,8 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 			LOG.log(Level.WARNING, "could not determine initial folder", e);
 		}
 		
+		File  initialDir = parent!=null ? parent.toFile() :  null;
+
 		if (initialDir == null || !initialDir.isDirectory()) {
 			initialDir = new File(System.getProperty("user.home"));
 		}
