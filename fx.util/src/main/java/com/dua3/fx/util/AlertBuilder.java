@@ -14,6 +14,7 @@
 
 package com.dua3.fx.util;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 import javafx.scene.control.Alert;
@@ -65,7 +66,7 @@ extends AbstractDialogBuilder<ButtonType, Alert, AlertBuilder> {
 	 * 	{@code this}
 	 */
 	public AlertBuilder buttons(ButtonType... buttons) {
-		this.buttons = Objects.requireNonNull(buttons);
+		this.buttons = Arrays.copyOf(buttons, buttons.length);
 		return this;
 	}
 
