@@ -500,4 +500,9 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 			throw new IllegalStateException(e);
 		}
 	}
+	
+	public void setStatusText(String s) {
+		LOG.fine(() -> "status: "+s);
+	}
+	
 }
