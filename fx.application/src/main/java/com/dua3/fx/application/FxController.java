@@ -46,6 +46,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.ButtonType;
 import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 
 public abstract class FxController<A extends FxApplication<A, C>, C extends FxController<A, C>> {
 
@@ -57,6 +58,9 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	/** The application instance. */
 	private A app;
 
+	/** The "all files" filter. */
+	protected static final ExtensionFilter EXTENSIONFILTER_ALL_FILES = new FileChooser.ExtensionFilter("all files", "*.*");
+	
 	/** The void URI that represents "no document". */
 	private static final URI VOID_URI = URI.create("");
 
@@ -329,6 +333,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 				.initialDir(initialDir)
 				.initialFileName(initialFileName)
 				.filter(openFilters())
+				.selectedFilter(selectedOpenFilter())
 				.showOpenDialog(getApp().getStage());
 		
 		if (file.isEmpty()) {
@@ -354,6 +359,14 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		}
 	}
 	
+	protected ExtensionFilter selectedOpenFilter() {
+		return null;
+	}
+
+	protected ExtensionFilter selectedSaveFilter() {
+		return null;
+	}
+
 	@FXML
 	protected boolean save() {
 		if (!hasDocument()) {
@@ -366,13 +379,13 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 
 	protected List<FileChooser.ExtensionFilter> openFilters() {
 		List<FileChooser.ExtensionFilter> filters = new LinkedList<>();
-		filters.add(new FileChooser.ExtensionFilter("all files", "*.*"));
+		filters.add(EXTENSIONFILTER_ALL_FILES);
 		return filters;
 	}
 	
 	protected List<FileChooser.ExtensionFilter> saveFilters() {
 		List<FileChooser.ExtensionFilter> filters = new LinkedList<>();
-		filters.add(new FileChooser.ExtensionFilter("all files", "*.*"));
+		filters.add(EXTENSIONFILTER_ALL_FILES);
 		return filters;
 	}
 	
@@ -410,6 +423,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 				.initialDir(initialDir)
 				.initialFileName(initialFileName)
 				.filter(saveFilters())
+				.selectedFilter(selectedSaveFilter())
 				.showSaveDialog(getApp().getStage());
 
 		if (file.isEmpty()) {

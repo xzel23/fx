@@ -33,7 +33,8 @@ import javafx.stage.Window;
 public class FileChooserBuilder {
 	private File initialDir = new File(System.getProperty("user.home"));
 	private String initialFileName = "";
-	private List<FileChooser.ExtensionFilter> filter = new LinkedList<>();
+	private List<FileChooser.ExtensionFilter> filters = new LinkedList<>();
+	private ExtensionFilter selectedFilter = null;
 
 	FileChooserBuilder() {
 	}
@@ -52,7 +53,10 @@ public class FileChooserBuilder {
 		FileChooser chooser = new FileChooser();
 		chooser.setInitialDirectory(initialDir);
 		chooser.setInitialFileName(initialFileName);
-		chooser.getExtensionFilters().setAll(filter);
+		chooser.getExtensionFilters().setAll(filters);
+		if (selectedFilter!=null) {
+			chooser.setSelectedExtensionFilter(selectedFilter);
+		}
 		return chooser;
 	}
 
@@ -68,17 +72,26 @@ public class FileChooserBuilder {
 	
 	public FileChooserBuilder addFilter(String name, String... pattern) {
 		ExtensionFilter f = new ExtensionFilter(name, pattern);
-		filter.add(f);
+		filters.add(f);
 		return this;
 	}
 
 	public FileChooserBuilder filter(List<ExtensionFilter> filters) {
-		this.filter = new LinkedList<>(filters);
+		this.filters = new LinkedList<>(filters);
 		return this;
 	}
 
 	public FileChooserBuilder filter(ExtensionFilter... filters) {
-		this.filter = new LinkedList<>(Arrays.asList(filters));
+		this.filters = new LinkedList<>(Arrays.asList(filters));
 		return this;
 	}
+
+	public FileChooserBuilder selectedFilter(ExtensionFilter f) {
+		this.selectedFilter = f;
+		if (f != null && !filters.contains(f)) {
+			filters.add(f);
+		}
+		return this;
+	}
+
 }
