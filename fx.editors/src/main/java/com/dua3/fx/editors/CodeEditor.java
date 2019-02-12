@@ -26,7 +26,8 @@ public class CodeEditor extends EditorBase {
      * Default constructor.
      */
 	public CodeEditor() {
-		super("intern/code_editor.fxml", "intern/code_editor.html");
+		super(CodeEditor.class.getResource("intern/code_editor.fxml"), 
+			  CodeEditor.class.getResource("intern/code_editor.html"));
 	}
 
 	/**

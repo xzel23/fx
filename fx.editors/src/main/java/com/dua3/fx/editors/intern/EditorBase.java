@@ -16,6 +16,7 @@ package com.dua3.fx.editors.intern;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.net.URL;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -60,11 +61,11 @@ public abstract class EditorBase extends BorderPane {
 	 * @param html
 	 *  the HTML resource to load (filename)
 	 */
-	protected EditorBase(String fxml, String html) {
+	protected EditorBase(URL fxml, URL html) {
 		LOG.fine(() -> "creating Editor component");
 		
 		// load FXML
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
+		FXMLLoader fxmlLoader = new FXMLLoader(fxml);
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);
 
@@ -108,7 +109,7 @@ public abstract class EditorBase extends BorderPane {
 		});
 
 		// load editor
-		engine.load(getClass().getResource(html).toString());
+		engine.load(html.toString());
 		LOG.fine("Editor component created");
 	}
 
