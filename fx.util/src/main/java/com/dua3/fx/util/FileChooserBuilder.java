@@ -26,9 +26,9 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Window;
 
 /** 
- * Builder for Alert Dialogs.
+ * Builder for file open/save dialogs.
  * 
- * Provides a fluent interface to create Alerts. 
+ * Provides a fluent interface to create file dialogs. 
  */
 public class FileChooserBuilder {
 	private File initialDir = new File(System.getProperty("user.home"));

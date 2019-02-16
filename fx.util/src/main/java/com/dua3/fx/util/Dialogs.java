@@ -67,6 +67,15 @@ public class Dialogs {
 	}
 	
 	/**
+	 * Start definition of new DirectoryChooser.
+	 * @return 
+	 * 	new {@link DirectoryChooserBuilder} instance
+	 */
+	public static DirectoryChooserBuilder chooseDirectory() {
+		return new DirectoryChooserBuilder();
+	}
+	
+	/**
 	 * Start definition of new AboutDialog.
 	 * @return 
 	 * 	new {@link AboutDialogBuilder} instance
