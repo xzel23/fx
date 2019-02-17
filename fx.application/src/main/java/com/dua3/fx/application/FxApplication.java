@@ -26,6 +26,7 @@ import java.util.prefs.Preferences;
 import com.dua3.utility.lang.LangUtil;
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -149,8 +150,15 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
 		stage.show();
 
 		// automatically update title on document change
-		controller.documentProperty().addListener((v,o,n) -> updateApplicationTitle());
-		controller.dirtyProperty().addListener((v,o,n) -> updateApplicationTitle());
+		final ChangeListener<Boolean> dirtyStateListener = (v,o,n) -> {
+			updateApplicationTitle();
+		};
+		controller.currentDocumentProperty.addListener(
+			(v,o,n) -> { 
+				updateApplicationTitle();
+				o.dirtyProperty.removeListener(dirtyStateListener);
+				n.dirtyProperty.addListener(dirtyStateListener);
+			});
 		
         stage.setOnCloseRequest(e -> {
             e.consume();
@@ -161,13 +169,14 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
 	}
 
     protected void updateApplicationTitle() {
-    	String name = controller.getDisplayName(controller.getDocument());
-    	boolean dirty = controller.isDirty();
+    	FxDocument document = controller.getCurrentDocument();
+		String name = document.toString();
+    	boolean dirty = document.isDirty();
     	
     	StringBuilder title = new StringBuilder();
     	title.append(applicationName);
     	
-    	if (!name.isEmpty() || controller.isDirty()) {
+    	if (!name.isEmpty() || document.isDirty()) {
     		title.append(" - ");
     	}
         

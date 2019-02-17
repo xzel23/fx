@@ -18,8 +18,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
@@ -39,8 +37,6 @@ import com.dua3.utility.lang.LangUtil;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.ReadOnlyBooleanProperty;
-import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
@@ -61,14 +57,11 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	/** The "all files" filter. */
 	protected static final ExtensionFilter EXTENSIONFILTER_ALL_FILES = new FileChooser.ExtensionFilter("all files", "*.*");
 	
-	/** The void URI that represents "no document". */
-	private static final URI VOID_URI = URI.create("");
-
 	/** Preferece: last document. */
 	protected static final String PREF_DOCUMENT = "document_uri";
 	
 	/** The URI of the currently opened document. */
-	protected ObjectProperty<URI> documentProperty = new SimpleObjectProperty<URI>(VOID_URI);
+	protected ObjectProperty<FxDocument> currentDocumentProperty = new SimpleObjectProperty<>(FxDocument.EMPTY_DOCUMENT);
 	
 	/** The URI of the currently opened document. */
 	protected BooleanProperty dirtyProperty = new SimpleBooleanProperty(false);
@@ -111,6 +104,9 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		}
 		return app;
 	}
+	
+	public abstract List<? extends FxDocument> dirtyDocuments();
+	
 	/**
 	 * Request application close as if the close-window-button was clicked.
 	 * Called from FXML.
@@ -118,11 +114,24 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	@FXML
 	public void closeApplication() {
 		// handle dirty state
-		if (isDirty()) {
+		if (!handleDirtyState()) {
+			LOG.fine("close aborted because of dirty state");
+			return;
+		}
+		app.close();
+	}
+
+	protected boolean handleDirtyState() {
+		boolean rc = true;
+		List<? extends FxDocument> dirtyList = dirtyDocuments();
+		if (!dirtyList.isEmpty()) {
 			AtomicBoolean goOn = new AtomicBoolean(false);
 			Dialogs.confirmation()
 			.header("Save changes?")
-			.text(getDocumentName())
+			.text(String.join(
+				"\n", 
+				dirtyList.stream().map(Object::toString).toArray(String[]::new)
+			))
 			.buttons(ButtonType.YES, ButtonType.NO, ButtonType.CANCEL)
 			.defaultButton(ButtonType.YES)
 			.showAndWait()
@@ -134,14 +143,9 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 					goOn.set(true);   // don't save, just go on
 				}
 			});
-			
-			if (!goOn.get()) {
-				LOG.fine("close aborted because of dirty state");
-				return;
-			}
+			rc = goOn.get();
 		}
-		
-		app.close();
+		return rc;
 	}
 	
 	/**
@@ -150,90 +154,26 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	 * @return
 	 *  URI of the current document
 	 */
-	public URI getDocument() {
-		return documentProperty.get();
+	public FxDocument getCurrentDocument() {
+		return currentDocumentProperty.get();
 	}
 	
 	/**
 	 * Set current document.
 	 * 
-	 * @param uri
-	 *  URI of the document
+	 * @param document
+	 *  the document
 	 */
-	protected void setDocument(URI uri) {
-		documentProperty.set(uri);
-		setPreferenceOptional(PREF_DOCUMENT, uri.toString());
+	protected void setCurrentDocument(FxDocument document) {
+		currentDocumentProperty.set(document);
+		setPreferenceOptional(PREF_DOCUMENT, document.getLocation().toString());
 	}
-	
-	/**
-	 * Set current document.
-	 * 
-	 * @param url
-	 *  URL of the document
-	 */
-	protected void setDocument(URL url) {
-		try {
-			documentProperty.set(url.toURI());
-		} catch (URISyntaxException e) {
-			documentProperty.set(VOID_URI);
-			LOG.warning("could not set document URL");
-		}
-	}
-	
+		
 	/**
 	 * Clear the document, i.e. inform application that no document is loaded.
 	 */
 	protected void clearDocument() {
-		documentProperty.set(VOID_URI);
-	}
-	
-	/**
-	 * Get the current document's name.
-	 * @return
-	 *  name of the current document, or "" if no document loaded
-	 */
-	public String getDocumentName() {
-		return getDisplayName(getDocument());
-	}
-	
-	/**
-	 * Get document property.
-	 * 
-	 * @return
-	 *  read only document property
-	 */
-	public ReadOnlyObjectProperty<URI> documentProperty() {
-		return documentProperty;
-	}
-	
-	/**
-	 * Get current dirty state.
-	 * 
-	 * @return
-	 *  dirty state of the current document
-	 */
-	public boolean isDirty() {
-		return dirtyProperty.get();
-	}
-	
-	/**
-	 * Set current document's dirty state.
-	 * 
-	 * @param flag
-	 *  dirty state of the document
-	 */
-	protected void setDirty(boolean flag) {
-		dirtyProperty.set(flag);
-	}
-	
-	/**
-	 * Get dirty property.
-	 * 
-	 * @return
-	 *  read only dirty property
-	 */
-	public ReadOnlyBooleanProperty dirtyProperty() {
-		return dirtyProperty;
+		currentDocumentProperty.set(FxDocument.EMPTY_DOCUMENT);
 	}
 	
 	/** 
@@ -241,33 +181,8 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	 * @return
 	 *  true, if document is set
 	 */
-	public boolean hasDocument() {
-		return documentProperty.get() != VOID_URI;
-	}
-
-	protected boolean handleDirtyState() {
-		if (isDirty()) {
-			AtomicBoolean goOn = new AtomicBoolean(false);
-			Dialogs.confirmation()
-			.header("Save changes?")
-			.buttons(ButtonType.YES, ButtonType.NO, ButtonType.CANCEL)
-			.defaultButton(ButtonType.YES)
-			.showAndWait()
-			.ifPresent(btn -> {
-				if (btn==ButtonType.YES) {
-					goOn.set(save()); // only continue if save was successful
-				}
-				if (btn==ButtonType.NO) {
-					goOn.set(true);   // don't save, just go on
-				}
-			});
-			
-			if (!goOn.get()) {
-				LOG.fine("open aborted because of dirty state");
-				return false;
-			}
-		}
-		return true;
+	public boolean hasCurrentDocument() {
+		return currentDocumentProperty.get()!=FxDocument.EMPTY_DOCUMENT;
 	}
 
 	@FXML
@@ -306,8 +221,8 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		Path parent = null;
 		String initialFileName = "";
 		try {
-			if (hasDocument()) {
-				parent = Paths.get(getDocument()).getParent();
+			if (hasCurrentDocument()) {
+				parent = getCurrentDocument().getPath().getParent();
 			} else {
 				String lastDocument = getPreference(PREF_DOCUMENT, "");
 				if (lastDocument.isBlank()) {
@@ -344,8 +259,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		// open the document and handle errors
 		URI uri = file.get().toURI();
 		try {
-			openDocument(uri);
-			setDocument(uri);
+			setCurrentDocument(loadDocument(uri));
 			return true;
 		} catch (Exception e) {
 			LOG.log(Level.WARNING, "error opening document", e);
@@ -369,12 +283,16 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 
 	@FXML
 	protected boolean save() {
-		if (!hasDocument()) {
+		if (!hasCurrentDocument()) {
 			LOG.fine("save: no document set, delegating to saveAs()");
 			return saveAs();
 		}
 		
-		return saveDocumentAndHandleErrors(getDocument());
+		return saveDocumentAndHandleErrors(getCurrentDocument());
+	}
+
+	private boolean saveDocumentAndHandleErrors(FxDocument document) {
+		return saveDocumentAndHandleErrors(document, document.getLocation());
 	}
 
 	protected List<FileChooser.ExtensionFilter> openFilters() {
@@ -391,12 +309,18 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	
 	@FXML
 	protected boolean saveAs() {
-		// choose file to open
+		if (hasCurrentDocument()) {
+			LOG.info("no document); not saving");
+			return false;
+		}
+		
 		Path parent = null;
 		String initialFileName = "";
+		FxDocument document = getCurrentDocument();
 		try {
-			if (hasDocument()) {
-				parent = Paths.get(getDocument()).getParent();
+			if (document.getLocation()!=FxDocument.VOID_URI) {
+				document = getCurrentDocument();
+				parent = document.getPath().getParent();
 			} else {
 				String lastDocument = getPreference(PREF_DOCUMENT, "");
 				if (lastDocument.isBlank()) {
@@ -432,13 +356,12 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		}
 		
 		// save document content
-		return saveDocumentAndHandleErrors(file.get().toURI());
+		return saveDocumentAndHandleErrors(document, file.get().toURI());
 	}
 
-	private boolean saveDocumentAndHandleErrors(URI uri) {
+	private boolean saveDocumentAndHandleErrors(FxDocument document, URI uri) {
 		try {
-			saveDocument(uri);
-			setDocument(uri);			
+			document.saveAs(uri);
 			return true;
 		} catch (Exception e) {
 			LOG.log(Level.WARNING, "error saving document", e);
@@ -452,9 +375,8 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		}		
 	}
 	
-	@SuppressWarnings("static-method")
 	protected String getDisplayName(URI uri) {
-		return uri != VOID_URI ? uri.toString() : "<unnamed>";
+		return getCurrentDocument().getLocation().toString();
 	}
 	
 	@SuppressWarnings("static-method")
@@ -463,7 +385,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	}
 
 	@SuppressWarnings({ "static-method", "unused" })
-	protected void openDocument(URI uri) throws IOException {
+	protected FxDocument loadDocument(URI uri) throws IOException {
 		throw new UnsupportedOperationException("not implemented");
 	}
 
