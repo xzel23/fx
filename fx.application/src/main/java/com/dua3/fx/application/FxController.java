@@ -22,6 +22,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -39,6 +40,7 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.concurrent.Worker.State;
 import javafx.fxml.FXML;
 import javafx.scene.control.ButtonType;
 import javafx.stage.FileChooser;
@@ -54,6 +56,9 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	/** The application instance. */
 	private A app;
 
+	/** The list of current tasks. */
+	private List<FxTask<?>> tasks = new ArrayList<>();
+	
 	/** The "all files" filter. */
 	protected static final ExtensionFilter EXTENSIONFILTER_ALL_FILES = new FileChooser.ExtensionFilter("all files", "*.*");
 	
@@ -444,4 +449,32 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		LOG.fine(() -> "status: "+s);
 	}
 	
+	protected void submit(FxTask<?> task) {
+		tasks.add(task);
+		task.progressProperty().addListener((v,o,n) -> updateTaskProgress(task, n.doubleValue()));
+		task.stateProperty().addListener((v,o,n) -> updateTaskState(task, n));
+		task.textProperty().addListener((v,o,n) -> updateTaskText(task, n));
+	}
+	
+	protected List<FxTask<?>> taskByState(State s) {
+		var list = new ArrayList<FxTask<?>>(tasks.size());
+		tasks.forEach(t -> {
+			if (t.getState()==s) {
+				list.add(t);
+			}
+		});
+		return list;
+	}
+	
+	protected void updateTaskState(FxTask<?> task, State state) {
+		
+	}
+
+	protected void updateTaskProgress(FxTask<?> task, double progress) {
+		
+	}
+
+	protected void updateTaskText(FxTask<?> task, String text) {
+		
+	}
 }
