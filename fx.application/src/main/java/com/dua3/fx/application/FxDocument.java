@@ -17,13 +17,6 @@ public abstract class FxDocument {
 	/** The void URI that represents "no document". */
 	public static final URI VOID_URI = URI.create("");
 	
-	public static final FxDocument EMPTY_DOCUMENT = new FxDocument(VOID_URI) {
-		@Override
-		protected void write(URI uri) throws IOException {
-			throw new IllegalStateException("no document");
-		}
-	};
-	
 	protected BooleanProperty dirtyProperty = new SimpleBooleanProperty(false);
 	protected ObjectProperty<URI> locationProperty = new SimpleObjectProperty<URI>(VOID_URI);
 	

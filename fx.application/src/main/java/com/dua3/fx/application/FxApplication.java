@@ -26,6 +26,7 @@ import java.util.prefs.Preferences;
 import com.dua3.utility.lang.LangUtil;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -156,8 +157,12 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
 		controller.currentDocumentProperty.addListener(
 			(v,o,n) -> { 
 				updateApplicationTitle();
-				o.dirtyProperty.removeListener(dirtyStateListener);
-				n.dirtyProperty.addListener(dirtyStateListener);
+				if (o!= null) {
+					o.dirtyProperty.removeListener(dirtyStateListener);
+				}
+				if (n!=null) {
+					n.dirtyProperty.addListener(dirtyStateListener);
+				}
 			});
 		
         stage.setOnCloseRequest(e -> {
@@ -273,6 +278,10 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
 	
 	public String getCopyright() {
 		return copyright;
+	}
+
+	public static void checkThread() {
+		LangUtil.check(Platform.isFxApplicationThread(), "not on FX Application Thread");
 	}
 
 }
