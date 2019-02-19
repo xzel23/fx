@@ -171,9 +171,10 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	 * @param document
 	 *  the document
 	 */
-	protected void setCurrentDocument(FxDocument document) {
+	protected void setCurrentDocument(FxDocument document) {		
 		currentDocumentProperty.set(document);
 		setPreferenceOptional(PREF_DOCUMENT, document.getLocation().toString());
+		LOG.fine(() -> "current document: "+document);
 	}
 		
 	/**
@@ -316,7 +317,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	
 	@FXML
 	protected boolean saveAs() {
-		if (hasCurrentDocument()) {
+		if (!hasCurrentDocument()) {
 			LOG.info("no document; not saving");
 			return false;
 		}

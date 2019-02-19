@@ -54,4 +54,9 @@ public abstract class FxDocument {
 	public boolean isDirty() {
 		return dirtyProperty.get();
 	}
+
+	@Override
+	public String toString() {
+		return getClass().getSimpleName()+"["+getLocation()+"]";
+	}
 }
