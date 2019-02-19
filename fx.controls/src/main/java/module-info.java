@@ -14,6 +14,7 @@
 
 module com.dua3.fx.controls {
 	exports com.dua3.fx.controls;
+	opens com.dua3.fx.controls;
 
 	requires com.dua3.fx.util;
 

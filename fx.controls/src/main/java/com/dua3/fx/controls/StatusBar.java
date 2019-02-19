@@ -15,6 +15,7 @@
 package com.dua3.fx.controls;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -38,8 +39,6 @@ public class StatusBar extends HBox implements FxTaskTracker {
 	/** Logger instance */
     private static final Logger LOG = Logger.getLogger(StatusBar.class.getName());
 
-	private final HBox statusBar;
-
     // -- input controls
 	@FXML Label text;
 	@FXML ProgressBar progress;
@@ -48,16 +47,17 @@ public class StatusBar extends HBox implements FxTaskTracker {
 	 * Construct new StatusBar instance.
 	 */
 	public StatusBar() {
-		HBox hbox = null;
+		// load FXML
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("intern/status_bar.fxml"));
+		fxmlLoader.setRoot(this);
+		fxmlLoader.setController(this);
+
 		try {
-    		// load FXML
-	        FXMLLoader loader = new FXMLLoader(getClass().getResource("intern/status_bar.fxml"));
-	        loader.setController(this);
-			hbox = loader.load();
-    	} catch (IOException e) {
-    		LOG.log(Level.WARNING, "could not create statusbar", e);
+			fxmlLoader.load();
+		} catch (IOException e) {
+			LOG.log(Level.WARNING, "exception while loading FXML", e);
+			throw new UncheckedIOException(e);
 		}
-		this.statusBar = hbox;
 	}
 
 	@FXML

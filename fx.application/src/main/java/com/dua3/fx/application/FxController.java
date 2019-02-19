@@ -48,7 +48,7 @@ import javafx.scene.control.ButtonType;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 
-public abstract class FxController<A extends FxApplication<A, C>, C extends FxController<A, C>> {
+public abstract class FxController<A extends FxApplication<A, C>, C extends FxController<A, C>>  {
 
 	// - static -
 
@@ -451,42 +451,4 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		LOG.fine(() -> "status: "+s);
 	}
 	
-	protected void submit(FxTask<?> task) {
-		tasks.add(task);
-		task.progressProperty().addListener((v,o,n) -> updateTaskProgress(task, n.doubleValue()));
-		task.stateProperty().addListener((v,o,n) -> updateTaskState(task, n));
-		task.textProperty().addListener((v,o,n) -> updateTaskText(task, n));
-	}
-	
-	protected List<FxTask<?>> taskByState(State s) {
-		var list = new ArrayList<FxTask<?>>(tasks.size());
-		tasks.forEach(t -> {
-			if (t.getState()==s) {
-				list.add(t);
-			}
-		});
-		return list;
-	}
-	
-	private final List<FxTaskTracker> taskTrackers = new LinkedList<>();
-
-	protected void updateTaskState(FxTask<?> task, State state) {
-		taskTrackers.forEach(t -> t.updateTaskState(task, state));
-	}
-
-	protected void updateTaskProgress(FxTask<?> task, double progress) {
-		taskTrackers.forEach(t -> t.updateTaskProgress(task, progress));		
-	}
-
-	protected void updateTaskText(FxTask<?> task, String text) {
-		taskTrackers.forEach(t -> t.updateTaskText(task, text));
-	}
-	
-	public void addTaskTracker(FxTaskTracker t) {
-		taskTrackers.add(Objects.requireNonNull(t));
-	}
-
-	public void removeTaskTracker(FxTaskTracker t) {
-		taskTrackers.remove(Objects.requireNonNull(t));
-	}
 }
