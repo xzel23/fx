@@ -82,19 +82,20 @@ public class StatusBar extends HBox implements FxTaskTracker {
 				break;
 			case SUCCEEDED:
 				progress.setProgress(1.0);
+				progress.setVisible(false);
 				break;
 			case READY:
-				progress.setVisible(false);
 				progress.setProgress(0.0);
+				progress.setVisible(false);
 				break;
 			case SCHEDULED:
-				progress.setVisible(true);
 				progress.setProgress(0.0);
+				progress.setVisible(true);
 				break;
 			case CANCELLED:
 			case FAILED:
-				progress.setVisible(false);
 				progress.setProgress(0.0);
+				progress.setVisible(false);
 				break;
 			}
 		});
