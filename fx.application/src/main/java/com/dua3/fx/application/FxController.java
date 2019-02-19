@@ -34,6 +34,8 @@ import java.util.prefs.Preferences;
 
 import com.dua3.fx.util.AboutDialog;
 import com.dua3.fx.util.Dialogs;
+import com.dua3.fx.util.FxTask;
+import com.dua3.fx.util.FxTaskTracker;
 import com.dua3.utility.lang.LangUtil;
 
 import javafx.beans.property.BooleanProperty;
@@ -466,15 +468,25 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		return list;
 	}
 	
+	private final List<FxTaskTracker> taskTrackers = new LinkedList<>();
+
 	protected void updateTaskState(FxTask<?> task, State state) {
-		
+		taskTrackers.forEach(t -> t.updateTaskState(task, state));
 	}
 
 	protected void updateTaskProgress(FxTask<?> task, double progress) {
-		
+		taskTrackers.forEach(t -> t.updateTaskProgress(task, progress));		
 	}
 
 	protected void updateTaskText(FxTask<?> task, String text) {
-		
+		taskTrackers.forEach(t -> t.updateTaskText(task, text));
+	}
+	
+	public void addTaskTracker(FxTaskTracker t) {
+		taskTrackers.add(Objects.requireNonNull(t));
+	}
+
+	public void removeTaskTracker(FxTaskTracker t) {
+		taskTrackers.remove(Objects.requireNonNull(t));
 	}
 }

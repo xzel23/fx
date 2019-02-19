@@ -5,6 +5,8 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
+import com.dua3.utility.lang.LangUtil;
+
 import javafx.application.Platform;
 
 public class PlatformHelper {
@@ -61,6 +63,28 @@ public class PlatformHelper {
 		runAndWait(() -> { action.run(); return null; });
 	}
 	
+	/**
+	 * Run task on the JavaFX application thread.
+	 *
+	 * @param action
+	 *  the task to run
+	 * @throws NullPointerException
+	 *  if {@code action} is {@code null}
+	 */
+	public static void runLater(Runnable action) {
+		Objects.requireNonNull(action);
+
+		if (Platform.isFxApplicationThread()) {
+			action.run();
+		} else {
+			Platform.runLater(action);
+		}
+	}
+
+	public static void checkThread() {
+		LangUtil.check(Platform.isFxApplicationThread(), "not on FX Application Thread");
+	}
+
 	private PlatformHelper() {
 		// utility class
 	}

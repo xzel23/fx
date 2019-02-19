@@ -1,0 +1,114 @@
+// Copyright 2019 Axel Howind
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package com.dua3.fx.controls;
+
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import com.dua3.fx.util.PlatformHelper;
+import com.dua3.fx.util.FxTask;
+import com.dua3.fx.util.FxTaskTracker;
+
+import javafx.concurrent.Worker.State;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ProgressIndicator;
+import javafx.scene.layout.HBox;
+
+/**
+ * Dialog to configure a editor settings.
+ */
+public class StatusBar extends HBox implements FxTaskTracker {
+
+	/** Logger instance */
+    private static final Logger LOG = Logger.getLogger(StatusBar.class.getName());
+
+	private final HBox statusBar;
+
+    // -- input controls
+	@FXML Label text;
+	@FXML ProgressBar progress;
+
+	/**
+	 * Construct new StatusBar instance.
+	 */
+	public StatusBar() {
+		HBox hbox = null;
+		try {
+    		// load FXML
+	        FXMLLoader loader = new FXMLLoader(getClass().getResource("intern/status_bar.fxml"));
+	        loader.setController(this);
+			hbox = loader.load();
+    	} catch (IOException e) {
+    		LOG.log(Level.WARNING, "could not create statusbar", e);
+		}
+		this.statusBar = hbox;
+	}
+
+	@FXML
+	private void initialize() {
+	}
+
+	public void setText(String s) {
+		PlatformHelper.runLater(() -> text.setText(s));
+	}
+
+	public void setProgress(double p) {
+		PlatformHelper.runLater(() -> progress.setProgress(p));
+	}
+
+	@Override
+	public void updateTaskState(FxTask<?> task, State state) {
+		PlatformHelper.runLater(() -> {
+			switch (state) {
+			case RUNNING:
+				progress.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
+				progress.setVisible(true);
+				break;
+			case SUCCEEDED:
+				progress.setProgress(1.0);
+				break;
+			case READY:
+				progress.setVisible(false);
+				progress.setProgress(0.0);
+				break;
+			case SCHEDULED:
+				progress.setVisible(true);
+				progress.setProgress(0.0);
+				break;
+			case CANCELLED:
+			case FAILED:
+				progress.setVisible(false);
+				progress.setProgress(0.0);
+				break;
+			}
+		});
+	}
+
+	@Override
+	public void updateTaskProgress(FxTask<?> task, double p) {
+		progress.setProgress(p);
+		
+	}
+
+	@Override
+	public void updateTaskText(FxTask<?> task, String s) {
+		text.setText(s);
+	}
+
+}

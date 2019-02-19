@@ -1,4 +1,4 @@
-package com.dua3.fx.application;
+package com.dua3.fx.util;
 
 import javafx.concurrent.Service;
 

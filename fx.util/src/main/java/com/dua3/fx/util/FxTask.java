@@ -1,4 +1,4 @@
-package com.dua3.fx.application;
+package com.dua3.fx.util;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -14,7 +14,7 @@ public abstract class FxTask<V> extends Task<V>{
 	final int taskId = TASK_COUNTER.incrementAndGet();
 
     private StringProperty text = new SimpleStringProperty(this, "text", "");
-    public final ReadOnlyStringProperty textProperty() { FxApplication.checkThread(); return text; }
+    public final ReadOnlyStringProperty textProperty() { PlatformHelper.checkThread(); return text; }
 
     /* Use updateProgress() to set this task's progress. */
 
