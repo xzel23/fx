@@ -317,7 +317,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	@FXML
 	protected boolean saveAs() {
 		if (hasCurrentDocument()) {
-			LOG.info("no document); not saving");
+			LOG.info("no document; not saving");
 			return false;
 		}
 		
