@@ -18,7 +18,12 @@ public abstract class FxTask<V> extends Task<V>{
 
     /* Use updateProgress() to set this task's progress. */
 
-    /** Set this task's status text. */
+    /** 
+	 * Set this task's status text. 
+	 * 
+	 * @param s
+	 *  the status text to set
+	 */
     protected void setText(String s) {
     	if (Platform.isFxApplicationThread()) {
         	text.set(s); 
