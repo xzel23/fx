@@ -22,7 +22,7 @@ import java.util.Optional;
 
 import com.dua3.fx.util.controls.OptionPane;
 import com.dua3.utility.options.OptionSet;
-import com.dua3.utility.options.Options;
+import com.dua3.utility.options.OptionValues;
 
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
@@ -40,19 +40,16 @@ import javafx.scene.layout.GridPane;
  *
  * The dialog consists of labels and input controls laid out in a grid.
  */
-public class OptionsDialog extends Dialog<Map<String, Object>> {
+public class OptionsDialog extends Dialog<OptionValues> {
 
 	private static final String MARKER_INITIAL = "";
 	private static final String MARKER_ERROR = "\u26A0";
 	private static final String MARKER_OK = "";
 	
 	private OptionSet optionSet;
-	private Options currentValues;
+	private OptionValues currentValues;
 	
-	public OptionsDialog(OptionSet optionSet, Options currentValues) {
-		this.optionSet = Objects.requireNonNull(optionSet);
-		this.currentValues = new Options(currentValues);
-		
+	public OptionsDialog() {
 		getDialogPane().setContent(new OptionPane(optionSet, currentValues));
 		
 		setResultConverter(btn -> {
@@ -70,4 +67,19 @@ public class OptionsDialog extends Dialog<Map<String, Object>> {
 		});
 	}
 
+	/**
+	 * Set options.
+	 * @param optionSet the optionSet to set
+	 */
+	public void setOptions(OptionSet optionSet) {
+		this.optionSet = optionSet;
+	}
+
+	/**
+	 * Set option values.
+	 * @param currentValues the currentValues to set
+	 */
+	public void setCurrentValues(OptionValues currentValues) {
+		this.currentValues = currentValues;
+	}
 }

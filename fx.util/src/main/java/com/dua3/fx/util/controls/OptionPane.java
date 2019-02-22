@@ -4,7 +4,7 @@ import java.util.Objects;
 
 import com.dua3.utility.options.Option;
 import com.dua3.utility.options.OptionSet;
-import com.dua3.utility.options.Options;
+import com.dua3.utility.options.OptionValues;
 import com.dua3.utility.options.Option.ChoiceOption;
 import com.dua3.utility.options.Option.StringOption;
 
@@ -19,8 +19,8 @@ import javafx.scene.layout.GridPane;
 public class OptionPane extends GridPane {
 
 	private final OptionSet optionSet;
-	private final Options currentValues;
-	private final Options newValues;
+	private final OptionValues currentValues;
+	private final OptionValues newValues;
 
 	private static final Insets INSETS = new Insets(2);
 
@@ -29,10 +29,10 @@ public class OptionPane extends GridPane {
 	 * @param optionSet
 	 *  the available options.
 	 */
-	public OptionPane(OptionSet optionSet, Options currentValues) {
+	public OptionPane(OptionSet optionSet, OptionValues currentValues) {
 		this.optionSet = Objects.requireNonNull(optionSet);
-		this.currentValues = new Options(currentValues);
-		this.newValues = new Options(currentValues);
+		this.currentValues = new OptionValues(currentValues);
+		this.newValues = new OptionValues(currentValues);
 		
 		int row = 0;
 		for (Option<?> option: optionSet) {
