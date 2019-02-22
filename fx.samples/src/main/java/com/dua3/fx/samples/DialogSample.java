@@ -4,10 +4,14 @@ import java.util.List;
 import java.util.Optional;
 
 import com.dua3.fx.util.Dialogs;
+import com.dua3.utility.io.Csv;
+import com.dua3.utility.options.Options;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -19,15 +23,16 @@ public class DialogSample extends Application {
     private Button createButton(String text, Runnable action) {
         Button btn = new Button(text);
         btn.setOnAction(e -> action.run());
+        btn.setPrefWidth(120);
         return btn;
     }
 
     @Override
     public void start(Stage primaryStage) {
-        VBox root = new VBox();
+        VBox container = new VBox();
 
         // Information
-        root.getChildren().add(createButton("Info", () -> {
+        container.getChildren().add(createButton("Info", () -> {
             Dialogs.information()
                 .title("Info")
                 .header("This is an information.")
@@ -36,7 +41,7 @@ public class DialogSample extends Application {
         }));
 
         // Confirmation
-        root.getChildren().add(createButton("Confirmation", () -> {
+        container.getChildren().add(createButton("Confirmation", () -> {
             Dialogs.confirmation()
                 .title("Confimration")
                 .header("This is a conformation dialog.")
@@ -45,7 +50,7 @@ public class DialogSample extends Application {
         }));
 
         // Prompt
-        root.getChildren().add(createButton("Prompt", () -> {
+        container.getChildren().add(createButton("Prompt", () -> {
             Dialogs.prompt()
                 .title("Prompt")
                 .header("This is a prompt dialog.")
@@ -54,7 +59,7 @@ public class DialogSample extends Application {
         }));
 
         // Input
-        root.getChildren().add(createButton("Input", () -> {
+        container.getChildren().add(createButton("Input", () -> {
             Dialogs.input()
                 .title("Input")
                 .header("This is an input dialog.")
@@ -67,9 +72,20 @@ public class DialogSample extends Application {
                 .showAndWait();
         }));
 
-     Scene scene = new Scene(root, 300, 250);
+        // Options
+        container.getChildren().add(createButton("Options", () -> {
+            Dialogs.options(Csv.getOptions(), new Options())
+                .title("Options")
+                .header("This is an options dialog.")
+                .showAndWait();
+        }));
 
-        primaryStage.setTitle("Hello World!");
+        StackPane root = new StackPane(container);
+
+        Scene scene = new Scene(root);
+
+
+        primaryStage.setTitle("Dialogs");
         primaryStage.setScene(scene);
         primaryStage.show();
     }

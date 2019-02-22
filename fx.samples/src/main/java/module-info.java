@@ -17,6 +17,7 @@ module com.dua3.fx.samples {
 	opens com.dua3.fx.samples;
 
 	requires com.dua3.fx.util;
+	requires com.dua3.utility;
 
 	requires java.logging;
 	requires java.prefs;

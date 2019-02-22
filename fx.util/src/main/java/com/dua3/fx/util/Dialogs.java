@@ -14,6 +14,12 @@
 
 package com.dua3.fx.util;
 
+import java.util.List;
+
+import com.dua3.utility.options.Option;
+import com.dua3.utility.options.OptionSet;
+import com.dua3.utility.options.Options;
+
 import javafx.scene.control.Alert.AlertType;
 
 public class Dialogs {
@@ -100,5 +106,9 @@ public class Dialogs {
 	 */
 	public static InputDialogBuilder input() {
 		return new InputDialogBuilder();
+	}
+
+	public static OptionsDialogBuilder options() {
+		return new OptionsDialogBuilder();
 	}
 }
