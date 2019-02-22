@@ -49,9 +49,7 @@ public class OptionsDialog extends Dialog<OptionValues> {
 	private OptionSet optionSet;
 	private OptionValues currentValues;
 	
-	public OptionsDialog() {
-		getDialogPane().setContent(new OptionPane(optionSet, currentValues));
-		
+	public OptionsDialog() {		
 		setResultConverter(btn -> {
 			if (btn != ButtonType.OK) {
 				return null;
@@ -71,15 +69,10 @@ public class OptionsDialog extends Dialog<OptionValues> {
 	 * Set options.
 	 * @param optionSet the optionSet to set
 	 */
-	public void setOptions(OptionSet optionSet) {
+	public void setOptions(OptionSet optionSet, OptionValues currentValues) {
 		this.optionSet = optionSet;
+		this.currentValues = currentValues;
+		getDialogPane().setContent(new OptionPane(optionSet, currentValues));
 	}
 
-	/**
-	 * Set option values.
-	 * @param currentValues the currentValues to set
-	 */
-	public void setCurrentValues(OptionValues currentValues) {
-		this.currentValues = currentValues;
-	}
 }
