@@ -14,23 +14,10 @@
 
 package com.dua3.fx.util;
 
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.function.Function;
 
-import com.dua3.fx.util.InputDialog.Meta;
-import com.dua3.utility.lang.LangUtil;
-import com.dua3.utility.options.OptionValues;
 import com.dua3.utility.options.OptionSet;
-
-import javafx.collections.FXCollections;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Control;
-import javafx.scene.control.TextField;
+import com.dua3.utility.options.OptionValues;
 
 /**
  * Builder for Alert Dialogs.
@@ -44,32 +31,39 @@ public class OptionsDialogBuilder extends AbstractDialogBuilder<OptionValues, Op
 		title("");
 	}
 
-	private OptionSet options;
-	private OptionValues currentValues;
+	private OptionSet options = new OptionSet();
+	private OptionValues currentValues = OptionValues.empty();
 	
 	@Override
 	public OptionsDialog build() {
 		OptionsDialog dlg = super.build();
 
-		dlg.setOptions(options);
-		dlg.setCurrentValues(currentValues);
+		dlg.setOptions(options, currentValues);
 
 		return dlg;
 	}
 
 	/**
-	 * @param options the options to set
+	 * Set options.
+	 * @param options 
+	 *  the options to set
+	 * @return
+	 *  this builder instance
 	 */
 	public OptionsDialogBuilder options(OptionSet options) {
-		this.options = options;
+		this.options = Objects.requireNonNull(options);
 		return this;
 	}
 
 	/**
-	 * @param currentValues the currentValues to set
+	 * Set current values.
+	 * @param currentValues 
+	 *  the currentValues to set
+	 * @return
+	 *  this builder instance
 	 */
 	public OptionsDialogBuilder currentValues(OptionValues currentValues) {
-		this.currentValues = currentValues;
+		this.currentValues = Objects.requireNonNull(currentValues);
 		return this;
 	}
 }

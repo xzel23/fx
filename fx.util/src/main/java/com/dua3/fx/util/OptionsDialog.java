@@ -46,12 +46,7 @@ public class OptionsDialog extends Dialog<OptionValues> {
 	private static final String MARKER_ERROR = "\u26A0";
 	private static final String MARKER_OK = "";
 	
-	private OptionSet optionSet;
-	private OptionValues currentValues;
-	
-	public OptionsDialog() {
-		getDialogPane().setContent(new OptionPane(optionSet, currentValues));
-		
+	public OptionsDialog() {		
 		setResultConverter(btn -> {
 			if (btn != ButtonType.OK) {
 				return null;
@@ -69,17 +64,13 @@ public class OptionsDialog extends Dialog<OptionValues> {
 
 	/**
 	 * Set options.
-	 * @param optionSet the optionSet to set
+	 * @param optionSet 
+	 *  the optionSet to set
+	 * @param currentValues
+	 *  the current values
 	 */
-	public void setOptions(OptionSet optionSet) {
-		this.optionSet = optionSet;
+	public void setOptions(OptionSet optionSet, OptionValues currentValues) {
+		getDialogPane().setContent(new OptionPane(optionSet, currentValues));
 	}
 
-	/**
-	 * Set option values.
-	 * @param currentValues the currentValues to set
-	 */
-	public void setCurrentValues(OptionValues currentValues) {
-		this.currentValues = currentValues;
-	}
 }

@@ -27,7 +27,9 @@ public class OptionPane extends GridPane {
 	/**
 	 * Create new OptionPane.
 	 * @param optionSet
-	 *  the available options.
+	 *  the available options
+	 * @param currentValues
+	 *  the current values
 	 */
 	public OptionPane(OptionSet optionSet, OptionValues currentValues) {
 		this.optionSet = Objects.requireNonNull(optionSet);
