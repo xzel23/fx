@@ -14,26 +14,13 @@
 
 package com.dua3.fx.util;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-
 import com.dua3.fx.util.controls.OptionPane;
 import com.dua3.utility.options.OptionSet;
 import com.dua3.utility.options.OptionValues;
 
-import javafx.event.ActionEvent;
-import javafx.geometry.Insets;
-import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.Control;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tooltip;
-import javafx.scene.layout.GridPane;
 
 /**
  * A Dialog for inputting values.
