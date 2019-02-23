@@ -74,11 +74,12 @@ public class DialogSample extends Application {
 
         // Options
         container.getChildren().add(createButton("Options", () -> {
-            Dialogs.options()
-                .options(Csv.getOptions())
+            var rc = Dialogs.options()
+                .options(Csv.getCommonOptions())
                 .title("Options")
                 .header("This is an options dialog.")
                 .showAndWait();
+            rc.ifPresent(ops -> System.out.println(ops));
         }));
 
         StackPane root = new StackPane(container);
