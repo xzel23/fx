@@ -1,6 +1,7 @@
 package com.dua3.fx.util.controls;
 
 import java.util.Objects;
+import java.util.logging.Logger;
 
 import com.dua3.utility.options.Option;
 import com.dua3.utility.options.OptionSet;
@@ -17,6 +18,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
 public class OptionPane extends GridPane {
+
+    /** Logger */
+    protected static final Logger LOG = Logger.getLogger(OptionPane.class.getSimpleName());
 
 	private final OptionSet optionSet;
 	private final OptionValues currentValues;
@@ -48,12 +52,15 @@ public class OptionPane extends GridPane {
 			} else if (option instanceof ChoiceOption<?>) {
 				var items = FXCollections.observableList(((ChoiceOption<?>)option).getChoices());
 				ComboBox<?> c = new ComboBox<>(items);
-				newValues.put(option, () -> c.valueProperty());
+				newValues.put(option, () -> c.valueProperty().get());
 				control = c;
+			} else {
+				LOG.warning("unknown option type: "+option.getClass().getName());
+				control = null;
 			}
 			
 			addToGrid(label, 0, row);
-			addToGrid(label, 1, row);
+			addToGrid(control, 1, row);
 			
 			row++;
 		}
@@ -69,8 +76,10 @@ public class OptionPane extends GridPane {
 	}
 	
 	private void addToGrid(Control child, int c, int r) {
-		add(child, c, r);
-		setMargin(child, INSETS);
+		if (child != null) {
+			add(child, c, r);
+			setMargin(child, INSETS);
+		}
 	}
 
 }

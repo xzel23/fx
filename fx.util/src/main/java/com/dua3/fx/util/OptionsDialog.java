@@ -47,12 +47,16 @@ public class OptionsDialog extends Dialog<OptionValues> {
 	private static final String MARKER_OK = "";
 	
 	public OptionsDialog() {		
+		// buttons
+		DialogPane dialogPane = getDialogPane();
+		dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
 		setResultConverter(btn -> {
 			if (btn != ButtonType.OK) {
 				return null;
 			}
 
-			// FIXME
+		// FIXME
 			// Collecors.toMap() does not support null values!
 //			Map<String,Object> result = new HashMap<>();
 //			data.stream().forEach(e -> result.put(e.id, e.control.get()));
