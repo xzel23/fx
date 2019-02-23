@@ -5,12 +5,10 @@ import java.util.Optional;
 
 import com.dua3.fx.util.Dialogs;
 import com.dua3.utility.io.Csv;
-import com.dua3.utility.options.OptionValues;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -79,7 +77,7 @@ public class DialogSample extends Application {
                 .title("Options")
                 .header("This is an options dialog.")
                 .showAndWait();
-            rc.ifPresent(ops -> System.out.println(ops));
+            rc.ifPresent(ops -> System.out.println("RESULT:\n"+ops));
         }));
 
         StackPane root = new StackPane(container);

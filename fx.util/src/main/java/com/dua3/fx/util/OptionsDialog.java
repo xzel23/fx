@@ -15,6 +15,7 @@
 package com.dua3.fx.util;
 
 import com.dua3.fx.util.controls.OptionPane;
+import com.dua3.utility.lang.LangUtil;
 import com.dua3.utility.options.OptionSet;
 import com.dua3.utility.options.OptionValues;
 
@@ -29,9 +30,7 @@ import javafx.scene.control.DialogPane;
  */
 public class OptionsDialog extends Dialog<OptionValues> {
 
-	private static final String MARKER_INITIAL = "";
-	private static final String MARKER_ERROR = "\u26A0";
-	private static final String MARKER_OK = "";
+	private OptionPane optionPane;
 	
 	public OptionsDialog() {		
 		// buttons
@@ -39,17 +38,13 @@ public class OptionsDialog extends Dialog<OptionValues> {
 		dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
 		setResultConverter(btn -> {
+			LangUtil.check(optionPane!=null, "setOptions() not called!");
+
 			if (btn != ButtonType.OK) {
 				return null;
 			}
 
-		// FIXME
-			// Collecors.toMap() does not support null values!
-//			Map<String,Object> result = new HashMap<>();
-//			data.stream().forEach(e -> result.put(e.id, e.control.get()));
-			//
-//			return result;
-			return null;
+			return optionPane.getValues();
 		});
 	}
 
@@ -61,7 +56,9 @@ public class OptionsDialog extends Dialog<OptionValues> {
 	 *  the current values
 	 */
 	public void setOptions(OptionSet optionSet, OptionValues currentValues) {
-		getDialogPane().setContent(new OptionPane(optionSet, currentValues));
+		LangUtil.check(optionPane==null, "setOptions() already called!");
+		this.optionPane = new OptionPane(optionSet, currentValues);
+		getDialogPane().setContent(optionPane);
 	}
 
 }
