@@ -58,7 +58,7 @@ public class OptionPane extends GridPane {
 				var items = FXCollections.observableList(((ChoiceOption<?>)option).getChoices());
 				var c = new ComboBox<>(items);
 				c.getSelectionModel().select(items.indexOf(value));
-				newValues.put(option, () -> c.valueProperty().get().get());
+				newValues.put(option, c.valueProperty().get());
 				control = c;
 			} else {
 				LOG.warning("unknown option type: "+option.getClass().getName());
