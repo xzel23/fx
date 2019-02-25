@@ -79,7 +79,26 @@ public class DialogSample extends Application {
                 .showAndWait();
             rc.ifPresent(ops -> System.out.println("RESULT:\n"+ops));
         }));
-
+        
+        // Wizard
+        container.getChildren().add(createButton("Wizard", () -> {
+            var rc = Dialogs.wizard()
+            		.title("Database Connection Wizard")
+            		.page("start", Dialogs.informationPane()
+            			.header("Overview")
+            			.text("This Wizard will guide you through the configuration process.\n"
+            				+ "\n"
+            				+ "Please make sure that you have the following information available:\n"
+            				+ "• Database name/manufacturer\n"
+            				+ "• Hostname and port (if applicable)\n"
+            				)
+            			.next("choose_dbms"))
+            		.page("choose_dbms", Dialogs.informationPane()
+            			.header("Overview")
+            			.text("foo bar"))
+            		.showAndWait();            				
+        }));
+        
         StackPane root = new StackPane(container);
 
         Scene scene = new Scene(root);
@@ -89,6 +108,7 @@ public class DialogSample extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+        
  public static void main(String[] args) {
         launch(args);
     }

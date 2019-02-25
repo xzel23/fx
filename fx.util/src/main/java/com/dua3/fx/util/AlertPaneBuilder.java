@@ -28,58 +28,24 @@ import javafx.scene.control.DialogPane;
  * 
  * Provides a fluent interface to create Alerts. 
  */
-public class AlertBuilder 
-extends StandardDialogBuilder<Alert, AlertBuilder, ButtonType> {
-	AlertBuilder(AlertType type) {
-		super(() -> new Alert(type));
+public class AlertPaneBuilder 
+extends StandardDialogPaneBuilder<DialogPane, AlertPaneBuilder, ButtonType> {
+	AlertPaneBuilder(AlertType type) {
+		super(() -> createPane(type));
 	}
 
-	private ButtonType[] buttons;
-	private ButtonType defaultButton;
-
+	public static DialogPane createPane(AlertType type) {
+		return new DialogPane();
+	}
+	
 	/**
 	 * Create Alert instance.
 	 * @return Alert instance
 	 */
-	public Alert build() {
-		Alert dlg = super.build();
+	public DialogPane build() {
+		DialogPane dlg = super.build();
 		
-		if (buttons != null) {
-			dlg.getButtonTypes().setAll(buttons);
-		}
-
-		if (defaultButton != null) {
-			DialogPane pane = dlg.getDialogPane();
-			for (ButtonType t : dlg.getButtonTypes()) {
-				((Button) pane.lookupButton(t)).setDefaultButton(t == defaultButton);
-			}
-		}
-
 		return dlg;
 	}
 
-	/**
-	 * Define Alert Buttons.
-	 * @param buttons
-	 * 	the buttons to show
-	 * @return 
-	 * 	{@code this}
-	 */
-	public AlertBuilder buttons(ButtonType... buttons) {
-		this.buttons = Arrays.copyOf(buttons, buttons.length);
-		return this;
-	}
-
-	/**
-	 * Define the default Buttons.
-	 * @param button
-	 * 	the button to use as default
-	 * @return 
-	 * 	{@code this}
-	 */
-	public AlertBuilder defaultButton(ButtonType button) {
-		this.defaultButton = Objects.requireNonNull(button);
-		return this;
-	}
-	
 }

@@ -15,6 +15,7 @@
 package com.dua3.fx.util;
 
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.DialogPane;
 
 public class Dialogs {
 
@@ -46,6 +47,10 @@ public class Dialogs {
 	 */
 	public static AlertBuilder information() {
 		return new AlertBuilder(AlertType.INFORMATION);
+	}
+
+	public static AlertPaneBuilder informationPane() {
+		return new AlertPaneBuilder(AlertType.INFORMATION);
 	}
 
 	/**
@@ -102,7 +107,21 @@ public class Dialogs {
 		return new InputDialogBuilder();
 	}
 
+	/**
+	 * Start definition of new options dialog.
+	 * @return 
+	 * 	new {@link OptionsDialogBuilder} instance
+	 */
 	public static OptionsDialogBuilder options() {
 		return new OptionsDialogBuilder();
+	}
+
+	/**
+	 * Start definition of new wizard dialog.
+	 * @return 
+	 * 	new {@link WizardDialogBuilder} instance
+	 */
+	public static WizardDialogBuilder wizard() {
+		return new WizardDialogBuilder();
 	}
 }

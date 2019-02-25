@@ -24,11 +24,10 @@ import com.dua3.utility.options.OptionValues;
  * 
  * Provides a fluent interface to create Alerts.
  */
-public class OptionsDialogBuilder extends AbstractDialogBuilder<OptionValues, OptionsDialog, OptionsDialogBuilder> {
+public class OptionsDialogBuilder extends StandardDialogBuilder<OptionsDialog, OptionsDialogBuilder, OptionValues> {
 
 	public OptionsDialogBuilder() {
 		super(OptionsDialog::new);
-		title("");
 	}
 
 	private OptionSet options = new OptionSet();

@@ -35,11 +35,10 @@ import javafx.scene.control.TextField;
  * 
  * Provides a fluent interface to create Alerts.
  */
-public class InputDialogBuilder extends AbstractDialogBuilder<Map<String, Object>, InputDialog, InputDialogBuilder> {
+public class InputDialogBuilder extends StandardDialogBuilder<InputDialog, InputDialogBuilder, Map<String, Object>> {
 
 	public InputDialogBuilder() {
 		super(InputDialog::new);
-		title("");
 	}
 
 	private int columns = 1;
