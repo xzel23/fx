@@ -4,9 +4,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.Stack;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
@@ -17,12 +21,31 @@ public class WizardDialog extends Dialog<ButtonType> {
 	/** Logger instance */
     private static final Logger LOG = Logger.getLogger(WizardDialog.class.getName());
 
+    /** Cancelable flag. */
 	private boolean cancelable = true;
 	
+	/** Flag: show 'previous'-button? */
+	private boolean showPreviousButton = true;
+	
+	/**
+	 * Check if dialog can be canceled.
+	 * @return true if dialog is cancelable
+	 */
 	public boolean isCancelable() {
 		return cancelable;
 	}
 	
+	/**
+	 * Check if a 'previous' ( or 'navigate-back') button should be displayed.
+	 * @return true if dialog is cancelable
+	 */
+	public boolean isShowPreviousButton() {
+		return showPreviousButton;
+	}
+	
+	/**
+	 * Wizard page information class.
+	 */
 	public static class Page {
 		private DialogPane pane;
 		private String previous;
@@ -53,9 +76,13 @@ public class WizardDialog extends Dialog<ButtonType> {
 		}
 	}
 
+	/** Map {@code <page-name> |-> <page-information>}. */ 
 	private Map<String, Page> pages;
+	/** The currently displayed page. */
 	private Page currentPage;
-
+	/** Stack of displayed pages (for navigating back). */
+	private Stack<String> pageStack = new Stack<>();
+			
 	public void setPages(Map<String,Page> pages, String startPage) {
 		this.pages = pages;
 	
@@ -78,24 +105,53 @@ public class WizardDialog extends Dialog<ButtonType> {
 	private void setPage(String pageName) {
 		this.currentPage = pages.get(pageName);
 		
-		DialogPane dialogPane = currentPage.pane;
-		setDialogPane(dialogPane);
+		setDialogPane(currentPage.pane);		
 		
-		List<ButtonType> buttons = dialogPane.getButtonTypes();
-		buttons.clear();
+		getDialogPane().getButtonTypes().clear();
 		
+		// cancel button
 		if (isCancelable()) {
-			buttons.add(ButtonType.CANCEL);
+			addButtonToDialogPane(ButtonType.CANCEL);
 		}
 		
+		// next button
 		if (currentPage.getNext()==null) {
-			buttons.add(ButtonType.FINISH);			
+			addButtonToDialogPane(ButtonType.FINISH);			
 		} else {
-			buttons.add(ButtonType.NEXT);	
-			Button btn = (Button) dialogPane.lookupButton(ButtonType.NEXT);
-			btn.setOnAction( evt -> setPage(currentPage.getNext()) );
+			addButtonToDialogPane(ButtonType.NEXT, evt -> {
+				pageStack.push(pageName);
+				setPage(currentPage.getNext());
+			});
+		}
+		
+		// prev button
+		if (isShowPreviousButton() && !pageStack.isEmpty()) {
+			addButtonToDialogPane(ButtonType.PREVIOUS, evt -> { 
+				setPage(pageStack.pop()); 
+			});
 		}
 		
 		LOG.log(Level.FINE, () -> "current page: "+pageName);
 	}
+
+	private void addButtonToDialogPane(ButtonType bt) {
+		currentPage.pane.getButtonTypes().add(bt);
+	}
+	
+	private void addButtonToDialogPane(ButtonType bt, Consumer<Event> action) {
+		DialogPane dialogPane = currentPage.pane;
+		List<ButtonType> buttons = dialogPane.getButtonTypes();
+		
+		buttons.add(bt);	
+		Button btn = (Button) dialogPane.lookupButton(bt);
+		
+		// it seems counter-intuitive to use an event filter instead of a handler, but
+		// when using an event handler, Dialog.close() is called before our own
+		// event handler.
+		btn.addEventFilter(ActionEvent.ACTION,  evt -> {
+				action.accept(evt);
+				evt.consume();
+		});
+	}
+	
 }
