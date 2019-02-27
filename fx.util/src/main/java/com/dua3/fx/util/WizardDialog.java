@@ -86,10 +86,6 @@ public class WizardDialog extends Dialog<ButtonType> {
 	/** Stack of displayed pages (for navigating back). */
 	private ObservableList<String> pageStack = FXCollections.observableArrayList();
 
-	private double prefWidth = 0;
-
-	private double prefHeight = 0;
-			
 	public void setPages(Map<String,Page> pages, String startPage) {
 		this.pages = pages;
 	
@@ -99,8 +95,6 @@ public class WizardDialog extends Dialog<ButtonType> {
 	}
 
 	private void checkPages() {		
-		prefWidth = 0; 
-		prefHeight = 0;
 		Set<String> pageNames = pages.keySet();
 		for (Entry<String, Page> entry: pages.entrySet()) {
 			String name = entry.getKey();
@@ -139,12 +133,7 @@ public class WizardDialog extends Dialog<ButtonType> {
 					}, 
 					Bindings.isNotEmpty(pageStack)
 				);
-			}
-					
-			pane.requestLayout();
-			
-			prefWidth = Math.max(prefWidth,  pane.getPrefHeight());
-			prefHeight = Math.max(prefHeight,  pane.getPrefHeight());
+			}					
 		}
 	}
 
@@ -152,12 +141,18 @@ public class WizardDialog extends Dialog<ButtonType> {
 		this.currentPage = pages.get(pageName);
 		
 		DialogPane pane = currentPage.pane;
-		
 		setDialogPane(pane);		
+
+		pane.layout();
+		pane.getScene().getWindow().sizeToScene();
 		
 		LOG.log(Level.FINE, () -> "current page: "+pageName);
 	}
 
+	public Page getCurrentPage() {
+		return currentPage;
+	}
+	
 	private void addButtonToDialogPane(DialogPane pane, ButtonType bt, Consumer<Event> action, BooleanBinding enabled) {
 		List<ButtonType> buttons = pane.getButtonTypes();
 		
