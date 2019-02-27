@@ -16,23 +16,16 @@ package com.dua3.fx.document;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ReadOnlyBooleanProperty;
-import javafx.beans.property.StringProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.concurrent.Worker.State;
+import com.dua3.fx.document.intern.JavaScriptBridge;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
-
-import com.dua3.fx.document.intern.JavaScriptBridge;
 
 public abstract class DocumentPane extends BorderPane {
     private static final Logger LOG = Logger.getLogger(DocumentPane.class.getSimpleName());

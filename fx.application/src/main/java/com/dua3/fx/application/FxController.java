@@ -35,14 +35,12 @@ import java.util.prefs.Preferences;
 import com.dua3.fx.util.AboutDialog;
 import com.dua3.fx.util.Dialogs;
 import com.dua3.fx.util.FxTask;
-import com.dua3.fx.util.FxTaskTracker;
 import com.dua3.utility.lang.LangUtil;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.concurrent.Worker.State;
 import javafx.fxml.FXML;
 import javafx.scene.control.ButtonType;
 import javafx.stage.FileChooser;

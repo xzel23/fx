@@ -15,7 +15,6 @@
 package com.dua3.fx.util;
 
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.DialogPane;
 
 public class Dialogs {
 

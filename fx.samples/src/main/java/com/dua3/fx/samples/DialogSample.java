@@ -96,7 +96,8 @@ public class DialogSample extends Application {
             		.page("choose_dbms", Dialogs.informationPane()
             			.header("Overview")
             			.text("foo bar"))
-            		.showAndWait();            				
+            		.showAndWait();            
+            System.out.format("Dialog result:%n%s%n", rc);
         }));
         
         StackPane root = new StackPane(container);
