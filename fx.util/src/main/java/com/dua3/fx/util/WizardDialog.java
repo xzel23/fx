@@ -9,6 +9,13 @@ import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ReadOnlyBooleanProperty;
+import javafx.beans.property.ReadOnlyBooleanWrapper;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.scene.control.Button;
@@ -81,7 +88,11 @@ public class WizardDialog extends Dialog<ButtonType> {
 	/** The currently displayed page. */
 	private Page currentPage;
 	/** Stack of displayed pages (for navigating back). */
-	private Stack<String> pageStack = new Stack<>();
+	private ObservableList<String> pageStack = FXCollections.observableArrayList();
+
+	private double prefWidth = 0;
+
+	private double prefHeight = 0;
 			
 	public void setPages(Map<String,Page> pages, String startPage) {
 		this.pages = pages;
@@ -91,67 +102,85 @@ public class WizardDialog extends Dialog<ButtonType> {
 		setPage(startPage);
 	}
 
-	private void checkPages() {
+	private void checkPages() {		
+		prefWidth = 0; 
+		prefHeight = 0;
 		Set<String> pageNames = pages.keySet();
 		for (Entry<String, Page> entry: pages.entrySet()) {
 			String name = entry.getKey();
-			String next = entry.getValue().getNext();
+			Page page = entry.getValue();
+			DialogPane pane = page.getPane();
+			
+			// check page names
+			String next = page.getNext();
 			if (next != null && !pageNames.contains(next)) {
 				throw new IllegalStateException(String.format("Page '%s': next page doesn't exist ['%s']", name, next));
 			}
+			
+			// prepare buttons
+			
+			// cancel button
+			if (isCancelable()) {
+				addButtonToDialogPane(pane, ButtonType.CANCEL, null, null);
+			}
+			
+			// next button
+			if (page.getNext()==null) {
+				addButtonToDialogPane(pane, ButtonType.FINISH, null, null);			
+			} else {
+				addButtonToDialogPane(pane, ButtonType.NEXT, evt -> {
+					pageStack.add(name);
+					setPage(page.getNext());
+				}, null);
+			}
+			
+			// prev button
+			if (isShowPreviousButton()) {
+				addButtonToDialogPane(
+					pane, 
+					ButtonType.PREVIOUS, evt -> { 
+						setPage(pageStack.remove(pageStack.size()-1)); 
+					}, 
+					Bindings.isNotEmpty(pageStack)
+				);
+			}
+					
+			pane.requestLayout();
+			
+			prefWidth = Math.max(prefWidth,  pane.getPrefHeight());
+			prefHeight = Math.max(prefHeight,  pane.getPrefHeight());
 		}
 	}
 
 	private void setPage(String pageName) {
 		this.currentPage = pages.get(pageName);
 		
-		setDialogPane(currentPage.pane);		
+		DialogPane pane = currentPage.pane;
 		
-		getDialogPane().getButtonTypes().clear();
-		
-		// cancel button
-		if (isCancelable()) {
-			addButtonToDialogPane(ButtonType.CANCEL);
-		}
-		
-		// next button
-		if (currentPage.getNext()==null) {
-			addButtonToDialogPane(ButtonType.FINISH);			
-		} else {
-			addButtonToDialogPane(ButtonType.NEXT, evt -> {
-				pageStack.push(pageName);
-				setPage(currentPage.getNext());
-			});
-		}
-		
-		// prev button
-		if (isShowPreviousButton() && !pageStack.isEmpty()) {
-			addButtonToDialogPane(ButtonType.PREVIOUS, evt -> { 
-				setPage(pageStack.pop()); 
-			});
-		}
+		setDialogPane(pane);		
 		
 		LOG.log(Level.FINE, () -> "current page: "+pageName);
 	}
 
-	private void addButtonToDialogPane(ButtonType bt) {
-		currentPage.pane.getButtonTypes().add(bt);
-	}
-	
-	private void addButtonToDialogPane(ButtonType bt, Consumer<Event> action) {
-		DialogPane dialogPane = currentPage.pane;
-		List<ButtonType> buttons = dialogPane.getButtonTypes();
+	private void addButtonToDialogPane(DialogPane pane, ButtonType bt, Consumer<Event> action, BooleanBinding enabled) {
+		List<ButtonType> buttons = pane.getButtonTypes();
 		
 		buttons.add(bt);	
-		Button btn = (Button) dialogPane.lookupButton(bt);
+		Button btn = (Button) pane.lookupButton(bt);
 		
-		// it seems counter-intuitive to use an event filter instead of a handler, but
-		// when using an event handler, Dialog.close() is called before our own
-		// event handler.
-		btn.addEventFilter(ActionEvent.ACTION,  evt -> {
-				action.accept(evt);
-				evt.consume();
-		});
+		if (action!=null) {
+			// it seems counter-intuitive to use an event filter instead of a handler, but
+			// when using an event handler, Dialog.close() is called before our own
+			// event handler.
+			btn.addEventFilter(ActionEvent.ACTION,  evt -> {
+					action.accept(evt);
+					evt.consume();
+			});
+		}
+		
+		if (enabled!=null) {
+			btn.disableProperty().bind(Bindings.not(enabled));
+		}
 	}
 	
 }
