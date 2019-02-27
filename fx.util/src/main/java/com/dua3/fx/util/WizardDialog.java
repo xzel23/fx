@@ -30,6 +30,18 @@ public class WizardDialog extends Dialog<ButtonType> {
 	/** Flag: show 'previous'-button? */
 	private boolean showPreviousButton = true;
 	
+	public WizardDialog() {
+		setResultConverter(btn -> {
+			if (btn != ButtonType.FINISH) {
+				return null;
+			}
+			
+			pageStack.stream().map(name -> pages.get(name)).forEach(page -> page.apply());
+
+			return btn;
+		});
+	}
+	
 	/**
 	 * Check if dialog can be canceled.
 	 * @return true if dialog is cancelable
@@ -53,6 +65,7 @@ public class WizardDialog extends Dialog<ButtonType> {
 		private DialogPane pane;
 		private String previous;
 		private String next;
+		private Consumer<? super DialogPane> resultHandler;
 		
 		public String getPrevious() {
 			return previous;
@@ -74,8 +87,14 @@ public class WizardDialog extends Dialog<ButtonType> {
 			return pane;
 		}
 
-		public void setPane(DialogPane pane) {
+		@SuppressWarnings("unchecked")
+		public <P extends DialogPane> void setPane(P pane, Consumer<P> resultHandler) {
 			this.pane = pane;
+			this.resultHandler = (Consumer<? super DialogPane>) resultHandler;
+		}
+		
+		public void apply() {
+			resultHandler.accept(pane);
 		}
 	}
 

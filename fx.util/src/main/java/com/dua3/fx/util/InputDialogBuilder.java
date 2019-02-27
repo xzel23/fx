@@ -195,7 +195,7 @@ public class InputDialogBuilder extends StandardDialogBuilder<InputDialog, Input
 				});
 	}
 
-	public <T> InputDialogBuilder list(String id, String label, T dflt, Class<T> cls, Collection<T> items) {
+	public <T> InputDialogBuilder combobox(String id, String label, T dflt, Class<T> cls, Collection<T> items) {
 		return add(id, label, cls, dflt,
 				new InputDialog.InputControl<T>() {
 					final ComboBox<T> control = new ComboBox<>();
@@ -229,6 +229,10 @@ public class InputDialogBuilder extends StandardDialogBuilder<InputDialog, Input
 						return Optional.empty();
 					}
 				});
+	}
+
+	public <T> InputDialogBuilder radioList(String id, String label, T dflt, Class<T> cls, Collection<T> items) {
+		return null; // FIXME
 	}
 
 	// TODO: add date and time inputs

@@ -2,6 +2,7 @@ package com.dua3.fx.util;
 
 import java.util.LinkedHashMap;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import com.dua3.fx.util.WizardDialog.Page;
 
@@ -24,7 +25,8 @@ public class WizardDialogBuilder {
 		Page page = new Page();
 		page.setNext(builder.next);
 		DialogPane pane = (DialogPane) builder.build();
-		page.setPane(pane);
+		Consumer<DialogPane> resultHandler = builder.getResultHandler();
+		page.setPane(pane, resultHandler);
 		pages.put(name, page);
 		
 		if (startPage==null) {

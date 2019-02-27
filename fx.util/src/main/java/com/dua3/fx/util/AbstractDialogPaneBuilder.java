@@ -16,7 +16,10 @@ package com.dua3.fx.util;
 
 import java.util.Objects;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
+
+import javafx.scene.control.DialogPane;
 
 /** 
  * Abstract base class for DialogPane builders.
@@ -43,6 +46,8 @@ public abstract class AbstractDialogPaneBuilder<T, B extends AbstractDialogPaneB
 	private Supplier<T> supplier;
 	private String header = null;
 	private String text = null;
+
+	private Consumer<DialogPane> resultHandler = p -> {};
 
 	protected void setSupplier(Supplier<T> supplier) {
 		this.supplier = Objects.requireNonNull(supplier);
@@ -105,6 +110,16 @@ public abstract class AbstractDialogPaneBuilder<T, B extends AbstractDialogPaneB
 	public B next(String s) {
 		this.next = s;
 		return (B) this;
+	}
+
+	@SuppressWarnings("unchecked")
+	public B resultHandler(Consumer<DialogPane> resultHandler) {
+		this.resultHandler = Objects.requireNonNull(resultHandler);
+		return (B) this;
+	}
+
+	public Consumer<DialogPane> getResultHandler() {
+		return resultHandler;
 	}
 	
 }
