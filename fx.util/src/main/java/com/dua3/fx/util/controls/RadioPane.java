@@ -36,13 +36,13 @@ public class RadioPane<T> extends GridPane {
 	private static final Insets INSETS = new Insets(2);
 
 	/**
-	 * Create new OptionPane.
-	 * @param optionSet
-	 *  the available options
-	 * @param currentValues
-	 *  the current values
+	 * Create new Radio Pane.
+	 * @param labelText
+	 *  the text to show on the label
+	 * @param currentValue
+	 *  the current value
 	 */
-	public RadioPane(String labalText, Collection<T> items, T currentValue) {
+	public RadioPane(String labelText, Collection<T> items, T currentValue) {
 		this.items = Objects.requireNonNull(items);
 		this.currentValue = currentValue;
 		this.newValue = currentValue;
@@ -51,7 +51,7 @@ public class RadioPane<T> extends GridPane {
 		// fixme selecteditemproperty/selecteditem
 		int row = 0;
 		for (var item: items) {
-			Label label = row==0 ? new Label(labalText) : null;
+			Label label = row==0 ? new Label(labelText) : null;
 			
 			RadioButton control = new RadioButton(String.valueOf(item));
 			control.setToggleGroup(group);
