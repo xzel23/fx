@@ -1,25 +1,13 @@
 package com.dua3.fx.util.controls;
 
 import java.util.Collection;
-import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
-import com.dua3.utility.options.Option;
-import com.dua3.utility.options.Option.ChoiceOption;
-import com.dua3.utility.options.Option.StringOption;
-import com.dua3.utility.options.Option.Value;
-import com.dua3.utility.options.OptionSet;
-import com.dua3.utility.options.OptionValues;
-
-import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
 
