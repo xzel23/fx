@@ -27,6 +27,8 @@ public class RadioPane<T> extends GridPane {
 	 * Create new Radio Pane.
 	 * @param labelText
 	 *  the text to show on the label
+	 * @param items
+	 *  the selectable items
 	 * @param currentValue
 	 *  the current value
 	 */
