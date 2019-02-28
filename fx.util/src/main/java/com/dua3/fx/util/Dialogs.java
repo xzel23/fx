@@ -22,7 +22,7 @@ public class Dialogs {
 	private Dialogs() {}
 
 	/**
-	 * Start definition of new Alert dialog.
+	 * Start definition of new Warning dialog.
 	 * @return 
 	 * 	new {@link AlertBuilder} instance
 	 */
@@ -31,7 +31,16 @@ public class Dialogs {
 	}
 
 	/**
-	 * Start definition of new Alert dialog.
+	 * Start definition of new Warning pane.
+	 * @return 
+	 * 	new {@link AlertPaneBuilder} instance
+	 */
+	public static AlertPaneBuilder warningPane() {
+		return new AlertPaneBuilder(AlertType.WARNING);
+	}
+
+	/**
+	 * Start definition of new Error dialog.
 	 * @return 
 	 * 	new {@link AlertBuilder} instance
 	 */
@@ -40,7 +49,16 @@ public class Dialogs {
 	}
 
 	/**
-	 * Start definition of new Alert dialog.
+	 * Start definition of new Error pane.
+	 * @return 
+	 * 	new {@link AlertPaneBuilder} instance
+	 */
+	public static AlertPaneBuilder errorPane() {
+		return new AlertPaneBuilder(AlertType.ERROR);
+	}
+
+	/**
+	 * Start definition of new Information dialog.
 	 * @return 
 	 * 	new {@link AlertBuilder} instance
 	 */
@@ -48,17 +66,31 @@ public class Dialogs {
 		return new AlertBuilder(AlertType.INFORMATION);
 	}
 
+	/**
+	 * Start definition of new Information pane.
+	 * @return 
+	 * 	new {@link AlertPaneBuilder} instance
+	 */
 	public static AlertPaneBuilder informationPane() {
 		return new AlertPaneBuilder(AlertType.INFORMATION);
 	}
 
 	/**
-	 * Start definition of new Alert dialog.
+	 * Start definition of new Confirmation dialog.
 	 * @return 
 	 * 	new {@link AlertBuilder} instance
 	 */
 	public static AlertBuilder confirmation() {
 		return new AlertBuilder(AlertType.CONFIRMATION);
+	}
+
+	/**
+	 * Start definition of new Confirmation pane.
+	 * @return 
+	 * 	new {@link AlertPaneBuilder} instance
+	 */
+	public static AlertPaneBuilder confirmationPane() {
+		return new AlertPaneBuilder(AlertType.CONFIRMATION);
 	}
 
 	/**
