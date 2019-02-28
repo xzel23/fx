@@ -139,6 +139,15 @@ public class Dialogs {
 	}
 
 	/**
+	 * Start definition of new input dialog.
+	 * @return 
+	 * 	new {@link InputDialogBuilder} instance
+	 */
+	public static InputDialogPaneBuilder inputPane() {
+		return new InputDialogPaneBuilder();
+	}
+
+	/**
 	 * Start definition of new options dialog.
 	 * @return 
 	 * 	new {@link OptionsDialogBuilder} instance
