@@ -1,41 +1,26 @@
-// Copyright 2019 Axel Howind
-// 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-//     http://www.apache.org/licenses/LICENSE-2.0
-// 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-package com.dua3.fx.util;
+package com.dua3.fx.util.controls;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
+
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Control;
-import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
 
-/**
- * A Dialog for inputting values.
- *
- * The dialog consists of labels and input controls laid out in a grid.
- */
-public class InputDialog extends Dialog<Map<String, Object>> {
+public class InputDialogPane extends DialogPane {
+
+    /** Logger */
+    protected static final Logger LOG = Logger.getLogger(InputDialogPane.class.getSimpleName());
 
 	private static final String MARKER_INITIAL = "";
 	private static final String MARKER_ERROR = "\u26A0";
@@ -113,18 +98,14 @@ public class InputDialog extends Dialog<Map<String, Object>> {
 
 	private Collection<Meta<?>> data = null;
 
-	public InputDialog() {
-		setResultConverter(btn -> {
-			if (btn != ButtonType.OK) {
-				return null;
-			}
-			
-			// Collecors.toMap() does not support null values!
-			Map<String,Object> result = new HashMap<>();
-			data.stream().forEach(e -> result.put(e.id, e.control.get()));
-			
-			return result;
-		});
+	public Map<String, Object> convertResult() {
+		// Collecors.toMap() does not support null values!
+		Map<String,Object> result = new HashMap<>();
+		data.stream().forEach(e -> result.put(e.id, e.control.get()));
+		return result;
+	}
+	
+	public InputDialogPane() {
 	}
 
 	private void addToGrid(GridPane grid, Control child, int c, int r, Insets insets) {
@@ -153,13 +134,12 @@ public class InputDialog extends Dialog<Map<String, Object>> {
 			}
 		}
 
-		DialogPane dialogPane = getDialogPane();
-		dialogPane.setContent(grid);
+		setContent(grid);
 
 		// buttons
-		dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+		getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 		
-		final Button okButton = (Button) dialogPane.lookupButton(ButtonType.OK);
+		final Button okButton = (Button) lookupButton(ButtonType.OK);
 		okButton.addEventFilter(ActionEvent.ACTION, ae -> {
 		    if (!validate()) {
 		        ae.consume(); //not valid

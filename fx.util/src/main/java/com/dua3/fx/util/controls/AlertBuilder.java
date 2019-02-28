@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.dua3.fx.util;
+package com.dua3.fx.util.controls;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -30,7 +30,7 @@ import javafx.scene.control.DialogPane;
  */
 public class AlertBuilder 
 extends StandardDialogBuilder<Alert, AlertBuilder, ButtonType> {
-	AlertBuilder(AlertType type) {
+	public AlertBuilder(AlertType type) {
 		super(() -> new Alert(type));
 	}
 

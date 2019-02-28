@@ -32,9 +32,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 
-import com.dua3.fx.util.AboutDialog;
 import com.dua3.fx.util.Dialogs;
 import com.dua3.fx.util.FxTask;
+import com.dua3.fx.util.controls.AboutDialog;
 import com.dua3.utility.lang.LangUtil;
 
 import javafx.beans.property.BooleanProperty;

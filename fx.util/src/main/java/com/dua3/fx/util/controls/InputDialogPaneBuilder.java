@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.dua3.fx.util;
+package com.dua3.fx.util.controls;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -21,7 +21,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
-import com.dua3.fx.util.InputDialog.Meta;
+import com.dua3.fx.util.controls.InputDialogPane.InputControl;
+import com.dua3.fx.util.controls.InputDialogPane.Meta;
 import com.dua3.utility.lang.LangUtil;
 
 import javafx.collections.FXCollections;
@@ -35,37 +36,37 @@ import javafx.scene.control.TextField;
  * 
  * Provides a fluent interface to create Alerts.
  */
-public class InputDialogBuilder extends StandardDialogBuilder<InputDialog, InputDialogBuilder, Map<String, Object>> {
+public class InputDialogPaneBuilder extends StandardDialogPaneBuilder<InputDialogPane, InputDialogPaneBuilder, Map<String, Object>> {
 
-	public InputDialogBuilder() {
-		super(InputDialog::new);
+	public InputDialogPaneBuilder() {
+		super(InputDialogPane::new);
 	}
 
 	private int columns = 1;
 
-	private LinkedHashMap<String, InputDialog.Meta<?>> data = new LinkedHashMap<>();
+	private LinkedHashMap<String, InputDialogPane.Meta<?>> data = new LinkedHashMap<>();
 
-	public <T> InputDialogBuilder add(String id, String label, Class<T> type, T dflt, InputDialog.InputControl<T> control) {
+	public <T> InputDialogPaneBuilder add(String id, String label, Class<T> type, T dflt, InputControl<T> control) {
 		Objects.requireNonNull(id);
-		Meta<T> meta = new InputDialog.Meta<T>(id, label, type, dflt, control);
+		Meta<T> meta = new Meta<T>(id, label, type, dflt, control);
 		Meta<?> prev = data.put(id, meta);		
 		LangUtil.check(prev == null, "Input with id '" + id + "' already defined");
 		return this;
 	}
 	
-	public InputDialogBuilder columns(int columns) {
+	public InputDialogPaneBuilder columns(int columns) {
 		LangUtil.check(columns > 0);
 		this.columns = columns;
 		return this;
 	}
 
-	public InputDialogBuilder text(String id, String label, String dflt) {
+	public InputDialogPaneBuilder text(String id, String label, String dflt) {
 		return text(id, label, dflt, s -> Optional.empty());
 	}
 	
-	public InputDialogBuilder text(String id, String label, String dflt, Function<String,Optional<String>> validate) {
+	public InputDialogPaneBuilder text(String id, String label, String dflt, Function<String,Optional<String>> validate) {
 		return add(id, label, String.class, dflt,
-				new InputDialog.InputControl<String>() {
+				new InputControl<String>() {
 					final TextField control = new TextField();
 
 					@Override
@@ -90,13 +91,13 @@ public class InputDialogBuilder extends StandardDialogBuilder<InputDialog, Input
 				});
 	}
 
-	public InputDialogBuilder integer(String id, String label, Integer dflt) {
+	public InputDialogPaneBuilder integer(String id, String label, Integer dflt) {
 		return integer(id, label, dflt, i -> Optional.empty());
 	}
 	
-	public InputDialogBuilder integer(String id, String label, Integer dflt, Function<Integer,Optional<String>> validate) {
+	public InputDialogPaneBuilder integer(String id, String label, Integer dflt, Function<Integer,Optional<String>> validate) {
 		return add(id, label, Integer.class, dflt,
-				new InputDialog.InputControl<Integer>() {
+				new InputControl<Integer>() {
 					final TextField control = new TextField();
 
 					@Override
@@ -127,13 +128,13 @@ public class InputDialogBuilder extends StandardDialogBuilder<InputDialog, Input
 				});
 	}
 
-	public InputDialogBuilder decimal(String id, String label, Double dflt) {
+	public InputDialogPaneBuilder decimal(String id, String label, Double dflt) {
 		return decimal(id, label, dflt, d -> Optional.empty());
 	}
 	
-	public InputDialogBuilder decimal(String id, String label, Double dflt, Function<Double,Optional<String>> validate) {
+	public InputDialogPaneBuilder decimal(String id, String label, Double dflt, Function<Double,Optional<String>> validate) {
 		return add(id, label, Double.class, dflt,
-				new InputDialog.InputControl<Double>() {
+				new InputControl<Double>() {
 					final TextField control = new TextField();
 
 					@Override
@@ -164,9 +165,9 @@ public class InputDialogBuilder extends StandardDialogBuilder<InputDialog, Input
 				});
 	}
 
-	public InputDialogBuilder checkBox(String id, String label, boolean dflt, String text) {
+	public InputDialogPaneBuilder checkBox(String id, String label, boolean dflt, String text) {
 		return add(id, label, Boolean.class, dflt,
-				new InputDialog.InputControl<Boolean>() {
+				new InputControl<Boolean>() {
 					final CheckBox control = new CheckBox(text);
 
 					{
@@ -195,9 +196,9 @@ public class InputDialogBuilder extends StandardDialogBuilder<InputDialog, Input
 				});
 	}
 
-	public <T> InputDialogBuilder combobox(String id, String label, T dflt, Class<T> cls, Collection<T> items) {
+	public <T> InputDialogPaneBuilder combobox(String id, String label, T dflt, Class<T> cls, Collection<T> items) {
 		return add(id, label, cls, dflt,
-				new InputDialog.InputControl<T>() {
+				new InputControl<T>() {
 					final ComboBox<T> control = new ComboBox<>();
  
 					{
@@ -231,18 +232,18 @@ public class InputDialogBuilder extends StandardDialogBuilder<InputDialog, Input
 				});
 	}
 
-	public <T> InputDialogBuilder radioList(String id, String label, T dflt, Class<T> cls, Collection<T> items) {
+	public <T> InputDialogPaneBuilder radioList(String id, String label, T dflt, Class<T> cls, Collection<T> items) {
 		return null; // FIXME
 	}
 
 	// TODO: add date and time inputs
 	
 	@Override
-	public InputDialog build() {
-		InputDialog dlg = super.build();
+	public InputDialogPane build() {
+		InputDialogPane pane = super.build();
 
-		dlg.setContent(data.values(), columns);
+		pane.setContent(data.values(), columns);
 
-		return dlg;
+		return pane;
 	}
 }

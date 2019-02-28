@@ -12,35 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.dua3.fx.util;
+package com.dua3.fx.util.controls;
 
-import javafx.scene.control.Alert.AlertType;
+import java.util.Map;
+
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.DialogPane;
+import javafx.scene.control.Dialog;
 
-/** 
- * Builder for Alert Dialogs.
- * 
- * Provides a fluent interface to create Alerts. 
+/**
+ * A Dialog for inputting values.
+ *
+ * The dialog consists of labels and input controls laid out in a grid.
  */
-public class AlertPaneBuilder 
-extends StandardDialogPaneBuilder<DialogPane, AlertPaneBuilder, ButtonType> {
-	AlertPaneBuilder(AlertType type) {
-		super(() -> createPane(type));
-	}
+public class InputDialog extends Dialog<Map<String, Object>> {
 
-	public static DialogPane createPane(AlertType type) {
-		return new DialogPane();
+	public InputDialog() {
+		setResultConverter(btn -> {
+			if (btn != ButtonType.OK) {
+				return null;
+			}
+			
+			return ((InputDialogPane) getDialogPane()).convertResult();
+		});
 	}
 	
-	/**
-	 * Create Alert instance.
-	 * @return Alert instance
-	 */
-	public DialogPane build() {
-		DialogPane dlg = super.build();
-		
-		return dlg;
-	}
-
 }

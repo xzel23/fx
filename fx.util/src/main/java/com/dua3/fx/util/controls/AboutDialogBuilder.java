@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.dua3.fx.util;
+package com.dua3.fx.util.controls;
 
 import java.util.Objects;
 
@@ -29,7 +29,7 @@ public class AboutDialogBuilder {
 	private String mailText = "";
 	private String mailAddress = "";
 
-	AboutDialogBuilder() {
+	public AboutDialogBuilder() {
 	}
 	
 	public AboutDialogBuilder title(String value) {

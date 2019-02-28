@@ -12,9 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.dua3.fx.util;
+package com.dua3.fx.util.controls;
 
-import com.dua3.fx.util.controls.OptionPane;
 import com.dua3.utility.lang.LangUtil;
 import com.dua3.utility.options.OptionSet;
 import com.dua3.utility.options.OptionValues;

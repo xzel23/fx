@@ -14,6 +14,15 @@
 
 package com.dua3.fx.util;
 
+import com.dua3.fx.util.controls.AboutDialogBuilder;
+import com.dua3.fx.util.controls.AlertBuilder;
+import com.dua3.fx.util.controls.AlertPaneBuilder;
+import com.dua3.fx.util.controls.InputDialogBuilder;
+import com.dua3.fx.util.controls.InputDialogPaneBuilder;
+import com.dua3.fx.util.controls.OptionsDialogBuilder;
+import com.dua3.fx.util.controls.PromptBuilder;
+import com.dua3.fx.util.controls.WizardDialogBuilder;
+
 import javafx.scene.control.Alert.AlertType;
 
 public class Dialogs {

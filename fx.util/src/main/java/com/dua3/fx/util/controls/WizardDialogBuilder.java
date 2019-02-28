@@ -1,10 +1,10 @@
-package com.dua3.fx.util;
+package com.dua3.fx.util.controls;
 
 import java.util.LinkedHashMap;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import com.dua3.fx.util.WizardDialog.Page;
+import com.dua3.fx.util.controls.WizardDialog.Page;
 
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;

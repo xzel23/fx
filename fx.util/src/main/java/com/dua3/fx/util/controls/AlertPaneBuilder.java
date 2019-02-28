@@ -12,30 +12,35 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.dua3.fx.util;
+package com.dua3.fx.util.controls;
 
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.DialogPane;
 
 /** 
  * Builder for Alert Dialogs.
  * 
  * Provides a fluent interface to create Alerts. 
  */
-public class PromptBuilder extends StandardDialogBuilder<TextInputDialog, PromptBuilder, String> {
-	public PromptBuilder() {
-		super(TextInputDialog::new);
+public class AlertPaneBuilder 
+extends StandardDialogPaneBuilder<DialogPane, AlertPaneBuilder, ButtonType> {
+	public AlertPaneBuilder(AlertType type) {
+		super(() -> createPane(type));
+	}
+
+	public static DialogPane createPane(AlertType type) {
+		return new DialogPane();
 	}
 	
-	public PromptBuilder defaultValue(String fmt, Object... args) {
-		String defaultValue = args.length==0 ? fmt : String.format(fmt, args);
-		setSupplier(() -> new TextInputDialog(defaultValue));
-		return this;
-	}
-	
-	@Override
-	public TextInputDialog build() {
-		TextInputDialog dlg = super.build();
-		dlg.setGraphic(null);
+	/**
+	 * Create Alert instance.
+	 * @return Alert instance
+	 */
+	public DialogPane build() {
+		DialogPane dlg = super.build();
+		
 		return dlg;
 	}
+
 }

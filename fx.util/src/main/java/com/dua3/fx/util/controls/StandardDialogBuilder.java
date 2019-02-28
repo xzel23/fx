@@ -1,4 +1,4 @@
-package com.dua3.fx.util;
+package com.dua3.fx.util.controls;
 
 import java.util.Optional;
 import java.util.function.Supplier;
