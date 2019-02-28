@@ -1,7 +1,7 @@
 package com.dua3.fx.util.controls;
 
 import java.util.Collection;
-import java.util.Objects;
+import java.util.LinkedHashMap;
 import java.util.logging.Logger;
 
 import javafx.geometry.Insets;
@@ -16,10 +16,9 @@ public class RadioPane<T> extends GridPane {
     /** Logger */
     protected static final Logger LOG = Logger.getLogger(RadioPane.class.getSimpleName());
 
-	private final Collection<T> items;
+    private final LinkedHashMap<T, RadioButton> items = new LinkedHashMap<>();
 	private final ToggleGroup group;
 	private final T currentValue;
-	private final T newValue;
 
 	private static final Insets INSETS = new Insets(2);
 
@@ -33,12 +32,9 @@ public class RadioPane<T> extends GridPane {
 	 *  the current value
 	 */
 	public RadioPane(String labelText, Collection<T> items, T currentValue) {
-		this.items = Objects.requireNonNull(items);
 		this.currentValue = currentValue;
-		this.newValue = currentValue;
-		
 		this.group = new ToggleGroup();
-		// fixme selecteditemproperty/selecteditem
+		
 		int row = 0;
 		for (var item: items) {
 			Label label = row==0 ? new Label(labelText) : null;
@@ -49,12 +45,20 @@ public class RadioPane<T> extends GridPane {
 			addToGrid(label, 0, row);
 			addToGrid(control, 1, row);
 			
+			this.items.put(item, control);
+			
 			row++;
 		}
+		
+		group.selectToggle(this.items.get(currentValue));
 	}
 
 	public T getSelectedItem() {
 		return (T) group.getSelectedToggle();
+	}
+	
+	public void setSelectedItem(T item) {
+		group.selectToggle(items.get(item));
 	}
 	
 	private void addToGrid(Control child, int c, int r) {

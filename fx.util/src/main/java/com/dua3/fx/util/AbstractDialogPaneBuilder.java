@@ -60,7 +60,7 @@ public abstract class AbstractDialogPaneBuilder<T, B extends AbstractDialogPaneB
 	}
 	
 	protected String format(String fmt, Object... args) {
-		return args.length==0 ? fmt : String.format(fmt, args);
+		return String.format(fmt, args);
 	}
 
 	/**
