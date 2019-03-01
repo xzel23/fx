@@ -51,6 +51,18 @@ public class WizardDialogBuilder {
 	public WizardDialog build() {
 		WizardDialog dlg = new WizardDialog();
 
+		Page prev = null;
+		for (var entry:pages.entrySet()) {
+			String name = entry.getKey();
+			Page page = entry.getValue();
+			
+			if (prev!= null && prev.getNext()==null) {
+				prev.setNext(name);
+			}
+			
+			prev = page;
+		}
+
 		dlg.setTitle(title);	
 		dlg.setPages(new LinkedHashMap<>(pages), getStartPage());
 
