@@ -21,7 +21,7 @@ public class WizardDialogBuilder {
 
 	LinkedHashMap<String, Page> pages = new LinkedHashMap<>();
 	
-	public WizardDialogBuilder page(String name, AbstractDialogPaneBuilder<?,?> builder) {
+	public WizardDialogBuilder page(String name, StandardDialogPaneBuilder<?,?,?> builder) {
 		Page page = new Page();
 		page.setNext(builder.next);
 		DialogPane pane = (DialogPane) builder.build();

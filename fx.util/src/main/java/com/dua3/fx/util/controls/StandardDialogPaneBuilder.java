@@ -10,4 +10,12 @@ public class StandardDialogPaneBuilder<T extends DialogPane, B extends StandardD
 		super(supplier, DialogPane::setHeaderText, DialogPane::setContentText);
 	}
 	
+    String next = null;
+	
+	@SuppressWarnings("unchecked")
+	public B next(String s) {
+		this.next = s;
+		return (B) this;
+	}
+
 }

@@ -28,8 +28,6 @@ import javafx.scene.control.DialogPane;
  */
 public abstract class AbstractDialogPaneBuilder<T, B extends AbstractDialogPaneBuilder<T, B>> {
 	
-    String next = null;
-	
     final BiConsumer<T, String> headerSetter;
 	final BiConsumer<T, String> textSetter;
 
@@ -103,12 +101,6 @@ public abstract class AbstractDialogPaneBuilder<T, B extends AbstractDialogPaneB
 	@SuppressWarnings("unchecked")
 	public B text(String fmt, Object... args) {
 		this.text = format(fmt, args);
-		return (B) this;
-	}
-
-	@SuppressWarnings("unchecked")
-	public B next(String s) {
-		this.next = s;
 		return (B) this;
 	}
 
