@@ -9,6 +9,7 @@ import com.dua3.utility.io.Csv;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Dialog;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -84,18 +85,22 @@ public class DialogSample extends Application {
         container.getChildren().add(createButton("Wizard", () -> {
             var rc = Dialogs.wizard()
             		.title("Database Connection Wizard")
-            		.page("start", Dialogs.informationPane()
-            			.header("Overview")
-            			.text("This Wizard will guide you through the configuration process.\n"
-            				+ "\n"
-            				+ "Please make sure that you have the following information available:\n"
-            				+ "• Database name/manufacturer\n"
-            				+ "• Hostname and port (if applicable)\n"
-            				)
-            			.next("choose_dbms"))
-            		.page("choose_dbms", Dialogs.informationPane()
-            			.header("Overview")
-            			.text("foo bar"))
+            				.page("start", 
+            						Dialogs.informationPane()
+            							.header("Create new database connection")
+            							.text(
+            								"This wizard helps you to define a new database conection.%n"+
+            								"%n"+
+            								"You will need the following information:%n"+
+            								"- the vendor or manufacturer name of your database system%n"+
+            								"- the server name and port"
+            							)
+            						)
+            					.page("dbms",
+            						Dialogs.inputPane()
+            							.header("Choose your Database from the list below.")
+            							.combobox("rdmbs", "RDBMS", null, String.class, "H2", "PostgreSQL", "MySQL")
+            					)
             		.showAndWait();            
             System.out.format("Dialog result:%n%s%n", rc);
         }));

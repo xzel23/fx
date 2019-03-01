@@ -14,6 +14,7 @@
 
 package com.dua3.fx.util.controls;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -194,6 +195,10 @@ public class InputDialogPaneBuilder extends StandardDialogPaneBuilder<InputDialo
 						return Optional.empty();
 					}
 				});
+	}
+
+	public <T> InputDialogPaneBuilder combobox(String id, String label, T dflt, Class<T> cls, T... items) {
+		return combobox(id, label, dflt, cls, Arrays.asList(items));
 	}
 
 	public <T> InputDialogPaneBuilder combobox(String id, String label, T dflt, Class<T> cls, Collection<T> items) {
