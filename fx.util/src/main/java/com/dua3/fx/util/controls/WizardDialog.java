@@ -127,7 +127,8 @@ public class WizardDialog extends Dialog<ButtonType> {
 			}
 			
 			// prepare buttons
-			
+			 pane.getButtonTypes().clear();
+			 
 			// cancel button
 			if (isCancelable()) {
 				addButtonToDialogPane(pane, ButtonType.CANCEL, null, null);
