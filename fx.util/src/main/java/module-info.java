@@ -19,7 +19,7 @@ module com.dua3.fx.util {
 	opens com.dua3.fx.util.controls;
 	
 	provides com.dua3.utility.text.FontUtil
-	with com.dua3.fx.util.FxFontUtil;
+	with com.dua3.fx.util.imp.FxFontUtil;
 	
 	requires java.logging;
     requires com.dua3.utility;

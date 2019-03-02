@@ -12,40 +12,34 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.dua3.fx.util;
+package com.dua3.fx.util.imp;
 
+import com.dua3.fx.util.FxUtil;
 import com.dua3.utility.text.FontUtil;
 
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 
 public class FxFontUtil implements FontUtil<Font> {
 
     @Override
     public Font convert(com.dua3.utility.text.Font font) {
-        return new Font(font.getFamily(), font.getSizeInPoints());
-    }
-
-    private javafx.geometry.Bounds boundsInLocal(String s, com.dua3.utility.text.Font f) {
-        Text text = new Text(s);
-        text.setFont(convert(f));
-        return text.getBoundsInLocal();
+        return FxUtil.convert(font);
     }
 
     @Override
-    public Bounds getTextBounds(String s, com.dua3.utility.text.Font f) {
-        var bounds = boundsInLocal(s,f);
-        return new Bounds(bounds.getWidth(), bounds.getHeight());
+    public com.dua3.utility.text.FontUtil.Bounds getTextBounds(String s, com.dua3.utility.text.Font f) {
+         var bounds = FxUtil.getTextBounds(s, f);
+         return new com.dua3.utility.text.FontUtil.Bounds(bounds.getWidth(), bounds.getHeight());
     }
 
     @Override
     public double getTextWidth(String s, com.dua3.utility.text.Font f) {
-        return boundsInLocal(s,f).getWidth();
+        return FxUtil.getTextWidth(s, f);
     }
 
     @Override
     public double getTextHeight(String s, com.dua3.utility.text.Font f) {
-        return boundsInLocal(s,f).getHeight();
+        return FxUtil.getTextHeight(s, f);
     }
 
     public FxFontUtil() {

@@ -7,7 +7,10 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Logger;
 
+import com.dua3.fx.util.FxUtil;
+
 import javafx.event.ActionEvent;
+import javafx.geometry.Dimension2D;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -81,10 +84,14 @@ public class InputDialogPane extends DialogPane {
 		Meta(String id, String label, Class<T> cls, T dflt, InputControl<T> control) {
 			this.id = id;
 			this.label.setText(label);
-			this.marker.setText(MARKER_INITIAL);
 			this.cls = cls;
 			this.dflt = dflt;
 			this.control = control;
+			
+			Dimension2D dimMarker = new Dimension2D(0,0);
+			dimMarker = FxUtil.growToFit(dimMarker, marker.getBoundsInLocal());
+			marker.setMinSize(dimMarker.getWidth(), dimMarker.getHeight());
+            this.marker.setText(MARKER_INITIAL);
 		}
 		
 		void reset() {
