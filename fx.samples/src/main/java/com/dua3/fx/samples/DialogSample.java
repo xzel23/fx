@@ -97,7 +97,7 @@ public class DialogSample extends Application {
           .page("dbms",
               Dialogs.inputPane()
                   .header("Choose your Database from the list below.")
-                  .combobox("rdmbs", "RDBMS", null, String.class, "H2", "PostgreSQL", "MySQL"))
+                  .radioList("rdmbs", "RDBMS", null, String.class, "H2", "PostgreSQL", "MySQL"))
           .showAndWait();
       System.out.format("Dialog result:%n%s%n", rc);
     }));

@@ -27,9 +27,9 @@ import com.dua3.fx.util.controls.InputDialogPane.Meta;
 import com.dua3.utility.lang.LangUtil;
 
 import javafx.collections.FXCollections;
+import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Control;
 import javafx.scene.control.TextField;
 
 /**
@@ -71,7 +71,7 @@ public class InputDialogPaneBuilder extends StandardDialogPaneBuilder<InputDialo
 					final TextField control = new TextField();
 
 					@Override
-					public Control control() {
+					public Node node() {
 						return control;
 					}
 
@@ -102,7 +102,7 @@ public class InputDialogPaneBuilder extends StandardDialogPaneBuilder<InputDialo
 					final TextField control = new TextField();
 
 					@Override
-					public Control control() {
+					public Node node() {
 						return control;
 					}
 
@@ -139,7 +139,7 @@ public class InputDialogPaneBuilder extends StandardDialogPaneBuilder<InputDialo
 					final TextField control = new TextField();
 
 					@Override
-					public Control control() {
+					public Node node() {
 						return control;
 					}
 
@@ -176,7 +176,7 @@ public class InputDialogPaneBuilder extends StandardDialogPaneBuilder<InputDialo
 					}
 					
 					@Override
-					public Control control() {
+					public Node node() {
 						return control;
 					}
 
@@ -212,7 +212,7 @@ public class InputDialogPaneBuilder extends StandardDialogPaneBuilder<InputDialo
 					}
 					
 					@Override
-					public Control control() {
+					public Node node() {
 						return control;
 					}
 
@@ -242,7 +242,7 @@ public class InputDialogPaneBuilder extends StandardDialogPaneBuilder<InputDialo
     }
 
 	public <T> InputDialogPaneBuilder radioList(String id, String label, T dflt, Class<T> cls, Collection<T> items) {
-		return null; // FIXME
+		 return add(id, label, cls, dflt, new RadioPane<T>(items, null));
 	}
 
 	// TODO: add date and time inputs

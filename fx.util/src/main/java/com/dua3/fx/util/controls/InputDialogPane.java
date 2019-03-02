@@ -12,9 +12,9 @@ import com.dua3.fx.util.FxUtil;
 import javafx.event.ActionEvent;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.Control;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
@@ -36,11 +36,11 @@ public class InputDialogPane extends DialogPane {
 	 */
 	public interface InputControl<T> {
 		/**
-		 * Create JavaFX control.
+		 * Get the Node for this input element.
 		 * 
-		 * @return new Control instance
+		 * @return the node
 		 */
-		Control control();
+		Node node();
 
 		/**
 		 * Get value.
@@ -115,7 +115,7 @@ public class InputDialogPane extends DialogPane {
 	public InputDialogPane() {
 	}
 
-	private void addToGrid(GridPane grid, Control child, int c, int r, Insets insets) {
+	private void addToGrid(GridPane grid, Node child, int c, int r, Insets insets) {
 		grid.add(child, c, r);
 		GridPane.setMargin(child, insets);
 	}
@@ -131,7 +131,7 @@ public class InputDialogPane extends DialogPane {
 		for (var entry : data) {
 			// add label and control
 			addToGrid(grid, entry.label, 3 * c, r, insets);
-			addToGrid(grid, entry.control.control(), 3 * c + 1, r, insets);
+			addToGrid(grid, entry.control.node(), 3 * c + 1, r, insets);
 			addToGrid(grid, entry.marker, 3 * c + 2, r, markerInsets);
 
 			// move to next position in grid

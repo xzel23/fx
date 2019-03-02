@@ -4,14 +4,16 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.logging.Logger;
 
+import com.dua3.fx.util.controls.InputDialogPane.InputControl;
+
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
-import javafx.scene.control.Control;
-import javafx.scene.control.Label;
+import javafx.scene.Node;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 
-public class RadioPane<T> extends GridPane {
+public class RadioPane<T> extends VBox implements InputControl<T> {
 
     /** Logger */
     protected static final Logger LOG = Logger.getLogger(RadioPane.class.getSimpleName());
@@ -31,41 +33,35 @@ public class RadioPane<T> extends GridPane {
 	 * @param currentValue
 	 *  the current value
 	 */
-	public RadioPane(String labelText, Collection<T> items, T currentValue) {
+	public RadioPane(Collection<T> items, T currentValue) {
 		this.currentValue = currentValue;
 		this.group = new ToggleGroup();
 		
-		int row = 0;
+		ObservableList<Node> children = getChildren();
 		for (var item: items) {
-			Label label = row==0 ? new Label(labelText) : null;
-			
 			RadioButton control = new RadioButton(String.valueOf(item));
 			control.setToggleGroup(group);
-
-			addToGrid(label, 0, row);
-			addToGrid(control, 1, row);
-			
+			children.add(control);
 			this.items.put(item, control);
-			
-			row++;
 		}
 		
 		group.selectToggle(this.items.get(currentValue));
 	}
 
-	public T getSelectedItem() {
+	@SuppressWarnings("unchecked")
+    @Override
+    public T get() {
 		return (T) group.getSelectedToggle();
 	}
 	
-	public void setSelectedItem(T item) {
+	@Override
+    public void set(T item) {
 		group.selectToggle(items.get(item));
 	}
 	
-	private void addToGrid(Control child, int c, int r) {
-		if (child != null) {
-			add(child, c, r);
-			setMargin(child, INSETS);
-		}
-	}
+    @Override
+    public Node node() {
+        return this;
+    }
 
 }
