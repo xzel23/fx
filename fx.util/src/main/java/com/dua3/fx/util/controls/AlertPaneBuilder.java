@@ -37,7 +37,8 @@ extends StandardDialogPaneBuilder<DialogPane, AlertPaneBuilder, ButtonType> {
 	 * Create Alert instance.
 	 * @return Alert instance
 	 */
-	public DialogPane build() {
+	@Override
+    public DialogPane build() {
 		DialogPane dlg = super.build();
 		
 		return dlg;

@@ -20,7 +20,7 @@ import com.dua3.fx.editors.intern.EditorBase;
 
 public class CodeEditor extends EditorBase {
 	/** Logger */
-    public static final Logger LOG = Logger.getLogger(CodeEditor.class.getName());
+    private static final Logger LOG = Logger.getLogger(CodeEditor.class.getName());
 
     /**
      * Default constructor.
@@ -49,7 +49,8 @@ public class CodeEditor extends EditorBase {
 		getBridge().executeScript(script);
 	}
 	
-	public boolean isHighlightCurrentLine() {
+	@Override
+    public boolean isHighlightCurrentLine() {
 		return Boolean.TRUE.equals(getBridge().callScript("jIsHighlightCurrentLine()"));
 	}
 	
@@ -60,7 +61,8 @@ public class CodeEditor extends EditorBase {
 		getBridge().executeScript(script);
 	}
 	
-	public boolean isShowLineNumbers() {
+	@Override
+    public boolean isShowLineNumbers() {
 		return Boolean.TRUE.equals(getBridge().callScript("jIsShowLineNumbers()"));
 	}
 	

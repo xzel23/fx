@@ -38,7 +38,7 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
 public abstract class EditorBase extends BorderPane {
-    public static final Logger LOG = Logger.getLogger(EditorBase.class.getName());
+    private static final Logger LOG = Logger.getLogger(EditorBase.class.getName());
 
     protected static String escape(String text) {
     	return JavaScriptBridge.escape(text);

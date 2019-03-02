@@ -122,7 +122,7 @@ public class InputDialogPaneBuilder extends StandardDialogPaneBuilder<InputDialo
 						try {
 							int i = Integer.parseInt(t);
 							return validate.apply(i);
-						} catch (NumberFormatException e) {
+						} catch (@SuppressWarnings("unused") NumberFormatException e) {
 							return Optional.of("'"+t+"' is no valid integer.");
 						}
 					}
@@ -159,7 +159,7 @@ public class InputDialogPaneBuilder extends StandardDialogPaneBuilder<InputDialo
 						try {
 							double d = Double.parseDouble(t);
 							return validate.apply(d);
-						} catch (NumberFormatException e) {
+						} catch (@SuppressWarnings("unused") NumberFormatException e) {
 							return Optional.of("'"+t+"' is no valid number.");
 						}
 					}

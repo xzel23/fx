@@ -1,11 +1,11 @@
 // Copyright 2019 Axel Howind
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
-//     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,53 +17,54 @@ package com.dua3.fx.util.controls;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
-/** 
+/**
  * Abstract base class for Dialog builders.
- * 
- * Provides a fluent interface to create Dialogs. 
+ * Provides a fluent interface to create Dialogs.
  */
-public abstract class AbstractDialogBuilder<T,B extends AbstractDialogBuilder<T, B>> 
-extends AbstractDialogPaneBuilder<T, B>{
-	
-	private final BiConsumer<T, String> titleSetter;
+public abstract class AbstractDialogBuilder<T, B extends AbstractDialogBuilder<T, B>>
+    extends AbstractDialogPaneBuilder<T, B> {
 
-	AbstractDialogBuilder(
-		Supplier<T> supplier,
-		BiConsumer<T, String> titleSetter,
-		BiConsumer<T, String> headerSetter,
-		BiConsumer<T, String> textSetter
-	) {
-		super(supplier, headerSetter, textSetter);
-		this.titleSetter=titleSetter;
-	}
+  private final BiConsumer<T, String> titleSetter;
 
-	private String title = null;
+  AbstractDialogBuilder(
+      Supplier<T> supplier,
+      BiConsumer<T, String> titleSetter,
+      BiConsumer<T, String> headerSetter,
+      BiConsumer<T, String> textSetter) {
+    super(supplier, headerSetter, textSetter);
+    this.titleSetter = titleSetter;
+  }
 
-	/**
-	 * Create Dialog instance.
-	 * @return Dialog instance
-	 */
-	public T build() {
-		T dlg = super.build();
+  private String title = null;
 
-		applyIfNotNull(titleSetter, dlg, title);
+  /**
+   * Create Dialog instance.
+   * 
+   * @return Dialog instance
+   */
+  @Override
+  public T build() {
+    T dlg = super.build();
 
-		return dlg;
-	}
+    applyIfNotNull(titleSetter, dlg, title);
 
-	/**
-	 * Set dialog title.
-	 * @param fmt
-	 * 	the format String as defined by {@link java.util.Formatter}
-	 * @param args
-	 * 	the arguments passed to the formatter
-	 * @return 
-	 * 	{@code this}
-	 */
-	@SuppressWarnings("unchecked")
-	public B title(String fmt, Object... args) {
-		this.title = format(fmt, args);
-		return (B) this;
-	}
+    return dlg;
+  }
+
+  /**
+   * Set dialog title.
+   * 
+   * @param fmt
+   *             the format String as defined by {@link java.util.Formatter}
+   * @param args
+   *             the arguments passed to the formatter
+   * @return
+   *         {@code this}
+   */
+  @SuppressWarnings("unchecked")
+  public B title(String fmt, Object... args) {
+    this.title = format(fmt, args);
+    return (B) this;
+  }
 
 }
