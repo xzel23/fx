@@ -237,6 +237,10 @@ public class InputDialogPaneBuilder extends StandardDialogPaneBuilder<InputDialo
 				});
 	}
 
+    public <T> InputDialogPaneBuilder radioList(String id, String label, T dflt, Class<T> cls, T... items) {
+        return radioList(id, label, dflt, cls, Arrays.asList(items));
+    }
+
 	public <T> InputDialogPaneBuilder radioList(String id, String label, T dflt, Class<T> cls, Collection<T> items) {
 		return null; // FIXME
 	}
