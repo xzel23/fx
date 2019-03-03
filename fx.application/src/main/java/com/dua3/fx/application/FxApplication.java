@@ -15,6 +15,7 @@
 package com.dua3.fx.application;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 import java.util.Objects;
 import java.util.Optional;
@@ -153,14 +154,19 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
 		final ChangeListener<Boolean> dirtyStateListener = (v,o,n) -> {
 			updateApplicationTitle();
 		};
+		final ChangeListener<URI> documentLocationListener = (v,o,n) -> {
+            updateApplicationTitle();
+        };
 		controller.currentDocumentProperty.addListener(
 			(v,o,n) -> { 
 				updateApplicationTitle();
 				if (o!= null) {
 					o.dirtyProperty.removeListener(dirtyStateListener);
+					o.locationProperty.removeListener(documentLocationListener);
 				}
 				if (n!=null) {
-					n.dirtyProperty.addListener(dirtyStateListener);
+                    n.dirtyProperty.addListener(dirtyStateListener);
+                    n.locationProperty.addListener(documentLocationListener);
 				}
 			});
 		
