@@ -87,11 +87,10 @@ implements InputBuilder<InputDialogBuilder> {
 		pb.radioList(id, label, dflt, cls, items);
 		return this;
 	}
-    
+
     @Override
-    public InputDialogBuilder options(String id, String label, OptionValues dflt, Class<OptionValues> cls,
-            OptionSet options) {
-        pb.options(id, label, dflt, cls, options);
+    public InputDialogBuilder options(String id, String label, OptionSet options, OptionValues dflt) {
+        pb.options(id, label, options, dflt);
         return this;
     }
     

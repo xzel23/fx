@@ -263,8 +263,8 @@ implements InputBuilder<InputDialogPaneBuilder> {
 	}
 	
 	@Override
-	public InputDialogPaneBuilder options(String id, String label, OptionValues dflt, Class<OptionValues> cls, OptionSet options) {
-        return null;
+	public InputDialogPaneBuilder options(String id, String label, OptionSet options, OptionValues dflt) {
+	    return add(id, label, OptionValues.class, dflt, new OptionsPane(options, dflt));
 	}
 
 	// TODO: add date and time inputs

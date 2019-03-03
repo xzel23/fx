@@ -51,6 +51,6 @@ public interface InputBuilder<B extends InputBuilder<B>> {
         return radioList(id, label, dflt, cls, Arrays.asList(items));
     }
 
-    B options(String id, String label, OptionValues dflt, Class<OptionValues> cls, OptionSet options);
+    B options(String id, String label, OptionSet options, OptionValues dflt);
     
 }

@@ -43,7 +43,7 @@ public class OptionsDialog extends Dialog<OptionValues> {
 				return null;
 			}
 
-			return optionPane.getValues();
+			return optionPane.get();
 		});
 	}
 
