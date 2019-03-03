@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.function.DoubleFunction;
 import java.util.function.Function;
 import java.util.function.IntFunction;
+import java.util.function.Supplier;
 
 import com.dua3.fx.util.controls.InputDialogPane.InputControl;
 import com.dua3.utility.options.OptionSet;
@@ -51,6 +52,10 @@ public interface InputBuilder<B extends InputBuilder<B>> {
         return radioList(id, label, dflt, cls, Arrays.asList(items));
     }
 
-    B options(String id, String label, OptionSet options, OptionValues dflt);
+    B options(String id, String label, Supplier<OptionSet> options, Supplier<OptionValues> dflt);
+    
+    default B options(String id, String label, OptionSet options, OptionValues dflt) {
+        return options(id, label, () -> options, () -> dflt);
+    }
     
 }

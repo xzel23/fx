@@ -22,6 +22,7 @@ import java.util.Optional;
 import java.util.function.DoubleFunction;
 import java.util.function.Function;
 import java.util.function.IntFunction;
+import java.util.function.Supplier;
 
 import com.dua3.fx.util.controls.InputDialogPane.InputControl;
 import com.dua3.fx.util.controls.InputDialogPane.Meta;
@@ -263,8 +264,8 @@ implements InputBuilder<InputDialogPaneBuilder> {
 	}
 	
 	@Override
-	public InputDialogPaneBuilder options(String id, String label, OptionSet options, OptionValues dflt) {
-	    return add(id, label, OptionValues.class, dflt, new OptionsPane(options, dflt));
+	public InputDialogPaneBuilder options(String id, String label, Supplier<OptionSet> options, Supplier<OptionValues> dflt) {
+	    return add(id, label, OptionValues.class, dflt.get(), new OptionsPane(options, dflt));
 	}
 
 	// TODO: add date and time inputs

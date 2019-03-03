@@ -1,10 +1,8 @@
 package com.dua3.fx.util.controls;
 
 import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.function.Supplier;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 import com.dua3.fx.util.controls.InputDialogPane.InputControl;
 import com.dua3.utility.options.Option;
@@ -29,9 +27,8 @@ public class OptionsPane extends GridPane implements InputControl<OptionValues>{
     /** Logger */
     protected static final Logger LOG = Logger.getLogger(OptionsPane.class.getSimpleName());
 
-	private final OptionSet options;
-	private final OptionValues currentValues;
-	private final OptionValues newValues;
+	private Supplier<OptionSet> options;
+	private Supplier<OptionValues> currentValues;
 
 	private LinkedHashMap<Option<?>, Property<?>> items;
 	
@@ -44,13 +41,22 @@ public class OptionsPane extends GridPane implements InputControl<OptionValues>{
 	 * @param currentValues
 	 *  the current values
 	 */
-	public OptionsPane(OptionSet optionSet, OptionValues currentValues) {
-		this.options = Objects.requireNonNull(optionSet);
-		this.currentValues = new OptionValues(currentValues);
-		this.newValues = new OptionValues(currentValues);
-		
+    public OptionsPane(OptionSet optionSet, OptionValues currentValues) {
+        this(() -> optionSet, () -> currentValues);
+    }
+    
+    public OptionsPane(Supplier<OptionSet> options, Supplier<OptionValues> dflt) {
+        this.options = options;
+        this.currentValues=dflt;
+        
+		init(options.get(), dflt.get());
+	}
+
+    public void init(OptionSet options, OptionValues currentValues) {
+        getChildren().clear();
+        
 		int row = 0;
-		for (Option<?> option: optionSet) {
+		for (Option<?> option: options) {
 			Label label = new Label(option.getName());
 			
             Property<?> property;            
@@ -59,14 +65,12 @@ public class OptionsPane extends GridPane implements InputControl<OptionValues>{
 			if (option instanceof StringOption) {
 				TextField c = new TextField();
 				c.setText(String.valueOf(value));
-				newValues.put(option, () -> c.textProperty().get());
 				control = c;
 				property = c.textProperty();
 			} else if (option instanceof ChoiceOption<?>) {
 				var items = FXCollections.observableList(((ChoiceOption<?>)option).getChoices());
 				var c = new ComboBox<>(items);
 				c.getSelectionModel().select(items.indexOf(value));
-				newValues.put(option, c.valueProperty().get());
 				control = c;
 				property = c.valueProperty();
 			} else {
@@ -82,17 +86,8 @@ public class OptionsPane extends GridPane implements InputControl<OptionValues>{
 			
 			row++;
 		}
-	}
+    }
 
-	/**
-	 * Get the options for this OptionsPane.
-	 * @return
-	 *  the options
-	 */
-	public OptionSet getOptions() {
-		return options;
-	}
-	
 	private void addToGrid(Control child, int c, int r) {
 		if (child != null) {
 			add(child, c, r);
@@ -102,8 +97,13 @@ public class OptionsPane extends GridPane implements InputControl<OptionValues>{
 	
 	@Override
     public OptionValues get() {
-		return new OptionValues(newValues.entrySet().stream()
-				.collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().makeStatic())));
+	    OptionValues values = new OptionValues();
+	    for (var item: items.entrySet()) {
+	        Option<?> option = item.getKey();
+	        Value<?> value = Option.value(item.getValue());
+	        values.put(option, value);
+	    }
+		return values;
 	}
 
     @SuppressWarnings({ "rawtypes", "unchecked" })

@@ -20,6 +20,7 @@ import java.util.Optional;
 import java.util.function.DoubleFunction;
 import java.util.function.Function;
 import java.util.function.IntFunction;
+import java.util.function.Supplier;
 
 import com.dua3.fx.util.controls.InputDialogPane.InputControl;
 import com.dua3.utility.options.OptionSet;
@@ -89,7 +90,7 @@ implements InputBuilder<InputDialogBuilder> {
 	}
 
     @Override
-    public InputDialogBuilder options(String id, String label, OptionSet options, OptionValues dflt) {
+    public InputDialogBuilder options(String id, String label, Supplier<OptionSet> options, Supplier<OptionValues> dflt) {
         pb.options(id, label, options, dflt);
         return this;
     }
