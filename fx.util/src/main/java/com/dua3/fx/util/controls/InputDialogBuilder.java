@@ -17,7 +17,9 @@ package com.dua3.fx.util.controls;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.DoubleFunction;
 import java.util.function.Function;
+import java.util.function.IntFunction;
 
 import com.dua3.fx.util.controls.InputDialogPane.InputControl;
 
@@ -26,7 +28,9 @@ import com.dua3.fx.util.controls.InputDialogPane.InputControl;
  * 
  * Provides a fluent interface to create Alerts.
  */
-public class InputDialogBuilder extends StandardDialogBuilder<InputDialog, InputDialogBuilder, Map<String, Object>> {
+public class InputDialogBuilder
+extends StandardDialogBuilder<InputDialog, InputDialogBuilder, Map<String, Object>> 
+implements InputBuilder<InputDialogBuilder> {
 
 	private final InputDialogPaneBuilder pb = new InputDialogPaneBuilder();
 	
@@ -34,62 +38,71 @@ public class InputDialogBuilder extends StandardDialogBuilder<InputDialog, Input
 		super(InputDialog::new);
 	}
 
-	public <T> InputDialogBuilder add(String id, String label, Class<T> type, T dflt, InputControl<T> control) {
+	@Override
+    public <T> InputDialogBuilder add(String id, String label, Class<T> type, T dflt, InputControl<T> control) {
 		pb.add(id, label, type, dflt, control);
 		return this;
 	}
 	
-	public InputDialogBuilder columns(int columns) {
+	@Override
+    public InputDialogBuilder columns(int columns) {
 		pb.columns(columns);
 		return this;
 	}
 
-	public InputDialogBuilder text(String id, String label, String dflt) {
+	@Override
+    public InputDialogBuilder text(String id, String label, String dflt) {
 		pb.text(id, label, dflt);
 		return this;
 	}
 	
-	public InputDialogBuilder text(String id, String label, String dflt, Function<String,Optional<String>> validate) {
+	@Override
+    public InputDialogBuilder text(String id, String label, String dflt, Function<String,Optional<String>> validate) {
 		pb.text(id, label, dflt, validate);
 		return this;
 	}
 
-	public InputDialogBuilder integer(String id, String label, Integer dflt) {
+	@Override
+    public InputDialogBuilder integer(String id, String label, Integer dflt) {
 		pb.integer(id, label, dflt);
 		return this;
 	}
 	
-	public InputDialogBuilder integer(String id, String label, Integer dflt, Function<Integer,Optional<String>> validate) {
+    @Override
+	public InputDialogBuilder integer(String id, String label, Integer dflt, IntFunction<Optional<String>> validate) {
 		pb.integer(id, label, dflt, validate);
 		return this;
 	}
 
+    @Override
 	public InputDialogBuilder decimal(String id, String label, Double dflt) {
 		pb.decimal(id, label, dflt);
 		return this;
 	}
 	
-	public InputDialogBuilder decimal(String id, String label, Double dflt, Function<Double,Optional<String>> validate) {
+    @Override
+	public InputDialogBuilder decimal(String id, String label, Double dflt, DoubleFunction<Optional<String>> validate) {
 		pb.decimal(id, label, dflt, validate);
 		return this;
 	}
 
+    @Override
 	public InputDialogBuilder checkBox(String id, String label, boolean dflt, String text) {
 		pb.checkBox(id, label, dflt, text);
 		return this;
 	}
 
-	public <T> InputDialogBuilder combobox(String id, String label, T dflt, Class<T> cls, Collection<T> items) {
-		pb.combobox(id, label, dflt, cls, items);
+    @Override
+	public <T> InputDialogBuilder comboBox(String id, String label, T dflt, Class<T> cls, Collection<T> items) {
+		pb.comboBox(id, label, dflt, cls, items);
 		return this;
 	}
 
+    @Override
 	public <T> InputDialogBuilder radioList(String id, String label, T dflt, Class<T> cls, Collection<T> items) {
 		pb.radioList(id, label, dflt, cls, items);
 		return this;
 	}
-
-	// TODO: add date and time inputs
 	
 	@Override
 	public InputDialog build() {

@@ -14,13 +14,14 @@
 
 package com.dua3.fx.util.controls;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.DoubleFunction;
 import java.util.function.Function;
+import java.util.function.IntFunction;
 
 import com.dua3.fx.util.controls.InputDialogPane.InputControl;
 import com.dua3.fx.util.controls.InputDialogPane.Meta;
@@ -37,7 +38,9 @@ import javafx.scene.control.TextField;
  * 
  * Provides a fluent interface to create Alerts.
  */
-public class InputDialogPaneBuilder extends StandardDialogPaneBuilder<InputDialogPane, InputDialogPaneBuilder, Map<String, Object>> {
+public class InputDialogPaneBuilder 
+extends StandardDialogPaneBuilder<InputDialogPane, InputDialogPaneBuilder, Map<String, Object>> 
+implements InputBuilder<InputDialogPaneBuilder> {
 
 	public InputDialogPaneBuilder() {
 		super(InputDialogPane::new);
@@ -47,25 +50,41 @@ public class InputDialogPaneBuilder extends StandardDialogPaneBuilder<InputDialo
 
 	private LinkedHashMap<String, InputDialogPane.Meta<?>> data = new LinkedHashMap<>();
 
-	public <T> InputDialogPaneBuilder add(String id, String label, Class<T> type, T dflt, InputControl<T> control) {
+	/* (non-Javadoc)
+     * @see com.dua3.fx.util.controls.InputBuilder#add(java.lang.String, java.lang.String, java.lang.Class, T, com.dua3.fx.util.controls.InputDialogPane.InputControl)
+     */
+	@Override
+    public <T> InputDialogPaneBuilder add(String id, String label, Class<T> type, T dflt, InputControl<T> control) {
 		Objects.requireNonNull(id);
-		Meta<T> meta = new Meta<T>(id, label, type, dflt, control);
+		Meta<T> meta = new Meta<>(id, label, type, dflt, control);
 		Meta<?> prev = data.put(id, meta);		
 		LangUtil.check(prev == null, "Input with id '" + id + "' already defined");
 		return this;
 	}
 	
-	public InputDialogPaneBuilder columns(int columns) {
+	/* (non-Javadoc)
+     * @see com.dua3.fx.util.controls.InputBuilder#columns(int)
+     */
+	@Override
+    public InputDialogPaneBuilder columns(int columns) {
 		LangUtil.check(columns > 0);
 		this.columns = columns;
 		return this;
 	}
 
-	public InputDialogPaneBuilder text(String id, String label, String dflt) {
+	/* (non-Javadoc)
+     * @see com.dua3.fx.util.controls.InputBuilder#text(java.lang.String, java.lang.String, java.lang.String)
+     */
+	@Override
+    public InputDialogPaneBuilder text(String id, String label, String dflt) {
 		return text(id, label, dflt, s -> Optional.empty());
 	}
 	
-	public InputDialogPaneBuilder text(String id, String label, String dflt, Function<String,Optional<String>> validate) {
+	/* (non-Javadoc)
+     * @see com.dua3.fx.util.controls.InputBuilder#text(java.lang.String, java.lang.String, java.lang.String, java.util.function.Function)
+     */
+	@Override
+    public InputDialogPaneBuilder text(String id, String label, String dflt, Function<String,Optional<String>> validate) {
 		return add(id, label, String.class, dflt,
 				new InputControl<String>() {
 					final TextField control = new TextField();
@@ -92,11 +111,19 @@ public class InputDialogPaneBuilder extends StandardDialogPaneBuilder<InputDialo
 				});
 	}
 
-	public InputDialogPaneBuilder integer(String id, String label, Integer dflt) {
+	/* (non-Javadoc)
+     * @see com.dua3.fx.util.controls.InputBuilder#integer(java.lang.String, java.lang.String, java.lang.Integer)
+     */
+	@Override
+    public InputDialogPaneBuilder integer(String id, String label, Integer dflt) {
 		return integer(id, label, dflt, i -> Optional.empty());
 	}
 	
-	public InputDialogPaneBuilder integer(String id, String label, Integer dflt, Function<Integer,Optional<String>> validate) {
+	/* (non-Javadoc)
+     * @see com.dua3.fx.util.controls.InputBuilder#integer(java.lang.String, java.lang.String, java.lang.Integer, java.util.function.Function)
+     */
+	@Override
+    public InputDialogPaneBuilder integer(String id, String label, Integer dflt, IntFunction<Optional<String>> validate) {
 		return add(id, label, Integer.class, dflt,
 				new InputControl<Integer>() {
 					final TextField control = new TextField();
@@ -129,11 +156,19 @@ public class InputDialogPaneBuilder extends StandardDialogPaneBuilder<InputDialo
 				});
 	}
 
-	public InputDialogPaneBuilder decimal(String id, String label, Double dflt) {
+	/* (non-Javadoc)
+     * @see com.dua3.fx.util.controls.InputBuilder#decimal(java.lang.String, java.lang.String, java.lang.Double)
+     */
+	@Override
+    public InputDialogPaneBuilder decimal(String id, String label, Double dflt) {
 		return decimal(id, label, dflt, d -> Optional.empty());
 	}
 	
-	public InputDialogPaneBuilder decimal(String id, String label, Double dflt, Function<Double,Optional<String>> validate) {
+	/* (non-Javadoc)
+     * @see com.dua3.fx.util.controls.InputBuilder#decimal(java.lang.String, java.lang.String, java.lang.Double, java.util.function.Function)
+     */
+	@Override
+    public InputDialogPaneBuilder decimal(String id, String label, Double dflt, DoubleFunction<Optional<String>> validate) {
 		return add(id, label, Double.class, dflt,
 				new InputControl<Double>() {
 					final TextField control = new TextField();
@@ -166,7 +201,11 @@ public class InputDialogPaneBuilder extends StandardDialogPaneBuilder<InputDialo
 				});
 	}
 
-	public InputDialogPaneBuilder checkBox(String id, String label, boolean dflt, String text) {
+	/* (non-Javadoc)
+     * @see com.dua3.fx.util.controls.InputBuilder#checkBox(java.lang.String, java.lang.String, boolean, java.lang.String)
+     */
+	@Override
+    public InputDialogPaneBuilder checkBox(String id, String label, boolean dflt, String text) {
 		return add(id, label, Boolean.class, dflt,
 				new InputControl<Boolean>() {
 					final CheckBox control = new CheckBox(text);
@@ -187,7 +226,7 @@ public class InputDialogPaneBuilder extends StandardDialogPaneBuilder<InputDialo
 
 					@Override
 					public void set(Boolean arg) {
-						control.setSelected(arg);;
+						control.setSelected(arg);
 					}
 
 					@Override
@@ -197,12 +236,11 @@ public class InputDialogPaneBuilder extends StandardDialogPaneBuilder<InputDialo
 				});
 	}
 
-	@SafeVarargs
-	public final <T> InputDialogPaneBuilder combobox(String id, String label, T dflt, Class<T> cls, T... items) {
-		return combobox(id, label, dflt, cls, Arrays.asList(items));
-	}
-
-	public <T> InputDialogPaneBuilder combobox(String id, String label, T dflt, Class<T> cls, Collection<T> items) {
+	/* (non-Javadoc)
+     * @see com.dua3.fx.util.controls.InputBuilder#comboBox(java.lang.String, java.lang.String, T, java.lang.Class, java.util.Collection)
+     */
+	@Override
+    public <T> InputDialogPaneBuilder comboBox(String id, String label, T dflt, Class<T> cls, Collection<T> items) {
 		return add(id, label, cls, dflt,
 				new InputControl<T>() {
 					final ComboBox<T> control = new ComboBox<>();
@@ -238,17 +276,19 @@ public class InputDialogPaneBuilder extends StandardDialogPaneBuilder<InputDialo
 				});
 	}
 
-    @SafeVarargs
-    public final <T> InputDialogPaneBuilder radioList(String id, String label, T dflt, Class<T> cls, T... items) {
-        return radioList(id, label, dflt, cls, Arrays.asList(items));
-    }
-
-	public <T> InputDialogPaneBuilder radioList(String id, String label, T dflt, Class<T> cls, Collection<T> items) {
-		 return add(id, label, cls, dflt, new RadioPane<T>(items, null));
+	/* (non-Javadoc)
+     * @see com.dua3.fx.util.controls.InputBuilder#radioList(java.lang.String, java.lang.String, T, java.lang.Class, java.util.Collection)
+     */
+	@Override
+    public <T> InputDialogPaneBuilder radioList(String id, String label, T dflt, Class<T> cls, Collection<T> items) {
+		 return add(id, label, cls, dflt, new RadioPane<>(items, null));
 	}
 
 	// TODO: add date and time inputs
 	
+	/* (non-Javadoc)
+     * @see com.dua3.fx.util.controls.InputBuilder#build()
+     */
 	@Override
 	public InputDialogPane build() {
 		InputDialogPane pane = super.build();

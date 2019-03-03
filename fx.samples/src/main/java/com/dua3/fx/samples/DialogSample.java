@@ -66,7 +66,7 @@ public class DialogSample extends Application {
           .integer("integer", "enter number", 0)
           .integer("integer from 4 to 7", "enter number", 0,
               i -> i >= 4 && i <= 7 ? Optional.empty() : Optional.of(i + " is not between 4 and 7"))
-          .combobox("list", "choose one", "Maybe", String.class, List.of("Yes", "No", "Maybe"))
+          .comboBox("list", "choose one", "Maybe", String.class, List.of("Yes", "No", "Maybe"))
           .checkBox("bool", "Yes or No:", false, "yes")
           .showAndWait();
     }));
