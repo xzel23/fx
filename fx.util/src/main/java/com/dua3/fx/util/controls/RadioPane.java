@@ -7,7 +7,6 @@ import java.util.logging.Logger;
 import com.dua3.fx.util.controls.InputDialogPane.InputControl;
 
 import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
@@ -22,12 +21,10 @@ public class RadioPane<T> extends VBox implements InputControl<T> {
 	private final ToggleGroup group;
 	private final T currentValue;
 
-	private static final Insets INSETS = new Insets(2);
+	private static final double SPACING = 4;
 
 	/**
 	 * Create new Radio Pane.
-	 * @param labelText
-	 *  the text to show on the label
 	 * @param items
 	 *  the selectable items
 	 * @param currentValue
@@ -37,6 +34,7 @@ public class RadioPane<T> extends VBox implements InputControl<T> {
 		this.currentValue = currentValue;
 		this.group = new ToggleGroup();
 		
+		this.setSpacing(SPACING);
 		ObservableList<Node> children = getChildren();
 		for (var item: items) {
 			RadioButton control = new RadioButton(String.valueOf(item));

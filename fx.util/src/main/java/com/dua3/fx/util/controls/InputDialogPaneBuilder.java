@@ -197,7 +197,8 @@ public class InputDialogPaneBuilder extends StandardDialogPaneBuilder<InputDialo
 				});
 	}
 
-	public <T> InputDialogPaneBuilder combobox(String id, String label, T dflt, Class<T> cls, T... items) {
+	@SafeVarargs
+	public final <T> InputDialogPaneBuilder combobox(String id, String label, T dflt, Class<T> cls, T... items) {
 		return combobox(id, label, dflt, cls, Arrays.asList(items));
 	}
 
@@ -237,7 +238,8 @@ public class InputDialogPaneBuilder extends StandardDialogPaneBuilder<InputDialo
 				});
 	}
 
-    public <T> InputDialogPaneBuilder radioList(String id, String label, T dflt, Class<T> cls, T... items) {
+    @SafeVarargs
+    public final <T> InputDialogPaneBuilder radioList(String id, String label, T dflt, Class<T> cls, T... items) {
         return radioList(id, label, dflt, cls, Arrays.asList(items));
     }
 
