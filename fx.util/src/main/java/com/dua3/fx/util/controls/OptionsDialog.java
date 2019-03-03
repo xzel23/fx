@@ -29,7 +29,7 @@ import javafx.scene.control.DialogPane;
  */
 public class OptionsDialog extends Dialog<OptionValues> {
 
-	private OptionPane optionPane;
+	private OptionsPane optionPane;
 	
 	public OptionsDialog() {		
 		// buttons
@@ -56,7 +56,7 @@ public class OptionsDialog extends Dialog<OptionValues> {
 	 */
 	public void setOptions(OptionSet optionSet, OptionValues currentValues) {
 		LangUtil.check(optionPane==null, "setOptions() already called!");
-		this.optionPane = new OptionPane(optionSet, currentValues);
+		this.optionPane = new OptionsPane(optionSet, currentValues);
 		getDialogPane().setContent(optionPane);
 	}
 

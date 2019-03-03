@@ -26,6 +26,8 @@ import java.util.function.IntFunction;
 import com.dua3.fx.util.controls.InputDialogPane.InputControl;
 import com.dua3.fx.util.controls.InputDialogPane.Meta;
 import com.dua3.utility.lang.LangUtil;
+import com.dua3.utility.options.OptionSet;
+import com.dua3.utility.options.OptionValues;
 
 import javafx.collections.FXCollections;
 import javafx.scene.Node;
@@ -73,14 +75,6 @@ implements InputBuilder<InputDialogPaneBuilder> {
 	}
 
 	/* (non-Javadoc)
-     * @see com.dua3.fx.util.controls.InputBuilder#text(java.lang.String, java.lang.String, java.lang.String)
-     */
-	@Override
-    public InputDialogPaneBuilder text(String id, String label, String dflt) {
-		return text(id, label, dflt, s -> Optional.empty());
-	}
-	
-	/* (non-Javadoc)
      * @see com.dua3.fx.util.controls.InputBuilder#text(java.lang.String, java.lang.String, java.lang.String, java.util.function.Function)
      */
 	@Override
@@ -111,14 +105,6 @@ implements InputBuilder<InputDialogPaneBuilder> {
 				});
 	}
 
-	/* (non-Javadoc)
-     * @see com.dua3.fx.util.controls.InputBuilder#integer(java.lang.String, java.lang.String, java.lang.Integer)
-     */
-	@Override
-    public InputDialogPaneBuilder integer(String id, String label, Integer dflt) {
-		return integer(id, label, dflt, i -> Optional.empty());
-	}
-	
 	/* (non-Javadoc)
      * @see com.dua3.fx.util.controls.InputBuilder#integer(java.lang.String, java.lang.String, java.lang.Integer, java.util.function.Function)
      */
@@ -156,14 +142,6 @@ implements InputBuilder<InputDialogPaneBuilder> {
 				});
 	}
 
-	/* (non-Javadoc)
-     * @see com.dua3.fx.util.controls.InputBuilder#decimal(java.lang.String, java.lang.String, java.lang.Double)
-     */
-	@Override
-    public InputDialogPaneBuilder decimal(String id, String label, Double dflt) {
-		return decimal(id, label, dflt, d -> Optional.empty());
-	}
-	
 	/* (non-Javadoc)
      * @see com.dua3.fx.util.controls.InputBuilder#decimal(java.lang.String, java.lang.String, java.lang.Double, java.util.function.Function)
      */
@@ -282,6 +260,11 @@ implements InputBuilder<InputDialogPaneBuilder> {
 	@Override
     public <T> InputDialogPaneBuilder radioList(String id, String label, T dflt, Class<T> cls, Collection<T> items) {
 		 return add(id, label, cls, dflt, new RadioPane<>(items, null));
+	}
+	
+	@Override
+	public InputDialogPaneBuilder options(String id, String label, OptionValues dflt, Class<OptionValues> cls, OptionSet options) {
+        return null;
 	}
 
 	// TODO: add date and time inputs

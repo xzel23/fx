@@ -22,6 +22,8 @@ import java.util.function.Function;
 import java.util.function.IntFunction;
 
 import com.dua3.fx.util.controls.InputDialogPane.InputControl;
+import com.dua3.utility.options.OptionSet;
+import com.dua3.utility.options.OptionValues;
 
 /**
  * Builder for Alert Dialogs.
@@ -51,35 +53,17 @@ implements InputBuilder<InputDialogBuilder> {
 	}
 
 	@Override
-    public InputDialogBuilder text(String id, String label, String dflt) {
-		pb.text(id, label, dflt);
-		return this;
-	}
-	
-	@Override
     public InputDialogBuilder text(String id, String label, String dflt, Function<String,Optional<String>> validate) {
 		pb.text(id, label, dflt, validate);
 		return this;
 	}
 
 	@Override
-    public InputDialogBuilder integer(String id, String label, Integer dflt) {
-		pb.integer(id, label, dflt);
-		return this;
-	}
-	
-    @Override
 	public InputDialogBuilder integer(String id, String label, Integer dflt, IntFunction<Optional<String>> validate) {
 		pb.integer(id, label, dflt, validate);
 		return this;
 	}
 
-    @Override
-	public InputDialogBuilder decimal(String id, String label, Double dflt) {
-		pb.decimal(id, label, dflt);
-		return this;
-	}
-	
     @Override
 	public InputDialogBuilder decimal(String id, String label, Double dflt, DoubleFunction<Optional<String>> validate) {
 		pb.decimal(id, label, dflt, validate);
@@ -103,7 +87,14 @@ implements InputBuilder<InputDialogBuilder> {
 		pb.radioList(id, label, dflt, cls, items);
 		return this;
 	}
-	
+    
+    @Override
+    public InputDialogBuilder options(String id, String label, OptionValues dflt, Class<OptionValues> cls,
+            OptionSet options) {
+        pb.options(id, label, dflt, cls, options);
+        return this;
+    }
+    
 	@Override
 	public InputDialog build() {
 		InputDialog dlg = super.build();
@@ -112,4 +103,5 @@ implements InputBuilder<InputDialogBuilder> {
 
 		return dlg;
 	}
+
 }

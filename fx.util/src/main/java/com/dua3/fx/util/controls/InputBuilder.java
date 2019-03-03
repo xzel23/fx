@@ -8,6 +8,8 @@ import java.util.function.Function;
 import java.util.function.IntFunction;
 
 import com.dua3.fx.util.controls.InputDialogPane.InputControl;
+import com.dua3.utility.options.OptionSet;
+import com.dua3.utility.options.OptionValues;
 
 public interface InputBuilder<B extends InputBuilder<B>> {
 
@@ -15,16 +17,22 @@ public interface InputBuilder<B extends InputBuilder<B>> {
 
     B columns(int columns);
 
-    B text(String id, String label, String dflt);
-
+    default B text(String id, String label, String dflt) {
+        return text(id, label, dflt, s -> Optional.empty());
+    }
+    
     B text(String id, String label, String dflt, Function<String, Optional<String>> validate);
 
-    B integer(String id, String label, Integer dflt);
+    default B integer(String id, String label, Integer dflt) {
+        return integer(id, label, dflt, i -> Optional.empty());
+    }
 
     B integer(String id, String label, Integer dflt, IntFunction<Optional<String>> validate);
 
-    B decimal(String id, String label, Double dflt);
-
+    default B decimal(String id, String label, Double dflt) {
+        return decimal(id, label, dflt, d -> Optional.empty());
+    }
+    
     B decimal(String id, String label, Double dflt, DoubleFunction<Optional<String>> validate);
 
     B checkBox(String id, String label, boolean dflt, String text);
@@ -43,4 +51,6 @@ public interface InputBuilder<B extends InputBuilder<B>> {
         return radioList(id, label, dflt, cls, Arrays.asList(items));
     }
 
+    B options(String id, String label, OptionValues dflt, Class<OptionValues> cls, OptionSet options);
+    
 }

@@ -20,10 +20,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
-public class OptionPane extends GridPane {
+public class OptionsPane extends GridPane {
 
     /** Logger */
-    protected static final Logger LOG = Logger.getLogger(OptionPane.class.getSimpleName());
+    protected static final Logger LOG = Logger.getLogger(OptionsPane.class.getSimpleName());
 
 	private final OptionSet options;
 	private final OptionValues currentValues;
@@ -32,13 +32,13 @@ public class OptionPane extends GridPane {
 	private static final Insets INSETS = new Insets(2);
 
 	/**
-	 * Create new OptionPane.
+	 * Create new OptionsPane.
 	 * @param optionSet
 	 *  the available options
 	 * @param currentValues
 	 *  the current values
 	 */
-	public OptionPane(OptionSet optionSet, OptionValues currentValues) {
+	public OptionsPane(OptionSet optionSet, OptionValues currentValues) {
 		this.options = Objects.requireNonNull(optionSet);
 		this.currentValues = new OptionValues(currentValues);
 		this.newValues = new OptionValues(currentValues);
@@ -73,7 +73,7 @@ public class OptionPane extends GridPane {
 	}
 
 	/**
-	 * Get the options for this OptionPane.
+	 * Get the options for this OptionsPane.
 	 * @return
 	 *  the options
 	 */
