@@ -22,7 +22,6 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -41,6 +40,8 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ButtonType;
 import javafx.stage.FileChooser;
@@ -57,7 +58,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	private A app;
 
 	/** The list of current tasks. */
-	private List<FxTask<?>> tasks = new ArrayList<>();
+	protected final ObservableList<FxTask<?>> tasks = FXCollections.observableArrayList();
 	
 	/** The "all files" filter. */
 	protected static final ExtensionFilter EXTENSIONFILTER_ALL_FILES = new FileChooser.ExtensionFilter("all files", "*.*");
@@ -392,11 +393,6 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 
 	@SuppressWarnings({ "static-method", "unused" })
 	protected FxDocument loadDocument(URI uri) throws IOException {
-		throw new UnsupportedOperationException("not implemented");
-	}
-
-	@SuppressWarnings({ "static-method", "unused" })
-	protected void saveDocument(URI uri) throws IOException {
 		throw new UnsupportedOperationException("not implemented");
 	}
 
