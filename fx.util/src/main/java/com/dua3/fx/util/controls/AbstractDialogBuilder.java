@@ -14,25 +14,24 @@
 
 package com.dua3.fx.util.controls;
 
+import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
+
+import javafx.scene.control.Dialog;
 
 /**
  * Abstract base class for Dialog builders.
  * Provides a fluent interface to create Dialogs.
  */
-public abstract class AbstractDialogBuilder<T, B extends AbstractDialogBuilder<T, B>>
-    extends AbstractDialogPaneBuilder<T, B> {
+public abstract class AbstractDialogBuilder<D extends Dialog<R>, B extends AbstractDialogBuilder<D, B,R>,R>
+    extends AbstractDialogPaneBuilder<D, B, R> {
 
-  private final BiConsumer<T, String> titleSetter;
+  private final BiConsumer<D,String> titleSetter;
 
-  AbstractDialogBuilder(
-      Supplier<T> supplier,
-      BiConsumer<T, String> titleSetter,
-      BiConsumer<T, String> headerSetter,
-      BiConsumer<T, String> textSetter) {
-    super(supplier, headerSetter, textSetter);
-    this.titleSetter = titleSetter;
+  protected AbstractDialogBuilder(Supplier<D> supplier) {
+    super(supplier, Dialog::setHeaderText, Dialog::setContentText);
+    this.titleSetter = Dialog::setTitle;
   }
 
   private String title = null;
@@ -43,8 +42,8 @@ public abstract class AbstractDialogBuilder<T, B extends AbstractDialogBuilder<T
    * @return Dialog instance
    */
   @Override
-  public T build() {
-    T dlg = super.build();
+  public D build() {
+    D dlg = super.build();
 
     applyIfNotNull(titleSetter, dlg, title);
 
@@ -67,4 +66,15 @@ public abstract class AbstractDialogBuilder<T, B extends AbstractDialogBuilder<T
     return (B) this;
   }
 
+	/**
+	 * Build and show the dialog.
+	 * 
+	 * This is equivalent to calling build().showAndWait().
+	 * 
+	 * @return
+	 *  Optinal containing the result as defined by the dialog
+	 */
+	public Optional<R> showAndWait() {
+		return build().showAndWait();
+	}
 }

@@ -30,44 +30,6 @@ public class InputDialogPane extends DialogPane {
 	private static final String MARKER_OK = "";
 	
 	/**
-	 * Interface for an input field.
-	 *
-	 * @param <T> the input value's type
-	 */
-	public interface InputControl<T> {
-		/**
-		 * Get the Node for this input element.
-		 * 
-		 * @return the node
-		 */
-		Node node();
-
-		/**
-		 * Get value.
-		 * 
-		 * @return the current value
-		 */
-		T get();
-
-		/**
-		 * Set value.
-		 * 
-		 * @param arg the value to set
-		 */
-		void set(T arg);
-
-		/**
-		 * Validate user input.
-		 * 
-		 * @return if not valid, an Optional containing the error; otherwise an empty
-		 *         Optional
-		 */
-		default Optional<String> validate() {
-			return Optional.empty();
-		}
-	}
-
-	/**
 	 * Meta data for a single input field consisting of ID, label text, default value etc.
 	 *
 	 * @param <T>

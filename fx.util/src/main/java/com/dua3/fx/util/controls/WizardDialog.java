@@ -63,11 +63,11 @@ public class WizardDialog extends Dialog<ButtonType> {
 	/**
 	 * Wizard page information class.
 	 */
-	public static class Page {
-		private DialogPane pane;
+	public static class Page<D extends DialogPane,R> {
+		private D pane;
 		private String previous;
 		private String next;
-		private Consumer<? super DialogPane> resultHandler;
+		private ResultHandler<R> resultHandler;
 		
 		public String getPrevious() {
 			return previous;
@@ -85,29 +85,28 @@ public class WizardDialog extends Dialog<ButtonType> {
 			this.next = next;
 		}
 		
-		public DialogPane getPane() {
+		public D getPane() {
 			return pane;
 		}
 
-		@SuppressWarnings("unchecked")
-		public <P extends DialogPane> void setPane(P pane, ResultHandler<P> resultHandler) {
+		public void setPane(D pane, ResultHandler<R> resultHandler) {
 			this.pane = pane;
-			this.resultHandler = (Consumer<? super DialogPane>) resultHandler;
+			this.resultHandler = resultHandler;
 		}
 		
 		public void apply() {
-			resultHandler.accept(pane);
+			// FIXME
 		}
 	}
 
 	/** Map {@code <page-name> |-> <page-information>}. */ 
-	private Map<String, Page> pages;
+	private Map<String, Page<?,?>> pages;
 	/** The currently displayed page. */
-	private Page currentPage;
+	private Page<?,?> currentPage;
 	/** Stack of displayed pages (for navigating back). */
 	private ObservableList<String> pageStack = FXCollections.observableArrayList();
 
-	public void setPages(Map<String,Page> pages, String startPage) {
+	public void setPages(Map<String,Page<?,?>> pages, String startPage) {
 		this.pages = pages;
 	
 		checkPages();
@@ -117,9 +116,9 @@ public class WizardDialog extends Dialog<ButtonType> {
 
 	private void checkPages() {		
 		Set<String> pageNames = pages.keySet();
-		for (Entry<String, Page> entry: pages.entrySet()) {
+		for (Entry<String, Page<?,?>> entry: pages.entrySet()) {
 			String name = entry.getKey();
-			Page page = entry.getValue();
+			Page<?,?> page = entry.getValue();
 			DialogPane pane = page.getPane();
 			
 			// check page names
@@ -171,7 +170,7 @@ public class WizardDialog extends Dialog<ButtonType> {
 		LOG.log(Level.FINE, () -> "current page: "+pageName);
 	}
 
-	public Page getCurrentPage() {
+	public Page<?,?> getCurrentPage() {
 		return currentPage;
 	}
 	

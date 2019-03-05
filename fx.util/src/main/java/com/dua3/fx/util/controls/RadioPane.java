@@ -4,8 +4,6 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.logging.Logger;
 
-import com.dua3.fx.util.controls.InputDialogPane.InputControl;
-
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.RadioButton;
@@ -19,7 +17,6 @@ public class RadioPane<T> extends VBox implements InputControl<T> {
 
     private final LinkedHashMap<T, RadioButton> items = new LinkedHashMap<>();
 	private final ToggleGroup group;
-	private final T currentValue;
 
 	private static final double SPACING = 4;
 
@@ -31,7 +28,6 @@ public class RadioPane<T> extends VBox implements InputControl<T> {
 	 *  the current value
 	 */
 	public RadioPane(Collection<T> items, T currentValue) {
-		this.currentValue = currentValue;
 		this.group = new ToggleGroup();
 		
 		this.setSpacing(SPACING);

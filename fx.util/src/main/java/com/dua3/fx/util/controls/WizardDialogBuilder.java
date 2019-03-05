@@ -19,13 +19,13 @@ public class WizardDialogBuilder {
 		return this;
 	}
 
-	LinkedHashMap<String, Page> pages = new LinkedHashMap<>();
+	LinkedHashMap<String, Page<?,?>> pages = new LinkedHashMap<>();
 	
-	public <T extends DialogPane,B extends StandardDialogPaneBuilder<T,B>> WizardDialogBuilder page(String name, B builder) {
-		Page page = new Page();
+	public <D extends DialogPane,B extends StandardDialogPaneBuilder<D,B,R>,R> WizardDialogBuilder page(String name, B builder) {
+		Page<D,R> page = new Page<>();
 		page.setNext(builder.next);
-		T pane = builder.build();
-		ResultHandler<T> resultHandler = builder.getResultHandler();
+		D pane = builder.build();
+		ResultHandler<R> resultHandler = builder.getResultHandler();
 		page.setPane(pane, resultHandler);
 		pages.put(name, page);
 		
@@ -51,10 +51,10 @@ public class WizardDialogBuilder {
 	public WizardDialog build() {
 		WizardDialog dlg = new WizardDialog();
 
-		Page prev = null;
+		Page<?,?> prev = null;
 		for (var entry:pages.entrySet()) {
 			String name = entry.getKey();
-			Page page = entry.getValue();
+			Page<?,?> page = entry.getValue();
 			
 			if (prev!= null && prev.getNext()==null) {
 				prev.setNext(name);

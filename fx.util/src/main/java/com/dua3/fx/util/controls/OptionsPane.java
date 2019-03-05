@@ -4,7 +4,6 @@ import java.util.LinkedHashMap;
 import java.util.function.Supplier;
 import java.util.logging.Logger;
 
-import com.dua3.fx.util.controls.InputDialogPane.InputControl;
 import com.dua3.utility.options.Option;
 import com.dua3.utility.options.Option.ChoiceOption;
 import com.dua3.utility.options.Option.StringOption;
