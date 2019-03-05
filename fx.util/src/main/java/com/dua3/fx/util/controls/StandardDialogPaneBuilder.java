@@ -4,7 +4,7 @@ import java.util.function.Supplier;
 
 import javafx.scene.control.DialogPane;
 
-public class StandardDialogPaneBuilder<T extends DialogPane, B extends StandardDialogPaneBuilder<T,B,R>, R>
+public class StandardDialogPaneBuilder<T extends DialogPane, B extends StandardDialogPaneBuilder<T,B>>
 		extends AbstractDialogPaneBuilder<T, B> {
 	protected StandardDialogPaneBuilder(Supplier<T> supplier) {
 		super(supplier, DialogPane::setHeaderText, DialogPane::setContentText);

@@ -2,8 +2,8 @@ package com.dua3.fx.util.controls;
 
 import java.util.LinkedHashMap;
 import java.util.Optional;
-import java.util.function.Consumer;
 
+import com.dua3.fx.util.controls.AbstractDialogPaneBuilder.ResultHandler;
 import com.dua3.fx.util.controls.WizardDialog.Page;
 
 import javafx.scene.control.ButtonType;
@@ -21,11 +21,11 @@ public class WizardDialogBuilder {
 
 	LinkedHashMap<String, Page> pages = new LinkedHashMap<>();
 	
-	public WizardDialogBuilder page(String name, StandardDialogPaneBuilder<?,?,?> builder) {
+	public <T extends DialogPane,B extends StandardDialogPaneBuilder<T,B>> WizardDialogBuilder page(String name, B builder) {
 		Page page = new Page();
 		page.setNext(builder.next);
-		DialogPane pane = (DialogPane) builder.build();
-		Consumer<DialogPane> resultHandler = builder.getResultHandler();
+		T pane = builder.build();
+		ResultHandler<T> resultHandler = builder.getResultHandler();
 		page.setPane(pane, resultHandler);
 		pages.put(name, page);
 		

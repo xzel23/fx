@@ -8,6 +8,8 @@ import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.dua3.fx.util.controls.AbstractDialogPaneBuilder.ResultHandler;
+
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.collections.FXCollections;
@@ -88,7 +90,7 @@ public class WizardDialog extends Dialog<ButtonType> {
 		}
 
 		@SuppressWarnings("unchecked")
-		public <P extends DialogPane> void setPane(P pane, Consumer<P> resultHandler) {
+		public <P extends DialogPane> void setPane(P pane, ResultHandler<P> resultHandler) {
 			this.pane = pane;
 			this.resultHandler = (Consumer<? super DialogPane>) resultHandler;
 		}

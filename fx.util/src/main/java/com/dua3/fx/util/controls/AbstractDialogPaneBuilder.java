@@ -16,17 +16,23 @@ package com.dua3.fx.util.controls;
 
 import java.util.Objects;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import javafx.scene.control.DialogPane;
+import javafx.scene.control.ButtonType;
 
 /** 
  * Abstract base class for DialogPane builders.
  * 
  * Provides a fluent interface to create Dialog panes. 
+ * 
+ * @param <T> the type of the dialog or pane to build
+ * @param <B> the type of the builder 
  */
 public abstract class AbstractDialogPaneBuilder<T, B extends AbstractDialogPaneBuilder<T, B>> {
+	
+	public static interface ResultHandler<T> {
+		boolean handleResult(T source, ButtonType btn);
+	}
 	
     final BiConsumer<T, String> headerSetter;
 	final BiConsumer<T, String> textSetter;
@@ -45,7 +51,7 @@ public abstract class AbstractDialogPaneBuilder<T, B extends AbstractDialogPaneB
 	private String header = null;
 	private String text = null;
 
-	private Consumer<DialogPane> resultHandler = p -> {};
+	private ResultHandler<T> resultHandler = (p,b) -> true;
 
 	protected void setSupplier(Supplier<T> supplier) {
 		this.supplier = Objects.requireNonNull(supplier);
@@ -90,7 +96,7 @@ public abstract class AbstractDialogPaneBuilder<T, B extends AbstractDialogPaneB
 	}
 
 	/**
-	 * Set Alert text.
+	 * Set text.
 	 * @param fmt
 	 * 	the format String as defined by {@link java.util.Formatter}
 	 * @param args
@@ -105,12 +111,12 @@ public abstract class AbstractDialogPaneBuilder<T, B extends AbstractDialogPaneB
 	}
 
 	@SuppressWarnings("unchecked")
-	public B resultHandler(Consumer<DialogPane> resultHandler) {
+	public B resultHandler(ResultHandler<T> resultHandler) {
 		this.resultHandler = Objects.requireNonNull(resultHandler);
 		return (B) this;
 	}
 
-	public Consumer<DialogPane> getResultHandler() {
+	public ResultHandler<T> getResultHandler() {
 		return resultHandler;
 	}
 	

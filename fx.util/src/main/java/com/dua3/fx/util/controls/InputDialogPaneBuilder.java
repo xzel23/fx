@@ -16,7 +16,6 @@ package com.dua3.fx.util.controls;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.DoubleFunction;
@@ -42,7 +41,7 @@ import javafx.scene.control.TextField;
  * Provides a fluent interface to create Alerts.
  */
 public class InputDialogPaneBuilder 
-extends StandardDialogPaneBuilder<InputDialogPane, InputDialogPaneBuilder, Map<String, Object>> 
+extends StandardDialogPaneBuilder<InputDialogPane, InputDialogPaneBuilder> 
 implements InputBuilder<InputDialogPaneBuilder> {
 
 	public InputDialogPaneBuilder() {

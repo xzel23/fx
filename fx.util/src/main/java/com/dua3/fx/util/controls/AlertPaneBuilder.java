@@ -15,7 +15,6 @@
 package com.dua3.fx.util.controls;
 
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
 
 /** 
@@ -24,7 +23,7 @@ import javafx.scene.control.DialogPane;
  * Provides a fluent interface to create Alerts. 
  */
 public class AlertPaneBuilder 
-extends StandardDialogPaneBuilder<DialogPane, AlertPaneBuilder, ButtonType> {
+extends StandardDialogPaneBuilder<DialogPane, AlertPaneBuilder> {
 	public AlertPaneBuilder(AlertType type) {
 		super(() -> createPane(type));
 	}
