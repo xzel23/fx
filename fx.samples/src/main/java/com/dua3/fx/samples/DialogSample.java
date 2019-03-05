@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.dua3.fx.util.Dialogs;
-import com.dua3.utility.io.Csv;
+import com.dua3.utility.io.CsvIo;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -74,7 +74,7 @@ public class DialogSample extends Application {
     // Options
     container.getChildren().add(createButton("Options", () -> {
       var rc = Dialogs.options()
-          .options(Csv.getCommonOptions())
+          .options(CsvIo.getCommonOptions())
           .title("Options")
           .header("This is an options dialog.")
           .showAndWait();
