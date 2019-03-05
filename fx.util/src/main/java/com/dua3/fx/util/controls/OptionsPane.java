@@ -29,7 +29,7 @@ public class OptionsPane extends GridPane implements InputControl<OptionValues>{
 	private Supplier<OptionSet> options;
 	private Supplier<OptionValues> currentValues;
 
-	private LinkedHashMap<Option<?>, Property<?>> items;
+	private LinkedHashMap<Option<?>, Property<?>> items = new LinkedHashMap<>();
 	
 	private static final Insets INSETS = new Insets(2);
 
