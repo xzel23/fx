@@ -11,9 +11,9 @@ import javafx.scene.control.DialogPane;
  * @param <B> the type of the builder 
  * @param <R> the result type
  */
-public class StandardDialogPaneBuilder<D extends DialogPane, B extends StandardDialogPaneBuilder<D,B,R>,R>
+public class AbstractPaneBuilder<D extends DialogPane & Supplier<R>, B extends AbstractPaneBuilder<D,B,R>,R>
 		extends AbstractDialogPaneBuilder<D, B,R> {
-	protected StandardDialogPaneBuilder(Supplier<D> supplier) {
+	protected AbstractPaneBuilder(Supplier<D> supplier) {
 		super(supplier, DialogPane::setHeaderText, DialogPane::setContentText);
 	}
 	

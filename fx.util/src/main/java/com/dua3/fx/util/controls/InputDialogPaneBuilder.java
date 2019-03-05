@@ -41,7 +41,7 @@ import javafx.scene.control.TextField;
  * Provides a fluent interface to create Alerts.
  */
 public class InputDialogPaneBuilder 
-extends StandardDialogPaneBuilder<InputDialogPane, InputDialogPaneBuilder, Map<String, Object>> 
+extends AbstractPaneBuilder<InputDialogPane, InputDialogPaneBuilder, Map<String, Object>> 
 implements InputBuilder<InputDialogPaneBuilder> {
 
 	public InputDialogPaneBuilder() {
