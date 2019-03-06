@@ -1,13 +1,11 @@
 package com.dua3.fx.util.controls;
 
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import com.dua3.fx.util.controls.AbstractDialogPaneBuilder.ResultHandler;
 import com.dua3.fx.util.controls.WizardDialog.Page;
-
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.DialogPane;
 
 public class WizardDialogBuilder {
 
@@ -44,7 +42,7 @@ public class WizardDialogBuilder {
 		return startPage;
 	}
 
-	public Optional<ButtonType> showAndWait() {
+	public Optional<Map<String,Object>> showAndWait() {
 		return build().showAndWait();
 	}
 
