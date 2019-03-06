@@ -34,12 +34,18 @@ public class WizardDialog extends Dialog<ButtonType> {
 	
 	public WizardDialog() {
 		setResultConverter(btn -> {
-			if (btn != ButtonType.FINISH) {
+			// call result handler for pages on the stack
+			boolean ok = pageStack.stream()
+				.map(name -> pages.get(name))
+				.map(page -> page.apply(btn))
+				.allMatch(rc -> rc);
+
+			// stay in the dialog if something is not ok or we haven't reached "Finish" yet
+			if (!ok || btn != ButtonType.FINISH) {
 				return null;
 			}
 			
-			pageStack.stream().map(name -> pages.get(name)).forEach(page -> page.apply());
-
+			// otherwise return the button
 			return btn;
 		});
 	}
@@ -63,7 +69,7 @@ public class WizardDialog extends Dialog<ButtonType> {
 	/**
 	 * Wizard page information class.
 	 */
-	public static class Page<D extends DialogPane,R> {
+	public static class Page<D extends TypedDialogPane<R>,R> {
 		private D pane;
 		private String previous;
 		private String next;
@@ -94,8 +100,8 @@ public class WizardDialog extends Dialog<ButtonType> {
 			this.resultHandler = resultHandler;
 		}
 		
-		public void apply() {
-			// FIXME
+		public boolean apply(ButtonType btn) {
+			return resultHandler.handleResult(btn, pane.get());
 		}
 	}
 
