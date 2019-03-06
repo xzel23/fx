@@ -22,7 +22,6 @@ import java.util.function.Function;
 import java.util.function.IntFunction;
 import java.util.function.Supplier;
 
-import com.dua3.fx.util.controls.InputDialogPane.InputControl;
 import com.dua3.utility.options.OptionSet;
 import com.dua3.utility.options.OptionValues;
 
@@ -32,7 +31,7 @@ import com.dua3.utility.options.OptionValues;
  * Provides a fluent interface to create Alerts.
  */
 public class InputDialogBuilder
-extends StandardDialogBuilder<InputDialog, InputDialogBuilder, Map<String, Object>> 
+extends AbstractDialogBuilder<InputDialog, InputDialogBuilder, Map<String, Object>> 
 implements InputBuilder<InputDialogBuilder> {
 
 	private final InputDialogPaneBuilder pb = new InputDialogPaneBuilder();

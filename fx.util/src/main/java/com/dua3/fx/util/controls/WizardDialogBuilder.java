@@ -1,13 +1,11 @@
 package com.dua3.fx.util.controls;
 
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Optional;
-import java.util.function.Consumer;
 
+import com.dua3.fx.util.controls.AbstractDialogPaneBuilder.ResultHandler;
 import com.dua3.fx.util.controls.WizardDialog.Page;
-
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.DialogPane;
 
 public class WizardDialogBuilder {
 
@@ -19,13 +17,13 @@ public class WizardDialogBuilder {
 		return this;
 	}
 
-	LinkedHashMap<String, Page> pages = new LinkedHashMap<>();
+	LinkedHashMap<String, Page<?,?>> pages = new LinkedHashMap<>();
 	
-	public WizardDialogBuilder page(String name, StandardDialogPaneBuilder<?,?,?> builder) {
-		Page page = new Page();
+	public <D extends TypedDialogPane<R>,B extends AbstractPaneBuilder<D,B,R>,R> WizardDialogBuilder page(String name, B builder) {
+		Page<D,R> page = new Page<>();
 		page.setNext(builder.next);
-		DialogPane pane = (DialogPane) builder.build();
-		Consumer<DialogPane> resultHandler = builder.getResultHandler();
+		D pane = builder.build();
+		ResultHandler<R> resultHandler = builder.getResultHandler();
 		page.setPane(pane, resultHandler);
 		pages.put(name, page);
 		
@@ -44,17 +42,17 @@ public class WizardDialogBuilder {
 		return startPage;
 	}
 
-	public Optional<ButtonType> showAndWait() {
+	public Optional<Map<String,Object>> showAndWait() {
 		return build().showAndWait();
 	}
 
 	public WizardDialog build() {
 		WizardDialog dlg = new WizardDialog();
 
-		Page prev = null;
+		Page<?,?> prev = null;
 		for (var entry:pages.entrySet()) {
 			String name = entry.getKey();
-			Page page = entry.getValue();
+			Page<?,?> page = entry.getValue();
 			
 			if (prev!= null && prev.getNext()==null) {
 				prev.setNext(name);

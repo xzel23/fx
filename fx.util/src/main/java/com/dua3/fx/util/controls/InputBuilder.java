@@ -8,7 +8,6 @@ import java.util.function.Function;
 import java.util.function.IntFunction;
 import java.util.function.Supplier;
 
-import com.dua3.fx.util.controls.InputDialogPane.InputControl;
 import com.dua3.utility.options.OptionSet;
 import com.dua3.utility.options.OptionValues;
 

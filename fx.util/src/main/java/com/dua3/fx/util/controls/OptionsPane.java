@@ -4,7 +4,6 @@ import java.util.LinkedHashMap;
 import java.util.function.Supplier;
 import java.util.logging.Logger;
 
-import com.dua3.fx.util.controls.InputDialogPane.InputControl;
 import com.dua3.utility.options.Option;
 import com.dua3.utility.options.Option.ChoiceOption;
 import com.dua3.utility.options.Option.StringOption;
@@ -30,7 +29,7 @@ public class OptionsPane extends GridPane implements InputControl<OptionValues>{
 	private Supplier<OptionSet> options;
 	private Supplier<OptionValues> currentValues;
 
-	private LinkedHashMap<Option<?>, Property<?>> items;
+	private LinkedHashMap<Option<?>, Property<?>> items = new LinkedHashMap<>();
 	
 	private static final Insets INSETS = new Insets(2);
 

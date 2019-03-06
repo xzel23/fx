@@ -1,5 +1,6 @@
 package com.dua3.fx.util.controls;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -7,6 +8,9 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import com.dua3.fx.util.controls.AbstractDialogPaneBuilder.ResultHandler;
+import com.dua3.utility.data.Pair;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
@@ -19,7 +23,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 
-public class WizardDialog extends Dialog<ButtonType> {
+public class WizardDialog extends Dialog<Map<String,Object>> {
 
 	/** Logger instance */
     private static final Logger LOG = Logger.getLogger(WizardDialog.class.getName());
@@ -32,13 +36,22 @@ public class WizardDialog extends Dialog<ButtonType> {
 	
 	public WizardDialog() {
 		setResultConverter(btn -> {
-			if (btn != ButtonType.FINISH) {
+			// call result handler for pages on the stack
+			boolean ok = current.second.apply(btn);
+
+			// stay in the dialog if something is not ok or we haven't reached "Finish" yet
+			if (!ok || btn != ButtonType.FINISH) {
 				return null;
 			}
 			
-			pageStack.stream().map(name -> pages.get(name)).forEach(page -> page.apply());
-
-			return btn;
+			// otherwise add current page to the stack, then build and return the result map
+			pageStack.add(current);
+			
+			LinkedHashMap<String, Object> result = new LinkedHashMap<>();
+			pageStack.stream()
+				.forEach( p -> result.put(p.first, p.second.result) );
+				
+			return result;
 		});
 	}
 	
@@ -61,51 +74,45 @@ public class WizardDialog extends Dialog<ButtonType> {
 	/**
 	 * Wizard page information class.
 	 */
-	public static class Page {
-		private DialogPane pane;
-		private String previous;
+	static class Page<D extends TypedDialogPane<R>,R> {
+		private D pane;
 		private String next;
-		private Consumer<? super DialogPane> resultHandler;
+		private R result;
+		private ResultHandler<R> resultHandler;
 		
-		public String getPrevious() {
-			return previous;
-		}
-		
-		public void setPrevious(String previous) {
-			this.previous = previous;
-		}
-		
-		public String getNext() {
+		String getNext() {
 			return next;
 		}
 		
-		public void setNext(String next) {
+		void setNext(String next) {
 			this.next = next;
 		}
 		
-		public DialogPane getPane() {
+		D getPane() {
 			return pane;
 		}
 
-		@SuppressWarnings("unchecked")
-		public <P extends DialogPane> void setPane(P pane, Consumer<P> resultHandler) {
+		void setPane(D pane, ResultHandler<R> resultHandler) {
 			this.pane = pane;
-			this.resultHandler = (Consumer<? super DialogPane>) resultHandler;
+			this.resultHandler = resultHandler;
 		}
 		
-		public void apply() {
-			resultHandler.accept(pane);
+		boolean apply(ButtonType btn) {
+			R result = pane.get();
+			boolean ok = resultHandler.handleResult(btn, result);
+			this.result = ok ? result : null;
+			return ok;
 		}
 	}
 
 	/** Map {@code <page-name> |-> <page-information>}. */ 
-	private Map<String, Page> pages;
+	private Map<String, Page<?,?>> pages;
 	/** The currently displayed page. */
-	private Page currentPage;
+	private Pair<String,Page<?,?>> current;
 	/** Stack of displayed pages (for navigating back). */
-	private ObservableList<String> pageStack = FXCollections.observableArrayList();
+	private ObservableList<Pair<String,Page<?,?>>> pageStack = FXCollections.observableArrayList();
 
-	public void setPages(Map<String,Page> pages, String startPage) {
+	public void setPages(Map<String,Page<?,?>> pages, String startPage) {
 		this.pages = pages;
 	
 		checkPages();
@@ -115,9 +122,9 @@ public class WizardDialog extends Dialog<ButtonType> {
 
 	private void checkPages() {		
 		Set<String> pageNames = pages.keySet();
-		for (Entry<String, Page> entry: pages.entrySet()) {
+		for (Entry<String, Page<?,?>> entry: pages.entrySet()) {
 			String name = entry.getKey();
-			Page page = entry.getValue();
+			Page<?,?> page = entry.getValue();
 			DialogPane pane = page.getPane();
 			
 			// check page names
@@ -139,7 +146,7 @@ public class WizardDialog extends Dialog<ButtonType> {
 				addButtonToDialogPane(pane, ButtonType.FINISH, null, null);			
 			} else {
 				addButtonToDialogPane(pane, ButtonType.NEXT, evt -> {
-					pageStack.add(name);
+					pageStack.add(Pair.of(name,page));
 					setPage(page.getNext());
 				}, null);
 			}
@@ -149,7 +156,7 @@ public class WizardDialog extends Dialog<ButtonType> {
 				addButtonToDialogPane(
 					pane, 
 					ButtonType.PREVIOUS, evt -> { 
-						setPage(pageStack.remove(pageStack.size()-1)); 
+						setPage(pageStack.remove(pageStack.size()-1).first); 
 					}, 
 					Bindings.isNotEmpty(pageStack)
 				);
@@ -158,9 +165,9 @@ public class WizardDialog extends Dialog<ButtonType> {
 	}
 
 	private void setPage(String pageName) {
-		this.currentPage = pages.get(pageName);
+		this.current = Pair.of(pageName, pages.get(pageName));
 		
-		DialogPane pane = currentPage.pane;
+		DialogPane pane = current.second.pane;
 		setDialogPane(pane);		
 
 		pane.layout();
@@ -169,8 +176,8 @@ public class WizardDialog extends Dialog<ButtonType> {
 		LOG.log(Level.FINE, () -> "current page: "+pageName);
 	}
 
-	public Page getCurrentPage() {
-		return currentPage;
+	public Page<?,?> getCurrentPage() {
+		return current.second;
 	}
 	
 	private void addButtonToDialogPane(DialogPane pane, ButtonType bt, Consumer<Event> action, BooleanBinding enabled) {

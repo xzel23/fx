@@ -15,12 +15,11 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
 
-public class InputDialogPane extends DialogPane {
+public class InputDialogPane extends TypedDialogPane<Map<String,Object>> {
 
     /** Logger */
     protected static final Logger LOG = Logger.getLogger(InputDialogPane.class.getSimpleName());
@@ -29,44 +28,6 @@ public class InputDialogPane extends DialogPane {
 	private static final String MARKER_ERROR = "\u26A0";
 	private static final String MARKER_OK = "";
 	
-	/**
-	 * Interface for an input field.
-	 *
-	 * @param <T> the input value's type
-	 */
-	public interface InputControl<T> {
-		/**
-		 * Get the Node for this input element.
-		 * 
-		 * @return the node
-		 */
-		Node node();
-
-		/**
-		 * Get value.
-		 * 
-		 * @return the current value
-		 */
-		T get();
-
-		/**
-		 * Set value.
-		 * 
-		 * @param arg the value to set
-		 */
-		void set(T arg);
-
-		/**
-		 * Validate user input.
-		 * 
-		 * @return if not valid, an Optional containing the error; otherwise an empty
-		 *         Optional
-		 */
-		default Optional<String> validate() {
-			return Optional.empty();
-		}
-	}
-
 	/**
 	 * Meta data for a single input field consisting of ID, label text, default value etc.
 	 *
@@ -105,7 +66,8 @@ public class InputDialogPane extends DialogPane {
 
 	private Collection<Meta<?>> data = null;
 
-	public Map<String, Object> convertResult() {
+	@Override
+	public Map<String, Object> get() {
 		// Collecors.toMap() does not support null values!
 		Map<String,Object> result = new HashMap<>();
 		data.stream().forEach(e -> result.put(e.id, e.control.get()));
