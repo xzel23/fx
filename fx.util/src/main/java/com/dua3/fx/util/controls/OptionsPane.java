@@ -67,9 +67,9 @@ public class OptionsPane extends GridPane implements InputControl<OptionValues>{
 				control = c;
 				property = c.textProperty();
 			} else if (option instanceof ChoiceOption<?>) {
-				var items = FXCollections.observableList(((ChoiceOption<?>)option).getChoices());
-				var c = new ComboBox<>(items);
-				c.getSelectionModel().select(items.indexOf(value));
+				var choices = FXCollections.observableList(((ChoiceOption<?>)option).getChoices());
+				var c = new ComboBox<>(choices);
+				c.getSelectionModel().select(choices.indexOf(value));
 				control = c;
 				property = c.valueProperty();
 			} else {
@@ -97,9 +97,10 @@ public class OptionsPane extends GridPane implements InputControl<OptionValues>{
 	@Override
     public OptionValues get() {
 	    OptionValues values = new OptionValues();
-	    for (var item: items.entrySet()) {
-	        Option<?> option = item.getKey();
-	        Value<?> value = Option.value(item.getValue());
+	    for (var entry: items.entrySet()) {
+	        Option<?> option = entry.getKey();
+	        Property<?> property = entry.getValue();
+			Value<?> value = (Value<?>) property.getValue();
 	        values.put(option, value);
 	    }
 		return values;
