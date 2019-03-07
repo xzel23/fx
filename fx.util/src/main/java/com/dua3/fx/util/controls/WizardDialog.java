@@ -36,11 +36,8 @@ public class WizardDialog extends Dialog<Map<String,Object>> {
 	
 	public WizardDialog() {
 		setResultConverter(btn -> {
-			// call result handler for pages on the stack
-			boolean ok = current.second.apply(btn);
-
 			// stay in the dialog if something is not ok or we haven't reached "Finish" yet
-			if (!ok || btn != ButtonType.FINISH) {
+			if (btn != ButtonType.FINISH) {
 				return null;
 			}
 			
@@ -138,14 +135,14 @@ public class WizardDialog extends Dialog<Map<String,Object>> {
 			 
 			// cancel button
 			if (isCancelable()) {
-				addButtonToDialogPane(pane, ButtonType.CANCEL, null, null);
+				addButtonToDialogPane(page, ButtonType.CANCEL, null, null);
 			}
 			
 			// next button
 			if (page.getNext()==null) {
-				addButtonToDialogPane(pane, ButtonType.FINISH, null, null);			
+				addButtonToDialogPane(page, ButtonType.FINISH, null, null);			
 			} else {
-				addButtonToDialogPane(pane, ButtonType.NEXT, evt -> {
+				addButtonToDialogPane(page, ButtonType.NEXT, evt -> {
 					pageStack.add(Pair.of(name,page));
 					setPage(page.getNext());
 				}, null);
@@ -154,7 +151,7 @@ public class WizardDialog extends Dialog<Map<String,Object>> {
 			// prev button
 			if (isShowPreviousButton()) {
 				addButtonToDialogPane(
-					pane, 
+					page, 
 					ButtonType.PREVIOUS, evt -> { 
 						setPage(pageStack.remove(pageStack.size()-1).first); 
 					}, 
@@ -181,21 +178,29 @@ public class WizardDialog extends Dialog<Map<String,Object>> {
 		return current.second;
 	}
 	
-	private void addButtonToDialogPane(DialogPane pane, ButtonType bt, Consumer<Event> action, BooleanBinding enabled) {
+	private void addButtonToDialogPane(Page<?,?> page, ButtonType bt, Consumer<Event> action, BooleanBinding enabled) {
+		InputDialogPane<?> pane = page.pane;
 		List<ButtonType> buttons = pane.getButtonTypes();
 		
 		buttons.add(bt);	
 		Button btn = (Button) pane.lookupButton(bt);
 		
-		if (action!=null) {
-			// it seems counter-intuitive to use an event filter instead of a handler, but
-			// when using an event handler, Dialog.close() is called before our own
-			// event handler.
-			btn.addEventFilter(ActionEvent.ACTION,  evt -> {
-					action.accept(evt);
-					evt.consume();
-			});
-		}
+		// it seems counter-intuitive to use an event filter instead of a handler, but
+		// when using an event handler, Dialog.close() is called before our own
+		// event handler.
+		btn.addEventFilter(ActionEvent.ACTION,  evt -> {
+			// call result handler for pages on the stack
+			boolean ok = page.apply(bt);
+
+			if (!ok) {
+				evt.consume();
+			}
+			
+			if (action!=null) {
+				action.accept(evt);
+				evt.consume();
+			}
+		});
 		
 		if (enabled!=null) {
 			btn.disableProperty().bind(Bindings.not(enabled));
