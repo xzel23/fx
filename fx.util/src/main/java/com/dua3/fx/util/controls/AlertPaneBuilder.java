@@ -22,13 +22,13 @@ import javafx.scene.control.Alert.AlertType;
  * Provides a fluent interface to create Alerts. 
  */
 public class AlertPaneBuilder 
-extends AbstractPaneBuilder<TypedDialogPane<Void>, AlertPaneBuilder, Void> {
+extends AbstractPaneBuilder<InputDialogPane<Void>, AlertPaneBuilder, Void> {
 	public AlertPaneBuilder(AlertType type) {
 		super(() -> createPane(type));
 	}
 
-	public static TypedDialogPane<Void> createPane(AlertType type) {
-		return new TypedDialogPane<Void>() {
+	public static InputDialogPane<Void> createPane(AlertType type) {
+		return new InputDialogPane<Void>() {
 			@Override
 			public Void get() {
 				return null;
@@ -41,8 +41,8 @@ extends AbstractPaneBuilder<TypedDialogPane<Void>, AlertPaneBuilder, Void> {
 	 * @return Alert instance
 	 */
 	@Override
-    public TypedDialogPane<Void> build() {
-		TypedDialogPane<Void> dlg = super.build();
+    public InputDialogPane<Void> build() {
+		InputDialogPane<Void> dlg = super.build();
 		return dlg;
 	}
 

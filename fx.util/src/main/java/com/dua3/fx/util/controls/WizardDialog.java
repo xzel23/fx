@@ -74,7 +74,7 @@ public class WizardDialog extends Dialog<Map<String,Object>> {
 	/**
 	 * Wizard page information class.
 	 */
-	static class Page<D extends TypedDialogPane<R>,R> {
+	static class Page<D extends InputDialogPane<R>,R> {
 		private D pane;
 		private String next;
 		private R result;
@@ -167,9 +167,10 @@ public class WizardDialog extends Dialog<Map<String,Object>> {
 	private void setPage(String pageName) {
 		this.current = Pair.of(pageName, pages.get(pageName));
 		
-		DialogPane pane = current.second.pane;
+		InputDialogPane<?> pane = current.second.pane;
 		setDialogPane(pane);		
 
+		pane.init();
 		pane.layout();
 		pane.getScene().getWindow().sizeToScene();
 		

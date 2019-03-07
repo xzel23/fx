@@ -24,7 +24,7 @@ import java.util.function.Function;
 import java.util.function.IntFunction;
 import java.util.function.Supplier;
 
-import com.dua3.fx.util.controls.InputDialogPane.Meta;
+import com.dua3.fx.util.controls.InputPane.Meta;
 import com.dua3.utility.lang.LangUtil;
 import com.dua3.utility.options.OptionSet;
 import com.dua3.utility.options.OptionValues;
@@ -41,16 +41,16 @@ import javafx.scene.control.TextField;
  * Provides a fluent interface to create Alerts.
  */
 public class InputDialogPaneBuilder 
-extends AbstractPaneBuilder<InputDialogPane, InputDialogPaneBuilder, Map<String, Object>> 
+extends AbstractPaneBuilder<InputPane, InputDialogPaneBuilder, Map<String, Object>> 
 implements InputBuilder<InputDialogPaneBuilder> {
 
 	public InputDialogPaneBuilder() {
-		super(InputDialogPane::new);
+		super(InputPane::new);
 	}
 
 	private int columns = 1;
 
-	private LinkedHashMap<String, InputDialogPane.Meta<?>> data = new LinkedHashMap<>();
+	private LinkedHashMap<String, InputPane.Meta<?>> data = new LinkedHashMap<>();
 
 	/* (non-Javadoc)
      * @see com.dua3.fx.util.controls.InputBuilder#add(java.lang.String, java.lang.String, java.lang.Class, T, com.dua3.fx.util.controls.InputDialogPane.InputControl)
@@ -273,8 +273,8 @@ implements InputBuilder<InputDialogPaneBuilder> {
      * @see com.dua3.fx.util.controls.InputBuilder#build()
      */
 	@Override
-	public InputDialogPane build() {
-		InputDialogPane pane = super.build();
+	public InputPane build() {
+		InputPane pane = super.build();
 
 		pane.setContent(data.values(), columns);
 

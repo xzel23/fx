@@ -19,7 +19,7 @@ public class WizardDialogBuilder {
 
 	LinkedHashMap<String, Page<?,?>> pages = new LinkedHashMap<>();
 	
-	public <D extends TypedDialogPane<R>,B extends AbstractPaneBuilder<D,B,R>,R> WizardDialogBuilder page(String name, B builder) {
+	public <D extends InputDialogPane<R>,B extends AbstractPaneBuilder<D,B,R>,R> WizardDialogBuilder page(String name, B builder) {
 		Page<D,R> page = new Page<>();
 		page.setNext(builder.next);
 		D pane = builder.build();

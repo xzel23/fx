@@ -47,20 +47,21 @@ public class OptionsPane extends GridPane implements InputControl<OptionValues>{
     public OptionsPane(Supplier<OptionSet> options, Supplier<OptionValues> dflt) {
         this.options = options;
         this.currentValues=dflt;
-        
-		init(options.get(), dflt.get());
 	}
 
-    public void init(OptionSet options, OptionValues currentValues) {
+    public void init() {
         getChildren().clear();
         
+        OptionSet optionSet = options.get();
+		OptionValues values = currentValues.get();
+		
 		int row = 0;
-		for (Option<?> option: options) {
+		for (Option<?> option: optionSet) {
 			Label label = new Label(option.getName());
 			
             Property<?> property;            
 			Control control;
-			Value<?> value = currentValues.get(option);
+			Value<?> value = values.get(option);
 			if (option instanceof StringOption) {
 				TextField c = new TextField();
 				c.setText(String.valueOf(value));

@@ -31,7 +31,7 @@ public class InputDialog extends Dialog<Map<String, Object>> {
 			if (btn != ButtonType.OK) {
 				return null;
 			}
-			return ((InputDialogPane) getDialogPane()).get();
+			return ((InputPane) getDialogPane()).get();
 		});
 	}
 	
