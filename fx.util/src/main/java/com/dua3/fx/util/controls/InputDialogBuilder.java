@@ -53,8 +53,8 @@ implements InputBuilder<InputDialogBuilder> {
 	}
 
 	@Override
-    public InputDialogBuilder text(String id, String label, String dflt, Function<String,Optional<String>> validate) {
-		pb.text(id, label, dflt, validate);
+    public InputDialogBuilder string(String id, String label, String dflt, Function<String,Optional<String>> validate) {
+		pb.string(id, label, dflt, validate);
 		return this;
 	}
 

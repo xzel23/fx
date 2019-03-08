@@ -78,7 +78,7 @@ implements InputBuilder<InputDialogPaneBuilder> {
      * @see com.dua3.fx.util.controls.InputBuilder#text(java.lang.String, java.lang.String, java.lang.String, java.util.function.Function)
      */
 	@Override
-    public InputDialogPaneBuilder text(String id, String label, String dflt, Function<String,Optional<String>> validate) {
+    public InputDialogPaneBuilder string(String id, String label, String dflt, Function<String,Optional<String>> validate) {
 		return add(id, label, String.class, dflt,
 				new InputControl<String>() {
 					final TextField control = new TextField();

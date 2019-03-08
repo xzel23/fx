@@ -17,11 +17,11 @@ public interface InputBuilder<B extends InputBuilder<B>> {
 
     B columns(int columns);
 
-    default B text(String id, String label, String dflt) {
-        return text(id, label, dflt, s -> Optional.empty());
+    default B string(String id, String label, String dflt) {
+        return string(id, label, dflt, s -> Optional.empty());
     }
     
-    B text(String id, String label, String dflt, Function<String, Optional<String>> validate);
+    B string(String id, String label, String dflt, Function<String, Optional<String>> validate);
 
     default B integer(String id, String label, Integer dflt) {
         return integer(id, label, dflt, i -> Optional.empty());
