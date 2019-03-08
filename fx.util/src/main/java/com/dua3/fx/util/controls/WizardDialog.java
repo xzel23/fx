@@ -96,9 +96,9 @@ public class WizardDialog extends Dialog<Map<String,Object>> {
 		
 		boolean apply(ButtonType btn) {
 			R result = pane.get();
-			boolean ok = resultHandler.handleResult(btn, result);
-			this.result = ok ? result : null;
-			return ok;
+			boolean done = resultHandler.handleResult(btn, result);
+			this.result = done ? result : null;
+			return done;
 		}
 	}
 

@@ -31,7 +31,25 @@ import javafx.scene.control.ButtonType;
  */
 public abstract class AbstractDialogPaneBuilder<D, B extends AbstractDialogPaneBuilder<D, B, R>, R> {
 	
+	/**
+	 * Dialog(Pane) result handler.
+	 *
+	 * @param <R> the result type
+	 */
 	public static interface ResultHandler<R> {
+		/**
+		 * Handle result.
+		 * 
+		 * @param btn
+		 *  the button that was pressed
+		 *  
+		 * @param result
+		 *  the dialog/pane result as returned by the result converter
+		 *  
+		 * @return
+		 *  true, if it's ok to proceed (the current page should be left)
+		 *  false otherwise
+		 */
 		boolean handleResult(ButtonType btn, R result);
 	}
 	
