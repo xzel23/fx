@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.VBox;
 
@@ -34,6 +35,7 @@ public class RadioPane<T> extends VBox implements InputControl<T> {
 		ObservableList<Node> children = getChildren();
 		for (var item: items) {
 			RadioButton control = new RadioButton(String.valueOf(item));
+			control.setUserData(item);
 			control.setToggleGroup(group);
 			children.add(control);
 			this.items.put(item, control);
@@ -45,7 +47,8 @@ public class RadioPane<T> extends VBox implements InputControl<T> {
 	@SuppressWarnings("unchecked")
     @Override
     public T get() {
-		return (T) group.getSelectedToggle();
+		Toggle selectedToggle = group.getSelectedToggle();
+        return selectedToggle != null ? (T) selectedToggle.getUserData() : null;
 	}
 	
 	@Override
