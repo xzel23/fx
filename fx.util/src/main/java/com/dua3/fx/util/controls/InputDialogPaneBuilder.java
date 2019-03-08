@@ -19,9 +19,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.DoubleFunction;
 import java.util.function.Function;
-import java.util.function.IntFunction;
 import java.util.function.Supplier;
 
 import com.dua3.fx.util.controls.InputPane.Meta;
@@ -56,7 +54,7 @@ implements InputBuilder<InputDialogPaneBuilder> {
      * @see com.dua3.fx.util.controls.InputBuilder#add(java.lang.String, java.lang.String, java.lang.Class, T, com.dua3.fx.util.controls.InputDialogPane.InputControl)
      */
 	@Override
-    public <T> InputDialogPaneBuilder add(String id, String label, Class<T> type, T dflt, InputControl<T> control) {
+    public <T> InputDialogPaneBuilder add(String id, String label, Class<T> type, Supplier<T> dflt, InputControl<T> control) {
 		Objects.requireNonNull(id);
 		Meta<T> meta = new Meta<>(id, label, type, dflt, control);
 		Meta<?> prev = data.put(id, meta);		
@@ -78,7 +76,7 @@ implements InputBuilder<InputDialogPaneBuilder> {
      * @see com.dua3.fx.util.controls.InputBuilder#text(java.lang.String, java.lang.String, java.lang.String, java.util.function.Function)
      */
 	@Override
-    public InputDialogPaneBuilder string(String id, String label, String dflt, Function<String,Optional<String>> validate) {
+    public InputDialogPaneBuilder string(String id, String label, Supplier<String> dflt, Function<String,Optional<String>> validate) {
 		return add(id, label, String.class, dflt,
 				new InputControl<String>() {
 					final TextField control = new TextField();
@@ -109,7 +107,7 @@ implements InputBuilder<InputDialogPaneBuilder> {
      * @see com.dua3.fx.util.controls.InputBuilder#integer(java.lang.String, java.lang.String, java.lang.Integer, java.util.function.Function)
      */
 	@Override
-    public InputDialogPaneBuilder integer(String id, String label, Integer dflt, IntFunction<Optional<String>> validate) {
+    public InputDialogPaneBuilder integer(String id, String label, Supplier<Integer> dflt, Function<Integer,Optional<String>> validate) {
 		return add(id, label, Integer.class, dflt,
 				new InputControl<Integer>() {
 					final TextField control = new TextField();
@@ -146,7 +144,7 @@ implements InputBuilder<InputDialogPaneBuilder> {
      * @see com.dua3.fx.util.controls.InputBuilder#decimal(java.lang.String, java.lang.String, java.lang.Double, java.util.function.Function)
      */
 	@Override
-    public InputDialogPaneBuilder decimal(String id, String label, Double dflt, DoubleFunction<Optional<String>> validate) {
+    public InputDialogPaneBuilder decimal(String id, String label, Supplier<Double> dflt, Function<Double,Optional<String>> validate) {
 		return add(id, label, Double.class, dflt,
 				new InputControl<Double>() {
 					final TextField control = new TextField();
@@ -183,13 +181,13 @@ implements InputBuilder<InputDialogPaneBuilder> {
      * @see com.dua3.fx.util.controls.InputBuilder#checkBox(java.lang.String, java.lang.String, boolean, java.lang.String)
      */
 	@Override
-    public InputDialogPaneBuilder checkBox(String id, String label, boolean dflt, String text) {
+    public InputDialogPaneBuilder checkBox(String id, String label, Supplier<Boolean> dflt, String text) {
 		return add(id, label, Boolean.class, dflt,
 				new InputControl<Boolean>() {
 					final CheckBox control = new CheckBox(text);
 
 					{
-						control.setSelected(dflt);
+						control.setSelected(dflt.get());
 					}
 					
 					@Override
@@ -218,14 +216,14 @@ implements InputBuilder<InputDialogPaneBuilder> {
      * @see com.dua3.fx.util.controls.InputBuilder#comboBox(java.lang.String, java.lang.String, T, java.lang.Class, java.util.Collection)
      */
 	@Override
-    public <T> InputDialogPaneBuilder comboBox(String id, String label, T dflt, Class<T> cls, Collection<T> items) {
+    public <T> InputDialogPaneBuilder comboBox(String id, String label, Supplier<T> dflt, Class<T> cls, Collection<T> items) {
 		return add(id, label, cls, dflt,
 				new InputControl<T>() {
 					final ComboBox<T> control = new ComboBox<>();
  
 					{
 						control.setItems(FXCollections.observableArrayList(items));
-						control.setValue(dflt);
+						control.setValue(dflt.get());
 					}
 					
 					@Override
@@ -258,13 +256,13 @@ implements InputBuilder<InputDialogPaneBuilder> {
      * @see com.dua3.fx.util.controls.InputBuilder#radioList(java.lang.String, java.lang.String, T, java.lang.Class, java.util.Collection)
      */
 	@Override
-    public <T> InputDialogPaneBuilder radioList(String id, String label, T dflt, Class<T> cls, Collection<T> items) {
+    public <T> InputDialogPaneBuilder radioList(String id, String label, Supplier<T> dflt, Class<T> cls, Collection<T> items) {
 		 return add(id, label, cls, dflt, new RadioPane<>(items, null));
 	}
 	
 	@Override
-	public InputDialogPaneBuilder options(String id, String label, Supplier<OptionSet> options, Supplier<OptionValues> dflt) {
-	    return add(id, label, OptionValues.class, dflt.get(), new OptionsPane(options, dflt));
+	public InputDialogPaneBuilder options(String id, String label, Supplier<OptionValues> dflt, Supplier<OptionSet> options) {
+	    return add(id, label, OptionValues.class, dflt, new OptionsPane(options, dflt));
 	}
 
 	// TODO: add date and time inputs

@@ -17,9 +17,7 @@ package com.dua3.fx.util.controls;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.DoubleFunction;
 import java.util.function.Function;
-import java.util.function.IntFunction;
 import java.util.function.Supplier;
 
 import com.dua3.utility.options.OptionSet;
@@ -41,7 +39,7 @@ implements InputBuilder<InputDialogBuilder> {
 	}
 
 	@Override
-    public <T> InputDialogBuilder add(String id, String label, Class<T> type, T dflt, InputControl<T> control) {
+    public <T> InputDialogBuilder add(String id, String label, Class<T> type, Supplier<T> dflt, InputControl<T> control) {
 		pb.add(id, label, type, dflt, control);
 		return this;
 	}
@@ -53,44 +51,44 @@ implements InputBuilder<InputDialogBuilder> {
 	}
 
 	@Override
-    public InputDialogBuilder string(String id, String label, String dflt, Function<String,Optional<String>> validate) {
+    public InputDialogBuilder string(String id, String label, Supplier<String> dflt, Function<String,Optional<String>> validate) {
 		pb.string(id, label, dflt, validate);
 		return this;
 	}
 
 	@Override
-	public InputDialogBuilder integer(String id, String label, Integer dflt, IntFunction<Optional<String>> validate) {
+	public InputDialogBuilder integer(String id, String label, Supplier<Integer> dflt, Function<Integer,Optional<String>> validate) {
 		pb.integer(id, label, dflt, validate);
 		return this;
 	}
 
     @Override
-	public InputDialogBuilder decimal(String id, String label, Double dflt, DoubleFunction<Optional<String>> validate) {
+	public InputDialogBuilder decimal(String id, String label, Supplier<Double> dflt, Function<Double,Optional<String>> validate) {
 		pb.decimal(id, label, dflt, validate);
 		return this;
 	}
 
     @Override
-	public InputDialogBuilder checkBox(String id, String label, boolean dflt, String text) {
+	public InputDialogBuilder checkBox(String id, String label, Supplier<Boolean> dflt, String text) {
 		pb.checkBox(id, label, dflt, text);
 		return this;
 	}
 
     @Override
-	public <T> InputDialogBuilder comboBox(String id, String label, T dflt, Class<T> cls, Collection<T> items) {
+	public <T> InputDialogBuilder comboBox(String id, String label, Supplier<T> dflt, Class<T> cls, Collection<T> items) {
 		pb.comboBox(id, label, dflt, cls, items);
 		return this;
 	}
 
     @Override
-	public <T> InputDialogBuilder radioList(String id, String label, T dflt, Class<T> cls, Collection<T> items) {
+	public <T> InputDialogBuilder radioList(String id, String label, Supplier<T> dflt, Class<T> cls, Collection<T> items) {
 		pb.radioList(id, label, dflt, cls, items);
 		return this;
 	}
 
     @Override
-    public InputDialogBuilder options(String id, String label, Supplier<OptionSet> options, Supplier<OptionValues> dflt) {
-        pb.options(id, label, options, dflt);
+    public InputDialogBuilder options(String id, String label, Supplier<OptionValues> dflt, Supplier<OptionSet> options) {
+        pb.options(id, label, dflt, options);
         return this;
     }
     

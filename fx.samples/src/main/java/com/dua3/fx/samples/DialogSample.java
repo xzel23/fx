@@ -62,12 +62,12 @@ public class DialogSample extends Application {
           .title("Input")
           .header("This is an input dialog.")
           .text("Enter data here: ")
-          .string("txt", "enter text", "dflt")
-          .integer("integer", "enter number", 0)
-          .integer("integer from 4 to 7", "enter number", 0,
+          .string("txt", "enter text", () -> "dflt")
+          .integer("integer", "enter number", () -> 0)
+          .integer("integer from 4 to 7", "enter number", () -> 0,
               i -> i >= 4 && i <= 7 ? Optional.empty() : Optional.of(i + " is not between 4 and 7"))
-          .comboBox("list", "choose one", "Maybe", String.class, List.of("Yes", "No", "Maybe"))
-          .checkBox("bool", "Yes or No:", false, "yes")
+          .comboBox("list", "choose one", () -> "Maybe", String.class, List.of("Yes", "No", "Maybe"))
+          .checkBox("bool", "Yes or No:", () -> false, "yes")
           .showAndWait();
     }));
 
@@ -97,7 +97,7 @@ public class DialogSample extends Application {
           .page("dbms",
               Dialogs.inputPane()
                   .header("Choose your Database from the list below.")
-                  .radioList("rdmbs", "Database", null, String.class, "H2", "PostgreSQL", "MySQL")
+                  .radioList("rdmbs", "Database", () -> null, String.class, List.of("H2", "PostgreSQL", "MySQL"))
           		  .resultHandler((p,b) -> true))
           .showAndWait();
       System.out.format("Dialog result:%n%s%n", rc);

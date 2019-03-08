@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Supplier;
 import java.util.logging.Logger;
 
 import com.dua3.fx.util.FxUtil;
@@ -39,12 +40,12 @@ public class InputPane extends InputDialogPane<Map<String,Object>> {
 	static class Meta<T> {
 		final String id;
 		final Class<T> cls;
-		final T dflt;
+		final Supplier<T> dflt;
 		final InputControl<T> control;
 		Label label = new Label();
 		Label marker = new Label();
 
-		Meta(String id, String label, Class<T> cls, T dflt, InputControl<T> control) {
+		Meta(String id, String label, Class<T> cls, Supplier<T> dflt, InputControl<T> control) {
 			this.id = id;
 			this.label.setText(label);
 			this.cls = cls;
@@ -58,7 +59,7 @@ public class InputPane extends InputDialogPane<Map<String,Object>> {
 		}
 		
 		void reset() {
-			control.set(dflt);
+			control.set(dflt.get());
 		}
 		
 		Optional<String> validate() {
