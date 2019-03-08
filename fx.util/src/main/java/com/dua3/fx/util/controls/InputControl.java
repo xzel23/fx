@@ -40,4 +40,11 @@ public interface InputControl<R> {
 	default Optional<String> validate() {
 		return Optional.empty();
 	}
+	
+	/**
+	 * Set/update control state.
+	 */
+	default void init() {
+		// nop
+	}
 }

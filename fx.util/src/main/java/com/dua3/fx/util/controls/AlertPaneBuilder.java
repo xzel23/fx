@@ -33,6 +33,10 @@ extends AbstractPaneBuilder<InputDialogPane<Void>, AlertPaneBuilder, Void> {
 			public Void get() {
 				return null;
 			}
+			@Override
+			public void init() {
+				// nop
+			}
 		};
 	}
 	

@@ -28,6 +28,8 @@ public class InputPane extends InputDialogPane<Map<String,Object>> {
 	private static final String MARKER_ERROR = "\u26A0";
 	private static final String MARKER_OK = "";
 	
+	private GridPane grid = new GridPane();
+
 	/**
 	 * Meta data for a single input field consisting of ID, label text, default value etc.
 	 *
@@ -65,6 +67,7 @@ public class InputPane extends InputDialogPane<Map<String,Object>> {
 	}
 
 	private Collection<Meta<?>> data = null;
+	private int columns = 1;
 
 	@Override
 	public Map<String, Object> get() {
@@ -77,33 +80,14 @@ public class InputPane extends InputDialogPane<Map<String,Object>> {
 	public InputPane() {
 	}
 
-	private void addToGrid(GridPane grid, Node child, int c, int r, Insets insets) {
+	private void addToGrid(Node child, int c, int r, Insets insets) {
 		grid.add(child, c, r);
 		GridPane.setMargin(child, insets);
 	}
 
 	void setContent(Collection<Meta<?>> data, int columns) {
 		this.data = Objects.requireNonNull(data);
-
-		// create grid with input controls
-		GridPane grid = new GridPane();
-		Insets insets = new Insets(2);
-		Insets markerInsets = new Insets(0);
-		int r = 0, c = 0;
-		for (var entry : data) {
-			// add label and control
-			addToGrid(grid, entry.label, 3 * c, r, insets);
-			addToGrid(grid, entry.control.node(), 3 * c + 1, r, insets);
-			addToGrid(grid, entry.marker, 3 * c + 2, r, markerInsets);
-
-			// move to next position in grid
-			c = (c + 1) % columns;
-			if (c == 0) {
-				r++;
-			}
-		}
-
-		setContent(grid);
+		this.columns = columns;
 
 		// buttons
 		getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
@@ -113,7 +97,33 @@ public class InputPane extends InputDialogPane<Map<String,Object>> {
 		    if (!validate()) {
 		        ae.consume(); //not valid
 		    }
-		});
+		});		
+	}
+
+	@Override
+	public void init() {
+		grid.getChildren().clear();
+		
+		// create grid with input controls
+		Insets insets = new Insets(2);
+		Insets markerInsets = new Insets(0);
+		int r = 0, c = 0;
+		for (var entry : data) {
+			// add label and control
+			addToGrid(entry.label, 3 * c, r, insets);
+			addToGrid(entry.control.node(), 3 * c + 1, r, insets);
+			addToGrid(entry.marker, 3 * c + 2, r, markerInsets);
+
+			entry.control.init();
+			
+			// move to next position in grid
+			c = (c + 1) % columns;
+			if (c == 0) {
+				r++;
+			}
+		}
+
+		setContent(grid);
 	}
 
 	private boolean validate() {

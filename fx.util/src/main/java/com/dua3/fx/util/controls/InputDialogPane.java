@@ -6,7 +6,6 @@ import javafx.scene.control.DialogPane;
 
 public abstract class InputDialogPane<R> extends DialogPane implements Supplier<R> {
 
-	public void init() {
-	}
+	public abstract void init();
 
 }
