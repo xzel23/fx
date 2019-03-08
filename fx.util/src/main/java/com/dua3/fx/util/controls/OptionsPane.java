@@ -12,6 +12,8 @@ import com.dua3.utility.options.OptionSet;
 import com.dua3.utility.options.OptionValues;
 
 import javafx.beans.property.Property;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -66,7 +68,13 @@ public class OptionsPane extends GridPane implements InputControl<OptionValues>{
 				TextField c = new TextField();
 				c.setText(String.valueOf(value));
 				control = c;
-				property = c.textProperty();
+				StringProperty textProperty = c.textProperty();
+				Property<Value<String>> valueProperty = new SimpleObjectProperty<Value<String>>();
+				textProperty.addListener((v,o,n) -> {
+					valueProperty.setValue(Option.value(n));
+				});
+				valueProperty.addListener((v,o,n) -> textProperty.set(n.get()));
+				property = valueProperty;
 			} else if (option instanceof ChoiceOption<?>) {
 				var choices = FXCollections.observableList(((ChoiceOption<?>)option).getChoices());
 				var c = new ComboBox<>(choices);
