@@ -66,7 +66,7 @@ public class OptionsPane extends GridPane implements InputControl<OptionValues>{
 			Value<?> value = values.get(option);
 			if (option instanceof StringOption) {
 				TextField c = new TextField();
-				c.setText(String.valueOf(value));
+				c.setText(value.text());
 				control = c;
 				StringProperty textProperty = c.textProperty();
 				Property<Value<String>> valueProperty = new SimpleObjectProperty<Value<String>>();
