@@ -30,9 +30,10 @@ import javafx.scene.control.DialogPane;
 public class AlertBuilder
     extends AbstractDialogBuilder<Alert, AlertBuilder, ButtonType> {
   public AlertBuilder(AlertType type) {
-    super(() -> new Alert(type));
+    setDialogSupplier( () -> new Alert(type) );
   }
 
+  private String text = null;
   private ButtonType[] buttons;
   private ButtonType defaultButton;
 
@@ -56,7 +57,25 @@ public class AlertBuilder
       }
     }
 
+    if (text!=null) {
+      dlg.setContentText(text);
+    }
+
     return dlg;
+  }
+
+  /**
+   * Set text.
+   * @param fmt
+   * 	the format String as defined by {@link java.util.Formatter}
+   * @param args
+   * 	the arguments passed to the formatter
+   * @return
+   * 	{@code this}
+   */
+  public AlertBuilder text(String fmt, Object... args) {
+    this.text = format(fmt, args);
+    return this;
   }
 
   /**

@@ -29,6 +29,22 @@ public interface InputBuilder<B extends InputBuilder<B>> {
     <T> B add(String id, String label, Class<T> type, Supplier<T> dflt, InputControl<T> control);
 
     /**
+     * Add unlabeled input control.
+     * 
+     * @param id
+     *  the control's ID
+     * @param type
+     *  the result type
+     * @param dflt
+     *  supplier of default value
+     * @param control
+     *  the control
+     * @return
+     *  {@code this}
+     */
+    <T> B add(String id, Class<T> type, Supplier<T> dflt, InputControl<T> control);
+    
+    /**
      * Set number of columns for layout (default is 1).
      * @param columns
      *  the number of colums for laying out the input controls

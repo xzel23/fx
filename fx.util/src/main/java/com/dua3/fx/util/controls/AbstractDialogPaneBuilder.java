@@ -36,7 +36,7 @@ public abstract class AbstractDialogPaneBuilder<D, B extends AbstractDialogPaneB
 	 *
 	 * @param <R> the result type
 	 */
-	public static interface ResultHandler<R> {
+	public interface ResultHandler<R> {
 		/**
 		 * Handle result.
 		 * 
@@ -53,27 +53,22 @@ public abstract class AbstractDialogPaneBuilder<D, B extends AbstractDialogPaneB
 		boolean handleResult(ButtonType btn, R result);
 	}
 	
-    final BiConsumer<D, String> headerSetter;
-	final BiConsumer<D, String> textSetter;
+    private final BiConsumer<D, String> headerSetter;
 
 	AbstractDialogPaneBuilder(
-		Supplier<D> supplier,
-		BiConsumer<D, String> headerSetter,
-		BiConsumer<D, String> textSetter
+		BiConsumer<D, String> headerSetter
 	) {
-		this.supplier = supplier;
+		this.dialogSupplier = () -> { throw new IllegalStateException("call setDialogSupplier() first"); };
 		this.headerSetter=headerSetter;
-		this.textSetter=textSetter;
 	}
 
-	private Supplier<D> supplier;
+	private Supplier<D> dialogSupplier;
 	private String header = null;
-	private String text = null;
 
 	private ResultHandler<R> resultHandler = (b,r) -> true;
 
-	protected void setSupplier(Supplier<D> supplier) {
-		this.supplier = Objects.requireNonNull(supplier);
+	protected final void setDialogSupplier(Supplier<D> dialogSupplier) {
+		this.dialogSupplier = Objects.requireNonNull(dialogSupplier);
 	}
 
 	protected static <C,D> void applyIfNotNull(BiConsumer<C,D> consumer, C a, D b) {
@@ -91,10 +86,9 @@ public abstract class AbstractDialogPaneBuilder<D, B extends AbstractDialogPaneB
 	 * @return Alert instance
 	 */
 	public D build() {
-		D dlg = supplier.get();
+		D dlg = dialogSupplier.get();
 
 		applyIfNotNull(headerSetter, dlg, header);
-		applyIfNotNull(textSetter, dlg, text);
 
 		return dlg;
 	}
@@ -111,21 +105,6 @@ public abstract class AbstractDialogPaneBuilder<D, B extends AbstractDialogPaneB
 	@SuppressWarnings("unchecked")
 	public B header(String fmt, Object... args) {
 		this.header = format(fmt, args);
-		return (B) this;
-	}
-
-	/**
-	 * Set text.
-	 * @param fmt
-	 * 	the format String as defined by {@link java.util.Formatter}
-	 * @param args
-	 * 	the arguments passed to the formatter
-	 * @return 
-	 * 	{@code this}
-	 */
-	@SuppressWarnings("unchecked")
-	public B text(String fmt, Object... args) {
-		this.text = format(fmt, args);
 		return (B) this;
 	}
 

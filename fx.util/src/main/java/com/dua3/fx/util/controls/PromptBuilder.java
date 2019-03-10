@@ -23,12 +23,12 @@ import javafx.scene.control.TextInputDialog;
  */
 public class PromptBuilder extends AbstractDialogBuilder<TextInputDialog, PromptBuilder, String> {
 	public PromptBuilder() {
-		super(TextInputDialog::new);
+		setDialogSupplier(TextInputDialog::new);
 	}
 	
 	public PromptBuilder defaultValue(String fmt, Object... args) {
 		String defaultValue = args.length==0 ? fmt : String.format(fmt, args);
-		setSupplier(() -> new TextInputDialog(defaultValue));
+		setDialogSupplier(() -> new TextInputDialog(defaultValue));
 		return this;
 	}
 	

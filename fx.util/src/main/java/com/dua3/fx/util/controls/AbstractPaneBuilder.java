@@ -13,8 +13,8 @@ import javafx.scene.control.DialogPane;
  */
 public class AbstractPaneBuilder<D extends DialogPane & Supplier<R>, B extends AbstractPaneBuilder<D,B,R>,R>
 		extends AbstractDialogPaneBuilder<D, B,R> {
-	protected AbstractPaneBuilder(Supplier<D> supplier) {
-		super(supplier, DialogPane::setHeaderText, DialogPane::setContentText);
+	protected AbstractPaneBuilder() {
+		super(DialogPane::setHeaderText);
 	}
 	
     String next = null;

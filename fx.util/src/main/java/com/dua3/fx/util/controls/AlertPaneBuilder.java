@@ -23,31 +23,36 @@ import javafx.scene.control.Alert.AlertType;
  */
 public class AlertPaneBuilder 
 extends AbstractPaneBuilder<InputDialogPane<Void>, AlertPaneBuilder, Void> {
+	private String text = null;
+
 	public AlertPaneBuilder(AlertType type) {
-		super(() -> createPane(type));
+		super();
+		setDialogSupplier(() -> createPane(type));
 	}
 
-	public static InputDialogPane<Void> createPane(AlertType type) {
-		return new InputDialogPane<Void>() {
+	public AlertPaneBuilder text(String fmt, Object... args) {
+		this.text = format(fmt, args);
+		return this;
+	}
+
+	private static InputDialogPane<Void> createPane(AlertType type) {
+		return new InputDialogPane<>() {
 			@Override
 			public Void get() {
 				return null;
 			}
+
 			@Override
 			public void init() {
 				// nop
 			}
 		};
 	}
-	
-	/**
-	 * Create Alert instance.
-	 * @return Alert instance
-	 */
-	@Override
-    public InputDialogPane<Void> build() {
-		InputDialogPane<Void> dlg = super.build();
-		return dlg;
-	}
 
+	@Override
+	public InputDialogPane<Void> build() {
+		InputDialogPane<Void> inputPane = super.build();
+		applyIfNotNull((pane,text) -> pane.setContentText(text), inputPane, text);
+		return inputPane;
+	}
 }

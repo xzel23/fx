@@ -41,7 +41,7 @@ public class DialogSample extends Application {
     // Confirmation
     container.getChildren().add(createButton("Confirmation", () -> {
       Dialogs.confirmation()
-          .title("Confimration")
+          .title("Confirmation")
           .header("This is a conformation dialog.")
           .text("And this is an additional text providing details.")
           .showAndWait();
@@ -52,7 +52,6 @@ public class DialogSample extends Application {
       Dialogs.prompt()
           .title("Prompt")
           .header("This is a prompt dialog.")
-          .text("Enter txt here: ")
           .showAndWait();
     }));
 
@@ -61,7 +60,6 @@ public class DialogSample extends Application {
       Dialogs.input()
           .title("Input")
           .header("This is an input dialog.")
-          .text("Enter data here: ")
           .string("txt", "enter text", () -> "dflt")
           .integer("integer", "enter number", () -> 0)
           .integer("integer from 4 to 7", "enter number", () -> 0,

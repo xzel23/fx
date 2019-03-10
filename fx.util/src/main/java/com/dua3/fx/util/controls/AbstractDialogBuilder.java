@@ -29,8 +29,8 @@ public abstract class AbstractDialogBuilder<D extends Dialog<R>, B extends Abstr
 
   private final BiConsumer<D,String> titleSetter;
 
-  protected AbstractDialogBuilder(Supplier<D> supplier) {
-    super(supplier, Dialog::setHeaderText, Dialog::setContentText);
+  protected AbstractDialogBuilder() {
+    super(Dialog::setHeaderText);
     this.titleSetter = Dialog::setTitle;
   }
 

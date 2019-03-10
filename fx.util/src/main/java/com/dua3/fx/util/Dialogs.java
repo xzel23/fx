@@ -18,7 +18,7 @@ import com.dua3.fx.util.controls.AboutDialogBuilder;
 import com.dua3.fx.util.controls.AlertBuilder;
 import com.dua3.fx.util.controls.AlertPaneBuilder;
 import com.dua3.fx.util.controls.InputDialogBuilder;
-import com.dua3.fx.util.controls.InputDialogPaneBuilder;
+import com.dua3.fx.util.controls.InputPaneBuilder;
 import com.dua3.fx.util.controls.OptionsDialogBuilder;
 import com.dua3.fx.util.controls.PromptBuilder;
 import com.dua3.fx.util.controls.WizardDialogBuilder;
@@ -152,8 +152,8 @@ public class Dialogs {
 	 * @return 
 	 * 	new {@link InputDialogBuilder} instance
 	 */
-	public static InputDialogPaneBuilder inputPane() {
-		return new InputDialogPaneBuilder();
+	public static InputPaneBuilder inputPane() {
+		return new InputPaneBuilder();
 	}
 
 	/**

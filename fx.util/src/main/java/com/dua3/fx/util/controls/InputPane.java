@@ -74,15 +74,15 @@ public class InputPane extends InputDialogPane<Map<String,Object>> {
 	public Map<String, Object> get() {
 		// Collecors.toMap() does not support null values!
 		Map<String,Object> result = new HashMap<>();
-		data.stream().forEach(e -> result.put(e.id, e.control.get()));
+		data.forEach(e -> result.put(e.id, e.control.get()));
 		return result;
 	}
 	
 	public InputPane() {
 	}
 
-	private void addToGrid(Node child, int c, int r, Insets insets) {
-		grid.add(child, c, r);
+	private void addToGrid(Node child, int c, int r, int span, Insets insets) {
+		grid.add(child, c, r, span, 1);
 		GridPane.setMargin(child, insets);
 	}
 
@@ -111,9 +111,22 @@ public class InputPane extends InputDialogPane<Map<String,Object>> {
 		int r = 0, c = 0;
 		for (var entry : data) {
 			// add label and control
-			addToGrid(entry.label, 3 * c, r, insets);
-			addToGrid(entry.control.node(), 3 * c + 1, r, insets);
-			addToGrid(entry.marker, 3 * c + 2, r, markerInsets);
+		    int gridX = 3*c;
+		    int gridY = r;
+
+		    int span;
+		    if (entry.label != null) {
+		        addToGrid(entry.label, gridX, gridY, 1, insets);
+		        gridX++;
+		        span = 1;
+		    } else {
+		        span = 2;
+		    }
+		    
+			addToGrid(entry.control.node(), gridX, gridY, span, insets);
+			gridX += span;
+			
+			addToGrid(entry.marker, gridX, gridY, 1, markerInsets);
 
 			entry.control.init();
 			
@@ -131,7 +144,7 @@ public class InputPane extends InputDialogPane<Map<String,Object>> {
 		// validate all input fields. validation succeeds if no validation returns an error message.
 		// do not use allMatches() because it might not process all items
 		return data.stream()
-			.map(item -> validateAndMark(item))
+			.map(this::validateAndMark)
 			.filter(Optional::isPresent)
 			.count() == 0;
 	}

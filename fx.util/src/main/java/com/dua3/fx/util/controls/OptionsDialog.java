@@ -57,6 +57,7 @@ public class OptionsDialog extends Dialog<OptionValues> {
 	public void setOptions(OptionSet optionSet, OptionValues currentValues) {
 		LangUtil.check(optionPane==null, "setOptions() already called!");
 		this.optionPane = new OptionsPane(optionSet, currentValues);
+		optionPane.init();
 		getDialogPane().setContent(optionPane);
 	}
 

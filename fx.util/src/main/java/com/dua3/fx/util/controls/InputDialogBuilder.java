@@ -22,6 +22,7 @@ import java.util.function.Supplier;
 
 import com.dua3.utility.options.OptionSet;
 import com.dua3.utility.options.OptionValues;
+import javafx.scene.control.Label;
 
 /**
  * Builder for Alert Dialogs.
@@ -32,18 +33,32 @@ public class InputDialogBuilder
 extends AbstractDialogBuilder<InputDialog, InputDialogBuilder, Map<String, Object>> 
 implements InputBuilder<InputDialogBuilder> {
 
-	private final InputDialogPaneBuilder pb = new InputDialogPaneBuilder();
+	private final InputPaneBuilder pb = new InputPaneBuilder();
 	
 	public InputDialogBuilder() {
-		super(InputDialog::new);
+		setDialogSupplier(this::createDialog);
 	}
 
-	@Override
-    public <T> InputDialogBuilder add(String id, String label, Class<T> type, Supplier<T> dflt, InputControl<T> control) {
-		pb.add(id, label, type, dflt, control);
-		return this;
+	private InputDialog createDialog() {
+		InputDialog dlg = new InputDialog();
+		InputPane dialogPane = pb.build();
+		dialogPane.init();
+		dlg.setDialogPane(dialogPane);
+		return dlg;
 	}
-	
+
+    @Override
+    public <T> InputDialogBuilder add(String id, String label, Class<T> type, Supplier<T> dflt, InputControl<T> control) {
+        pb.add(id, label, type, dflt, control);
+        return this;
+    }
+
+	@Override
+    public <T> InputDialogBuilder add(String id, Class<T> type, Supplier<T> dflt, InputControl<T> control) {
+        pb.add(id, type, dflt, control);
+        return this;
+    }
+
 	@Override
     public InputDialogBuilder columns(int columns) {
 		pb.columns(columns);
@@ -91,14 +106,5 @@ implements InputBuilder<InputDialogBuilder> {
         pb.options(id, label, dflt, options);
         return this;
     }
-    
-	@Override
-	public InputDialog build() {
-		InputDialog dlg = super.build();
-
-		dlg.setDialogPane(pb.build());
-
-		return dlg;
-	}
 
 }
