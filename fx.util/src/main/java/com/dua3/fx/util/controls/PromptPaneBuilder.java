@@ -14,9 +14,7 @@
 
 package com.dua3.fx.util.controls;
 
-import javafx.scene.control.TextInputDialog;
-
-/** 
+/**
  * Builder for Prompt Panes.
  * 
  * Provides a fluent interface to create Prompts.
@@ -24,12 +22,14 @@ import javafx.scene.control.TextInputDialog;
 public class PromptPaneBuilder extends AbstractPaneBuilder<PromptPane, PromptPaneBuilder, String> {
 	public PromptPaneBuilder() {
 		setDialogSupplier(PromptPane::new);
+		validate(r -> !r.isBlank()); // valid <=> not blank
 	}
 
 	@Override
 	public PromptPane build() {
         PromptPane pane = super.build();
         pane.setGraphic(null);
+        pane.setValidate(getValidate());
 		return pane;
 	}
 }

@@ -2,8 +2,14 @@ package com.dua3.fx.util.controls;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.Objects;
+import java.util.function.Predicate;
 import java.util.logging.Logger;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.ObjectBinding;
+import javafx.beans.property.*;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.RadioButton;
@@ -21,6 +27,8 @@ public class RadioPane<T> extends VBox implements InputControl<T> {
 
 	private static final double SPACING = 4;
 
+	private final InputControl.State state;
+
 	/**
 	 * Create new Radio Pane.
 	 * @param items
@@ -30,7 +38,7 @@ public class RadioPane<T> extends VBox implements InputControl<T> {
 	 */
 	public RadioPane(Collection<T> items, T currentValue) {
 		this.group = new ToggleGroup();
-		
+
 		this.setSpacing(SPACING);
 		ObservableList<Node> children = getChildren();
 		for (var item: items) {
@@ -40,25 +48,33 @@ public class RadioPane<T> extends VBox implements InputControl<T> {
 			children.add(control);
 			this.items.put(item, control);
 		}
-		
+
 		group.selectToggle(this.items.get(currentValue));
+
+		ObservableValue<T> valueBinding = Bindings.createObjectBinding( () -> {
+			Toggle selectedToggle = group.getSelectedToggle();
+			return selectedToggle != null ? (T) selectedToggle.getUserData() : null;
+		}, group.selectedToggleProperty());
+		this.state = new State(valueBinding);
 	}
 
-	@SuppressWarnings("unchecked")
-    @Override
-    public T get() {
-		Toggle selectedToggle = group.getSelectedToggle();
-        return selectedToggle != null ? (T) selectedToggle.getUserData() : null;
-	}
-	
-	@Override
-    public void set(T item) {
-		group.selectToggle(items.get(item));
-	}
-	
     @Override
     public Node node() {
         return this;
     }
 
+	@Override
+	public Property<T> valueProperty() {
+		return state.valueProperty();
+	}
+
+	@Override
+	public ReadOnlyBooleanProperty validProperty() {
+		return state.validProperty();
+	}
+
+	@Override
+	public ReadOnlyStringProperty errorProperty() {
+		return state.errorProperty();
+	}
 }

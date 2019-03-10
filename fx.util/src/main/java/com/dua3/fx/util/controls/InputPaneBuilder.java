@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import com.dua3.fx.util.controls.InputPane.Meta;
@@ -27,6 +28,7 @@ import com.dua3.utility.lang.LangUtil;
 import com.dua3.utility.options.OptionSet;
 import com.dua3.utility.options.OptionValues;
 
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
@@ -85,6 +87,29 @@ implements InputBuilder<InputPaneBuilder> {
 		return this;
 	}
 
+	static class AbstractInputControl<R> implements  InputControl<R> {
+
+		private final BooleanProperty valid = new SimpleBooleanProperty(true);
+		private final StringProperty error = new SimpleStringProperty("");
+
+		private Function<R,Optional<String>> validate = s -> Optional.empty();
+
+		public void setValidate(Function<R,Optional<String>> validate) {
+			this.validate = Objects.requireNonNull(validate);
+		}
+
+		protected void updateValidState(R r) {
+			Optional<String> result = validate.apply(r);
+			valid.setValue(result.isEmpty());
+			error.setValue(result.orElse(""));
+		}
+
+		@Override
+		public ReadOnlyBooleanProperty validProperty() {
+			return valid;
+		}
+	}
+
 	/* (non-Javadoc)
      * @see com.dua3.fx.util.controls.InputBuilder#text(java.lang.String, java.lang.String, java.lang.String, java.util.function.Function)
      */
@@ -108,11 +133,7 @@ implements InputBuilder<InputPaneBuilder> {
 					public void set(String arg) {
 						control.setText(arg);
 					}
-					
-					@Override
-					public Optional<String> validate() {
-						return validate.apply(get());
-					}
+
 				});
 	}
 

@@ -24,6 +24,7 @@ import javafx.scene.control.TextInputDialog;
 public class PromptBuilder extends AbstractDialogBuilder<TextInputDialog, PromptBuilder, String> {
 	public PromptBuilder() {
 		setDialogSupplier(TextInputDialog::new);
+		validate(r -> !r.isBlank()); // valid <=> not blank
 	}
 	
 	public PromptBuilder defaultValue(String fmt, Object... args) {

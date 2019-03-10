@@ -28,11 +28,12 @@ public class PromptPane extends InputDialogPane<String> {
 
 	public PromptPane() {
 		text = new TextField();
+		text.textProperty().addListener( (v,o,n) -> updateValidState(n) );
 		setContent(new StackPane(text));
 	}
 
 	@Override
 	public void init() {
-		// nop
+		updateValidState(text.getText());
 	}
 }

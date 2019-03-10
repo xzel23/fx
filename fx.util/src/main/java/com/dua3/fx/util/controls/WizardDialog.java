@@ -14,6 +14,7 @@ import com.dua3.utility.data.Pair;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
+import javafx.beans.binding.BooleanExpression;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -122,7 +123,7 @@ public class WizardDialog extends Dialog<Map<String,Object>> {
 		for (Entry<String, Page<?,?>> entry: pages.entrySet()) {
 			String name = entry.getKey();
 			Page<?,?> page = entry.getValue();
-			DialogPane pane = page.getPane();
+			InputDialogPane<?> pane = page.getPane();
 			
 			// check page names
 			String next = page.getNext();
@@ -145,7 +146,7 @@ public class WizardDialog extends Dialog<Map<String,Object>> {
 				addButtonToDialogPane(page, ButtonType.NEXT, evt -> {
 					pageStack.add(Pair.of(name,page));
 					setPage(page.getNext());
-				}, null);
+				}, pane.validProperty());
 			}
 			
 			// prev button
@@ -178,7 +179,7 @@ public class WizardDialog extends Dialog<Map<String,Object>> {
 		return current.second;
 	}
 	
-	private void addButtonToDialogPane(Page<?,?> page, ButtonType bt, Consumer<Event> action, BooleanBinding enabled) {
+	private void addButtonToDialogPane(Page<?,?> page, ButtonType bt, Consumer<Event> action, BooleanExpression enabled) {
 		InputDialogPane<?> pane = page.pane;
 		List<ButtonType> buttons = pane.getButtonTypes();
 		

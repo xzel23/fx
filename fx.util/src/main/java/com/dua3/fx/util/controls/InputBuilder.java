@@ -12,7 +12,9 @@ public interface InputBuilder<B extends InputBuilder<B>> {
 
     /**
      * Add labeled input control.
-     * 
+     *
+     * @param <T>
+     *  the result type
      * @param id
      *  the control's ID
      * @param label
@@ -30,7 +32,9 @@ public interface InputBuilder<B extends InputBuilder<B>> {
 
     /**
      * Add unlabeled input control.
-     * 
+     *
+     * @param <T>
+     *  the result type
      * @param id
      *  the control's ID
      * @param type
@@ -167,7 +171,9 @@ public interface InputBuilder<B extends InputBuilder<B>> {
 
     /**
      * Add labeled combobox.
-     * 
+     *
+     * @param <T>
+     *  the item type
      * @param id
      *  the ID
      * @param label
@@ -185,7 +191,9 @@ public interface InputBuilder<B extends InputBuilder<B>> {
     
     /**
      * Add labeled list of radiobuttons.
-     * 
+     *
+     * @param <T>
+     *  the item type
      * @param id
      *  the ID
      * @param label

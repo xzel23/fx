@@ -16,6 +16,7 @@ package com.dua3.fx.util.controls;
 
 import java.util.Objects;
 import java.util.function.BiConsumer;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import javafx.scene.control.ButtonType;
@@ -117,5 +118,16 @@ public abstract class AbstractDialogPaneBuilder<D, B extends AbstractDialogPaneB
 	public ResultHandler<R> getResultHandler() {
 		return resultHandler;
 	}
-	
+
+	private Predicate<R> validate = r -> true;
+
+	@SuppressWarnings("unchecked")
+	public B validate(Predicate<R> validate) {
+		this.validate = Objects.requireNonNull(validate);
+		return (B) this;
+	}
+
+	protected Predicate<R> getValidate() {
+		return validate;
+	}
 }

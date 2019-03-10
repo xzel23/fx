@@ -1,15 +1,16 @@
 package com.dua3.fx.util.controls;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Supplier;
 import java.util.logging.Logger;
 
 import com.dua3.fx.util.FxUtil;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanExpression;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ReadOnlyBooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Insets;
@@ -61,10 +62,6 @@ public class InputPane extends InputDialogPane<Map<String,Object>> {
 		void reset() {
 			control.set(dflt.get());
 		}
-		
-		Optional<String> validate() {
-			return control.validate();
-		}
 	}
 
 	private Collection<Meta<?>> data = null;
@@ -95,7 +92,7 @@ public class InputPane extends InputDialogPane<Map<String,Object>> {
 		
 		final Button okButton = (Button) lookupButton(ButtonType.OK);
 		okButton.addEventFilter(ActionEvent.ACTION, ae -> {
-		    if (!validate()) {
+		    if (!validateFields()) {
 		        ae.consume(); //not valid
 		    }
 		});		
@@ -104,7 +101,9 @@ public class InputPane extends InputDialogPane<Map<String,Object>> {
 	@Override
 	public void init() {
 		grid.getChildren().clear();
-		
+
+		List<BooleanExpression> validators = new ArrayList<>();
+
 		// create grid with input controls
 		Insets insets = new Insets(2);
 		Insets markerInsets = new Insets(0);
@@ -122,6 +121,8 @@ public class InputPane extends InputDialogPane<Map<String,Object>> {
 		    } else {
 		        span = 2;
 		    }
+
+		    validators.add(entry.control.validProperty());
 		    
 			addToGrid(entry.control.node(), gridX, gridY, span, insets);
 			gridX += span;
@@ -137,19 +138,21 @@ public class InputPane extends InputDialogPane<Map<String,Object>> {
 			}
 		}
 
+		// FIXME Bindings.createBooleanBinding();
+
 		setContent(grid);
 	}
 
-	private boolean validate() {
-		// validate all input fields. validation succeeds if no validation returns an error message.
+	private boolean validateFields() {
+		// validateFields all input fields. validation succeeds if no validation returns an error message.
 		// do not use allMatches() because it might not process all items
 		return data.stream()
-			.map(this::validateAndMark)
+			.map(this::validateAndMarkFields)
 			.filter(Optional::isPresent)
 			.count() == 0;
 	}
 
-	private Optional<String> validateAndMark(Meta<?> item) {
+	private Optional<String> validateAndMarkFields(Meta<?> item) {
 		Optional<String> result = item.validate();
 		boolean ok = result.isEmpty();
 		if (ok) {
@@ -160,6 +163,12 @@ public class InputPane extends InputDialogPane<Map<String,Object>> {
 			item.marker.setTooltip(new Tooltip(result.get()));			
 		}
 		return result;
+	}
+
+	protected BooleanProperty valid = new SimpleBooleanProperty(false);
+
+	public ReadOnlyBooleanProperty validProperty() {
+		return valid;
 	}
 
 }
