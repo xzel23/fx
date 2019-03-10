@@ -14,14 +14,7 @@
 
 package com.dua3.fx.util;
 
-import com.dua3.fx.util.controls.AboutDialogBuilder;
-import com.dua3.fx.util.controls.AlertBuilder;
-import com.dua3.fx.util.controls.AlertPaneBuilder;
-import com.dua3.fx.util.controls.InputDialogBuilder;
-import com.dua3.fx.util.controls.InputPaneBuilder;
-import com.dua3.fx.util.controls.OptionsDialogBuilder;
-import com.dua3.fx.util.controls.PromptBuilder;
-import com.dua3.fx.util.controls.WizardDialogBuilder;
+import com.dua3.fx.util.controls.*;
 
 import javafx.scene.control.Alert.AlertType;
 
@@ -131,11 +124,20 @@ public class Dialogs {
 
 	/**
 	 * Start definition of new prompt dialog.
-	 * @return 
+	 * @return
 	 * 	new {@link PromptBuilder} instance
 	 */
 	public static PromptBuilder prompt() {
 		return new PromptBuilder();
+	}
+
+	/**
+	 * Start definition of new prompt pane.
+	 * @return
+	 * 	new {@link PromptBuilder} instance
+	 */
+	public static PromptPaneBuilder promptPane() {
+		return new PromptPaneBuilder();
 	}
 
 	/**

@@ -101,10 +101,16 @@ implements InputBuilder<InputDialogBuilder> {
 		return this;
 	}
 
-    @Override
-    public InputDialogBuilder options(String id, String label, Supplier<OptionValues> dflt, Supplier<OptionSet> options) {
-        pb.options(id, label, dflt, options);
-        return this;
-    }
+	@Override
+	public InputDialogBuilder options(String id, String label, Supplier<OptionValues> dflt, Supplier<OptionSet> options) {
+		pb.options(id, label, dflt, options);
+		return this;
+	}
+
+	@Override
+	public InputDialogBuilder options(String id, Supplier<OptionValues> dflt, Supplier<OptionSet> options) {
+		pb.options(id, dflt, options);
+		return this;
+	}
 
 }

@@ -203,7 +203,7 @@ public interface InputBuilder<B extends InputBuilder<B>> {
 
     /**
      * Add labeled pane with options.
-     * 
+     *
      * @param id
      *  the ID
      * @param label
@@ -216,5 +216,22 @@ public interface InputBuilder<B extends InputBuilder<B>> {
      *  {@code this}
      */
     B options(String id, String label, Supplier<OptionValues> dflt, Supplier<OptionSet> options);
-    
+
+    /**
+     * Add unlabeled pane with options.
+     * <p>
+     *     <em>Note to implementers:</em> Labels of the options should be aligned properly with labels of the input dialog.
+     * </p>
+     *
+     * @param id
+     *  the ID
+     * @param dflt
+     *  supplier of default values
+     * @param options
+     *  suppliuer of options
+     * @return
+     *  {@code this}
+     */
+    B options(String id, Supplier<OptionValues> dflt, Supplier<OptionSet> options);
+
 }
