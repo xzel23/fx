@@ -2,13 +2,12 @@ package com.dua3.fx.util.controls;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
-import java.util.Objects;
-import java.util.function.Predicate;
 import java.util.logging.Logger;
 
 import javafx.beans.binding.Bindings;
-import javafx.beans.binding.ObjectBinding;
-import javafx.beans.property.*;
+import javafx.beans.property.Property;
+import javafx.beans.property.ReadOnlyBooleanProperty;
+import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -27,12 +26,12 @@ public class RadioPane<T> extends VBox implements InputControl<T> {
 
 	private static final double SPACING = 4;
 
-	private final InputControl.State state;
+	private final InputControl.State<T> state;
 
 	/**
 	 * Create new Radio Pane.
 	 * @param items
-	 *  the selectable items
+	 *  the available items
 	 * @param currentValue
 	 *  the current value
 	 */
@@ -49,13 +48,21 @@ public class RadioPane<T> extends VBox implements InputControl<T> {
 			this.items.put(item, control);
 		}
 
-		group.selectToggle(this.items.get(currentValue));
-
+		// update state when selected toggle changes
+		@SuppressWarnings("unchecked")
 		ObservableValue<T> valueBinding = Bindings.createObjectBinding( () -> {
 			Toggle selectedToggle = group.getSelectedToggle();
 			return selectedToggle != null ? (T) selectedToggle.getUserData() : null;
 		}, group.selectedToggleProperty());
-		this.state = new State(valueBinding);
+		this.state = new State<>(valueBinding);
+		
+		// update toggle, when state changes
+		state.valueProperty().addListener( (v,o,n) -> {
+			group.selectToggle(this.items.get(n));
+		});
+		
+		// set initial toggle
+		group.selectToggle(this.items.get(currentValue));
 	}
 
     @Override
@@ -76,5 +83,10 @@ public class RadioPane<T> extends VBox implements InputControl<T> {
 	@Override
 	public ReadOnlyStringProperty errorProperty() {
 		return state.errorProperty();
+	}
+	
+	@Override
+	public void reset() {
+		state.reset();
 	}
 }

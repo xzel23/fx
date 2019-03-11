@@ -16,7 +16,6 @@ package com.dua3.fx.util.controls;
 
 import java.util.Optional;
 import java.util.function.BiConsumer;
-import java.util.function.Supplier;
 
 import javafx.scene.control.Dialog;
 

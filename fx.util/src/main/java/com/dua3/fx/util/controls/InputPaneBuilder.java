@@ -14,13 +14,13 @@
 
 package com.dua3.fx.util.controls;
 
+import java.text.NumberFormat;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import com.dua3.fx.util.controls.InputPane.Meta;
@@ -28,9 +28,14 @@ import com.dua3.utility.lang.LangUtil;
 import com.dua3.utility.options.OptionSet;
 import com.dua3.utility.options.OptionValues;
 
-import javafx.beans.property.*;
-import javafx.collections.FXCollections;
-import javafx.scene.Node;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ObservableStringValue;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -87,54 +92,16 @@ implements InputBuilder<InputPaneBuilder> {
 		return this;
 	}
 
-	static class AbstractInputControl<R> implements  InputControl<R> {
-
-		private final BooleanProperty valid = new SimpleBooleanProperty(true);
-		private final StringProperty error = new SimpleStringProperty("");
-
-		private Function<R,Optional<String>> validate = s -> Optional.empty();
-
-		public void setValidate(Function<R,Optional<String>> validate) {
-			this.validate = Objects.requireNonNull(validate);
-		}
-
-		protected void updateValidState(R r) {
-			Optional<String> result = validate.apply(r);
-			valid.setValue(result.isEmpty());
-			error.setValue(result.orElse(""));
-		}
-
-		@Override
-		public ReadOnlyBooleanProperty validProperty() {
-			return valid;
-		}
-	}
-
 	/* (non-Javadoc)
      * @see com.dua3.fx.util.controls.InputBuilder#text(java.lang.String, java.lang.String, java.lang.String, java.util.function.Function)
      */
 	@Override
     public InputPaneBuilder string(String id, String label, Supplier<String> dflt, Function<String,Optional<String>> validate) {
+		TextField control = new TextField();
+		ObservableStringValue value = control.textProperty();
 		return add(id, label, String.class, dflt,
-				new InputControl<>() {
-					final TextField control = new TextField();
-
-					@Override
-					public Node node() {
-						return control;
-					}
-
-					@Override
-					public String get() {
-						return control.getText();
-					}
-
-					@Override
-					public void set(String arg) {
-						control.setText(arg);
-					}
-
-				});
+				new SimpleInputControl<>(control, value, dflt)
+			);
 	}
 
 	/* (non-Javadoc)
@@ -142,36 +109,14 @@ implements InputBuilder<InputPaneBuilder> {
      */
 	@Override
     public InputPaneBuilder integer(String id, String label, Supplier<Integer> dflt, Function<Integer,Optional<String>> validate) {
+		TextField control = new TextField();
+		StringProperty textProperty = control.textProperty();
+		IntegerProperty value = new SimpleIntegerProperty();
+		textProperty.bindBidirectional(value, NumberFormat.getIntegerInstance());
+
 		return add(id, label, Integer.class, dflt,
-				new InputControl<>() {
-					final TextField control = new TextField();
-
-					@Override
-					public Node node() {
-						return control;
-					}
-
-					@Override
-					public Integer get() {
-						return Integer.parseInt(control.getText());
-					}
-
-					@Override
-					public void set(Integer arg) {
-						control.setText(Integer.toString(arg));
-					}
-					
-					@Override
-					public Optional<String> validate() {
-						String t = control.getText();
-						try {
-							int i = Integer.parseInt(t);
-							return validate.apply(i);
-						} catch (@SuppressWarnings("unused") NumberFormatException e) {
-							return Optional.of("'"+t+"' is no valid integer.");
-						}
-					}
-				});
+				new SimpleInputControl<>(control, value.asObject(), dflt)
+			);
 	}
 
 	/* (non-Javadoc)
@@ -179,36 +124,14 @@ implements InputBuilder<InputPaneBuilder> {
      */
 	@Override
     public InputPaneBuilder decimal(String id, String label, Supplier<Double> dflt, Function<Double,Optional<String>> validate) {
+		TextField control = new TextField();
+		StringProperty textProperty = control.textProperty();
+		DoubleProperty value = new SimpleDoubleProperty();
+		textProperty.bindBidirectional(value, NumberFormat.getInstance());
+
 		return add(id, label, Double.class, dflt,
-				new InputControl<>() {
-					final TextField control = new TextField();
-
-					@Override
-					public Node node() {
-						return control;
-					}
-
-					@Override
-					public Double get() {
-						return Double.parseDouble(control.getText());
-					}
-
-					@Override
-					public void set(Double arg) {
-						control.setText(Double.toString(arg));
-					}
-
-					@Override
-					public Optional<String> validate() {
-						String t = control.getText();
-						try {
-							double d = Double.parseDouble(t);
-							return validate.apply(d);
-						} catch (@SuppressWarnings("unused") NumberFormatException e) {
-							return Optional.of("'"+t+"' is no valid number.");
-						}
-					}
-				});
+				new SimpleInputControl<>(control, value.asObject(), dflt)
+			);
 	}
 
 	/* (non-Javadoc)
@@ -216,34 +139,11 @@ implements InputBuilder<InputPaneBuilder> {
      */
 	@Override
     public InputPaneBuilder checkBox(String id, String label, Supplier<Boolean> dflt, String text) {
+		CheckBox control = new CheckBox(text);
+		BooleanProperty value = control.selectedProperty();
 		return add(id, label, Boolean.class, dflt,
-				new InputControl<>() {
-					final CheckBox control = new CheckBox(text);
-
-					{
-						control.setSelected(dflt.get());
-					}
-					
-					@Override
-					public Node node() {
-						return control;
-					}
-
-					@Override
-					public Boolean get() {
-						return control.isSelected();
-					}
-
-					@Override
-					public void set(Boolean arg) {
-						control.setSelected(arg);
-					}
-
-					@Override
-					public Optional<String> validate() {
-						return Optional.empty();
-					}
-				});
+				new SimpleInputControl<>(control, value, dflt)
+			);
 	}
 
 	/* (non-Javadoc)
@@ -251,39 +151,11 @@ implements InputBuilder<InputPaneBuilder> {
      */
 	@Override
     public <T> InputPaneBuilder comboBox(String id, String label, Supplier<T> dflt, Class<T> cls, Collection<T> items) {
+		ComboBox<T> control = new ComboBox<T>();
+		ObjectProperty<T> value = control.valueProperty();
 		return add(id, label, cls, dflt,
-				new InputControl<>() {
-					final ComboBox<T> control = new ComboBox<>();
- 
-					{
-						control.setItems(FXCollections.observableArrayList(items));
-						control.setValue(dflt.get());
-					}
-					
-					@Override
-					public Node node() {
-						return control;
-					}
-
-					@Override
-					public T get() {
-						return control.getValue();
-					}
-
-					@Override
-					public void set(T arg) {
-						control.setValue(arg);
-					}
-
-					@Override
-					public Optional<String> validate() {
-						T t = control.getValue();
-						if (t == null) {
-							return Optional.of("No value selected.");
-						}
-						return Optional.empty();
-					}
-				});
+				new SimpleInputControl<>(control, value, dflt)
+			);
 	}
 
 	/* (non-Javadoc)

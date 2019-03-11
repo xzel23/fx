@@ -14,6 +14,7 @@ import com.dua3.utility.options.OptionValues;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -28,10 +29,14 @@ public class OptionsPane extends GridPane implements InputControl<OptionValues>{
     /** Logger */
     protected static final Logger LOG = Logger.getLogger(OptionsPane.class.getSimpleName());
 
+    private final InputControl.State<OptionValues> state;
+    
 	private Supplier<OptionSet> options;
-	private Supplier<OptionValues> currentValues;
+	private Supplier<OptionValues> dflt;
+	private ObservableValue<OptionValues> value = new SimpleObjectProperty<>();
 
 	private LinkedHashMap<Option<?>, Property<?>> items = new LinkedHashMap<>();
+
 	
 	private static final Insets INSETS = new Insets(2);
 
@@ -48,20 +53,21 @@ public class OptionsPane extends GridPane implements InputControl<OptionValues>{
     
     public OptionsPane(Supplier<OptionSet> options, Supplier<OptionValues> dflt) {
         this.options = options;
-        this.currentValues=dflt;
+        this.dflt=dflt;
+        this.state = new State<>(value, dflt);
 	}
 
     public void init() {
         getChildren().clear();
         
         OptionSet optionSet = options.get();
-		OptionValues values = currentValues.get();
+		OptionValues values = state.valueProperty().getValue();
 		
 		int row = 0;
 		for (Option<?> option: optionSet) {
 			Label label = new Label(option.getName());
 			
-            Property<?> property;            
+            Property<? extends Value<?>> valueProperty;            
 			Control control;
 			Value<?> value = values.get(option);
 			if (option instanceof StringOption) {
@@ -69,31 +75,34 @@ public class OptionsPane extends GridPane implements InputControl<OptionValues>{
 				c.setText(value.text());
 				control = c;
 				StringProperty textProperty = c.textProperty();
-				Property<Value<String>> valueProperty = new SimpleObjectProperty<Value<String>>();
+				Property<Value<String>> property = new SimpleObjectProperty<Value<String>>();
 				textProperty.addListener((v,o,n) -> {
-					valueProperty.setValue(Option.value(n));
+					property.setValue(Option.value(n));
 				});
-				valueProperty.addListener((v,o,n) -> textProperty.set(n.get()));
-				property = valueProperty;
+				property.addListener((v,o,n) -> textProperty.set(n.get()));
+				valueProperty = property;
 			} else if (option instanceof ChoiceOption<?>) {
 				var choices = FXCollections.observableList(((ChoiceOption<?>)option).getChoices());
 				var c = new ComboBox<>(choices);
 				c.getSelectionModel().select(choices.indexOf(value));
 				control = c;
-				property = c.valueProperty();
+				valueProperty = c.valueProperty();
 			} else {
 				LOG.warning("unknown option type: "+option.getClass().getName());
 				control = null;
-				property = null;
+				valueProperty = null;
 			}
 			
-			items.put(option, property);
+			items.put(option, valueProperty);
 			
 			addToGrid(label, 0, row);
 			addToGrid(control, 1, row);
 			
 			row++;
 		}
+		
+		// create binding
+		
     }
 
 	private void addToGrid(Control child, int c, int r) {

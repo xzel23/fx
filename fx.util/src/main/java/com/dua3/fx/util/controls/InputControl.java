@@ -3,9 +3,16 @@ package com.dua3.fx.util.controls;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
-import javafx.beans.binding.BooleanExpression;
-import javafx.beans.property.*;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.Property;
+import javafx.beans.property.ReadOnlyBooleanProperty;
+import javafx.beans.property.ReadOnlyStringProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
 
@@ -46,20 +53,39 @@ public interface InputControl<R> {
 	default void init() {
 		// nop
 	}
-
+	
+	/**
+	 * Reset value to default
+	 */
+	void reset();
+	
 	Property<R> valueProperty();
 	ReadOnlyBooleanProperty validProperty();
 	ReadOnlyStringProperty errorProperty();
-
+	
 	class State<R> {
 		private final Property<R> value = new SimpleObjectProperty<>();
 		private final BooleanProperty valid = new SimpleBooleanProperty(true);
 		private final StringProperty error = new SimpleStringProperty("");
+		
+		private Supplier<R> dflt;
+		
 		private Function<R,Optional<String>> validate = s -> Optional.empty();
 
+		private static <R> Supplier<R> freeze(ObservableValue<R> value) {
+			final R frozen = value.getValue();
+			return () -> frozen;
+		}
+		
 		public State(ObservableValue<R> value) {
+			this(value, freeze(value));
+			
+		}
+			
+		public State(ObservableValue<R> value, Supplier<R> dflt) {
 			this.value.bind(value);
 			this.value.addListener( (v,o,n) -> updateValidState(n) );
+			this.dflt = Objects.requireNonNull(dflt);
 			updateValidState(this.value.getValue());
 		}
 
@@ -83,6 +109,14 @@ public interface InputControl<R> {
 
 		public Property<R> valueProperty() {
 			return value;
+		}
+		
+		public void setDefault(Supplier<R> dflt) {
+			this.dflt = Objects.requireNonNull(dflt);
+		}
+		
+		public void reset() {
+			value.setValue(dflt.get());
 		}
 	}
 }

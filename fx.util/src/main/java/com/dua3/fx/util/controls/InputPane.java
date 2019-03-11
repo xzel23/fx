@@ -1,24 +1,30 @@
 package com.dua3.fx.util.controls;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.Callable;
 import java.util.function.Supplier;
 import java.util.logging.Logger;
 
 import com.dua3.fx.util.FxUtil;
 
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.beans.binding.BooleanExpression;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.event.ActionEvent;
+import javafx.beans.value.ObservableBooleanValue;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
 
 public class InputPane extends InputDialogPane<Map<String,Object>> {
@@ -91,11 +97,7 @@ public class InputPane extends InputDialogPane<Map<String,Object>> {
 		getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 		
 		final Button okButton = (Button) lookupButton(ButtonType.OK);
-		okButton.addEventFilter(ActionEvent.ACTION, ae -> {
-		    if (!validateFields()) {
-		        ae.consume(); //not valid
-		    }
-		});		
+		okButton.disableProperty().bind(Bindings.not(valid));
 	}
 
 	@Override
@@ -138,31 +140,20 @@ public class InputPane extends InputDialogPane<Map<String,Object>> {
 			}
 		}
 
-		// FIXME Bindings.createBooleanBinding();
+		// valid state is true if all inputs are valid
+		ObservableBooleanValue[] inputs = validators.toArray(ObservableBooleanValue[]::new);
+		Callable<Boolean> check = () -> {
+			for (var value: inputs) {
+				if (!value.get()) {
+					return Boolean.FALSE;
+				}
+			}
+			return Boolean.TRUE;
+		};
+		BooleanBinding binding = Bindings.createBooleanBinding(check, inputs);
+		valid.bind(binding);
 
 		setContent(grid);
-	}
-
-	private boolean validateFields() {
-		// validateFields all input fields. validation succeeds if no validation returns an error message.
-		// do not use allMatches() because it might not process all items
-		return data.stream()
-			.map(this::validateAndMarkFields)
-			.filter(Optional::isPresent)
-			.count() == 0;
-	}
-
-	private Optional<String> validateAndMarkFields(Meta<?> item) {
-		Optional<String> result = item.validate();
-		boolean ok = result.isEmpty();
-		if (ok) {
-			item.marker.setText(MARKER_OK);
-			item.marker.setTooltip(null);
-		} else {
-			item.marker.setText(MARKER_ERROR);
-			item.marker.setTooltip(new Tooltip(result.get()));			
-		}
-		return result;
 	}
 
 	protected BooleanProperty valid = new SimpleBooleanProperty(false);

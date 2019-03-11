@@ -22,7 +22,6 @@ import java.util.function.Supplier;
 
 import com.dua3.utility.options.OptionSet;
 import com.dua3.utility.options.OptionValues;
-import javafx.scene.control.Label;
 
 /**
  * Builder for Alert Dialogs.
