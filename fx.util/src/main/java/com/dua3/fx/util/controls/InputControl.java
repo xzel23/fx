@@ -21,10 +21,8 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.beans.value.ObservableStringValue;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -79,7 +77,7 @@ public interface InputControl<R> {
 	ReadOnlyStringProperty errorProperty();
 	
 	class State<R> {
-		private final Property<R> value = new SimpleObjectProperty<>();
+		private final Property<R> value;
 		private final BooleanProperty valid = new SimpleBooleanProperty(true);
 		private final StringProperty error = new SimpleStringProperty("");
 		
@@ -92,17 +90,17 @@ public interface InputControl<R> {
 			return () -> frozen;
 		}
 		
-		public State(ObservableValue<R> value) {
+		public State(Property<R> value) {
 			this(value, freeze(value));
 			
 		}
 			
-		public State(ObservableValue<R> value, Supplier<R> dflt) {
+		public State(Property<R> value, Supplier<R> dflt) {
 			this(value, dflt, s -> Optional.empty());
 		}
 			
-		public State(ObservableValue<R> value, Supplier<R> dflt, Function<R,Optional<String>> validate) {
-			this.value.bind(value);
+		public State(Property<R> value, Supplier<R> dflt, Function<R,Optional<String>> validate) {
+			this.value = value;
 			this.value.addListener( (v,o,n) -> updateValidState(n) );
 			this.dflt = Objects.requireNonNull(dflt);
 			this.validate = Objects.requireNonNull(validate);
@@ -143,7 +141,7 @@ public interface InputControl<R> {
 	
 	public static SimpleInputControl<TextField, String> stringInput(Supplier<String> dflt, Function<String, Optional<String>> validate) {
 		TextField control = new TextField();
-		ObservableStringValue value = control.textProperty();
+		StringProperty value = control.textProperty();
 		SimpleInputControl<TextField, String> inputControl = new SimpleInputControl<>(control, value, dflt, validate);
 		return inputControl;
 	}

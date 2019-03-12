@@ -13,7 +13,6 @@ import com.dua3.fx.util.controls.AbstractDialogPaneBuilder.ResultHandler;
 import com.dua3.utility.data.Pair;
 
 import javafx.beans.binding.Bindings;
-import javafx.beans.binding.BooleanBinding;
 import javafx.beans.binding.BooleanExpression;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,7 +21,6 @@ import javafx.event.Event;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
-import javafx.scene.control.DialogPane;
 
 public class WizardDialog extends Dialog<Map<String,Object>> {
 

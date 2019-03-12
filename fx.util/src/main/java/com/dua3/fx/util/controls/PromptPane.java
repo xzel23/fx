@@ -1,17 +1,10 @@
 package com.dua3.fx.util.controls;
 
-import com.dua3.fx.util.FxUtil;
-import javafx.event.ActionEvent;
-import javafx.geometry.Dimension2D;
-import javafx.geometry.Insets;
-import javafx.scene.Node;
-import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
-
-import java.util.*;
 import java.util.function.Supplier;
 import java.util.logging.Logger;
+
+import javafx.scene.control.TextField;
+import javafx.scene.layout.StackPane;
 
 public class PromptPane extends InputDialogPane<String> {
 

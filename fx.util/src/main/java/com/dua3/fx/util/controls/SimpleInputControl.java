@@ -8,7 +8,6 @@ import java.util.function.Supplier;
 import javafx.beans.property.Property;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.ReadOnlyStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Control;
 
 class SimpleInputControl<C extends Control,R> implements  InputControl<R> {
@@ -17,7 +16,7 @@ class SimpleInputControl<C extends Control,R> implements  InputControl<R> {
 	private final State<R> state;
 	private final Supplier<R> dflt;
 
-	protected SimpleInputControl(C control, ObservableValue<R> value, Supplier<R> dflt, Function<R,Optional<String>> validate) {
+	protected SimpleInputControl(C control, Property<R> value, Supplier<R> dflt, Function<R,Optional<String>> validate) {
 		this.control = Objects.requireNonNull(control);
 		this.state = new State<>(value);
 		this.dflt = dflt;

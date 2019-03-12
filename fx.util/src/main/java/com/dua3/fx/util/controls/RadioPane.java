@@ -4,11 +4,10 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.logging.Logger;
 
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.Property;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.ReadOnlyStringProperty;
-import javafx.beans.value.ObservableValue;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.RadioButton;
@@ -35,6 +34,7 @@ public class RadioPane<T> extends VBox implements InputControl<T> {
 	 * @param currentValue
 	 *  the current value
 	 */
+	@SuppressWarnings("unchecked")
 	public RadioPane(Collection<T> items, T currentValue) {
 		this.group = new ToggleGroup();
 
@@ -49,12 +49,13 @@ public class RadioPane<T> extends VBox implements InputControl<T> {
 		}
 
 		// update state when selected toggle changes
-		@SuppressWarnings("unchecked")
-		ObservableValue<T> valueBinding = Bindings.createObjectBinding( () -> {
-			Toggle selectedToggle = group.getSelectedToggle();
-			return selectedToggle != null ? (T) selectedToggle.getUserData() : null;
-		}, group.selectedToggleProperty());
-		this.state = new State<>(valueBinding);
+		Property<T> property = new SimpleObjectProperty<>();
+		group.selectedToggleProperty().addListener( (v,o,n) -> {
+			Toggle toggle = group.getSelectedToggle();
+			property.setValue(toggle != null ? (T) toggle.getUserData() : null);
+		});
+		
+		this.state = new State<>(property);
 		
 		// update toggle, when state changes
 		state.valueProperty().addListener( (v,o,n) -> {

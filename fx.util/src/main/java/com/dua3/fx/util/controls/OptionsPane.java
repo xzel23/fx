@@ -2,12 +2,11 @@ package com.dua3.fx.util.controls;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.logging.Logger;
 
+import com.dua3.fx.util.StringValueConverter;
 import com.dua3.utility.options.Option;
 import com.dua3.utility.options.Option.ChoiceOption;
 import com.dua3.utility.options.Option.StringOption;
@@ -15,22 +14,13 @@ import com.dua3.utility.options.Option.Value;
 import com.dua3.utility.options.OptionSet;
 import com.dua3.utility.options.OptionValues;
 
-import com.dua3.fx.util.StringValueConverter;
-
 import javafx.beans.property.Property;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.StringProperty;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Control;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
 public class OptionsPane extends GridPane implements InputControl<OptionValues>{
@@ -42,7 +32,7 @@ public class OptionsPane extends GridPane implements InputControl<OptionValues>{
     
 	private Supplier<OptionSet> options;
 	private Supplier<OptionValues> dflt;
-	private ObservableValue<OptionValues> value = new SimpleObjectProperty<>();
+	private Property<OptionValues> value = new SimpleObjectProperty<>();
 
 	private LinkedHashMap<Option<?>, InputControl<?>> items = new LinkedHashMap<>();
 
