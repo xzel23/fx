@@ -2,6 +2,7 @@ package com.dua3.fx.util.controls;
 
 import java.text.NumberFormat;
 import java.util.Collection;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
@@ -158,7 +159,7 @@ public interface InputControl<R> {
 		TextField control = new TextField();
 		StringProperty textProperty = control.textProperty();
 		IntegerProperty value = new SimpleIntegerProperty();
-		textProperty.bindBidirectional(value, NumberFormat.getIntegerInstance());
+		textProperty.bindBidirectional(value, NumberFormat.getIntegerInstance(Locale.getDefault()));
 		SimpleInputControl<TextField,Integer> inputControl = new SimpleInputControl<>(control, value.asObject(), dflt, validate);
 		return inputControl;
 	}
@@ -167,7 +168,7 @@ public interface InputControl<R> {
 		TextField control = new TextField();
 		StringProperty textProperty = control.textProperty();
 		DoubleProperty value = new SimpleDoubleProperty();
-		textProperty.bindBidirectional(value, NumberFormat.getInstance());
+		textProperty.bindBidirectional(value, NumberFormat.getInstance(Locale.getDefault()));
 		SimpleInputControl<TextField,Double> inputControl = new SimpleInputControl<>(control, value.asObject(), dflt, validate);
 		return inputControl;
 	}
