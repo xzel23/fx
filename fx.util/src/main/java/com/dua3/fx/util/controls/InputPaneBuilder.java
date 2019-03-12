@@ -14,7 +14,6 @@
 
 package com.dua3.fx.util.controls;
 
-import java.text.NumberFormat;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -27,18 +26,6 @@ import com.dua3.fx.util.controls.InputPane.Meta;
 import com.dua3.utility.lang.LangUtil;
 import com.dua3.utility.options.OptionSet;
 import com.dua3.utility.options.OptionValues;
-
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.StringProperty;
-import javafx.beans.value.ObservableStringValue;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
 
 /**
  * Builder for Alert Dialogs.
@@ -97,11 +84,7 @@ implements InputBuilder<InputPaneBuilder> {
      */
 	@Override
     public InputPaneBuilder string(String id, String label, Supplier<String> dflt, Function<String,Optional<String>> validate) {
-		TextField control = new TextField();
-		ObservableStringValue value = control.textProperty();
-		return add(id, label, String.class, dflt,
-				new SimpleInputControl<>(control, value, dflt)
-			);
+		return add(id, label, String.class, dflt, InputControl.stringInput(dflt, validate));
 	}
 
 	/* (non-Javadoc)
@@ -109,14 +92,7 @@ implements InputBuilder<InputPaneBuilder> {
      */
 	@Override
     public InputPaneBuilder integer(String id, String label, Supplier<Integer> dflt, Function<Integer,Optional<String>> validate) {
-		TextField control = new TextField();
-		StringProperty textProperty = control.textProperty();
-		IntegerProperty value = new SimpleIntegerProperty();
-		textProperty.bindBidirectional(value, NumberFormat.getIntegerInstance());
-
-		return add(id, label, Integer.class, dflt,
-				new SimpleInputControl<>(control, value.asObject(), dflt)
-			);
+		return add(id, label, Integer.class, dflt, InputControl.integerInput(dflt, validate));
 	}
 
 	/* (non-Javadoc)
@@ -124,14 +100,7 @@ implements InputBuilder<InputPaneBuilder> {
      */
 	@Override
     public InputPaneBuilder decimal(String id, String label, Supplier<Double> dflt, Function<Double,Optional<String>> validate) {
-		TextField control = new TextField();
-		StringProperty textProperty = control.textProperty();
-		DoubleProperty value = new SimpleDoubleProperty();
-		textProperty.bindBidirectional(value, NumberFormat.getInstance());
-
-		return add(id, label, Double.class, dflt,
-				new SimpleInputControl<>(control, value.asObject(), dflt)
-			);
+		return add(id, label, Double.class, dflt, InputControl.decimalInput(dflt, validate));
 	}
 
 	/* (non-Javadoc)
@@ -139,11 +108,7 @@ implements InputBuilder<InputPaneBuilder> {
      */
 	@Override
     public InputPaneBuilder checkBox(String id, String label, Supplier<Boolean> dflt, String text) {
-		CheckBox control = new CheckBox(text);
-		BooleanProperty value = control.selectedProperty();
-		return add(id, label, Boolean.class, dflt,
-				new SimpleInputControl<>(control, value, dflt)
-			);
+		return add(id, label, Boolean.class, dflt, InputControl.checkBoxInput(dflt, text));
 	}
 
 	/* (non-Javadoc)
@@ -151,11 +116,7 @@ implements InputBuilder<InputPaneBuilder> {
      */
 	@Override
     public <T> InputPaneBuilder comboBox(String id, String label, Supplier<T> dflt, Class<T> cls, Collection<T> items) {
-		ComboBox<T> control = new ComboBox<T>();
-		ObjectProperty<T> value = control.valueProperty();
-		return add(id, label, cls, dflt,
-				new SimpleInputControl<>(control, value, dflt)
-			);
+		return add(id, label, cls, dflt, InputControl.comboBoxInput(dflt));
 	}
 
 	/* (non-Javadoc)

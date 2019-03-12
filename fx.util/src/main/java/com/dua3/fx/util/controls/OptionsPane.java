@@ -1,6 +1,9 @@
 package com.dua3.fx.util.controls;
 
 import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.logging.Logger;
 
@@ -12,10 +15,13 @@ import com.dua3.utility.options.OptionSet;
 import com.dua3.utility.options.OptionValues;
 
 import javafx.beans.property.Property;
+import javafx.beans.property.ReadOnlyBooleanProperty;
+import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
@@ -35,7 +41,7 @@ public class OptionsPane extends GridPane implements InputControl<OptionValues>{
 	private Supplier<OptionValues> dflt;
 	private ObservableValue<OptionValues> value = new SimpleObjectProperty<>();
 
-	private LinkedHashMap<Option<?>, Property<?>> items = new LinkedHashMap<>();
+	private LinkedHashMap<Option<?>, InputControl<?>> items = new LinkedHashMap<>();
 
 	
 	private static final Insets INSETS = new Insets(2);
@@ -61,54 +67,74 @@ public class OptionsPane extends GridPane implements InputControl<OptionValues>{
         getChildren().clear();
         
         OptionSet optionSet = options.get();
-		OptionValues values = state.valueProperty().getValue();
+        
+		OptionValues values = new OptionValues(dflt.get());
 		
 		int row = 0;
 		for (Option<?> option: optionSet) {
 			Label label = new Label(option.getName());
 			
-            Property<? extends Value<?>> valueProperty;            
-			Control control;
-			Value<?> value = values.get(option);
-			if (option instanceof StringOption) {
-				TextField c = new TextField();
-				c.setText(value.text());
-				control = c;
-				StringProperty textProperty = c.textProperty();
-				Property<Value<String>> property = new SimpleObjectProperty<Value<String>>();
-				textProperty.addListener((v,o,n) -> {
-					property.setValue(Option.value(n));
-				});
-				property.addListener((v,o,n) -> textProperty.set(n.get()));
-				valueProperty = property;
-			} else if (option instanceof ChoiceOption<?>) {
-				var choices = FXCollections.observableList(((ChoiceOption<?>)option).getChoices());
-				var c = new ComboBox<>(choices);
-				c.getSelectionModel().select(choices.indexOf(value));
-				control = c;
-				valueProperty = c.valueProperty();
-			} else {
-				LOG.warning("unknown option type: "+option.getClass().getName());
-				control = null;
-				valueProperty = null;
-			}
-			
-			items.put(option, valueProperty);
+			InputControl<?> control = createControl(values, option);
+			items.put(option, control);
 			
 			addToGrid(label, 0, row);
-			addToGrid(control, 1, row);
+			addToGrid(control.node(), 1, row);
 			
 			row++;
 		}
 		
 		// create binding
-		
+		/*
+	    OptionValues values = new OptionValues();
+	    for (var entry: items.entrySet()) {
+	        Option<?> option = entry.getKey();
+	        Property<?> property = entry.getValue();
+			Value<?> value = (Value<?>) property.getValue();
+	        values.put(option, value);
+	    }
+		return values;
+	    */
+
     }
 
-	private void addToGrid(Control child, int c, int r) {
-		if (child != null) {
-			add(child, c, r);
-			setMargin(child, INSETS);
+	@SuppressWarnings("unchecked")
+	private <T> InputControl<T> createControl(OptionValues values, Option<T> option) {
+		InputControl<T> control;
+		if (option instanceof StringOption) {
+			var inputControl = InputControl.stringInput(() -> (String) dflt.get().get(option).get(), r -> Optional.empty());
+			
+			inputControl.valueProperty().addListener( (v,o,n) -> {
+				values.put(option, Option.value(n));
+			});
+			
+			values.addChangeListener( (v,o,n) -> {
+				inputControl.valueProperty().setValue(Objects.toString(n.get(), ""));
+			});
+			
+			return (InputControl<T>) inputControl;
+		} else if (option instanceof ChoiceOption<?>) {
+			var choices = FXCollections.observableList(((ChoiceOption<T>)option).getChoices());
+			var inputControl = InputControl.comboBoxInput(() -> ((Value<T>)dflt.get().get(option)).get());
+			
+			inputControl.valueProperty().addListener( (v,o,n) -> {
+				values.put(option, Option.value(n));
+			});
+			
+			values.addChangeListener( (v,o,n) -> {
+				inputControl.valueProperty().setValue(((Value<T>) n).get());
+			});
+
+			return inputControl;
+		}
+		
+		LOG.warning("unknown option type: "+option.getClass().getName());
+		return null;
+	}
+
+	private void addToGrid(Node node, int c, int r) {
+		if (node != null) {
+			add(node, c, r);
+			setMargin(node, INSETS);
 		}
 	}
 	
@@ -117,7 +143,7 @@ public class OptionsPane extends GridPane implements InputControl<OptionValues>{
 	    OptionValues values = new OptionValues();
 	    for (var entry: items.entrySet()) {
 	        Option<?> option = entry.getKey();
-	        Property<?> property = entry.getValue();
+	        Property<?> property = entry.getValue().valueProperty();
 			Value<?> value = (Value<?>) property.getValue();
 	        values.put(option, value);
 	    }
@@ -129,7 +155,7 @@ public class OptionsPane extends GridPane implements InputControl<OptionValues>{
     public void set(OptionValues arg) {
         for (var item: items.entrySet()) {
             Option option = item.getKey();
-            Property property = item.getValue();
+            Property property = item.getValue().valueProperty();
             Value value = arg.get(option);
             property.setValue(value.get());
         }
@@ -139,5 +165,26 @@ public class OptionsPane extends GridPane implements InputControl<OptionValues>{
     public Node node() {
         return this;
     }
+
+	@Override
+	public void reset() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Property<OptionValues> valueProperty() {
+		return state.valueProperty();
+	}
+
+	@Override
+	public ReadOnlyBooleanProperty validProperty() {
+		return state.validProperty();
+	}
+
+	@Override
+	public ReadOnlyStringProperty errorProperty() {
+		return state.errorProperty();
+	}
 
 }

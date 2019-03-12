@@ -1,6 +1,8 @@
 package com.dua3.fx.util.controls;
 
 import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import javafx.beans.property.Property;
@@ -15,7 +17,7 @@ class SimpleInputControl<C extends Control,R> implements  InputControl<R> {
 	private final State<R> state;
 	private final Supplier<R> dflt;
 
-	protected SimpleInputControl(C control, ObservableValue<R> value, Supplier<R> dflt) {
+	protected SimpleInputControl(C control, ObservableValue<R> value, Supplier<R> dflt, Function<R,Optional<String>> validate) {
 		this.control = Objects.requireNonNull(control);
 		this.state = new State<>(value);
 		this.dflt = dflt;
