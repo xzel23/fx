@@ -111,18 +111,18 @@ implements InputBuilder<InputPaneBuilder> {
 		return add(id, label, Boolean.class, dflt, InputControl.checkBoxInput(dflt, text));
 	}
 
-	/* (non-Javadoc)
+    /* (non-Javadoc)
      * @see com.dua3.fx.util.controls.InputBuilder#comboBox(java.lang.String, java.lang.String, T, java.lang.Class, java.util.Collection)
      */
-	@Override
+    @Override
     public <T> InputPaneBuilder comboBox(String id, String label, Supplier<T> dflt, Class<T> cls, Collection<T> items) {
-		return add(id, label, cls, dflt, InputControl.comboBoxInput(dflt));
+		return add(id, label, cls, dflt, InputControl.comboBoxInput(items, dflt));
 	}
 
-	/* (non-Javadoc)
+    /* (non-Javadoc)
      * @see com.dua3.fx.util.controls.InputBuilder#radioList(java.lang.String, java.lang.String, T, java.lang.Class, java.util.Collection)
      */
-	@Override
+    @Override
     public <T> InputPaneBuilder radioList(String id, String label, Supplier<T> dflt, Class<T> cls, Collection<T> items) {
 		 return add(id, label, cls, dflt, new RadioPane<>(items, null));
 	}

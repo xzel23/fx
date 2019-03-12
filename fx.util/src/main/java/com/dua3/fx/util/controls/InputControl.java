@@ -1,11 +1,13 @@
 package com.dua3.fx.util.controls;
 
 import java.text.NumberFormat;
+import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
@@ -21,10 +23,13 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableStringValue;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.util.StringConverter;
 
 /**
  * Interface for an input field.
@@ -143,6 +148,14 @@ public interface InputControl<R> {
 		return inputControl;
 	}
 
+	public static <T> SimpleInputControl<TextField, T> stringInput(Supplier<T> dflt, Function<T, Optional<String>> validate, StringConverter<T> converter) {
+		TextField control = new TextField();
+		ObjectProperty<T> value = new SimpleObjectProperty<>();
+		Bindings.bindBidirectional(control.textProperty(), value, converter);
+		SimpleInputControl<TextField, T> inputControl = new SimpleInputControl<>(control, value, dflt, validate);
+		return inputControl;
+	}
+
 	public static SimpleInputControl<TextField, Integer> integerInput(Supplier<Integer> dflt, Function<Integer, Optional<String>> validate) {
 		TextField control = new TextField();
 		StringProperty textProperty = control.textProperty();
@@ -168,8 +181,8 @@ public interface InputControl<R> {
 		return inputControl;
 	}
 
-	public static <T> SimpleInputControl<ComboBox<T>, T> comboBoxInput(Supplier<T> dflt) {
-		ComboBox<T> control = new ComboBox<>();
+	public static <T> SimpleInputControl<ComboBox<T>, T> comboBoxInput(Collection<T> choices, Supplier<T> dflt) {
+		ComboBox<T> control = new ComboBox<>(FXCollections.observableArrayList(choices));
 		ObjectProperty<T> value = control.valueProperty();
 		SimpleInputControl<ComboBox<T>,T> inputControl = new SimpleInputControl<>(control, value, dflt, r -> Optional.empty());
 		return inputControl;

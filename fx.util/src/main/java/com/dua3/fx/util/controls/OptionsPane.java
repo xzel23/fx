@@ -1,5 +1,6 @@
 package com.dua3.fx.util.controls;
 
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -13,6 +14,8 @@ import com.dua3.utility.options.Option.StringOption;
 import com.dua3.utility.options.Option.Value;
 import com.dua3.utility.options.OptionSet;
 import com.dua3.utility.options.OptionValues;
+
+import com.dua3.fx.util.StringValueConverter;
 
 import javafx.beans.property.Property;
 import javafx.beans.property.ReadOnlyBooleanProperty;
@@ -67,14 +70,13 @@ public class OptionsPane extends GridPane implements InputControl<OptionValues>{
         getChildren().clear();
         
         OptionSet optionSet = options.get();
-        
 		OptionValues values = new OptionValues(dflt.get());
 		
 		int row = 0;
 		for (Option<?> option: optionSet) {
 			Label label = new Label(option.getName());
 			
-			InputControl<?> control = createControl(values, option);
+			var control = createControl(values, option);
 			items.put(option, control);
 			
 			addToGrid(label, 0, row);
@@ -98,32 +100,39 @@ public class OptionsPane extends GridPane implements InputControl<OptionValues>{
     }
 
 	@SuppressWarnings("unchecked")
-	private <T> InputControl<T> createControl(OptionValues values, Option<T> option) {
-		InputControl<T> control;
+	private <T> InputControl<Value<T>> createControl(OptionValues values, Option<T> option) {
+		InputControl<Value<T>> control;
 		if (option instanceof StringOption) {
-			var inputControl = InputControl.stringInput(() -> (String) dflt.get().get(option).get(), r -> Optional.empty());
+			InputControl<Value<String>> inputControl = InputControl.stringInput(
+				() -> (Value<String>) dflt.get().get(option), 
+				r -> Optional.empty(), 
+				StringValueConverter.instance());
 			
 			inputControl.valueProperty().addListener( (v,o,n) -> {
-				values.put(option, Option.value(n));
+				values.put(option, n);
 			});
 			
-			values.addChangeListener( (v,o,n) -> {
-				inputControl.valueProperty().setValue(Objects.toString(n.get(), ""));
+			values.addChangeListener( (op,o,n) -> {
+				if (op.equals(option)) {
+					inputControl.valueProperty().setValue((Value) n);
+				}
 			});
 			
-			return (InputControl<T>) inputControl;
+			return (InputControl) inputControl;
 		} else if (option instanceof ChoiceOption<?>) {
-			var choices = FXCollections.observableList(((ChoiceOption<T>)option).getChoices());
-			var inputControl = InputControl.comboBoxInput(() -> ((Value<T>)dflt.get().get(option)).get());
+			Collection<Value<T>> choices = ((ChoiceOption<T>)option).getChoices();
+			Supplier<Value<T>> dfltValue = () -> (Value<T>) (dflt.get().get(option));
+			var inputControl = InputControl.comboBoxInput(choices, dfltValue);
 			
 			inputControl.valueProperty().addListener( (v,o,n) -> {
 				values.put(option, Option.value(n));
 			});
 			
-			values.addChangeListener( (v,o,n) -> {
-				inputControl.valueProperty().setValue(((Value<T>) n).get());
+			values.addChangeListener( (op,o,n) -> {
+				if (op.equals(option)) {
+					inputControl.valueProperty().setValue((Value) n);
+				}
 			});
-
 			return inputControl;
 		}
 		

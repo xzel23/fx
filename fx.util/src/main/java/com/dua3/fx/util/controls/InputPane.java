@@ -156,10 +156,4 @@ public class InputPane extends InputDialogPane<Map<String,Object>> {
 		setContent(grid);
 	}
 
-	protected BooleanProperty valid = new SimpleBooleanProperty(false);
-
-	public ReadOnlyBooleanProperty validProperty() {
-		return valid;
-	}
-
 }
