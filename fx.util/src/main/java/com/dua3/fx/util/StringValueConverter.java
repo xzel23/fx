@@ -22,6 +22,6 @@ public class StringValueConverter extends StringConverter<Value<String>> {
 
     @Override
     public String toString(Value<String>v) {
-        return Objects.toString(v.get(), "");
+        return Objects.toString(v!=null ? v.get() : null, "");
     }
 }

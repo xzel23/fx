@@ -193,7 +193,8 @@ public class WizardDialog extends Dialog<Map<String,Object>> {
 
 			if (!ok) {
 				evt.consume();
-			}
+				return;
+			} 
 			
 			if (action!=null) {
 				action.accept(evt);
