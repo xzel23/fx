@@ -1,17 +1,7 @@
 package com.dua3.fx.util.controls;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.function.Consumer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import com.dua3.fx.util.controls.AbstractDialogPaneBuilder.ResultHandler;
 import com.dua3.utility.data.Pair;
-
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanExpression;
 import javafx.collections.FXCollections;
@@ -21,6 +11,15 @@ import javafx.event.Event;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
+
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.function.Consumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class WizardDialog extends Dialog<Map<String,Object>> {
 
@@ -139,7 +138,7 @@ public class WizardDialog extends Dialog<Map<String,Object>> {
 			
 			// next button
 			if (page.getNext()==null) {
-				addButtonToDialogPane(page, ButtonType.FINISH, null, null);			
+				addButtonToDialogPane(page, ButtonType.FINISH, null, pane.validProperty());
 			} else {
 				addButtonToDialogPane(page, ButtonType.NEXT, evt -> {
 					pageStack.add(Pair.of(name,page));

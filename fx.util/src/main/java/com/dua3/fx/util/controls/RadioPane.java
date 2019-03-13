@@ -1,9 +1,5 @@
 package com.dua3.fx.util.controls;
 
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.logging.Logger;
-
 import javafx.beans.property.Property;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.ReadOnlyStringProperty;
@@ -14,6 +10,11 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.VBox;
+
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Optional;
+import java.util.logging.Logger;
 
 public class RadioPane<T> extends VBox implements InputControl<T> {
 
@@ -56,6 +57,7 @@ public class RadioPane<T> extends VBox implements InputControl<T> {
 		});
 		
 		this.state = new State<>(property);
+		this.state.setValidate( v -> v==null?Optional.of("Nothing selected.") : Optional.empty());
 		
 		// update toggle, when state changes
 		state.valueProperty().addListener( (v,o,n) -> {
