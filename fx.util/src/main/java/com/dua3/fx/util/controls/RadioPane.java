@@ -6,6 +6,7 @@ import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
+import javafx.scene.control.Control;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
@@ -91,5 +92,24 @@ public class RadioPane<T> extends VBox implements InputControl<T> {
 	@Override
 	public void reset() {
 		state.reset();
+	}
+
+	@Override
+	public void requestFocus() {
+		if (group.getToggles().isEmpty()) {
+			super.requestFocus();
+		}
+
+		Toggle t = group.getSelectedToggle();
+		if (t==null) {
+			t = group.getToggles().get(0);
+
+		}
+
+		if (t instanceof Control) {
+			((Control) t).requestFocus();
+		} else {
+			super.requestFocus();
+		}
 	}
 }

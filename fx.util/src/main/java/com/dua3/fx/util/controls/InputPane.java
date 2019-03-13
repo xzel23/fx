@@ -1,17 +1,6 @@
 package com.dua3.fx.util.controls;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.Callable;
-import java.util.function.Supplier;
-import java.util.logging.Logger;
-
 import com.dua3.fx.util.FxUtil;
-
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.binding.BooleanExpression;
@@ -23,6 +12,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+
+import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.function.Supplier;
+import java.util.logging.Logger;
 
 public class InputPane extends InputDialogPane<Map<String,Object>> {
 
@@ -151,6 +145,11 @@ public class InputPane extends InputDialogPane<Map<String,Object>> {
 		valid.bind(binding);
 
 		setContent(grid);
+
+		for (var entry: data) {
+			entry.control.node().requestFocus();
+			break;
+		}
 	}
 
 }
