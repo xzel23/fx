@@ -14,5 +14,5 @@
 
 dependencies {
     implementation project(':fx.util')
-    implementation "com.dua3.utility:utility.db:${dua3UtilityVersion}"
+    api "com.dua3.utility:utility.db:${System.properties['com.dua3.utility.version']}"
 }

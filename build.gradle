@@ -30,7 +30,7 @@ subprojects {
 
   /////////////////////////////////////////////////////////////////////////////
 	group              = 'com.dua3.fx'
-	version            = '0.3.5-BETA1'
+	version            = '0.3.5-SNAPSHOT'
 		
 	ext.moduleName     = project.group 
 	ext.scm            = 'https://gitlab.com/com.dua3/lib/fx.git'
@@ -42,50 +42,26 @@ subprojects {
 	ext.developerEmail = 'axel@dua3.com'
   ////////////////////////////////////////////////////////////////////////////
 
-  // remove module-info.java from eclipse source folder
-  eclipse.classpath.file.whenMerged {
-    for (item in entries.findAll{ it.path.matches('src/.*/java') }) {
-      item.excludes += 'module-info.java'
-    }
-  }
-
   repositories {
     jcenter()
     mavenLocal()
   }
 
-  // get OS (because JavaFX packages are OS dependent)
-  def currentOS = org.gradle.internal.os.OperatingSystem.current()
-  def platform
-  if (currentOS.isWindows()) {
-    platform = 'win'
-  } else if (currentOS.isLinux()) {
-    platform = 'linux'
-  } else if (currentOS.isMacOsX()) {
-    platform = 'mac'
-  }
-
-  ext {
-    dua3UtilityVersion = "4.0.0-BETA2"
-    javafxversion = '11.0.2'
-  }
-
 dependencies {
-    api "com.dua3.utility:utility:${dua3UtilityVersion}"
-    api "com.dua3.utility:utility.db:${dua3UtilityVersion}"
+    api "com.dua3.utility:utility:${System.properties['com.dua3.utility.version']}"
 
     // JavaFX
-    api "org.openjfx:javafx-base:${javafxversion}:${platform}"
-    api "org.openjfx:javafx-fxml:${javafxversion}:${platform}"
-    api "org.openjfx:javafx-graphics:${javafxversion}:${platform}"
-    api "org.openjfx:javafx-controls:${javafxversion}:${platform}"
-    api "org.openjfx:javafx-web:${javafxversion}:${platform}"
-    api "org.openjfx:javafx-media:${javafxversion}:${platform}"
+    implementation "org.openjfx:javafx-base:${System.properties['javafx.version']}:${System.properties['javafx.platform']}"
+    implementation "org.openjfx:javafx-fxml:${System.properties['javafx.version']}:${System.properties['javafx.platform']}"
+    implementation "org.openjfx:javafx-graphics:${System.properties['javafx.version']}:${System.properties['javafx.platform']}"
+    implementation "org.openjfx:javafx-controls:${System.properties['javafx.version']}:${System.properties['javafx.platform']}"
+    implementation "org.openjfx:javafx-web:${System.properties['javafx.version']}:${System.properties['javafx.platform']}"
+    implementation "org.openjfx:javafx-media:${System.properties['javafx.version']}:${System.properties['javafx.platform']}"
 
     // JUnit
     def junitVersion = '5.3.1'
-    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${System.properties['org.junit.version']}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${System.properties['org.junit.version']}"
 }
 
 test {
@@ -202,7 +178,7 @@ publishing {
 
 // === SPOTBUGS === >
 
-spotbugs.toolVersion = '3.1.11'
+spotbugs.toolVersion = '3.1.12'
 spotbugs.excludeFilter = rootProject.file('spotbugs-exclude.xml')
     
 tasks.withType(com.github.spotbugs.SpotBugsTask) {
