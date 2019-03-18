@@ -8,6 +8,7 @@ import javafx.beans.value.ObservableBooleanValue;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
@@ -78,9 +79,10 @@ public class InputPane extends InputDialogPane<Map<String,Object>> {
 		GridPane.setMargin(child, insets);
 	}
 
-	void setContent(Collection<Meta<?>> data, int columns) {
+	void setContent(Collection<Meta<?>> data, int columns, List<ButtonType> buttons) {
 		this.data = Objects.requireNonNull(data);
 		this.columns = columns;
+		this.buttons = new ArrayList<>(buttons);
 	}
 
 	@Override

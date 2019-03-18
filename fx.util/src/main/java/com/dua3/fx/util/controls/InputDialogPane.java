@@ -1,17 +1,21 @@
 package com.dua3.fx.util.controls;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ReadOnlyBooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.DialogPane;
+
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ReadOnlyBooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.scene.control.DialogPane;
-
 public abstract class InputDialogPane<R> extends DialogPane implements Supplier<R> {
 
 	protected final BooleanProperty valid = new SimpleBooleanProperty(true);
+
+	protected ArrayList<ButtonType> buttons = new ArrayList<>();
 
 	public abstract void init();
 
@@ -31,5 +35,9 @@ public abstract class InputDialogPane<R> extends DialogPane implements Supplier<
 
 	protected void updateValidState(R r) {
 		valid.setValue(validate.test(r));
+	}
+
+	public void initButtons() {
+		getButtonTypes().setAll(buttons);
 	}
 }

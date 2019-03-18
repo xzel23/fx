@@ -148,7 +148,7 @@ implements InputBuilder<InputPaneBuilder> {
 	public InputPane build() {
 		InputPane pane = super.build();
 
-		pane.setContent(data.values(), columns);
+		pane.setContent(data.values(), columns, buttons);
 
 		return pane;
 	}
