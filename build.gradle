@@ -28,9 +28,11 @@ subprojects {
   apply plugin:  'com.dua3.gradle.jpms'
   apply plugin:  'com.jfrog.bintray'
 
+  ext.versionSuffix = project.hasProperty('release') ? "" : "-SNAPSHOT"
+
   /////////////////////////////////////////////////////////////////////////////
 	group              = 'com.dua3.fx'
-	version            = "${System.properties['com.dua3.fx.version']}"
+    version            = rootProject.file('version').text.trim()+versionSuffix
 		
 	ext.moduleName     = project.group 
 	ext.scm            = 'https://gitlab.com/com.dua3/lib/fx.git'
@@ -42,27 +44,54 @@ subprojects {
 	ext.developerEmail = 'axel@dua3.com'
   ////////////////////////////////////////////////////////////////////////////
 
+  sourceCompatibility = java_version
+  targetCompatibility = java_version
+
+  // repositories
   repositories {
     jcenter()
-    mavenLocal()
+
+    // no dependencies on local versions in release
+    if (!project.hasProperty('release')) {
+      mavenLocal()
+    }
   }
 
-dependencies {
-    api "com.dua3.utility:utility:${System.properties['com.dua3.utility.version']}"
+  // get OS (because JavaFX packages are OS dependent)
+  def currentOS = org.gradle.internal.os.OperatingSystem.current()
+  if (currentOS.isWindows()) {
+    ext.platform = 'win'
+  } else if (currentOS.isLinux()) {
+    ext.platform = 'linux'
+  } else if (currentOS.isMacOsX()) {
+    ext.platform = 'mac'
+  }
+
+  // dependencies
+  dependencies {
+    // com.dua3 libraries
+    implementation "com.dua3.utility:utility:${dua3_utility_version}${versionSuffix}"
 
     // JavaFX
-    implementation "org.openjfx:javafx-base:${System.properties['javafx.version']}:${System.properties['javafx.platform']}"
-    implementation "org.openjfx:javafx-fxml:${System.properties['javafx.version']}:${System.properties['javafx.platform']}"
-    implementation "org.openjfx:javafx-graphics:${System.properties['javafx.version']}:${System.properties['javafx.platform']}"
-    implementation "org.openjfx:javafx-controls:${System.properties['javafx.version']}:${System.properties['javafx.platform']}"
-    implementation "org.openjfx:javafx-web:${System.properties['javafx.version']}:${System.properties['javafx.platform']}"
-    implementation "org.openjfx:javafx-media:${System.properties['javafx.version']}:${System.properties['javafx.platform']}"
+    implementation "org.openjfx:javafx-base:${javafx_version}:${platform}"
+    implementation "org.openjfx:javafx-fxml:${javafx_version}:${platform}"
+    implementation "org.openjfx:javafx-graphics:${javafx_version}:${platform}"
+    implementation "org.openjfx:javafx-controls:${javafx_version}:${platform}"
+    implementation "org.openjfx:javafx-web:${javafx_version}:${platform}"
+    implementation "org.openjfx:javafx-media:${javafx_version}:${platform}"
 
     // JUnit
-    def junitVersion = '5.3.1'
-    testImplementation "org.junit.jupiter:junit-jupiter-api:${System.properties['org.junit.version']}"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${System.properties['org.junit.version']}"
-}
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junit_version}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junit_version}"
+  }
+
+  test {
+    useJUnitPlatform()
+
+    filter {
+        exclude '**/module-info.class'
+    }
+  }
 
 test {
     useJUnitPlatform()
@@ -77,9 +106,6 @@ javadoc {
         options.addStringOption('-module-path', classpath.asPath)
     }
 }
-
-sourceCompatibility = 11
-targetCompatibility = 11
 
 compileJava {
     options.encoding = 'UTF-8'
