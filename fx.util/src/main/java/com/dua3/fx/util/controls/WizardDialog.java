@@ -129,7 +129,7 @@ public class WizardDialog extends Dialog<Map<String,Object>> {
 			}
 			
 			// prepare buttons
-			 pane.getButtonTypes().clear();
+			pane.getButtonTypes().clear();
 			 
 			// cancel button
 			if (isCancelable()) {

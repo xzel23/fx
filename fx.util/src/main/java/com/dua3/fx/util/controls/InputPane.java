@@ -8,8 +8,6 @@ import javafx.beans.value.ObservableBooleanValue;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
@@ -83,12 +81,6 @@ public class InputPane extends InputDialogPane<Map<String,Object>> {
 	void setContent(Collection<Meta<?>> data, int columns) {
 		this.data = Objects.requireNonNull(data);
 		this.columns = columns;
-
-		// buttons
-		getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
-		
-		final Button okButton = (Button) lookupButton(ButtonType.OK);
-		okButton.disableProperty().bind(Bindings.not(valid));
 	}
 
 	@Override

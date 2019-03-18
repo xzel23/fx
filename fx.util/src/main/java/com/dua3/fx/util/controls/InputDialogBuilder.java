@@ -14,14 +14,17 @@
 
 package com.dua3.fx.util.controls;
 
+import com.dua3.utility.options.OptionSet;
+import com.dua3.utility.options.OptionValues;
+import javafx.beans.binding.Bindings;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
-
-import com.dua3.utility.options.OptionSet;
-import com.dua3.utility.options.OptionValues;
 
 /**
  * Builder for Alert Dialogs.
@@ -42,6 +45,11 @@ implements InputBuilder<InputDialogBuilder> {
 		InputDialog dlg = new InputDialog();
 		InputPane dialogPane = pb.build();
 		dialogPane.init();
+
+		dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+		final Button okButton = (Button) dialogPane.lookupButton(ButtonType.OK);
+		okButton.disableProperty().bind(Bindings.not(dialogPane.validProperty()));
+
 		dlg.setDialogPane(dialogPane);
 		return dlg;
 	}
