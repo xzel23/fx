@@ -57,6 +57,9 @@ subprojects {
     }
   }
 
+  // handle snapshot versions
+  dua3_utility_version = "${dua3_utility_version}${versionSuffix}"
+
   // get OS (because JavaFX packages are OS dependent)
   def currentOS = org.gradle.internal.os.OperatingSystem.current()
   if (currentOS.isWindows()) {
@@ -70,7 +73,7 @@ subprojects {
   // dependencies
   dependencies {
     // com.dua3 libraries
-    implementation "com.dua3.utility:utility:${dua3_utility_version}${versionSuffix}"
+    implementation "com.dua3.utility:utility:${dua3_utility_version}"
 
     // JavaFX
     implementation "org.openjfx:javafx-base:${javafx_version}:${platform}"
@@ -102,6 +105,7 @@ test {
 }
 
 javadoc {
+    options.encoding = 'UTF-8'
     doFirst {
         options.addStringOption('-module-path', classpath.asPath)
     }
