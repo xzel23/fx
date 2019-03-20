@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -133,27 +133,35 @@ public class WizardDialog extends Dialog<Map<String,Object>> {
 			 
 			// cancel button
 			if (isCancelable()) {
-				addButtonToDialogPane(page, ButtonType.CANCEL, null, null);
+				addButtonToDialogPane(page, ButtonType.CANCEL, evt -> true, evt -> true, null);
 			}
 			
 			// next button
 			if (page.getNext()==null) {
-				addButtonToDialogPane(page, ButtonType.FINISH, null, pane.validProperty());
+				addButtonToDialogPane(page, ButtonType.FINISH, evt -> true, evt -> true, pane.validProperty());
 			} else {
-				addButtonToDialogPane(page, ButtonType.NEXT, evt -> {
-					pageStack.add(Pair.of(name,page));
-					setPage(page.getNext());
-				}, pane.validProperty());
+				addButtonToDialogPane(
+						page,
+						ButtonType.NEXT,
+						evt -> true,
+						evt -> {
+							pageStack.add(Pair.of(name,page));
+							setPage(page.getNext());
+							return true;
+						},
+						pane.validProperty());
 			}
 			
 			// prev button
 			if (isShowPreviousButton()) {
 				addButtonToDialogPane(
-					page, 
-					ButtonType.PREVIOUS, evt -> { 
-						setPage(pageStack.remove(pageStack.size()-1).first); 
-					}, 
-					Bindings.isNotEmpty(pageStack)
+						page,
+						ButtonType.PREVIOUS, evt -> {
+							setPage(pageStack.remove(pageStack.size()-1).first);
+							return false;
+						},
+						evt -> true,
+						Bindings.isNotEmpty(pageStack)
 				);
 			}					
 		}
@@ -176,7 +184,12 @@ public class WizardDialog extends Dialog<Map<String,Object>> {
 		return current.second;
 	}
 	
-	private void addButtonToDialogPane(Page<?,?> page, ButtonType bt, Consumer<Event> action, BooleanExpression enabled) {
+	private void addButtonToDialogPane(
+			Page<?,?> page,
+			ButtonType bt,
+			Predicate<Event> precondition,
+			Predicate<Event> postcondition,
+			BooleanExpression enabled) {
 		InputDialogPane<?> pane = page.pane;
 		List<ButtonType> buttons = pane.getButtonTypes();
 		
@@ -187,17 +200,25 @@ public class WizardDialog extends Dialog<Map<String,Object>> {
 		// when using an event handler, Dialog.close() is called before our own
 		// event handler.
 		btn.addEventFilter(ActionEvent.ACTION,  evt -> {
-			// call result handler for pages on the stack
-			boolean ok = page.apply(bt);
-
-			if (!ok) {
+			// check precondition
+			if (!precondition.test(evt)) {
+				LOG.fine(() -> String.format("Button %s: precondition failed", bt));
 				evt.consume();
 				return;
-			} 
-			
-			if (action!=null) {
-				action.accept(evt);
+			}
+
+			// get and translate result
+			if (!page.apply(bt)) {
+				LOG.fine(() -> String.format("Button %s: result conversion failed", bt));
 				evt.consume();
+				return;
+			}
+
+			// check postcondition
+			if (!postcondition.test(evt)) {
+				LOG.fine(() -> String.format("Button %s: postcondition failed", bt));
+				evt.consume();
+				return;
 			}
 		});
 		
