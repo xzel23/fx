@@ -1,9 +1,11 @@
 package com.dua3.fx.util.controls;
 
+import com.dua3.utility.data.Pair;
 import com.dua3.utility.lang.LangUtil;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
@@ -11,7 +13,9 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
@@ -19,7 +23,7 @@ public abstract class InputDialogPane<R> extends DialogPane implements Supplier<
 
 	protected final BooleanProperty valid = new SimpleBooleanProperty(true);
 
-	protected ArrayList<ButtonType> buttons = new ArrayList<>();
+	protected List<Pair<ButtonType, Consumer<InputDialogPane>>> buttons = new ArrayList<>();
 
 	public abstract void init();
 
@@ -42,7 +46,13 @@ public abstract class InputDialogPane<R> extends DialogPane implements Supplier<
 	}
 
 	public void initButtons() {
-		getButtonTypes().setAll(buttons);
+		ObservableList<ButtonType> bt = getButtonTypes();
+		bt.clear();
+		for (var b: buttons) {
+			bt.add(b.first);
+			Button btn = (Button) lookupButton(b.first);
+			btn.setOnAction(evt -> b.second.accept(this));
+		}
 	}
 
 	protected Node createButton(ButtonType buttonType) {

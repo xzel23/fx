@@ -15,12 +15,14 @@
 package com.dua3.fx.util.controls;
 
 import com.dua3.fx.util.controls.InputPane.Meta;
+import com.dua3.utility.data.Pair;
 import com.dua3.utility.lang.LangUtil;
 import com.dua3.utility.options.OptionSet;
 import com.dua3.utility.options.OptionValues;
 import javafx.scene.control.ButtonType;
 
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -41,7 +43,7 @@ implements InputBuilder<InputPaneBuilder> {
 	private int columns = 1;
 
 	private LinkedHashMap<String, InputPane.Meta<?>> data = new LinkedHashMap<>();
-	private List<ButtonType> buttons = Collections.emptyList();
+	private List<Pair<ButtonType,Consumer<InputDialogPane>>> buttons = new LinkedList<>();
 
     /* (non-Javadoc)
      * @see com.dua3.fx.util.controls.InputBuilder#add(java.lang.String, java.lang.String, java.lang.Class, T, com.dua3.fx.util.controls.InputDialogPane.InputControl)
@@ -136,8 +138,8 @@ implements InputBuilder<InputPaneBuilder> {
 
 	// TODO: add date and time inputs
 
-	public InputPaneBuilder buttons(ButtonType... b) {
-    	buttons = List.of(b);
+	public InputPaneBuilder button(ButtonType b, Consumer<InputDialogPane> action) {
+    	buttons.add(Pair.of(b,action));
     	return this;
 	}
 

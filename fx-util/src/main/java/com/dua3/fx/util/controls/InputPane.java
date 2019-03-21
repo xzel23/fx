@@ -1,6 +1,7 @@
 package com.dua3.fx.util.controls;
 
 import com.dua3.fx.util.FxUtil;
+import com.dua3.utility.data.Pair;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.binding.BooleanExpression;
@@ -14,6 +15,7 @@ import javafx.scene.layout.GridPane;
 
 import java.util.*;
 import java.util.concurrent.Callable;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.logging.Logger;
 
@@ -79,7 +81,7 @@ public class InputPane extends InputDialogPane<Map<String,Object>> {
 		GridPane.setMargin(child, insets);
 	}
 
-	void setContent(Collection<Meta<?>> data, int columns, List<ButtonType> buttons) {
+	void setContent(Collection<Meta<?>> data, int columns, List<Pair<ButtonType, Consumer<InputDialogPane>>> buttons) {
 		this.data = Objects.requireNonNull(data);
 		this.columns = columns;
 		this.buttons = new ArrayList<>(buttons);
