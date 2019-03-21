@@ -34,17 +34,11 @@ public class WizardDialog extends Dialog<Map<String,Object>> {
 	
 	public WizardDialog() {
 		setResultConverter(btn -> {
-			// stay in the dialog if something is not ok or we haven't reached "Finish" yet
-			if (btn != ButtonType.FINISH) {
-				return null;
-			}
-			
-			// otherwise add current page to the stack, then build and return the result map
+			// add current page to the stack, then build and return the result map
 			pageStack.add(current);
 			
 			LinkedHashMap<String, Object> result = new LinkedHashMap<>();
-			pageStack.stream()
-				.forEach( p -> result.put(p.first, p.second.result) );
+			pageStack.stream().forEach( p -> result.put(p.first, p.second.result) );
 				
 			return result;
 		});

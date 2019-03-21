@@ -1,8 +1,12 @@
 package com.dua3.fx.util.controls;
 
+import com.dua3.utility.lang.LangUtil;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
 
@@ -39,5 +43,20 @@ public abstract class InputDialogPane<R> extends DialogPane implements Supplier<
 
 	public void initButtons() {
 		getButtonTypes().setAll(buttons);
+	}
+
+	protected Node createButton(ButtonType buttonType) {
+		// a wizard dialog should only close when finish or cancel is clicked
+		if (LangUtil.isOneOf(buttonType, ButtonType.OK, ButtonType.FINISH, ButtonType.CANCEL)) {
+			return super.createButton(buttonType);
+		}
+
+		final Button button = new Button(buttonType.getText());
+		final ButtonBar.ButtonData buttonData = buttonType.getButtonData();
+		ButtonBar.setButtonData(button, buttonData);
+		button.setDefaultButton(buttonData.isDefaultButton());
+		button.setCancelButton(buttonData.isCancelButton());
+
+		return button;
 	}
 }
