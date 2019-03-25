@@ -14,18 +14,9 @@
 
 package com.dua3.fx.editors.intern;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.net.URL;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import com.dua3.fx.editors.EditorSetting;
 import com.dua3.fx.editors.EditorSettingsDialog;
 import com.dua3.fx.web.WebViews;
-
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.StringProperty;
@@ -36,6 +27,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.net.URL;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public abstract class EditorBase extends BorderPane {
     private static final Logger LOG = Logger.getLogger(EditorBase.class.getName());
@@ -198,8 +197,8 @@ public abstract class EditorBase extends BorderPane {
 	}
 	
 	public void setPromptText(String text) {
-		promptTextProperty().set(text);;
-	}
+		promptTextProperty().set(text);
+    }
 	
 	public void cut() {
 		bridge.executeScript("jCut();");

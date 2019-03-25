@@ -129,14 +129,14 @@ public interface InputControl<R> {
 		}
 	}
 	
-	public static SimpleInputControl<TextField, String> stringInput(Supplier<String> dflt, Function<String, Optional<String>> validate) {
+	static SimpleInputControl<TextField, String> stringInput(Supplier<String> dflt, Function<String, Optional<String>> validate) {
 		TextField control = new TextField();
 		StringProperty value = control.textProperty();
 		SimpleInputControl<TextField, String> inputControl = new SimpleInputControl<>(control, value, dflt, validate);
 		return inputControl;
 	}
 
-	public static <T> SimpleInputControl<TextField, T> stringInput(Supplier<T> dflt, Function<T, Optional<String>> validate, StringConverter<T> converter) {
+	static <T> SimpleInputControl<TextField, T> stringInput(Supplier<T> dflt, Function<T, Optional<String>> validate, StringConverter<T> converter) {
 		TextField control = new TextField();
 		ObjectProperty<T> value = new SimpleObjectProperty<>();
 		Bindings.bindBidirectional(control.textProperty(), value, converter);
@@ -144,7 +144,7 @@ public interface InputControl<R> {
 		return inputControl;
 	}
 
-	public static SimpleInputControl<TextField, Integer> integerInput(Supplier<Integer> dflt, Function<Integer, Optional<String>> validate) {
+	static SimpleInputControl<TextField, Integer> integerInput(Supplier<Integer> dflt, Function<Integer, Optional<String>> validate) {
 		TextField control = new TextField();
 		StringProperty textProperty = control.textProperty();
 		IntegerProperty value = new SimpleIntegerProperty();
@@ -153,7 +153,7 @@ public interface InputControl<R> {
 		return inputControl;
 	}
 
-	public static SimpleInputControl<TextField, Double> decimalInput(Supplier<Double> dflt, Function<Double, Optional<String>> validate) {
+	static SimpleInputControl<TextField, Double> decimalInput(Supplier<Double> dflt, Function<Double, Optional<String>> validate) {
 		TextField control = new TextField();
 		StringProperty textProperty = control.textProperty();
 		DoubleProperty value = new SimpleDoubleProperty();
@@ -162,14 +162,14 @@ public interface InputControl<R> {
 		return inputControl;
 	}
 
-	public static SimpleInputControl<CheckBox, Boolean> checkBoxInput(Supplier<Boolean> dflt, String text) {
+	static SimpleInputControl<CheckBox, Boolean> checkBoxInput(Supplier<Boolean> dflt, String text) {
 		CheckBox control = new CheckBox(text);
 		BooleanProperty value = control.selectedProperty();
 		SimpleInputControl<CheckBox,Boolean> inputControl = new SimpleInputControl<>(control, value.asObject(), dflt, r -> Optional.empty());
 		return inputControl;
 	}
 
-	public static <T> SimpleInputControl<ComboBox<T>, T> comboBoxInput(Collection<T> choices, Supplier<T> dflt) {
+	static <T> SimpleInputControl<ComboBox<T>, T> comboBoxInput(Collection<T> choices, Supplier<T> dflt) {
 		ComboBox<T> control = new ComboBox<>(FXCollections.observableArrayList(choices));
 		ObjectProperty<T> value = control.valueProperty();
 		SimpleInputControl<ComboBox<T>,T> inputControl = new SimpleInputControl<>(control, value, dflt, r -> Optional.empty());
