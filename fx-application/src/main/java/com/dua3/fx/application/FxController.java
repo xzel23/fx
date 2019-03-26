@@ -228,7 +228,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		Path parent = null;
 		String initialFileName = "";
 		try {
-			if (hasCurrentDocument()) {
+			if (hasCurrentDocument() && getCurrentDocument().hasLocation()) {
 				parent = getCurrentDocument().getPath().getParent();
 			} else {
 				String lastDocument = getPreference(PREF_DOCUMENT, "");
@@ -291,7 +291,12 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	@FXML
 	protected boolean save() {
 		if (!hasCurrentDocument()) {
-			LOG.fine("save: no document set, delegating to saveAs()");
+			LOG.info("no document; not saving");
+			return false;
+		}
+
+		if (!getCurrentDocument().hasLocation()) {
+			LOG.fine("save: no URI set, delegating to saveAs()");
 			return saveAs();
 		}
 		
@@ -325,7 +330,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		String initialFileName = "";
 		FxDocument document = getCurrentDocument();
 		try {
-			if (document.getLocation()!=FxDocument.VOID_URI) {
+			if (document.hasLocation()) {
 				document = getCurrentDocument();
 				parent = document.getPath().getParent();
 			} else {
