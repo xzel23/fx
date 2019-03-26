@@ -1,10 +1,12 @@
 package com.dua3.fx.util.controls;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import com.dua3.utility.io.OpenMode;
 import com.dua3.utility.options.OptionSet;
 import com.dua3.utility.options.OptionValues;
 
@@ -242,4 +244,21 @@ public interface InputBuilder<B extends InputBuilder<B>> {
      */
     B options(String id, Supplier<OptionValues> dflt, Supplier<OptionSet> options);
 
+    enum FileDialogMode {
+        OPEN,
+        SAVE
+    }
+
+    /**
+     * Add File chooser.
+     * @param id
+     *  the ID
+     * @param dflt
+     *  supplier of default value
+     * @param mode
+     *  the mode, either {@link FileDialogMode#OPEN} or {@link FileDialogMode#SAVE}
+     * @return
+     *  {@code this}
+     */
+    B chooseFile(String id, Supplier<File> dflt, FileDialogMode mode);
 }
