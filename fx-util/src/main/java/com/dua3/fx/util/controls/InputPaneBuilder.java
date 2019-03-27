@@ -21,6 +21,7 @@ import com.dua3.utility.options.OptionSet;
 import com.dua3.utility.options.OptionValues;
 import javafx.scene.control.ButtonType;
 
+import java.io.File;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -134,6 +135,11 @@ implements InputBuilder<InputPaneBuilder> {
 
 	public InputPaneBuilder options(String id, Supplier<OptionValues> dflt, Supplier<OptionSet> options) {
 		return add(id, OptionValues.class, dflt, new OptionsPane(options, dflt));
+	}
+
+	@Override
+	public InputPaneBuilder chooseFile(String id, String label, Supplier<File> dflt, FileDialogMode mode) {
+		return add(id, label, File.class, dflt, new FileInput(mode, dflt));
 	}
 
 	// TODO: add date and time inputs

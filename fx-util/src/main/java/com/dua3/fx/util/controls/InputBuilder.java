@@ -1,14 +1,13 @@
 package com.dua3.fx.util.controls;
 
+import com.dua3.utility.options.OptionSet;
+import com.dua3.utility.options.OptionValues;
+
 import java.io.File;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
-
-import com.dua3.utility.io.OpenMode;
-import com.dua3.utility.options.OptionSet;
-import com.dua3.utility.options.OptionValues;
 
 public interface InputBuilder<B extends InputBuilder<B>> {
 
@@ -253,6 +252,8 @@ public interface InputBuilder<B extends InputBuilder<B>> {
      * Add File chooser.
      * @param id
      *  the ID
+     * @param label
+     *  the label text
      * @param dflt
      *  supplier of default value
      * @param mode
@@ -260,5 +261,5 @@ public interface InputBuilder<B extends InputBuilder<B>> {
      * @return
      *  {@code this}
      */
-    B chooseFile(String id, Supplier<File> dflt, FileDialogMode mode);
+    B chooseFile(String id, String label, Supplier<File> dflt, FileDialogMode mode);
 }

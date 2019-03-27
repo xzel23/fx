@@ -1,6 +1,7 @@
 package com.dua3.fx.samples;
 
 import com.dua3.fx.util.Dialogs;
+import com.dua3.fx.util.controls.InputBuilder;
 import com.dua3.utility.io.CsvIo;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -65,6 +66,7 @@ public class DialogSample extends Application {
               i -> i >= 4 && i <= 7 ? Optional.empty() : Optional.of(i + " is not between 4 and 7"))
           .comboBox("list", "choose one", () -> "Maybe", String.class, List.of("Yes", "No", "Maybe"))
           .checkBox("bool", "Yes or No:", () -> false, "yes")
+          .chooseFile("file", "File", () -> null, InputBuilder.FileDialogMode.OPEN)
           .showAndWait();
     }));
 

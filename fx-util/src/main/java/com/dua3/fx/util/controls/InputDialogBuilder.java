@@ -20,6 +20,7 @@ import javafx.beans.binding.Bindings;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
@@ -120,4 +121,9 @@ implements InputBuilder<InputDialogBuilder> {
 		return this;
 	}
 
+	@Override
+	public InputDialogBuilder chooseFile(String id, String label, Supplier<File> dflt, FileDialogMode mode) {
+		pb.chooseFile(id, label, dflt, mode);
+		return this;
+	}
 }
