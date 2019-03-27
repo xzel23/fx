@@ -14,18 +14,7 @@
 
 package com.dua3.fx.application;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.URL;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.prefs.BackingStoreException;
-import java.util.prefs.Preferences;
-
 import com.dua3.utility.lang.LangUtil;
-
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXMLLoader;
@@ -33,256 +22,335 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.net.URI;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.prefs.BackingStoreException;
+import java.util.prefs.Preferences;
+
 public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxController<A, C>> extends Application {
 
-	// - constants -
+    // - constants -
 
-	/** The command line argument to set the logging level (i.e. "--log=FINE"). */
-	public static final String ARG_LOG_LEVEL = "log";
+    /**
+     * The command line argument to set the logging level (i.e. "--log=FINE").
+     */
+    public static final String ARG_LOG_LEVEL = "log";
 
-	/** Marker to indicate modified state in title. */
+    /**
+     * Marker to indicate modified state in title.
+     */
     private static final String MARKER_MODIFIED = "*";
-	/** Marker to indicate unmodified state in title. */
+    /**
+     * Marker to indicate unmodified state in title.
+     */
     private static final String MARKER_UNMODIFIED = " ";
 
-	// - static -
+    // - static -
 
-	/** Logger */
-	protected static final Logger LOG = Logger.getLogger(FxApplication.class.getSimpleName());
+    /**
+     * Logger
+     */
+    protected static final Logger LOG = Logger.getLogger(FxApplication.class.getSimpleName());
 
-	/** Preferences */
-	private Preferences preferences = null;
-	
-	// - instance -
+    /**
+     * Preferences
+     */
+    private Preferences preferences = null;
 
-	/** The application name. */
-	private String applicationName = "";
+    // - instance -
 
-	/** The application name. */
-	private String versionString = "snapshot version";
+    /**
+     * The application name.
+     */
+    private String applicationName = "";
 
-	/** The contact email. */
-	private String contactMail = "";
+    /**
+     * The application name.
+     */
+    private String versionString = "snapshot version";
 
-	/** The copyright text. */
-	private String copyright = "";
-	
-	/** Path to FXML file. */
-	private final String fxmlFile;
+    /**
+     * The contact email.
+     */
+    private String contactMail = "";
 
-	/** The controller instance. */
-	private C controller;
+    /**
+     * The copyright text.
+     */
+    private String copyright = "";
 
-	/** The main stage. */
-	private Stage mainStage;
+    /**
+     * Path to FXML file.
+     */
+    private final String fxmlFile;
 
-	// - UI -
+    /**
+     * The controller instance.
+     */
+    private C controller;
 
-	// - static initialization -
+    /**
+     * The main stage.
+     */
+    private Stage mainStage;
 
-	// - Code -
+    // - UI -
 
-	/**
-	 * Constructor.
-	 * @param fxmlFile        the path to the FXML file to load, relative to the
-	 *                        application class
-	 */
-	protected FxApplication(String fxmlFile) {
-		this.fxmlFile = Objects.requireNonNull(fxmlFile);
-	}
+    // - static initialization -
 
-	/**
-	 * Get named parameter value.
-	 * 
-	 * Named parameters are command line arguments of the form "--parameter=value".
-	 * 
-	 * @param name the parameter name
-	 * @return an Optional holding the parameter value if present
-	 */
-	public Optional<String> getParameterValue(String name) {
-		return Optional.ofNullable(getParameters().getNamed().get(name));
-	}
+    // - Code -
 
-	/**
-	 * Check if an unnamed parameter is present.
-	 * 
-	 * @param name the parameter name
-	 * @return true, if the parameter is present
-	 */
-	public boolean hasParameter(String name) {
-		return getParameters().getUnnamed().contains(name);
-	}
+    /**
+     * Constructor.
+     *
+     * @param fxmlFile the path to the FXML file to load, relative to the
+     *                 application class
+     */
+    protected FxApplication(String fxmlFile) {
+        this.fxmlFile = Objects.requireNonNull(fxmlFile);
+    }
 
-	/**
-	 * Initialize User Interface. The layout is defined in FXML.
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	public void start(Stage stage) throws IOException {
-		LOG.log(Level.FINE, () -> "starting application ...");
+    /**
+     * Get named parameter value.
+     * <p>
+     * Named parameters are command line arguments of the form "--parameter=value".
+     *
+     * @param name the parameter name
+     * @return an Optional holding the parameter value if present
+     */
+    public Optional<String> getParameterValue(String name) {
+        return Optional.ofNullable(getParameters().getNamed().get(name));
+    }
 
-		// store reference to stage
-		this.mainStage = stage;
+    /**
+     * Check if an unnamed parameter is present.
+     *
+     * @param name the parameter name
+     * @return true, if the parameter is present
+     */
+    public boolean hasParameter(String name) {
+        return getParameters().getUnnamed().contains(name);
+    }
 
-		// handle program arguments
-		getParameterValue("log").ifPresent(level -> LangUtil.setLogLevel(Level.parse(level)));
+    /**
+     * Initialize User Interface. The layout is defined in FXML.
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public void start(Stage stage) throws IOException {
+        LOG.log(Level.FINE, () -> "starting application ...");
 
-		// create a loader and load FXML
-		LOG.log(Level.FINE, () -> "loading FXML ...");
-		URL fxmlUrl = LangUtil.getResourceURL(getClass(), fxmlFile);
+        // store reference to stage
+        this.mainStage = stage;
 
-		LOG.log(Level.FINER, () -> "FXML URL: " + fxmlUrl);
-		FXMLLoader loader = new FXMLLoader(fxmlUrl);
+        // handle program arguments
+        getParameterValue("log").ifPresent(level -> LangUtil.setLogLevel(Level.parse(level)));
 
-		Parent root = loader.load();
+        // create a loader and load FXML
+        LOG.log(Level.FINE, () -> "loading FXML ...");
+        URL fxmlUrl = LangUtil.getResourceURL(getClass(), fxmlFile);
 
-		// set controller
-		LOG.log(Level.FINER, () -> "setting FXML controller ...");
-		this.controller = Objects.requireNonNull(loader.getController(),
-				"controller is null; set fx:controller in root element of FXML (" + fxmlFile + ")");
-		this.controller.setApp((A) this);
+        LOG.log(Level.FINER, () -> "FXML URL: " + fxmlUrl);
+        FXMLLoader loader = new FXMLLoader(fxmlUrl);
 
-		// create scene
-		Scene scene = new Scene(root);
+        Parent root = loader.load();
 
-		// setup stage
-		stage.setTitle(applicationName);
-		stage.setScene(scene);
-		stage.show();
+        // set controller
+        LOG.log(Level.FINER, () -> "setting FXML controller ...");
+        this.controller = Objects.requireNonNull(loader.getController(),
+                "controller is null; set fx:controller in root element of FXML (" + fxmlFile + ")");
+        this.controller.setApp((A) this);
 
-		// automatically update title on document change
-		final ChangeListener<Boolean> dirtyStateListener = (v,o,n) -> {
-			updateApplicationTitle();
-		};
-		final ChangeListener<URI> documentLocationListener = (v,o,n) -> {
+        // create scene
+        Scene scene = new Scene(root);
+
+        // setup stage
+        stage.setTitle(applicationName);
+        stage.setScene(scene);
+        stage.show();
+
+        // automatically update title on document change
+        final ChangeListener<Boolean> dirtyStateListener = (v, o, n) -> {
             updateApplicationTitle();
         };
-		controller.currentDocumentProperty.addListener(
-			(v,o,n) -> { 
-				updateApplicationTitle();
-				if (o!= null) {
-					o.dirtyProperty.removeListener(dirtyStateListener);
-					o.locationProperty.removeListener(documentLocationListener);
-				}
-				if (n!=null) {
-                    n.dirtyProperty.addListener(dirtyStateListener);
-                    n.locationProperty.addListener(documentLocationListener);
-				}
-			});
-		
+        final ChangeListener<URI> documentLocationListener = (v, o, n) -> {
+            updateApplicationTitle();
+        };
+        controller.currentDocumentProperty.addListener(
+                (v, o, n) -> {
+                    updateApplicationTitle();
+                    if (o != null) {
+                        o.dirtyProperty.removeListener(dirtyStateListener);
+                        o.locationProperty.removeListener(documentLocationListener);
+                    }
+                    if (n != null) {
+                        n.dirtyProperty.addListener(dirtyStateListener);
+                        n.locationProperty.addListener(documentLocationListener);
+                    }
+                });
+
         stage.setOnCloseRequest(e -> {
             e.consume();
             controller.closeApplication();
         });
-        
-		LOG.fine(() -> "done.");
-	}
+
+        LOG.fine(() -> "done.");
+    }
 
     protected void updateApplicationTitle() {
-    	FxDocument document = controller.getCurrentDocument();
-		String name = document.toString();
-    	boolean dirty = document.isDirty();
-    	
-    	StringBuilder title = new StringBuilder();
-    	title.append(applicationName);
-    	
-    	if (!name.isEmpty() || document.isDirty()) {
-    		title.append(" - ");
-    	}
-        
-    	String marker = dirty ? MARKER_MODIFIED : MARKER_UNMODIFIED;
-        
-    	title.append(marker).append(name);
-    	
+        FxDocument document = controller.getCurrentDocument();
+        String name = document.toString();
+        boolean dirty = document.isDirty();
+
+        StringBuilder title = new StringBuilder();
+        title.append(applicationName);
+
+        if (!name.isEmpty() || document.isDirty()) {
+            title.append(" - ");
+        }
+
+        String marker = dirty ? MARKER_MODIFIED : MARKER_UNMODIFIED;
+
+        title.append(marker).append(name);
+
         mainStage.setTitle(title.toString());
     }
 
     /**
      * Close the application.
-     * 
+     * <p>
      * Don't ask the user if he wants to save his work first - this should be handled by the controller.
      */
-	public void close() {
-		if (hasPreferences()) {
-			try {
-				getPreferences().flush();
-			} catch (BackingStoreException e) {
-				LOG.log(Level.WARNING, "could not update preferences", e);
-			}
-		}
-		
-		mainStage.close();
-	}
-	
-	/**
-	 * Get the stage.
-	 * @return
-	 *  the application's primary stage
-	 */
-	public Stage getStage() {
-		return mainStage;
-	}
-	
-	/**
-	 * Get the Preferences instance for this application.
-	 * 
-	 * The Preferences instance will be created on demand if it doesn't exist yet,
-	 * 
-	 * @return
-	 *  the preferences object for this application
-	 */
-	public Preferences getPreferences() {
-		if (!hasPreferences()) {
-			Class<?> cls = getClass();
-			LOG.fine("creating preferences for class "+cls.getName());
-			preferences = Preferences.userRoot().node(getClass().getName());
-		}
-		return preferences;
-	}
+    public void close() {
+        if (hasPreferences()) {
+            try {
+                getPreferences().flush();
+            } catch (BackingStoreException e) {
+                LOG.log(Level.WARNING, "could not update preferences", e);
+            }
+        }
 
-	/**
-	 * Check whether a preferences object for this class has been created.
-	 * @return true, if a Preferences object has been created
-	 */
-	protected boolean hasPreferences() {
-		return preferences != null;
-	}
+        mainStage.close();
+    }
 
-	/** 
-	 * Get application name.
-	 * 
-	 * @return the name of the application
-	 */
-	public String getApplicationName() {
-		return !applicationName.isEmpty() ? applicationName : getClass().getSimpleName();
-	}
-	
-	protected void setContactMail(String value) {
-		this.contactMail = value;
-	}
+    /**
+     * Get the stage.
+     *
+     * @return the application's primary stage
+     */
+    public Stage getStage() {
+        return mainStage;
+    }
 
-	protected void setCopyright(String value) {
-		this.copyright = value;
-	}
+    /**
+     * Get the Preferences instance for this application.
+     * <p>
+     * The Preferences instance will be created on demand if it doesn't exist yet,
+     *
+     * @return the preferences object for this application
+     */
+    public Preferences getPreferences() {
+        if (!hasPreferences()) {
+            Class<?> cls = getClass();
+            LOG.fine("creating preferences for class " + cls.getName());
+            preferences = Preferences.userRoot().node(getClass().getName());
+        }
+        return preferences;
+    }
 
-	protected void setVersionString(String value) {
-		this.versionString = value;
-	}
+    /**
+     * Check whether a preferences object for this class has been created.
+     *
+     * @return true, if a Preferences object has been created
+     */
+    protected boolean hasPreferences() {
+        return preferences != null;
+    }
 
-	protected void setApplicationName(String value) {
-		this.applicationName = value;
-	}
+    /**
+     * Get application name.
+     *
+     * @return the name of the application
+     */
+    public String getApplicationName() {
+        return !applicationName.isEmpty() ? applicationName : getClass().getSimpleName();
+    }
 
-	public String getVersionString() {
-		return versionString;
-	}
-	
-	public String getContactMail() {
-		return contactMail;
-	}
-	
-	public String getCopyright() {
-		return copyright;
-	}
+    protected void setContactMail(String value) {
+        this.contactMail = value;
+    }
 
+    protected void setCopyright(String value) {
+        this.copyright = value;
+    }
+
+    protected void setVersionString(String value) {
+        this.versionString = value;
+    }
+
+    protected void setApplicationName(String value) {
+        this.applicationName = value;
+    }
+
+    public String getVersionString() {
+        return versionString;
+    }
+
+    public String getContactMail() {
+        return contactMail;
+    }
+
+    public String getCopyright() {
+        return copyright;
+    }
+
+    private final File APPLICATION_DATA_DIR = initApplicationDataDir();
+
+    private File initApplicationDataDir() {
+        try {
+            String dirName = getClass().getSimpleName();
+
+            // try to determine location by evaluating standard windows settings
+            String appData = System.getenv("LOCALAPPDATA");
+            if (appData == null) {
+                appData = System.getenv("APPLICATION_DATA_DIR");
+            }
+            if (appData != null) {
+                Path dir = Paths.get(appData).resolve(dirName);
+                Files.createDirectories(dir);
+                return dir.toFile();
+            }
+
+            // then check for macos
+            Path home = Paths.get(System.getProperty("user.home"));
+            Path macosBase = home.resolveSibling(Paths.get("Library", "Application Support"));
+            if (Files.isDirectory(macosBase) && Files.isWritable(macosBase)) {
+                Path dir = macosBase.resolve(dirName);
+                Files.createDirectories(dir);
+                return dir.toFile();
+            }
+
+            // as last resort, use a dot file in user's home directory
+            Path dir = home.resolve(dirName.replaceAll(" ", "_").toLowerCase(Locale.ROOT));
+            Files.createDirectories(dir);
+            return dir.toFile();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    public File getDataDir() {
+        return APPLICATION_DATA_DIR;
+    }
 }
