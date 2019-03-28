@@ -25,6 +25,7 @@ public class FileInput extends HBox implements InputControl<File> {
     private final Button button;
 
     private final StringProperty error = new SimpleStringProperty("");
+    private final BooleanProperty valid = new SimpleBooleanProperty(true);
 
     public FileInput(InputBuilder.FileDialogMode mode, Supplier<File> dflt) {
         this.mode = mode;
@@ -60,6 +61,7 @@ public class FileInput extends HBox implements InputControl<File> {
         StringBinding fname = Bindings.createStringBinding(() -> Objects.toString(value.get(), ""), value);
         tfFilename.textProperty().bind(fname);
 
+        // error property
         StringExpression errorText = Bindings.createStringBinding(
                 () -> {
                     File file = value.get();
@@ -75,6 +77,15 @@ public class FileInput extends HBox implements InputControl<File> {
         );
 
         error.bind(errorText);
+
+        // valid property
+        BooleanExpression isNotNull = value.isNotNull();
+        if (mode== InputBuilder.FileDialogMode.OPEN) {
+            BooleanBinding exists = Bindings.createBooleanBinding(() -> getPath()!=null && Files.exists(getPath()), value);
+            valid.bind(Bindings.and(isNotNull, exists));
+        } else {
+            valid.bind(value.isNotNull());
+        }
     }
 
     @Override
@@ -99,14 +110,6 @@ public class FileInput extends HBox implements InputControl<File> {
 
     @Override
     public ReadOnlyBooleanProperty validProperty() {
-        BooleanProperty valid = new SimpleBooleanProperty();
-        BooleanExpression isNotNull = value.isNotNull();
-        if (mode== InputBuilder.FileDialogMode.OPEN) {
-            BooleanBinding exists = Bindings.createBooleanBinding(() -> getPath()!=null && Files.exists(getPath()), value);
-            Bindings.and(isNotNull, exists);
-        } else {
-            valid.bind(value.isNotNull());
-        }
         return valid;
     }
 
