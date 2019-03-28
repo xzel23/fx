@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.util.List;
@@ -66,7 +67,7 @@ public class DialogSample extends Application {
               i -> i >= 4 && i <= 7 ? Optional.empty() : Optional.of(i + " is not between 4 and 7"))
           .comboBox("list", "choose one", () -> "Maybe", String.class, List.of("Yes", "No", "Maybe"))
           .checkBox("bool", "Yes or No:", () -> false, "yes")
-          .chooseFile("file", "File", () -> null, InputBuilder.FileDialogMode.OPEN)
+          .chooseFile("file", "File", () -> null, InputBuilder.FileDialogMode.OPEN, new FileChooser.ExtensionFilter("all files", "*"))
           .showAndWait();
     }));
 

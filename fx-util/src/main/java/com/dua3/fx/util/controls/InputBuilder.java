@@ -2,6 +2,7 @@ package com.dua3.fx.util.controls;
 
 import com.dua3.utility.options.OptionSet;
 import com.dua3.utility.options.OptionValues;
+import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.util.Collection;
@@ -261,5 +262,5 @@ public interface InputBuilder<B extends InputBuilder<B>> {
      * @return
      *  {@code this}
      */
-    B chooseFile(String id, String label, Supplier<File> dflt, FileDialogMode mode);
+    B chooseFile(String id, String label, Supplier<File> dflt, FileDialogMode mode, FileChooser.ExtensionFilter fiilter);
 }

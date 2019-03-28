@@ -19,6 +19,7 @@ import com.dua3.utility.options.OptionValues;
 import javafx.beans.binding.Bindings;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.util.Collection;
@@ -122,8 +123,8 @@ implements InputBuilder<InputDialogBuilder> {
 	}
 
 	@Override
-	public InputDialogBuilder chooseFile(String id, String label, Supplier<File> dflt, FileDialogMode mode) {
-		pb.chooseFile(id, label, dflt, mode);
+	public InputDialogBuilder chooseFile(String id, String label, Supplier<File> dflt, FileDialogMode mode, FileChooser.ExtensionFilter filter) {
+		pb.chooseFile(id, label, dflt, mode, filter);
 		return this;
 	}
 }

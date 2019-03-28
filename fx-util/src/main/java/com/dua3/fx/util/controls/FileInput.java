@@ -7,6 +7,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -19,6 +20,7 @@ public class FileInput extends HBox implements InputControl<File> {
     private final ObjectProperty<File> value = new SimpleObjectProperty<>();
 
     private final InputBuilder.FileDialogMode mode;
+    private final FileChooser.ExtensionFilter filter;
     private final Supplier<File> dflt;
 
     private final TextField tfFilename;
@@ -27,8 +29,9 @@ public class FileInput extends HBox implements InputControl<File> {
     private final StringProperty error = new SimpleStringProperty("");
     private final BooleanProperty valid = new SimpleBooleanProperty(true);
 
-    public FileInput(InputBuilder.FileDialogMode mode, Supplier<File> dflt) {
-        this.mode = mode;
+    public FileInput(InputBuilder.FileDialogMode mode, Supplier<File> dflt, FileChooser.ExtensionFilter filter) {
+        this.mode = Objects.requireNonNull(mode);
+        this.filter = Objects.requireNonNull(filter);
         this.dflt = Objects.requireNonNull(dflt);
 
         this.tfFilename = new TextField();
@@ -46,11 +49,13 @@ public class FileInput extends HBox implements InputControl<File> {
             if (mode== InputBuilder.FileDialogMode.OPEN) {
                 Dialogs.chooseFile()
                         .initialDir(initialDir)
+                        .filter(filter)
                         .showOpenDialog(null)
                         .ifPresent(f -> value.setValue(f));
             } else {
                 Dialogs.chooseFile()
                         .initialDir(initialDir)
+                        .filter(filter)
                         .showSaveDialog(null)
                         .ifPresent(f -> value.setValue(f));
             }
