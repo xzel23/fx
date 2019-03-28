@@ -319,7 +319,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
 
     private File initApplicationDataDir() {
         try {
-            String dirName = getClass().getSimpleName();
+            String dirName = getClass().getName();
 
             // try to determine location by evaluating standard windows settings
             String appData = System.getenv("LOCALAPPDATA");
@@ -334,7 +334,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
 
             // then check for macos
             Path home = Paths.get(System.getProperty("user.home"));
-            Path macosBase = home.resolveSibling(Paths.get("Library", "Application Support"));
+            Path macosBase = home.resolve(Paths.get("Library", "Application Support"));
             if (Files.isDirectory(macosBase) && Files.isWritable(macosBase)) {
                 Path dir = macosBase.resolve(dirName);
                 Files.createDirectories(dir);
