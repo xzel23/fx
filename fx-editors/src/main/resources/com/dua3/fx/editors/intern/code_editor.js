@@ -178,7 +178,7 @@ function jSetLine(i,s) {
 }
 
 function jAddLine(s) {
-    editor.replaceRange(s, {line: Infinity});
+    editor.replaceRange(s+'\n', {line: Infinity, ch: 0});
 }
 
 // track dirty state
