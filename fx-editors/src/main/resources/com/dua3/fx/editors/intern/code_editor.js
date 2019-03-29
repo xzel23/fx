@@ -173,6 +173,14 @@ function jGetTheme() {
 	return editor.getOption('theme');
 }
 
+function jSetLine(i,s) {
+    editor.replaceRange(s, {line: i, ch: 0}, {line: i});
+}
+
+function jAddLine(s) {
+    editor.replaceRange(s, {line: Infinity});
+}
+
 // track dirty state
 editor.on('change', function() {
 	bridge.setDirty(true);

@@ -31,6 +31,7 @@ import javafx.scene.web.WebView;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URL;
+import java.util.Iterator;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -222,6 +223,30 @@ public abstract class EditorBase extends BorderPane {
 	
 	public String getLine(int idx) {
 		return (String) bridge.callScript("jGetLine("+idx+");");
+	}
+
+	public void addLine(String s) {
+		bridge.callScript("jAddLine('"+escape(s)+"');");
+	}
+
+	public void setLine(int i, String s) {
+		bridge.callScript("jSetLine("+i+",'"+escape(s)+"');");
+	}
+
+	public Iterator<String> lineIterator() {
+		return new Iterator<String>() {
+			int i=0;
+
+			@Override
+			public boolean hasNext() {
+				return i<getLineCount();
+			}
+
+			@Override
+			public String next() {
+				return getLine(i++);
+			}
+		};
 	}
 
 	public void search() {
