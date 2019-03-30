@@ -160,13 +160,13 @@ public abstract class EditorBase extends BorderPane {
 	public void setText(String text) {
 		LOG.fine("setting editor content");
 		String script = String.format("jSetContent('%s');", escape(text));
-		bridge.executeScript(script);
+		bridge.callScript(script);
 	}
 
 	public void setText(String text, String ext) {
 		LOG.fine("setting editor content");
 		String script = String.format("jSetContent('%s','%s');", escape(text), escape(ext));
-		bridge.executeScript(script);
+		bridge.callScript(script);
 	}
 
 	public String getText() {
