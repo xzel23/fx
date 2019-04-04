@@ -14,6 +14,21 @@
 
 package com.dua3.fx.application;
 
+import com.dua3.fx.util.Dialogs;
+import com.dua3.fx.util.FxTask;
+import com.dua3.fx.util.controls.AboutDialog;
+import com.dua3.utility.lang.LangUtil;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.scene.control.ButtonType;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -30,22 +45,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.Preferences;
-
-import com.dua3.fx.util.Dialogs;
-import com.dua3.fx.util.FxTask;
-import com.dua3.fx.util.controls.AboutDialog;
-import com.dua3.utility.lang.LangUtil;
-
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
-import javafx.scene.control.ButtonType;
-import javafx.stage.FileChooser;
-import javafx.stage.FileChooser.ExtensionFilter;
 
 public abstract class FxController<A extends FxApplication<A, C>, C extends FxController<A, C>>  {
 
@@ -134,9 +133,10 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 			AtomicBoolean goOn = new AtomicBoolean(false);
 			Dialogs.confirmation()
 			.header("Save changes?")
-			.text(String.join(
-				"\n", 
-				dirtyList.stream().map(Object::toString).toArray(String[]::new)
+			.text("%s",
+					String.join(
+					"\n",
+					dirtyList.stream().map(Object::toString).toArray(String[]::new)
 			))
 			.buttons(ButtonType.YES, ButtonType.NO, ButtonType.CANCEL)
 			.defaultButton(ButtonType.YES)

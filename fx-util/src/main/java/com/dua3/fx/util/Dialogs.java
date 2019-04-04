@@ -150,12 +150,21 @@ public class Dialogs {
 	}
 
 	/**
-	 * Start definition of new input dialog.
-	 * @return 
-	 * 	new {@link InputDialogBuilder} instance
+	 * Start definition of new input pane.
+	 * @return
+	 * 	new {@link InputPaneBuilder} instance
 	 */
 	public static InputPaneBuilder inputPane() {
 		return new InputPaneBuilder();
+	}
+
+	/**
+	 * Start definition of new input dialog.
+	 * @return
+	 * 	new {@link InputDialogBuilder} instance
+	 */
+	public static InputGridBuilder inputGrid() {
+		return new InputGridBuilder();
 	}
 
 	/**
