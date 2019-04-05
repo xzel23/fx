@@ -17,6 +17,7 @@ package com.dua3.fx.util.controls;
 import com.dua3.utility.options.OptionSet;
 import com.dua3.utility.options.OptionValues;
 import javafx.beans.binding.Bindings;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.stage.FileChooser;
@@ -67,6 +68,18 @@ implements InputBuilder<InputDialogBuilder> {
         pb.add(id, type, dflt, control);
         return this;
     }
+
+	@Override
+	public InputDialogBuilder addNode(String id, String label, Node node) {
+		pb.addNode(id, label, node);
+		return this;
+	}
+
+	@Override
+	public InputDialogBuilder addNode(String id, Node node) {
+		pb.addNode(id, node);
+		return this;
+	}
 
 	@Override
     public InputDialogBuilder columns(int columns) {

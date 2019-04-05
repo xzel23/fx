@@ -2,6 +2,7 @@ package com.dua3.fx.util.controls;
 
 import com.dua3.utility.options.OptionSet;
 import com.dua3.utility.options.OptionValues;
+import javafx.scene.Node;
 import javafx.stage.FileChooser;
 
 import java.io.File;
@@ -49,7 +50,33 @@ public interface InputBuilder<B extends InputBuilder<B>> {
      *  {@code this}
      */
     <T> B add(String id, Class<T> type, Supplier<T> dflt, InputControl<T> control);
-    
+
+    /**
+     * Add labeled input control.
+     *
+     * @param id
+     *  the node's ID
+     * @param label
+     *  the label text
+     * @param node
+     *  the node
+     * @return
+     *  {@code this}
+     */
+    B addNode(String id, String label, Node node);
+
+    /**
+     * Add unlabeled input control.
+     *
+     * @param id
+     *  the node's ID
+     * @param node
+     *  the node
+     * @return
+     *  {@code this}
+     */
+    B addNode(String id, Node node);
+
     /**
      * Set number of columns for layout (default is 1).
      * @param columns
@@ -263,4 +290,5 @@ public interface InputBuilder<B extends InputBuilder<B>> {
      *  {@code this}
      */
     B chooseFile(String id, String label, Supplier<File> dflt, FileDialogMode mode, FileChooser.ExtensionFilter fiilter);
+
 }

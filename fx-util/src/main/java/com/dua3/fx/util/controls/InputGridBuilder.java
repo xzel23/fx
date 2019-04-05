@@ -18,6 +18,8 @@ import com.dua3.fx.util.controls.InputGrid.Meta;
 import com.dua3.utility.lang.LangUtil;
 import com.dua3.utility.options.OptionSet;
 import com.dua3.utility.options.OptionValues;
+import javafx.beans.property.*;
+import javafx.scene.Node;
 import javafx.stage.FileChooser;
 
 import java.io.File;
@@ -67,7 +69,59 @@ implements InputBuilder<InputGridBuilder> {
         LangUtil.check(prev == null, "Input with id '" + id + "' already defined");
         return this;
     }
-    
+
+    static class ControlWrapper implements InputControl<Void> {
+
+    	private final Node node;
+
+		private final Property<Void> value = new SimpleObjectProperty<>(null);
+		private final BooleanProperty valid = new SimpleBooleanProperty(true);
+		private final ReadOnlyStringProperty error = new SimpleStringProperty("");
+
+		ControlWrapper(Node node) {
+			this.node = Objects.requireNonNull(node);
+		}
+
+		@Override
+		public Node node() {
+			return node;
+		}
+
+		@Override
+		public void reset() { /* nop */ }
+
+		@Override
+		public Property<Void> valueProperty() {
+			return value;
+		}
+
+		@Override
+		public ReadOnlyBooleanProperty validProperty() {
+			return valid;
+		}
+
+		@Override
+		public ReadOnlyStringProperty errorProperty() {
+			return error;
+		}
+	}
+
+	@Override
+	public InputGridBuilder addNode(String id, String label, Node node) {
+		Meta<Void> meta = new Meta<Void>(id, label, Void.class, null, new ControlWrapper(node));
+		Meta<?> prev = data.put(id, meta);
+		LangUtil.check(prev == null, "Input with id '" + id + "' already defined");
+		return this;
+	}
+
+	@Override
+	public InputGridBuilder addNode(String id, Node node) {
+		Meta<Void> meta = new Meta<Void>(id, "", Void.class, null, new ControlWrapper(node));
+		Meta<?> prev = data.put(id, meta);
+		LangUtil.check(prev == null, "Input with id '" + id + "' already defined");
+		return this;
+	}
+
 	/* (non-Javadoc)
      * @see com.dua3.fx.util.controls.InputBuilder#columns(int)
      */
