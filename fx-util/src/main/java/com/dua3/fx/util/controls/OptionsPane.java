@@ -109,6 +109,10 @@ public class OptionsPane extends GridPane implements InputControl<OptionValues>{
 			});
 			
 			return (InputControl) inputControl;
+		} else if (option instanceof Option.FileOption) {
+			throw new UnsupportedOperationException();
+		} else if (option instanceof Option.SimpleOption<?>) {
+			throw new UnsupportedOperationException();
 		} else if (option instanceof ChoiceOption<?>) {
 			Collection<Value<T>> choices = ((ChoiceOption<T>)option).getChoices();
 			Supplier<Value<T>> dfltValue = () -> (Value<T>) (dflt.get().get(option));
@@ -125,9 +129,8 @@ public class OptionsPane extends GridPane implements InputControl<OptionValues>{
 			});
 			return inputControl;
 		}
-		
-		LOG.warning("unknown option type: "+option.getClass().getName());
-		return null;
+
+		throw new UnsupportedOperationException("unsupported input type: "+option.getClass().getName());
 	}
 
 	private void addToGrid(Node node, int c, int r) {
