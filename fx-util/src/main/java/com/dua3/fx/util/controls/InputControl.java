@@ -8,8 +8,10 @@ import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.stage.FileChooser;
 import javafx.util.StringConverter;
 
+import java.io.File;
 import java.text.NumberFormat;
 import java.util.Collection;
 import java.util.Locale;
@@ -176,4 +178,7 @@ public interface InputControl<R> {
 		return inputControl;
 	}
 
+	static InputControl<File> chooseFile(Supplier<File> dflt, Function<File, Optional<String>> validate, InputBuilder.FileDialogMode mode, FileChooser.ExtensionFilter... filters) {
+		return new FileInput(mode, dflt, filters);
+	}
 }

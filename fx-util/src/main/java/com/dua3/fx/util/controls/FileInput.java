@@ -12,6 +12,7 @@ import javafx.stage.FileChooser;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Supplier;
 
@@ -20,7 +21,7 @@ public class FileInput extends HBox implements InputControl<File> {
     private final ObjectProperty<File> value = new SimpleObjectProperty<>();
 
     private final InputBuilder.FileDialogMode mode;
-    private final FileChooser.ExtensionFilter filter;
+    private final FileChooser.ExtensionFilter[] filters;
     private final Supplier<File> dflt;
 
     private final TextField tfFilename;
@@ -29,9 +30,9 @@ public class FileInput extends HBox implements InputControl<File> {
     private final StringProperty error = new SimpleStringProperty("");
     private final BooleanProperty valid = new SimpleBooleanProperty(true);
 
-    public FileInput(InputBuilder.FileDialogMode mode, Supplier<File> dflt, FileChooser.ExtensionFilter filter) {
+    public FileInput(InputBuilder.FileDialogMode mode, Supplier<File> dflt, FileChooser.ExtensionFilter... filters) {
         this.mode = Objects.requireNonNull(mode);
-        this.filter = Objects.requireNonNull(filter);
+        this.filters = Arrays.copyOf(Objects.requireNonNull(filters),filters.length);
         this.dflt = Objects.requireNonNull(dflt);
 
         this.tfFilename = new TextField();
@@ -49,13 +50,13 @@ public class FileInput extends HBox implements InputControl<File> {
             if (mode== InputBuilder.FileDialogMode.OPEN) {
                 Dialogs.chooseFile()
                         .initialDir(initialDir)
-                        .filter(filter)
+                        .filter(filters)
                         .showOpenDialog(null)
                         .ifPresent(f -> value.setValue(f));
             } else {
                 Dialogs.chooseFile()
                         .initialDir(initialDir)
-                        .filter(filter)
+                        .filter(filters)
                         .showSaveDialog(null)
                         .ifPresent(f -> value.setValue(f));
             }

@@ -1,19 +1,13 @@
 package com.dua3.fx.util.controls;
 
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Optional;
-import java.util.function.Supplier;
-import java.util.logging.Logger;
-
 import com.dua3.fx.util.StringValueConverter;
+import com.dua3.utility.io.OpenMode;
 import com.dua3.utility.options.Option;
 import com.dua3.utility.options.Option.ChoiceOption;
 import com.dua3.utility.options.Option.StringOption;
 import com.dua3.utility.options.Option.Value;
 import com.dua3.utility.options.OptionSet;
 import com.dua3.utility.options.OptionValues;
-
 import javafx.beans.property.Property;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.ReadOnlyStringProperty;
@@ -22,6 +16,14 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.stage.FileChooser;
+
+import java.io.File;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Optional;
+import java.util.function.Supplier;
+import java.util.logging.Logger;
 
 public class OptionsPane extends GridPane implements InputControl<OptionValues>{
 
@@ -107,10 +109,28 @@ public class OptionsPane extends GridPane implements InputControl<OptionValues>{
 					inputControl.valueProperty().setValue((Value) n);
 				}
 			});
-			
 			return (InputControl) inputControl;
 		} else if (option instanceof Option.FileOption) {
-			throw new UnsupportedOperationException();
+			Option.FileOption fop = (Option.FileOption) option;
+			Supplier<File> dfltValue = () -> fop.getDefault().get();
+			InputBuilder.FileDialogMode mode = fop.getMode().includes(OpenMode.READ) ? InputBuilder.FileDialogMode.OPEN : InputBuilder.FileDialogMode.SAVE;
+			FileChooser.ExtensionFilter filters = new FileChooser.ExtensionFilter("supported Files", fop.getExtensions());
+			InputControl<File> fileInputControl = InputControl.chooseFile(
+					dfltValue,
+					file -> file == null ? Optional.of("no file selected") : Optional.empty(),
+					mode,
+					filters);
+			InputControl<Value<File>> inputControl = new ValueInputControl<>(fileInputControl);
+			inputControl.valueProperty().addListener( (v,o,n) -> {
+				values.put(option, n);
+			});
+
+			values.addChangeListener( (op,o,n) -> {
+				if (op.equals(option)) {
+					inputControl.valueProperty().setValue((Value) n);
+				}
+			});
+			return (InputControl) inputControl;
 		} else if (option instanceof Option.SimpleOption<?>) {
 			throw new UnsupportedOperationException();
 		} else if (option instanceof ChoiceOption<?>) {
