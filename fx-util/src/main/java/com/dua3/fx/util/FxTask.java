@@ -10,7 +10,7 @@ import javafx.concurrent.Task;
 
 public abstract class FxTask<V> extends Task<V>{
 
-	private static AtomicInteger TASK_COUNTER = new AtomicInteger(0);
+	private static final AtomicInteger TASK_COUNTER = new AtomicInteger(0);
 	final int taskId = TASK_COUNTER.incrementAndGet();
 
     private StringProperty text = new SimpleStringProperty(this, "text", "");

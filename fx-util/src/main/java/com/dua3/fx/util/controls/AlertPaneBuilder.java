@@ -52,7 +52,7 @@ extends AbstractPaneBuilder<InputDialogPane<Void>, AlertPaneBuilder, Void> {
 	@Override
 	public InputDialogPane<Void> build() {
 		InputDialogPane<Void> inputPane = super.build();
-		applyIfNotNull((pane,text) -> pane.setContentText(text), inputPane, text);
+		applyIfNotNull((pane,t) -> pane.setContentText(t), inputPane, text);
 		inputPane.setValidate(getValidate());
 		return inputPane;
 	}

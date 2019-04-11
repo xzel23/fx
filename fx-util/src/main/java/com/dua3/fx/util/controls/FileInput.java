@@ -47,18 +47,18 @@ public class FileInput extends HBox implements InputControl<File> {
                 initialDir=new File(".");
             }
 
-            if (mode== InputBuilder.FileDialogMode.OPEN) {
+            if (this.mode==InputBuilder.FileDialogMode.OPEN) {
                 Dialogs.chooseFile()
                         .initialDir(initialDir)
-                        .filter(filters)
+                        .filter(this.filters)
                         .showOpenDialog(null)
-                        .ifPresent(f -> value.setValue(f));
+                        .ifPresent(value::setValue);
             } else {
                 Dialogs.chooseFile()
                         .initialDir(initialDir)
-                        .filter(filters)
+                        .filter(this.filters)
                         .showSaveDialog(null)
-                        .ifPresent(f -> value.setValue(f));
+                        .ifPresent(value::setValue);
             }
         });
 

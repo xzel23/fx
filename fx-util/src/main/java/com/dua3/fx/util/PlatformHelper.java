@@ -51,8 +51,8 @@ public class PlatformHelper {
             try {
                 doneLatch.await();
             } catch (InterruptedException e) {
-                // ignore exception
                 LOG.log(Level.FINE, "interrupted", e);
+                Thread.currentThread().interrupt();
             }
         }
 

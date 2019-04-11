@@ -47,8 +47,8 @@ public class EditorSettingsDialog extends Dialog<ButtonType> {
 	private EditorSetting oldSetting;
 
     // -- button types
-	public final ButtonType OK = ButtonType.OK;
-    public final ButtonType RESET = new ButtonType("RESET");
+	public static final ButtonType OK = ButtonType.OK;
+    public static final ButtonType RESET = new ButtonType("RESET");
 
     // -- input controls
 	@FXML ComboBox<String> comboTheme;
@@ -92,21 +92,15 @@ public class EditorSettingsDialog extends Dialog<ButtonType> {
 		String theme = editor.getTheme();
 		comboTheme.getItems().setAll("default", "xq-light", "xq-dark");
 		comboTheme.setValue(theme);
-		comboTheme.valueProperty().addListener( (ov,o,n) -> {
-			editor.setTheme(n);
-		});
+		comboTheme.valueProperty().addListener( (ov,o,n) -> editor.setTheme(n) );
 		
 		// line numbers
 		toggleShowLineNumbers.setSelected(editor.isShowLineNumbers());
-		toggleShowLineNumbers.selectedProperty().addListener( (ov,o,n) -> {
-        	editor.setShowLineNumbers(n);
-        });	
+		toggleShowLineNumbers.selectedProperty().addListener( (ov,o,n) -> editor.setShowLineNumbers(n) );
 
 		// highlight current line
 		toggleHighlightCurrentLine.setSelected(editor.isHighlightCurrentLine());
-		toggleHighlightCurrentLine.selectedProperty().addListener( (ov,o,n) -> {
-        	editor.setHighlightCurrentLine(n);
-        });	
+		toggleHighlightCurrentLine.selectedProperty().addListener( (ov,o,n) -> editor.setHighlightCurrentLine(n) );
 
 		// font size
 		sliderFontSize.setMin(FONT_SIZE_MIN);

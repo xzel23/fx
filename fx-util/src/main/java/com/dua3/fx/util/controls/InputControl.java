@@ -134,16 +134,14 @@ public interface InputControl<R> {
 	static SimpleInputControl<TextField, String> stringInput(Supplier<String> dflt, Function<String, Optional<String>> validate) {
 		TextField control = new TextField();
 		StringProperty value = control.textProperty();
-		SimpleInputControl<TextField, String> inputControl = new SimpleInputControl<>(control, value, dflt, validate);
-		return inputControl;
+		return new SimpleInputControl<>(control, value, dflt, validate);
 	}
 
 	static <T> SimpleInputControl<TextField, T> stringInput(Supplier<T> dflt, Function<T, Optional<String>> validate, StringConverter<T> converter) {
 		TextField control = new TextField();
 		ObjectProperty<T> value = new SimpleObjectProperty<>();
 		Bindings.bindBidirectional(control.textProperty(), value, converter);
-		SimpleInputControl<TextField, T> inputControl = new SimpleInputControl<>(control, value, dflt, validate);
-		return inputControl;
+		return new SimpleInputControl<>(control, value, dflt, validate);
 	}
 
 	static SimpleInputControl<TextField, Integer> integerInput(Supplier<Integer> dflt, Function<Integer, Optional<String>> validate) {
@@ -151,8 +149,7 @@ public interface InputControl<R> {
 		StringProperty textProperty = control.textProperty();
 		IntegerProperty value = new SimpleIntegerProperty();
 		textProperty.bindBidirectional(value, NumberFormat.getIntegerInstance(Locale.getDefault()));
-		SimpleInputControl<TextField,Integer> inputControl = new SimpleInputControl<>(control, value.asObject(), dflt, validate);
-		return inputControl;
+		return new SimpleInputControl<>(control, value.asObject(), dflt, validate);
 	}
 
 	static SimpleInputControl<TextField, Double> decimalInput(Supplier<Double> dflt, Function<Double, Optional<String>> validate) {
@@ -160,25 +157,22 @@ public interface InputControl<R> {
 		StringProperty textProperty = control.textProperty();
 		DoubleProperty value = new SimpleDoubleProperty();
 		textProperty.bindBidirectional(value, NumberFormat.getInstance(Locale.getDefault()));
-		SimpleInputControl<TextField,Double> inputControl = new SimpleInputControl<>(control, value.asObject(), dflt, validate);
-		return inputControl;
+		return new SimpleInputControl<>(control, value.asObject(), dflt, validate);
 	}
 
 	static SimpleInputControl<CheckBox, Boolean> checkBoxInput(Supplier<Boolean> dflt, String text) {
 		CheckBox control = new CheckBox(text);
 		BooleanProperty value = control.selectedProperty();
-		SimpleInputControl<CheckBox,Boolean> inputControl = new SimpleInputControl<>(control, value.asObject(), dflt, r -> Optional.empty());
-		return inputControl;
+		return new SimpleInputControl<>(control, value.asObject(), dflt, r -> Optional.empty());
 	}
 
 	static <T> SimpleInputControl<ComboBox<T>, T> comboBoxInput(Collection<T> choices, Supplier<T> dflt) {
 		ComboBox<T> control = new ComboBox<>(FXCollections.observableArrayList(choices));
 		ObjectProperty<T> value = control.valueProperty();
-		SimpleInputControl<ComboBox<T>,T> inputControl = new SimpleInputControl<>(control, value, dflt, r -> Optional.empty());
-		return inputControl;
+		return new SimpleInputControl<>(control, value, dflt, r -> Optional.empty());
 	}
 
-	static InputControl<File> chooseFile(Supplier<File> dflt, Function<File, Optional<String>> validate, InputBuilder.FileDialogMode mode, FileChooser.ExtensionFilter... filters) {
+	static InputControl<File> chooseFile(Supplier<File> dflt, InputBuilder.FileDialogMode mode, FileChooser.ExtensionFilter... filters) {
 		return new FileInput(mode, dflt, filters);
 	}
 }

@@ -150,12 +150,12 @@ public class JavaScriptBridge {
 				}
 				
 				// bind properties
-				readOnlyProperty.addListener((v, ov, nv) -> {
-					Platform.runLater(() -> engine.executeScript("jSetReadOnly("+nv+");"));
-				});
-				promptTextProperty.addListener((v, ov, nv) -> {
-					Platform.runLater(() -> engine.executeScript("jSetPromptText(\""+escape(nv)+"\");"));
-				});
+				readOnlyProperty.addListener((v, ov, nv) ->
+						Platform.runLater(() -> engine.executeScript("jSetReadOnly("+nv+");"))
+				);
+				promptTextProperty.addListener((v, ov, nv) ->
+					Platform.runLater(() -> engine.executeScript("jSetPromptText(\""+escape(nv)+"\");"))
+				);
 				
 				// sync properties
 				String script = String.format(

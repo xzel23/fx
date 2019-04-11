@@ -52,6 +52,8 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 
 	/** Logger */
 	protected static final Logger LOG = Logger.getLogger(FxController.class.getSimpleName());
+	public static final String TITLE_ERROR = "Error";
+	public static final File USER_HOME = new File(System.getProperty("user.home"));
 
 	/** The application instance. */
 	private A app;
@@ -207,7 +209,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		} catch (Exception e) {
 			LOG.log(Level.WARNING, "error creating document", e);
 			Dialogs.error()
-			.title("Error")
+			.title(TITLE_ERROR)
 			.header("Could not create a new document.")
 			.text(e.getMessage())
 			.build()
@@ -233,7 +235,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 			} else {
 				String lastDocument = getPreference(PREF_DOCUMENT, "");
 				if (lastDocument.isBlank()) {
-					parent = new File(System.getProperty("user.home")).toPath();
+					parent = USER_HOME.toPath();
 				} else {
 					Path path = Paths.get(URI.create(lastDocument));
 					parent = path.getParent();
@@ -247,7 +249,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		File initialDir = parent != null ? parent.toFile() : null;
 		
 		if (initialDir == null || !initialDir.isDirectory()) {
-			initialDir = new File(System.getProperty("user.home"));
+			initialDir = USER_HOME;
 		}
 		
 		Optional<File> file = Dialogs
@@ -271,7 +273,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		} catch (Exception e) {
 			LOG.log(Level.WARNING, "error opening document", e);
 			Dialogs.error()
-			.title("Error")
+			.title(TITLE_ERROR)
 			.header("'%s' could not be opened.", getDisplayName(uri))
 			.text(e.getMessage())
 			.build()
@@ -336,7 +338,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 			} else {
 				String lastDocument = getPreference(PREF_DOCUMENT, "");
 				if (lastDocument.isBlank()) {
-					parent = new File(System.getProperty("user.home")).toPath();
+					parent = USER_HOME.toPath();
 				} else {
 					Path path = Paths.get(URI.create(lastDocument));
 					parent = path.getParent();
@@ -351,7 +353,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		File  initialDir = parent!=null ? parent.toFile() :  null;
 
 		if (initialDir == null || !initialDir.isDirectory()) {
-			initialDir = new File(System.getProperty("user.home"));
+			initialDir = USER_HOME;
 		}
 		
 		Optional<File> file = Dialogs
@@ -378,7 +380,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		} catch (Exception e) {
 			LOG.log(Level.WARNING, "error saving document", e);
 			Dialogs.error()
-			.title("Error")
+			.title(TITLE_ERROR)
 			.header("'%s' could not be saved.", getDisplayName(uri))
 			.text("%s: %s", e.getClass().getSimpleName(), e.getMessage())
 			.build()
@@ -388,7 +390,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	}
 	
 	protected String getDisplayName(URI uri) {
-		return getCurrentDocument().getLocation().toString();
+		return uri.toString();
 	}
 	
 	@SuppressWarnings("static-method")

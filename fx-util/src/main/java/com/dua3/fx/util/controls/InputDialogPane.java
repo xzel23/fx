@@ -55,6 +55,7 @@ public abstract class InputDialogPane<R> extends DialogPane implements Supplier<
 		}
 	}
 
+	@Override
 	protected Node createButton(ButtonType buttonType) {
 		// a wizard dialog should only close when finish or cancel is clicked
 		if (LangUtil.isOneOf(buttonType, ButtonType.OK, ButtonType.FINISH, ButtonType.CANCEL)) {

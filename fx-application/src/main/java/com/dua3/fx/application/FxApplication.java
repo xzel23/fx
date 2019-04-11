@@ -181,12 +181,10 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
         stage.show();
 
         // automatically update title on document change
-        final ChangeListener<Boolean> dirtyStateListener = (v, o, n) -> {
-            updateApplicationTitle();
-        };
-        final ChangeListener<URI> documentLocationListener = (v, o, n) -> {
-            updateApplicationTitle();
-        };
+        final ChangeListener<Boolean> dirtyStateListener = (v, o, n) -> updateApplicationTitle();
+
+        final ChangeListener<URI> documentLocationListener = (v, o, n) -> updateApplicationTitle();
+
         controller.currentDocumentProperty.addListener(
                 (v, o, n) -> {
                     updateApplicationTitle();

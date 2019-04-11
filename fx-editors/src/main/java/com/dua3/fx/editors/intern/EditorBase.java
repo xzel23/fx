@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URL;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -244,6 +245,9 @@ public abstract class EditorBase extends BorderPane {
 
 			@Override
 			public String next() {
+				if (i>=getLineCount()) {
+					throw new NoSuchElementException();
+				}
 				return getLine(i++);
 			}
 		};

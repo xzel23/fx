@@ -61,9 +61,7 @@ public class RadioPane<T> extends VBox implements InputControl<T> {
 		this.state.setValidate( v -> v==null?Optional.of("Nothing selected.") : Optional.empty());
 		
 		// update toggle, when state changes
-		state.valueProperty().addListener( (v,o,n) -> {
-			group.selectToggle(this.items.get(n));
-		});
+		state.valueProperty().addListener( (v,o,n) -> group.selectToggle(this.items.get(n)));
 		
 		// set initial toggle
 		group.selectToggle(this.items.get(currentValue));

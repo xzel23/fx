@@ -51,11 +51,8 @@ implements InputBuilder<InputGridBuilder> {
      */
     @Override
     public <T> InputGridBuilder add(String id, String label, Class<T> type, Supplier<T> dflt, InputControl<T> control) {
-        Objects.requireNonNull(id);
-        Meta<T> meta = new Meta<>(id, label, type, dflt, control);
-        Meta<?> prev = data.put(id, meta);      
-        LangUtil.check(prev == null, "Input with id '" + id + "' already defined");
-        return this;
+        Objects.requireNonNull(label);
+		return doAdd(id, label, type, dflt, control);
     }
     
     /* (non-Javadoc)
@@ -63,12 +60,16 @@ implements InputBuilder<InputGridBuilder> {
      */
     @Override
     public <T> InputGridBuilder add(String id, Class<T> type, Supplier<T> dflt, InputControl<T> control) {
-        Objects.requireNonNull(id);
-        Meta<T> meta = new Meta<>(id, null, type, dflt, control);
-        Meta<?> prev = data.put(id, meta);      
-        LangUtil.check(prev == null, "Input with id '" + id + "' already defined");
-        return this;
+        return doAdd(id, null, type, dflt, control);
     }
+
+	private <T> InputGridBuilder doAdd(String id, String label, Class<T> type, Supplier<T> dflt, InputControl<T> control) {
+		Objects.requireNonNull(id);
+		Meta<T> meta = new Meta<>(id, label, type, dflt, control);
+		Meta<?> prev = data.put(id, meta);
+		LangUtil.check(prev == null, "Input with id '" + id + "' already defined");
+		return this;
+	}
 
     static class ControlWrapper implements InputControl<Void> {
 

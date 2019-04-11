@@ -9,7 +9,7 @@ import javafx.util.StringConverter;
 
 public class StringValueConverter extends StringConverter<Value<String>> {
 
-    private static StringValueConverter INSTANCE = new StringValueConverter();
+    private static final StringValueConverter INSTANCE = new StringValueConverter();
 
     public static StringValueConverter instance() {
         return INSTANCE;

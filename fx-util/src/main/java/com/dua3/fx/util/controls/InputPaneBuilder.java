@@ -134,11 +134,4 @@ implements InputBuilder<InputPaneBuilder> {
     	return this;
 	}
 
-	/* (non-Javadoc)
-     * @see com.dua3.fx.util.controls.InputBuilder#build()
-     */
-	@Override
-	public InputPane build() {
-		return super.build();
-	}
 }

@@ -3,7 +3,6 @@ package com.dua3.fx.util.controls;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 
-import java.util.function.Supplier;
 import java.util.logging.Logger;
 
 public class PromptPane extends InputDialogPane<String> {
@@ -12,7 +11,6 @@ public class PromptPane extends InputDialogPane<String> {
     protected static final Logger LOG = Logger.getLogger(PromptPane.class.getSimpleName());
 
     private TextField text;
-    private Supplier<String> defaultValue = () -> "";
 
 	@Override
 	public String get() {

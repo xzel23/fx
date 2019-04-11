@@ -27,12 +27,8 @@ public class ValueInputControl<T> implements InputControl<Value<T>> {
 		this.value = new SimpleObjectProperty<>(current == null ? null : Option.value(current));
 
 		// bind value to wrapped value
-		value.addListener((v,o,n) -> {
-			wrapped.set(n.get());
-		});
-		wrapped.valueProperty().addListener((v,o,n) -> {
-			value.setValue((Option.value(n)));
-		});
+		value.addListener((v,o,n) -> wrapped.set(n.get()));
+		wrapped.valueProperty().addListener((v,o,n) -> value.setValue((Option.value(n))));
 	}
 
 	/**
@@ -47,6 +43,7 @@ public class ValueInputControl<T> implements InputControl<Value<T>> {
 	/**
 	 * Set/update control state.
 	 */
+	@Override
 	public void init() {
 		wrapped.init();
 	}

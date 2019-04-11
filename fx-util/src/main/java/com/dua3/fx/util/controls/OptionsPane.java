@@ -58,6 +58,7 @@ public class OptionsPane extends GridPane implements InputControl<OptionValues>{
         this.state = new State<>(value, dflt);
 	}
 
+	@Override
     public void init() {
         getChildren().clear();
         
@@ -93,16 +94,13 @@ public class OptionsPane extends GridPane implements InputControl<OptionValues>{
 
 	@SuppressWarnings("unchecked")
 	private <T> InputControl<Value<T>> createControl(OptionValues values, Option<T> option) {
-		InputControl<Value<T>> control;
 		if (option instanceof StringOption) {
 			InputControl<Value<String>> inputControl = InputControl.stringInput(
 				() -> (Value<String>) dflt.get().get(option), 
 				r -> Optional.empty(), 
 				StringValueConverter.instance());
 			
-			inputControl.valueProperty().addListener( (v,o,n) -> {
-				values.put(option, n);
-			});
+			inputControl.valueProperty().addListener( (v,o,n) -> values.put(option, n) );
 			
 			values.addChangeListener( (op,o,n) -> {
 				if (op.equals(option)) {
@@ -117,13 +115,10 @@ public class OptionsPane extends GridPane implements InputControl<OptionValues>{
 			FileChooser.ExtensionFilter filters = new FileChooser.ExtensionFilter("supported Files", fop.getExtensions());
 			InputControl<File> fileInputControl = InputControl.chooseFile(
 					dfltValue,
-					file -> file == null ? Optional.of("no file selected") : Optional.empty(),
-					mode,
+                    mode,
 					filters);
 			InputControl<Value<File>> inputControl = new ValueInputControl<>(fileInputControl);
-			inputControl.valueProperty().addListener( (v,o,n) -> {
-				values.put(option, n);
-			});
+			inputControl.valueProperty().addListener( (v,o,n) -> values.put(option, n));
 
 			values.addChangeListener( (op,o,n) -> {
 				if (op.equals(option)) {
@@ -131,16 +126,12 @@ public class OptionsPane extends GridPane implements InputControl<OptionValues>{
 				}
 			});
 			return (InputControl) inputControl;
-		} else if (option instanceof Option.SimpleOption<?>) {
-			throw new UnsupportedOperationException();
 		} else if (option instanceof ChoiceOption<?>) {
 			Collection<Value<T>> choices = ((ChoiceOption<T>)option).getChoices();
 			Supplier<Value<T>> dfltValue = () -> (Value<T>) (dflt.get().get(option));
 			var inputControl = InputControl.comboBoxInput(choices, dfltValue);
 			
-			inputControl.valueProperty().addListener( (v,o,n) -> {
-				values.put(option, Option.value(n));
-			});
+			inputControl.valueProperty().addListener( (v,o,n) -> values.put(option, Option.value(n)));
 			
 			values.addChangeListener( (op,o,n) -> {
 				if (op.equals(option)) {
@@ -148,6 +139,8 @@ public class OptionsPane extends GridPane implements InputControl<OptionValues>{
 				}
 			});
 			return inputControl;
+		} else if (option instanceof Option.SimpleOption<?>) {
+			throw new UnsupportedOperationException();
 		}
 
 		throw new UnsupportedOperationException("unsupported input type: "+option.getClass().getName());
@@ -166,8 +159,8 @@ public class OptionsPane extends GridPane implements InputControl<OptionValues>{
 	    for (var entry: items.entrySet()) {
 	        Option<?> option = entry.getKey();
 	        Property<?> property = entry.getValue().valueProperty();
-			Value<?> value = (Value<?>) property.getValue();
-	        values.put(option, value);
+			Value<?> v = (Value<?>) property.getValue();
+	        values.put(option, v);
 	    }
 		return values;
 	}
@@ -178,8 +171,8 @@ public class OptionsPane extends GridPane implements InputControl<OptionValues>{
         for (var item: items.entrySet()) {
             Option option = item.getKey();
             Property property = item.getValue().valueProperty();
-            Value value = arg.get(option);
-            property.setValue(value.get());
+            Value v = arg.get(option);
+            property.setValue(v.get());
         }
     }
 
@@ -190,8 +183,7 @@ public class OptionsPane extends GridPane implements InputControl<OptionValues>{
 
 	@Override
 	public void reset() {
-		// TODO Auto-generated method stub
-		
+    	items.forEach( (item,control) -> control.reset() );
 	}
 
 	@Override
