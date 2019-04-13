@@ -111,7 +111,7 @@ public class OptionsPane extends GridPane implements InputControl<OptionValues>{
 		} else if (option instanceof Option.FileOption) {
 			Option.FileOption fop = (Option.FileOption) option;
 			Supplier<File> dfltValue = () -> fop.getDefault().get();
-			InputBuilder.FileDialogMode mode = fop.getMode().includes(OpenMode.READ) ? InputBuilder.FileDialogMode.OPEN : InputBuilder.FileDialogMode.SAVE;
+			InputBuilder.FileDialogMode mode = fop.getMode().includes(OpenMode.WRITE) ? InputBuilder.FileDialogMode.SAVE : InputBuilder.FileDialogMode.OPEN;
 			FileChooser.ExtensionFilter filters = new FileChooser.ExtensionFilter("supported Files", fop.getExtensions());
 			InputControl<File> fileInputControl = InputControl.chooseFile(
 					dfltValue,
