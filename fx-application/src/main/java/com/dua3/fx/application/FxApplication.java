@@ -208,19 +208,19 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
 
     protected void updateApplicationTitle() {
         FxDocument document = controller.getCurrentDocument();
-        String name = document.toString();
+        String locStr = document.getLocationString();
         boolean dirty = document.isDirty();
 
         StringBuilder title = new StringBuilder();
         title.append(applicationName);
 
-        if (!name.isEmpty() || document.isDirty()) {
+        if (!locStr.isEmpty() || document.isDirty()) {
             title.append(" - ");
         }
 
         String marker = dirty ? MARKER_MODIFIED : MARKER_UNMODIFIED;
 
-        title.append(marker).append(name);
+        title.append(marker).append(locStr);
 
         mainStage.setTitle(title.toString());
     }
