@@ -17,6 +17,8 @@ console.log = function(m) {
 	bridge.log(m);
 };
 
+require ("./tui-editor-Editor-full.min.js");
+
 // set to true to enable trace messages
 var debug = true;
 
