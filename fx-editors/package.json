@@ -1,0 +1,15 @@
+{
+  "name": "cabinet-js",
+  "version": "1.0.0",
+  "description": "cabinet javascript support libraries",
+  "main": "markdown_editor.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "codemirror": "^5.48.0",
+    "tui-editor": "^1.4.3"
+  }
+}
