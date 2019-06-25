@@ -17,8 +17,6 @@ console.log = function(m) {
 	bridge.log(m);
 };
 
-require ("./tui-editor-Editor-full.min.js");
-
 // set to true to enable trace messages
 var debug = true;
 
@@ -30,6 +28,10 @@ function trace(m) {
 }
 
 // the editor
+require ("./tui-editor-Editor-full.min.js");
+
+var CodeMirror = Editor.getCodeMirror();
+
 CodeMirror.modeURL = "codemirror/mode/%N/%N.js";
 const editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
 	fullScreen : true,
