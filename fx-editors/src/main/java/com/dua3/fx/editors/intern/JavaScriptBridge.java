@@ -14,11 +14,6 @@
 
 package com.dua3.fx.editors.intern;
 
-import java.util.Collections;
-import java.util.function.Supplier;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -30,6 +25,13 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import netscape.javascript.JSException;
 import netscape.javascript.JSObject;
+
+import java.util.Collections;
+import java.util.function.BooleanSupplier;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Bridge to provide a link between the JavaFX-component and the JavaScript code running
@@ -132,42 +134,50 @@ public class JavaScriptBridge {
 		this.engine = webView.getEngine();
 	}
 
+	class JSEditor {
+		final JSObject editor;
+		final Consumer<Boolean> jsSetReadOnly;
+		final BooleanSupplier jsGetReadOnly;
+		final Consumer<Boolean> jsSetDirty;
+		final BooleanSupplier jsIsDirty;
+		final Consumer<String> jsSetPromptText;
+		final Supplier<String> jsGetPromptText;
+
+		JSEditor() {
+			this.editor = (JSObject) engine.executeScript("import('code_editor.js')");
+			this.jsSetReadOnly = (Consumer<Boolean>) editor.getMember("setReadOnly");
+			this.jsGetReadOnly = (BooleanSupplier) editor.getMember("getReadOnly");
+			this.jsSetDirty = (Consumer<Boolean>) editor.getMember("setDirty");
+			this.jsIsDirty = (BooleanSupplier) editor.getMember("isDirty");
+			this.jsSetPromptText = (Consumer<String>) editor.getMember("setPromptText");
+			this.jsGetPromptText = (Supplier<String>) editor.getMember("getPromptText");
+		}
+	}
+
+	private JSEditor jsEditor = null;
+
 	/**
 	 * Bind bridge to JavaScript editor instance.
 	 */
 	void bind() {
 		Platform.runLater(() -> {
-			log("setting bridge");
-				// set reference to bridge in editor
-				JSObject win = (JSObject) engine.executeScript("window");
-				win.setMember("bridge", this);
-				
-				// assert that the init script has run to the last line without error
-				// compare against BOOLEAN.TRUE because initState could be either Boolean or JSObject
-				Object initState = engine.executeScript("editor_initialised");
-				if (!Boolean.TRUE.equals(initState)) {
-					throw new IllegalStateException("JS error during initialization of editor component");
-				}
-				
-				// bind properties
-				readOnlyProperty.addListener((v, ov, nv) ->
-						Platform.runLater(() -> engine.executeScript("jSetReadOnly("+nv+");"))
-				);
-				promptTextProperty.addListener((v, ov, nv) ->
-					Platform.runLater(() -> engine.executeScript("jSetPromptText(\""+escape(nv)+"\");"))
-				);
-				
-				// sync properties
-				String script = String.format(
-					  "jSetReadOnly(%s);%n"
-					+ "jSetPromptText(\"%s\");%n",
-					Boolean.toString(readOnlyProperty.get()),
-					escape(promptTextProperty.get()));				
-				engine.executeScript(script);
+			log("binding ...");
+			// create JSEditor instance
+			jsEditor = new JSEditor();
 
-				// mark editor as ready for use
-				editorReadyProperty.set(true);
-				log("bridge set.");
+			// bind properties
+			readOnlyProperty.addListener((v, ov, nv) -> Platform.runLater(() -> jsEditor.jsSetReadOnly.accept(nv)));
+			promptTextProperty.addListener((v, ov, nv) -> Platform.runLater(() -> jsEditor.jsSetPromptText.accept(nv)));
+
+			// sync properties
+			Platform.runLater(() -> {
+				jsEditor.jsSetReadOnly.accept(readOnlyProperty.get());
+				jsEditor.jsSetPromptText.accept(promptTextProperty.get());
+			});
+
+			// mark editor as ready for use
+			editorReadyProperty.set(true);
+			log("bound.");
 		});
 	}
 
