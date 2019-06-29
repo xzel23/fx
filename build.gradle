@@ -23,7 +23,7 @@ subprojects {
     apply plugin: 'java'
     apply plugin: 'java-library'
     apply plugin: 'maven-publish'
-    apply plugin: 'eclipse'
+    apply plugin: 'idea'
     apply plugin: 'com.github.spotbugs'
     apply plugin: 'com.dua3.gradle.jpms'
     apply plugin: 'com.jfrog.bintray'
@@ -88,6 +88,21 @@ subprojects {
         testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junit_version}"
     }
 
+    // place resources in same directory as classes (fix resource not found in IntelliJ run/debug)
+    sourceSets {
+        main {
+            output.resourcesDir = "${buildDir}/classes/java/main"
+        }
+    }
+
+    idea {
+        module {
+            inheritOutputDirs = false
+            outputDir = file("$buildDir/classes/java/main/")
+            testOutputDir = file("$buildDir/classes/java/test/")
+        }
+    }
+    
     test {
         useJUnitPlatform()
 
@@ -123,8 +138,8 @@ subprojects {
         key = findProperty('BINTRAY_KEY') ?: 'NONE'
 
         dryRun = false //[Default: false] Whether to run this as dry-run, without deploying
-        publish = true //[Default: false] Whether version should be auto published after an upload    
-        override = true //[Default: false] Whether to override version artifacts already published    
+        publish = true //[Default: false] Whether version should be auto published after an upload
+        override = true //[Default: false] Whether to override version artifacts already published
 
         publications = ['projectPublication']
 
