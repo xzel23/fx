@@ -1,7 +1,8 @@
 module com.dua3.fx.editor {
     exports com.dua3.fx.editor;
     opens com.dua3.fx.editor;
-    
+    opens com.dua3.fx.editor.cli;
+
     requires java.logging;
     
     requires com.dua3.utility;
