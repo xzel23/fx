@@ -14,6 +14,7 @@
 
 package com.dua3.fx.editors.intern;
 
+import com.dua3.utility.lang.LangUtil;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -27,8 +28,6 @@ import netscape.javascript.JSException;
 import netscape.javascript.JSObject;
 
 import java.util.Collections;
-import java.util.function.BooleanSupplier;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,93 +39,41 @@ import java.util.logging.Logger;
 public class JavaScriptBridge {
 	/** The logger instance. */
 	public static final Logger LOG = Logger.getLogger(JavaScriptBridge.class.getName());
-	
+
 	/** The WebEngine instance. */
 	private final WebEngine engine;
-	
+
+	private JSObject jsEditor;
+
 	/** Property that indicates whether current document is editable. */
 	final BooleanProperty readOnlyProperty = new SimpleBooleanProperty(false);
-	
+
 	/** Property that indicates editor's dirty state. */
 	final BooleanProperty dirtyProperty = new SimpleBooleanProperty(false);
-	
+
 	/** Property that indicates whether the editor is ready to be used. */
 	final BooleanProperty editorReadyProperty = new SimpleBooleanProperty(false);
 
 	/** Property for the prompt/placeholder that is displayed when the editor is empty. */
 	final StringProperty promptTextProperty = new SimpleStringProperty("");
-	
-    /**
-     * Backslash-escape a string.
-     * @param s the string
-     * @return the escaped string
-     */
-    public static String escape(String s) {
-        StringBuilder out = new StringBuilder(16 + s.length() * 11 / 10);
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            if (0<=c && c<127) {
-                // ASCII characters
-                switch (c) {
-                case '\0':
-                    out.append("\\u0000"); // "\0" might be ambiguous if followed by digits
-                    break;
-                case '\\':
-                    out.append("\\\\");
-                    break;
-                case '\t':
-                    out.append("\\t");
-                    break;
-                case '\b':
-                    out.append("\\b");
-                    break;
-                case '\n':
-                    out.append("\\n");
-                    break;
-                case '\r':
-                    out.append("\\r");
-                    break;
-                case '\f':
-                    out.append("\\f");
-                    break;
-                case '\'':
-                    out.append("\\'");
-                    break;
-                case '\"':
-                    out.append("\\\"");
-                    break;
-                default:
-                    out.append(c);
-                    break;
-                }
-            } else {
-                // non-ASCII characters
-                switch (Character.getType(c)) {
-                // numbers: pass through
-                case Character.DECIMAL_DIGIT_NUMBER:
-                case Character.LETTER_NUMBER:
-                case Character.OTHER_NUMBER:
-                    out.append(c);
-                    break;
-                // letters: pass all non-modifying letters through
-                case Character.UPPERCASE_LETTER:
-                case Character.LOWERCASE_LETTER:
-                case Character.OTHER_LETTER:
-                case Character.TITLECASE_LETTER:
-                    out.append(c);
-                    break;
-                // escape all remaining characters
-                default:
-                    out.append("\\u").append(String.format("%04X", (int) c));
-                }
-            }
-        }
-        return out.toString();
-    }
+
+	/**
+	 * Execute method of the JavaScript editor.
+	 *
+	 * @param method
+	 * 	the method name
+	 * @param args
+	 *  the method arguments
+	 * @return
+	 *  the method return
+	 */
+	public Object call(String method, Object... args) {
+		return jsEditor.call(method, args);
+	}
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param webView
 	 *  the WebView instance where the editor is displayed
 	 */
@@ -134,50 +81,38 @@ public class JavaScriptBridge {
 		this.engine = webView.getEngine();
 	}
 
-	class JSEditor {
-		final JSObject editor;
-		final Consumer<Boolean> jsSetReadOnly;
-		final BooleanSupplier jsGetReadOnly;
-		final Consumer<Boolean> jsSetDirty;
-		final BooleanSupplier jsIsDirty;
-		final Consumer<String> jsSetPromptText;
-		final Supplier<String> jsGetPromptText;
-
-		JSEditor() {
-			this.editor = (JSObject) engine.executeScript("import('code_editor.js')");
-			this.jsSetReadOnly = (Consumer<Boolean>) editor.getMember("setReadOnly");
-			this.jsGetReadOnly = (BooleanSupplier) editor.getMember("getReadOnly");
-			this.jsSetDirty = (Consumer<Boolean>) editor.getMember("setDirty");
-			this.jsIsDirty = (BooleanSupplier) editor.getMember("isDirty");
-			this.jsSetPromptText = (Consumer<String>) editor.getMember("setPromptText");
-			this.jsGetPromptText = (Supplier<String>) editor.getMember("getPromptText");
-		}
-	}
-
-	private JSEditor jsEditor = null;
-
 	/**
 	 * Bind bridge to JavaScript editor instance.
 	 */
 	void bind() {
 		Platform.runLater(() -> {
-			log("binding ...");
-			// create JSEditor instance
-			jsEditor = new JSEditor();
+			log("setting bridge");
+				// set reference to bridge in editor
+				JSObject win = (JSObject) engine.executeScript("window");
+				win.setMember("bridge", this);
 
-			// bind properties
-			readOnlyProperty.addListener((v, ov, nv) -> Platform.runLater(() -> jsEditor.jsSetReadOnly.accept(nv)));
-			promptTextProperty.addListener((v, ov, nv) -> Platform.runLater(() -> jsEditor.jsSetPromptText.accept(nv)));
+				// assert that the init script has run to the last line without error
+				// compare against BOOLEAN.TRUE because initState could be either Boolean or JSObject
+				LangUtil.check(Boolean.TRUE.equals(engine.executeScript("scriptLoaded")), "editor script failed to load");
 
-			// sync properties
-			Platform.runLater(() -> {
-				jsEditor.jsSetReadOnly.accept(readOnlyProperty.get());
-				jsEditor.jsSetPromptText.accept(promptTextProperty.get());
-			});
+				// create the editor component
+				jsEditor = (JSObject) engine.executeScript("editor");
 
-			// mark editor as ready for use
-			editorReadyProperty.set(true);
-			log("bound.");
+				// bind properties
+				readOnlyProperty.addListener((v, ov, nv) ->
+						Platform.runLater(() -> call("setReadOnly", nv))
+				);
+				promptTextProperty.addListener((v, ov, nv) ->
+					Platform.runLater(() -> call("setPromptText", nv))
+				);
+
+				// sync properties
+				call("setReadOnly", readOnlyProperty.get());
+				call("setPromptText", promptTextProperty.get());
+
+				// mark editor as ready for use
+				editorReadyProperty.set(true);
+				log("bridge set.");
 		});
 	}
 
@@ -217,8 +152,7 @@ public class JavaScriptBridge {
 		}
 
 		logs(() -> String.format("paste(): '%s'", content));
-		String script = "jReplaceSelection('" + escape(content) + "');";
-		executeScript(script);
+		call("replaceSelection", content);
 	}
 
 	/**
@@ -271,8 +205,7 @@ public class JavaScriptBridge {
 	 */
 	public void cut(JSObject arg) {
 		// 1. paste the empty string to remove current selection
-		String script = "jReplaceSelection('');";
-		executeScript(script);
+		call("replaceSelection", "");
 
 		// 2. copy content to system clipboard
 		copyToSystemClipboard("cut()", arg);

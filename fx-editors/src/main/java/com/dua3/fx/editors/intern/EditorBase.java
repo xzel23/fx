@@ -41,10 +41,6 @@ import java.util.logging.Logger;
 public abstract class EditorBase extends BorderPane {
     private static final Logger LOG = Logger.getLogger(EditorBase.class.getName());
 
-    protected static String escape(String text) {
-    	return JavaScriptBridge.escape(text);
-    }
-    
 	@FXML
 	protected WebView webview;
 
@@ -160,14 +156,12 @@ public abstract class EditorBase extends BorderPane {
 	
 	public void setText(String text) {
 		LOG.fine("setting editor content");
-		String script = String.format("jSetContent('%s');", escape(text));
-		bridge.callScript(script);
+		bridge.call("setText", text);
 	}
 
 	public void setText(String text, String ext) {
 		LOG.fine("setting editor content");
-		String script = String.format("jSetContent('%s','%s');", escape(text), escape(ext));
-		bridge.callScript(script);
+		bridge.call("setContent", text, ext);
 	}
 
 	public String getText() {
@@ -203,35 +197,31 @@ public abstract class EditorBase extends BorderPane {
     }
 	
 	public void cut() {
-		bridge.executeScript("jCut();");
+		bridge.call("cut");
 	}
 
 	public void copy() {
-		bridge.executeScript("jCopy();");
+		bridge.call("copy");
 	}
 
-	public void paste() {
-		bridge.executeScript("jPaste();");
-	}
+	public void paste() { bridge.call("paste"); }
 
 	public int getLineCount() {
-		return (int) bridge.callScript("jGetLineCount();");
+		return (int) bridge.call("getLineCount()");
 	}
 	
 	public int getLineNumber() {
-		return (int) bridge.callScript("jGetLineNumber();");
+		return (int) bridge.call("getLineNumber()");
 	}
 	
-	public String getLine(int idx) {
-		return (String) bridge.callScript("jGetLine("+idx+");");
-	}
+	public String getLine(int idx) { return (String) bridge.call("getLine", idx); }
 
 	public void addLine(String s) {
-		bridge.callScript("jAddLine('"+escape(s)+"');");
+		bridge.call("addLine", s);
 	}
 
 	public void setLine(int i, String s) {
-		bridge.callScript("jSetLine("+i+",'"+escape(s)+"');");
+		bridge.call("setLine", i, s);
 	}
 
 	public Iterator<String> lineIterator() {
@@ -254,7 +244,7 @@ public abstract class EditorBase extends BorderPane {
 	}
 
 	public void search() {
-		bridge.executeScript("jSearch();");
+		bridge.call("search");
 	}
 
 	public EditorSettingsDialog settingsDialog() {

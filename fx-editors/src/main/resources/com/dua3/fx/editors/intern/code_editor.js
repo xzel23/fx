@@ -40,43 +40,38 @@ function getModeFromExtension(ext) {
     }
 }
 
-/*
-textArea = document.getElementById("editor");
-
-{
-options = {
-            fullScreen : true,
-            scrollbarStyle : 'overlay',
-            mode : 'text',
-            lineNumbers : false,
-            inputStyle : 'textarea'
-        }
- */
-
 class CodeEditor {
     constructor(textArea, options) {
-        this.editor = CodeMirror.fromTextArea(textArea, options);
+        this.cm = CodeMirror.fromTextArea(textArea, options);
+        this.mode = options["mode"];
         this.szs = 14;
 
         // track dirty state
-        editor.on('change', function() {
+        this.cm.on('change', function() {
             bridge.setDirty(true);
         });
 
-        jSetFontSize(14);
+        this.setFontSize(14);
     }
 
-    jSetContent(text, ext) {
-        var mode = getModeFromExtension(ext);
-        CodeMirror.autoLoadMode(editor, mode.mode);
-
+    setText(text) {
         // force reset of placeholder (because it sometime fails to update when setting content)
-        var placeholder = editor.getOption("placeholder");
-        editor.setOption("placeholder", "");
+        var placeholder = this.cm.getOption("placeholder");
+        this.cm.setOption("placeholder", "");
 
-        editor.swapDoc(CodeMirror.Doc(text, mode.mime));
+        this.cm.swapDoc(CodeMirror.Doc(text, this.mode.mime));
 
-        editor.setOption("placeholder", placeholder);
+        this.cm.setOption("placeholder", placeholder);
+    }
+
+    setContent(text, ext) {
+        // set mode
+        var mode = getModeFromExtension(ext);
+        CodeMirror.autoLoadMode(this.cm, mode.mode);
+
+        // set text
+        this.setText(text);
+        this.mode = mode;
 
         // inform Java code that the buffer is clean
         bridge.setDirty(false);
@@ -86,40 +81,41 @@ class CodeEditor {
 
     // Set the editor content. Called from Java.
     // Paste text at current position. Called from Java code.
-    jReplaceSelection(text) {
+    replaceSelection(text) {
         trace("PASTING");
-        editor.replaceSelection(text);
+        this.cm.replaceSelection(text);
         trace("PASTED");
     }
 
-    jSetModeFromExtension(ext) {
+    setModeFromExtension(ext) {
         var mode = getModeFromExtension(ext);
-        editor.setOption("mode", mode.mime);
-        CodeMirror.autoLoadMode(editor, mode.mode);
-        trace("jSetModeFromExtension: mode set to " + mode.mode);
+        this.cm.setOption("mode", mode.mime);
+        CodeMirror.autoLoadMode(this.cm, mode.mode);
+        trace("setModeFromExtension: mode set to " + mode.mode);
+        this.mode = mode;
     }
 
     // set readonly mode
-    jSetReadOnly(flag) {
-        editor.setOption("readOnly", flag);
-        trace("jSetReadOnly: readOnly = " + flag);
+    setReadOnly(flag) {
+        this.cm.setOption("readOnly", flag);
+        trace("setReadOnly: readOnly = " + flag);
     }
 
     // set the placeholder text
-    jSetPromptText(text) {
-        editor.setOption("placeholder", text);
-        trace("jSetPromptText: promptText = '"+text+"'");
+    setPromptText(text) {
+        this.cm.setOption("placeholder", text);
+        trace("setPromptText: promptText = '"+text+"'");
     }
 
     // use the system clipboard for cut & paste
-    jPaste() {
-        trace("jPaste()");
+    paste() {
+        trace("paste()");
         bridge.paste();
     }
 
-    jCopy() {
-        var text = editor.getSelection();
-        trace("jCopy(): '"+text+"'");
+    copy() {
+        var text = this.cm.getSelection();
+        trace("copy(): '"+text+"'");
         var arg = {
             'format' : 'text',
             'content' : text
@@ -127,9 +123,9 @@ class CodeEditor {
         bridge.copy(arg);
     }
 
-    jCut() {
-        var text = editor.getSelection();
-        trace("jCut(): '"+text+"'");
+    cut() {
+        var text = this.cm.getSelection();
+        trace("cut(): '"+text+"'");
         var arg = {
             'format' : 'text',
             'content' : text
@@ -137,71 +133,79 @@ class CodeEditor {
         bridge.cut(arg);
     }
 
-    jGetText() {
-        return editor.getDoc().getValue();
+    getText() {
+        return this.cm.getDoc().getValue();
     }
 
-    jGetLineCount() {
-        return editor.lineCount();
+    getLineCount() {
+        return this.cm.lineCount();
     }
 
-    jGetLine(idx) {
-        return editor.getLine(idx);
+    getLine(idx) {
+        return this.cm.getLine(idx);
     }
 
-    jGetLineNumber(idx) {
-        return editor.getCursor(idx).line;
+    getLineNumber(idx) {
+        return this.cm.getCursor(idx).line;
     }
 
-    jSearch() {
-        editor.execCommand("find");
+    search() {
+        this.cm.execCommand("find");
     }
 
-    jSetShowLineNumbers(flag) {
+    setShowLineNumbers(flag) {
         trace('lineNumbers: '+flag);
-        editor.setOption('lineNumbers', flag);
+        this.cm.setOption('lineNumbers', flag);
     }
 
-    jIsShowLineNumbers() {
-        return editor.getOption('lineNumbers');
+    isShowLineNumbers() {
+        return this.cm.getOption('lineNumbers');
     }
 
-    jSetHighlightCurrentLine(flag) {
+    setHighlightCurrentLine(flag) {
         trace('styleActiveLine: '+flag);
-        editor.setOption('styleActiveLine', flag);
+        this.cm.setOption('styleActiveLine', flag);
     }
 
-    jIsHighlightCurrentLine() {
-        return editor.getOption('styleActiveLine');
+    isHighlightCurrentLine() {
+        return this.cm.getOption('styleActiveLine');
     }
 
-    jSetFontSize(size) {
-        editor.getWrapperElement().style["font-size"] = size+"px";
+    setFontSize(size) {
+        this.cm.getWrapperElement().style["font-size"] = size+"px";
     }
 
-    jGetFontSize() {
-        szs = editor.getWrapperElement().style["font-size"];
+    getFontSize() {
+        szs = this.cm.getWrapperElement().style["font-size"];
         return parseFloat(szs.replace("px",""));
     }
 
-    jSetTheme(theme) {
-        editor.setOption('theme', theme);
+    setTheme(theme) {
+        this.cm.setOption('theme', theme);
     }
 
-    jGetTheme() {
-        return editor.getOption('theme');
+    getTheme() {
+        return this.cm.getOption('theme');
     }
 
-    jSetLine(i,s) {
-        editor.replaceRange(s, {line: i, ch: 0}, {line: i});
+    setLine(i,s) {
+        this.cm.replaceRange(s, {line: i, ch: 0}, {line: i});
     }
 
-    jAddLine(s) {
-        editor.replaceRange(s+'\n', {line: Infinity, ch: 0});
+    addLine(s) {
+        this.cm.replaceRange(s+'\n', {line: Infinity, ch: 0});
     }
 
 }
 
-export default function init (bridge, textArea, options) {
-    return new CodeEditor(textArea, options);
-}
+options = {
+            fullScreen : true,
+            scrollbarStyle : 'overlay',
+            mode : 'text',
+            lineNumbers : false,
+            inputStyle : 'textarea'
+};
+
+const editor = new CodeEditor(document.getElementById("editor"), options);
+
+const scriptLoaded = true;

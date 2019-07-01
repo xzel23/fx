@@ -14,9 +14,9 @@
 
 package com.dua3.fx.editors;
 
-import java.util.logging.Logger;
-
 import com.dua3.fx.editors.intern.EditorBase;
+
+import java.util.logging.Logger;
 
 public class CodeEditor extends EditorBase {
 	/** Logger */
@@ -38,44 +38,40 @@ public class CodeEditor extends EditorBase {
 	 */
 	public void setModeFromExtension(String extension) {
 		LOG.fine(() -> String.format("setting mode by file extension: %s", extension));
-		String script = String.format("jSetModeFromExtension('%s');", escape(extension));
-		getBridge().executeScript(script);
+		getBridge().call("setModeFromExtension", extension);
 	}
 	
 	@Override
 	public void setShowLineNumbers(Boolean flag) {
 		LOG.fine(() -> String.format("setting line number mode: %s", flag));
-		String script = String.format("jSetShowLineNumbers(%s);", flag);
-		getBridge().executeScript(script);
+		getBridge().call("setShowLineNumbers", flag);
 	}
 	
 	@Override
     public boolean isHighlightCurrentLine() {
-		return Boolean.TRUE.equals(getBridge().callScript("jIsHighlightCurrentLine()"));
+		return Boolean.TRUE.equals(getBridge().call("isHighlightCurrentLine"));
 	}
 	
 	@Override
 	public void setHighlightCurrentLine(Boolean flag) {
 		LOG.fine(() -> String.format("setting highlight current line mode: %s", flag));
-		String script = String.format("jSetHighlightCurrentLine(%s);", flag);
-		getBridge().executeScript(script);
+		getBridge().call("setHighlightCurrentLine", flag);
 	}
 	
 	@Override
     public boolean isShowLineNumbers() {
-		return Boolean.TRUE.equals(getBridge().callScript("jIsShowLineNumbers()"));
+		return Boolean.TRUE.equals(getBridge().call("isShowLineNumbers()"));
 	}
 	
 	@Override
 	public void setFontSize(int size) {
 		LOG.fine(() -> String.format("setting font size: %d", size));
-		String script = String.format("jSetFontSize(%s);", size);
-		getBridge().executeScript(script);
+		getBridge().call("setFontSize", size);
 	}
 
 	@Override
 	public int getFontSize() {
-		int size = ((Number) getBridge().callScript("jGetFontSize()")).intValue();
+		int size = ((Number) getBridge().call("getFontSize")).intValue();
 		LOG.fine(() -> String.format("font size: %d", size));		
 		return size;
 	}
@@ -83,12 +79,11 @@ public class CodeEditor extends EditorBase {
 	@Override
 	public void setTheme(String theme) {
 		LOG.fine(() -> String.format("setting theme: %s", theme));
-		String script = String.format("jSetTheme('%s');", escape(theme));
-		getBridge().executeScript(script);
+		getBridge().call("setTheme", theme);
 	}
 	
 	@Override
 	public String getTheme() {
-		return String.valueOf(getBridge().callScript("jGetTheme()"));
+		return String.valueOf(getBridge().call("getTheme"));
 	}
 }
