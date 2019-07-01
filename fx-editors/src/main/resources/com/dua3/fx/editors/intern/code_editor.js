@@ -44,7 +44,6 @@ class CodeEditor {
     constructor(textArea, options) {
         this.cm = CodeMirror.fromTextArea(textArea, options);
         this.mode = options["mode"];
-        this.szs = 14;
 
         // track dirty state
         this.cm.on('change', function() {
@@ -176,7 +175,7 @@ class CodeEditor {
     }
 
     getFontSize() {
-        szs = this.cm.getWrapperElement().style["font-size"];
+        var szs = this.cm.getWrapperElement().style["font-size"];
         return parseFloat(szs.replace("px",""));
     }
 

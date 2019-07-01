@@ -165,7 +165,7 @@ public abstract class EditorBase extends BorderPane {
 	}
 
 	public String getText() {
-		return  (String) bridge.callScript("jGetText()");
+		return  (String) bridge.call("getText");
 	}
 
 	public boolean isDirty() {
