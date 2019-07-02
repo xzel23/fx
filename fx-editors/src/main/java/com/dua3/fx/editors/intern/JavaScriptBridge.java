@@ -92,7 +92,7 @@ public class JavaScriptBridge {
 				win.setMember("bridge", this);
 
 				// make sure that the editor script has loaded and retrieve handle to JavaScript editor instance
-				Object ret = engine.executeScript("editor");
+				Object ret = engine.executeScript("window.editorInstance");
 				LangUtil.check(ret instanceof JSObject, "editor script failed to load");
 				jsEditor = (JSObject) ret;
 

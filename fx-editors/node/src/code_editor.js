@@ -1,30 +1,16 @@
-import CodeMirror from 'codemirror';
-
-import 'codemirror/mode/meta.js';
-import 'codemirror/addon/selection/active-line.js';
-import 'codemirror/addon/scroll/simplescrollbars.js';
-import 'codemirror/addon/search/searchcursor.js';
-import 'codemirror/addon/search/search.js';
-import 'codemirror/addon/mode/loadmode.js';
-import 'codemirror/addon/display/fullscreen.js';
-import 'codemirror/addon/display/placeholder.js';
-
-import 'codemirror/lib/codemirror.css';
-import 'codemirror/theme/xq-dark.css';
-import 'codemirror/theme/xq-light.css';
-import 'codemirror/addon/display/fullscreen.css';
-import 'codemirror/addon/scroll/simplescrollbars.css';
-import 'codemirror/addon/search/matchesonscrollbar.css';
-
-CodeMirror.modeURL = 'codemirror/mode/%N/%N.js';
-
-export const code_editor = CodeMirror.fromTextArea(document.getElementById('code_editor'), {
-    fullScreen : true,
-    scrollbarStyle : 'overlay',
-    mode : 'text',
-    lineNumbers : true,
-    inputStyle : 'textarea'
-});
+// Copyright 2019 Axel Howind
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 // connect to logger
 console.log = function(m) {
@@ -35,40 +21,17 @@ console.log = function(m) {
 var debug = true;
 
 // output trace messages in debug mode
-export function trace(m) {
+function trace(m) {
     if (debug) {
         console.log("TRACE " + m);
     }
 }
 
-// Set the editor content. Called from Java.
-export function jSetContent(text, ext) {
-    var mode = getModeFromExtension(ext);
-    CodeMirror.autoLoadMode(code_editor, mode.mode);
-
-    // force reset of placeholder (because it sometime fails to update when setting content)
-    var placeholder = code_editor.getOption("placeholder");
-    code_editor.setOption("placeholder", "");
-
-    code_editor.swapDoc(CodeMirror.Doc(text, mode.mime));
-
-    code_editor.setOption("placeholder", placeholder);
-
-    // inform Java code that the buffer is clean
-    bridge.setDirty(false);
-    console.log("LOAD: updated editor content, ext=" + ext + ", mode="
-        + mode.mode);
-}
-
-// Paste text at current position. Called from Java code.
-export function jReplaceSelection(text) {
-    trace("PASTING");
-    code_editor.replaceSelection(text);
-    trace("PASTED");
-}
+// CodeMirror settings
+CodeMirror.modeURL = "codemirror/mode/%N/%N.js";
 
 const mode_info_text = CodeMirror.findModeByExtension('txt');
-export function getModeFromExtension(ext) {
+function getModeFromExtension(ext) {
     var info = CodeMirror.findModeByExtension(ext);
     if (info) {
         return info;
@@ -77,119 +40,167 @@ export function getModeFromExtension(ext) {
     }
 }
 
-export function jSetModeFromExtension(ext) {
-    var mode = getModeFromExtension(ext);
-    code_editor.setOption("mode", mode.mime);
-    CodeMirror.autoLoadMode(code_editor, mode.mode);
-    trace("jSetModeFromExtension: mode set to " + mode.mode);
+export class CodeEditor {
+    constructor(textArea, options) {
+        this.cm = CodeMirror.fromTextArea(textArea, options);
+        this.mode = options["mode"];
+
+        // track dirty state
+        this.cm.on('change', function() {
+            bridge.setDirty(true);
+        });
+
+        this.setFontSize(14);
+    }
+
+    setText(text) {
+        // force reset of placeholder (because it sometime fails to update when setting content)
+        var placeholder = this.cm.getOption("placeholder");
+        this.cm.setOption("placeholder", "");
+
+        this.cm.swapDoc(CodeMirror.Doc(text, this.mode.mime));
+
+        this.cm.setOption("placeholder", placeholder);
+    }
+
+    setContent(text, ext) {
+        // set mode
+        var mode = getModeFromExtension(ext);
+        CodeMirror.autoLoadMode(this.cm, mode.mode);
+
+        // set text
+        this.setText(text);
+        this.mode = mode;
+
+        // inform Java code that the buffer is clean
+        bridge.setDirty(false);
+        console.log("LOAD: updated editor content, ext=" + ext + ", mode="
+            + mode.mode);
+    }
+
+    // Set the editor content. Called from Java.
+    // Paste text at current position. Called from Java code.
+    replaceSelection(text) {
+        trace("PASTING");
+        this.cm.replaceSelection(text);
+        trace("PASTED");
+    }
+
+    setModeFromExtension(ext) {
+        var mode = getModeFromExtension(ext);
+        this.cm.setOption("mode", mode.mime);
+        CodeMirror.autoLoadMode(this.cm, mode.mode);
+        trace("setModeFromExtension: mode set to " + mode.mode);
+        this.mode = mode;
+    }
+
+    // set readonly mode
+    setReadOnly(flag) {
+        this.cm.setOption("readOnly", flag);
+        trace("setReadOnly: readOnly = " + flag);
+    }
+
+    // set the placeholder text
+    setPromptText(text) {
+        this.cm.setOption("placeholder", text);
+        trace("setPromptText: promptText = '"+text+"'");
+    }
+
+    // use the system clipboard for cut & paste
+    paste() {
+        trace("paste()");
+        bridge.paste();
+    }
+
+    copy() {
+        var text = this.cm.getSelection();
+        trace("copy(): '"+text+"'");
+        var arg = {
+            'format' : 'text',
+            'content' : text
+        };
+        bridge.copy(arg);
+    }
+
+    cut() {
+        var text = this.cm.getSelection();
+        trace("cut(): '"+text+"'");
+        var arg = {
+            'format' : 'text',
+            'content' : text
+        };
+        bridge.cut(arg);
+    }
+
+    getText() {
+        return this.cm.getDoc().getValue();
+    }
+
+    getLineCount() {
+        return this.cm.lineCount();
+    }
+
+    getLine(idx) {
+        return this.cm.getLine(idx);
+    }
+
+    getLineNumber(idx) {
+        return this.cm.getCursor(idx).line;
+    }
+
+    search() {
+        this.cm.execCommand("find");
+    }
+
+    setShowLineNumbers(flag) {
+        trace('lineNumbers: '+flag);
+        this.cm.setOption('lineNumbers', flag);
+    }
+
+    isShowLineNumbers() {
+        return this.cm.getOption('lineNumbers');
+    }
+
+    setHighlightCurrentLine(flag) {
+        trace('styleActiveLine: '+flag);
+        this.cm.setOption('styleActiveLine', flag);
+    }
+
+    isHighlightCurrentLine() {
+        return this.cm.getOption('styleActiveLine');
+    }
+
+    setFontSize(size) {
+        this.cm.getWrapperElement().style["font-size"] = size+"px";
+    }
+
+    getFontSize() {
+        var szs = this.cm.getWrapperElement().style["font-size"];
+        return parseFloat(szs.replace("px",""));
+    }
+
+    setTheme(theme) {
+        this.cm.setOption('theme', theme);
+    }
+
+    getTheme() {
+        return this.cm.getOption('theme');
+    }
+
+    setLine(i,s) {
+        this.cm.replaceRange(s, {line: i, ch: 0}, {line: i});
+    }
+
+    addLine(s) {
+        this.cm.replaceRange(s+'\n', {line: Infinity, ch: 0});
+    }
+
 }
 
-// set readonly mode
-export function jSetReadOnly(flag) {
-    code_editor.setOption("readOnly", flag);
-    trace("jSetReadOnly: readOnly = " + flag);
-}
-
-// set the placeholder text
-export function jSetPromptText(text) {
-    code_editor.setOption("placeholder", text);
-    trace("jSetPromptText: promptText = '"+text+"'");
-}
-
-// use the system clipboard for cut & paste
-export function jPaste() {
-    trace("jPaste()");
-    bridge.paste();
-}
-
-export function jCopy() {
-    var text = code_editor.getSelection();
-    trace("jCopy(): '"+text+"'");
-    var arg = {
-        'format' : 'text',
-        'content' : text
-    };
-    bridge.copy(arg);
-}
-
-export function jCut() {
-    var text = code_editor.getSelection();
-    trace("jCut(): '"+text+"'");
-    var arg = {
-        'format' : 'text',
-        'content' : text
-    };
-    bridge.cut(arg);
-}
-
-export function jGetText() {
-    return code_editor.getDoc().getValue();
-}
-
-export function jGetLineCount() {
-    return code_editor.lineCount();
-}
-
-export function jGetLine(idx) {
-    return code_editor.getLine(idx);
-}
-
-export function jGetLineNumber(idx) {
-    return code_editor.getCursor(idx).line;
-}
-
-export function jSearch() {
-    code_editor.execCommand("find");
-}
-
-export function jSetShowLineNumbers(flag) {
-    trace('lineNumbers: '+flag);
-    code_editor.setOption('lineNumbers', flag);
-}
-
-export function jIsShowLineNumbers() {
-    return code_editor.getOption('lineNumbers');
-}
-
-export function jSetHighlightCurrentLine(flag) {
-    trace('styleActiveLine: '+flag);
-    code_editor.setOption('styleActiveLine', flag);
-}
-
-export function jIsHighlightCurrentLine() {
-    return code_editor.getOption('styleActiveLine');
-}
-
-export function jSetFontSize(size) {
-    code_editor.getWrapperElement().style["font-size"] = size+"px";
-}
-
-export function jGetFontSize() {
-    szs = code_editor.getWrapperElement().style["font-size"];
-    return parseFloat(szs.replace("px",""));
-}
-
-export function jSetTheme(theme) {
-    code_editor.setOption('theme', theme);
-}
-
-export function jGetTheme() {
-    return code_editor.gcetOption('theme');
-}
-
-export function jSetLine(i,s) {
-    code_editor.replaceRange(s, {line: i, ch: 0}, {line: i});
-}
-
-export function jAddLine(s) {
-    code_editor.replaceRange(s+'\n', {line: Infinity, ch: 0});
-}
-
-// track dirty state
-code_editor.on('change', function() {
-    bridge.setDirty(true);
+global.editorInstance = new CodeEditor(document.getElementById("editor"), {
+    fullScreen : true,
+    scrollbarStyle : 'overlay',
+    mode : 'text',
+    lineNumbers : false,
+    inputStyle : 'textarea'
 });
-
-jSetFontSize(14);
-
-const editor_initialised = true;

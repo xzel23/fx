@@ -40,7 +40,7 @@ function getModeFromExtension(ext) {
     }
 }
 
-class CodeEditor {
+export class CodeEditor {
     constructor(textArea, options) {
         this.cm = CodeMirror.fromTextArea(textArea, options);
         this.mode = options["mode"];
@@ -205,4 +205,4 @@ options = {
             inputStyle : 'textarea'
 };
 
-const editor = new CodeEditor(document.getElementById("editor"), options);
+global.editorInstance = new CodeEditor(document.getElementById("editor"), options);

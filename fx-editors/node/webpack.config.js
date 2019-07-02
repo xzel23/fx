@@ -10,5 +10,8 @@ module.exports = {
         rules: [
             { test: /\.css$/, use: ['style-loader', 'css-loader'] }
         ]
+    },
+    optimization: {
+        minimize: false
     }
 };
