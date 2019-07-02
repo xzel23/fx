@@ -17,11 +17,9 @@ dependencies {
     compile project(':fx-web')
 }
 
-/*
 task createBundle(type:Exec) {
     println("creating bundle ...")
     commandLine "$projectDir/node/create_bundle.sh"
 }
 
 build.dependsOn createBundle
-*/

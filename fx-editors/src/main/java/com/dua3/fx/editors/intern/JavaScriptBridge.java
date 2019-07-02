@@ -91,12 +91,10 @@ public class JavaScriptBridge {
 				JSObject win = (JSObject) engine.executeScript("window");
 				win.setMember("bridge", this);
 
-				// assert that the init script has run to the last line without error
-				// compare against BOOLEAN.TRUE because initState could be either Boolean or JSObject
-				LangUtil.check(Boolean.TRUE.equals(engine.executeScript("scriptLoaded")), "editor script failed to load");
-
-				// create the editor component
-				jsEditor = (JSObject) engine.executeScript("editor");
+				// make sure that the editor script has loaded and retrieve handle to JavaScript editor instance
+				Object ret = engine.executeScript("editor");
+				LangUtil.check(ret instanceof JSObject, "editor script failed to load");
+				jsEditor = (JSObject) ret;
 
 				// bind properties
 				readOnlyProperty.addListener((v, ov, nv) ->

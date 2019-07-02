@@ -206,5 +206,3 @@ options = {
 };
 
 const editor = new CodeEditor(document.getElementById("editor"), options);
-
-const scriptLoaded = true;
