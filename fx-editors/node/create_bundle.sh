@@ -3,7 +3,6 @@ DIR=`dirname $0`
 DIST_DIR=${DIR}/dist
 TARGET_DIR=${DIR}/../src/main/resources/com/dua3/fx/editors/intern
 
-
 cd ${DIR}
 
 echo "running webpack ..."
