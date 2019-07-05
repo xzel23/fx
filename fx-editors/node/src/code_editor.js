@@ -48,6 +48,13 @@ function trace(m) {
 // CodeMirror settings
 CodeMirror.modeURL = "codemirror/mode/%N/%N.js";
 
+// ensure webpack pulls in all mode files
+require.context(
+    "codemirror/mode", // context folder
+    true, // include subdirectories
+    /.*/ // RegExp
+)
+
 const mode_info_text = CodeMirror.findModeByExtension('txt');
 function getModeFromExtension(ext) {
     var info = CodeMirror.findModeByExtension(ext);
