@@ -14,29 +14,23 @@
 
 package com.dua3.fx.editors;
 
+import com.dua3.fx.editors.intern.EditorBase;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.*;
+
 import java.io.IOException;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.dua3.fx.editors.intern.EditorBase;
-
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.DialogPane;
-import javafx.scene.control.Slider;
-
 /**
  * Dialog to configure a editor settings.
  */
-public class EditorSettingsDialog extends Dialog<ButtonType> {
+public class TextEditorSettingsDialog extends Dialog<ButtonType> {
 
 	/** Logger instance */
-    private static final Logger LOG = Logger.getLogger(EditorSettingsDialog.class.getName());
+    private static final Logger LOG = Logger.getLogger(TextEditorSettingsDialog.class.getName());
 
 	private static final int FONT_SIZE_MIN = 5;
 
@@ -44,7 +38,7 @@ public class EditorSettingsDialog extends Dialog<ButtonType> {
 
 	private static final int FONT_SIZE_MAJOR_TICK = 10;
 	
-	private EditorSetting oldSetting;
+	private TextEditorSettings oldSetting;
 
     // -- button types
 	public static final ButtonType OK = ButtonType.OK;
@@ -64,12 +58,12 @@ public class EditorSettingsDialog extends Dialog<ButtonType> {
 	 * @param editor
 	 *  the editor instance
 	 */
-	public EditorSettingsDialog(EditorBase editor) {
+	public TextEditorSettingsDialog(EditorBase editor) {
 		this.editor = Objects.requireNonNull(editor);
 
 		try {
     		// load FXML
-	        FXMLLoader loader = new FXMLLoader(getClass().getResource("intern/editor_settings.fxml"));
+	        FXMLLoader loader = new FXMLLoader(getClass().getResource("intern/text_editor_settings.fxml"));
 	        loader.setController(this);
 	        DialogPane dialogPane = loader.load();
 	        
@@ -77,7 +71,7 @@ public class EditorSettingsDialog extends Dialog<ButtonType> {
 	        dialogPane.getButtonTypes().addAll(RESET, OK);
 	        
 	        // store current seeting
-	        oldSetting = EditorSetting.copyOf(editor.getSetting());
+	        oldSetting = TextEditorSettings.copyOf(editor.getSetting());
 	        
 	        // finally set the pane
 	        setDialogPane(dialogPane);
@@ -117,8 +111,8 @@ public class EditorSettingsDialog extends Dialog<ButtonType> {
         });	
 	}
 
-	public EditorSetting getSetting() {
-		EditorSetting s = new EditorSetting();
+	public TextEditorSettings getSetting() {
+		TextEditorSettings s = new TextEditorSettings();
 		s.setTheme(comboTheme.getValue());
 		s.setFontSize((int)sliderFontSize.getValue());
 		s.setShowLineNumbers(toggleShowLineNumbers.isSelected());
@@ -126,7 +120,7 @@ public class EditorSettingsDialog extends Dialog<ButtonType> {
 		return s;
 	}
 
-	public EditorSetting getOldSetting() {
+	public TextEditorSettings getOldSetting() {
 		return oldSetting;
 	}
 }

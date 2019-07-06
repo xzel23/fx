@@ -14,8 +14,8 @@
 
 package com.dua3.fx.editors.intern;
 
-import com.dua3.fx.editors.EditorSetting;
-import com.dua3.fx.editors.EditorSettingsDialog;
+import com.dua3.fx.editors.TextEditorSettings;
+import com.dua3.fx.editors.TextEditorSettingsDialog;
 import com.dua3.fx.web.WebViews;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyBooleanProperty;
@@ -248,8 +248,8 @@ public abstract class EditorBase extends BorderPane {
 		bridge.call("search");
 	}
 
-	public EditorSettingsDialog settingsDialog() {
-		return new EditorSettingsDialog(this);
+	public TextEditorSettingsDialog settingsDialog() {
+		return new TextEditorSettingsDialog(this);
 	}
 
 	public abstract void setShowLineNumbers(Boolean flag);
@@ -268,8 +268,8 @@ public abstract class EditorBase extends BorderPane {
 	
 	public abstract String getTheme();
 
-	public EditorSetting getSetting() {
-		EditorSetting setting = new EditorSetting();
+	public TextEditorSettings getSetting() {
+		TextEditorSettings setting = new TextEditorSettings();
 		setting.setTheme(getTheme());
 		setting.setFontSize(getFontSize());
 		setting.setShowLineNumbers(isShowLineNumbers());
@@ -277,7 +277,7 @@ public abstract class EditorBase extends BorderPane {
 		return setting;
 	}
 	
-	public void apply(EditorSetting setting) {
+	public void apply(TextEditorSettings setting) {
 		setTheme(setting.getTheme());
 		setFontSize(setting.getFontSize());
 		setShowLineNumbers(setting.isShowLineNumbers());

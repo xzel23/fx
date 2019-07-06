@@ -16,7 +16,7 @@ package com.dua3.fx.editors;
 
 import java.util.prefs.Preferences;
 
-public class EditorSetting {
+public class TextEditorSettings {
 	private static final boolean DEFAULT_SHOW_LINE_NUMBERS = false;
 	private static final boolean DEFAULT_HIGHLIGHT_CURRENT_LINE = false;
 	private static final int DEFAULT_FONT_SIZE = 14;
@@ -30,7 +30,7 @@ public class EditorSetting {
 	private boolean showLineNumbers;
 	private boolean highlightCurrentLine;
 
-	public EditorSetting() {
+	public TextEditorSettings() {
 		this.theme = DEFAULT_THEME;
 		this.fontSize = DEFAULT_FONT_SIZE;
 		this.showLineNumbers = DEFAULT_SHOW_LINE_NUMBERS;
@@ -69,14 +69,14 @@ public class EditorSetting {
 		return highlightCurrentLine;
 	}
 	
-	public static EditorSetting copyOf(EditorSetting other) {
-		EditorSetting inst = new EditorSetting();
+	public static TextEditorSettings copyOf(TextEditorSettings other) {
+		TextEditorSettings inst = new TextEditorSettings();
 		inst.assign(other);
 		return inst;
 	}
 
-	public static EditorSetting fromPreference(Preferences node) {
-		EditorSetting cs = new EditorSetting();
+	public static TextEditorSettings fromPreference(Preferences node) {
+		TextEditorSettings cs = new TextEditorSettings();
 		cs.load(node);
 		return cs;
 	}
@@ -95,7 +95,7 @@ public class EditorSetting {
 		node.putBoolean(PREF_HIHGHLIGHT_CURRENT_LINE, isHighlightCurrentLine());
 	}
 	
-	public void assign(EditorSetting other) {
+	public void assign(TextEditorSettings other) {
 		this.theme = other.theme;
 		this.fontSize = other.fontSize;
 		this.showLineNumbers = other.showLineNumbers;

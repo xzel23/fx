@@ -8,7 +8,7 @@ echo "running webpack ..."
 ( cd ${DIR} && npx webpack --mode=production ) || exit 1
 
 echo "copying files to ${TARGET_DIR} ..."
-cp ${DIST_DIR}/code_editor.bundle.js ${TARGET_DIR}/ || exit 1
-cp ${DIST_DIR}/code_editor.html ${TARGET_DIR}/ || exit 1
+cp ${DIST_DIR}/text_editor.bundle.js ${TARGET_DIR}/ || exit 1
+cp ${DIST_DIR}/text_editor.html ${TARGET_DIR}/ || exit 1
 
 echo "SUCCESS"

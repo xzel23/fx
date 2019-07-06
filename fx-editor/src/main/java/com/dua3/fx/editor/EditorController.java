@@ -3,9 +3,9 @@ package com.dua3.fx.editor;
 import com.dua3.fx.editor.cli.Cli;
 import com.dua3.fx.application.FxController;
 import com.dua3.fx.application.FxDocument;
-import com.dua3.fx.editors.CodeEditor;
-import com.dua3.fx.editors.EditorSetting;
-import com.dua3.fx.editors.EditorSettingsDialog;
+import com.dua3.fx.editors.TextEditor;
+import com.dua3.fx.editors.TextEditorSettings;
+import com.dua3.fx.editors.TextEditorSettingsDialog;
 import com.dua3.utility.io.IOUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.ButtonType;
@@ -52,7 +52,7 @@ public class EditorController extends FxController<EditorApp, EditorController> 
 	MenuBar menubar;
 
 	@FXML
-	CodeEditor editor;
+    TextEditor editor;
 	
 	@Override
 	protected void init(EditorApp app) {
@@ -66,7 +66,7 @@ public class EditorController extends FxController<EditorApp, EditorController> 
 		editor.editorReadyProperty().addListener((v,o,n) -> {
 			// restore editor settings from preferences
 			Preferences editorPref = getPreferences().node(PREF_EDITOR_PATH);
-			editor.apply(EditorSetting.fromPreference(editorPref));
+			editor.apply(TextEditorSettings.fromPreference(editorPref));
 			// create a new document
 			createDocument();
 		});
@@ -132,17 +132,17 @@ public class EditorController extends FxController<EditorApp, EditorController> 
 	@FXML
 	public void preferences() {
 		LOG.fine("preferences()");
-		EditorSettingsDialog dlg = editor.settingsDialog();
+		TextEditorSettingsDialog dlg = editor.settingsDialog();
 		dlg.showAndWait()
 		.filter(b -> b==ButtonType.OK)
 		.ifPresentOrElse(
 			b -> { 
-				EditorSetting s = dlg.getSetting();
+				TextEditorSettings s = dlg.getSetting();
 				editor.apply(s);
 				s.store(getPreferences().node(PREF_EDITOR_PATH));
 			},
 			() -> { 
-				EditorSetting s = dlg.getOldSetting();
+				TextEditorSettings s = dlg.getOldSetting();
 				editor.apply(s);
 			});
 	}

@@ -18,16 +18,16 @@ import com.dua3.fx.editors.intern.EditorBase;
 
 import java.util.logging.Logger;
 
-public class CodeEditor extends EditorBase {
+public class TextEditor extends EditorBase {
 	/** Logger */
-    private static final Logger LOG = Logger.getLogger(CodeEditor.class.getName());
+    private static final Logger LOG = Logger.getLogger(TextEditor.class.getName());
 
     /**
      * Default constructor.
      */
-	public CodeEditor() {
-		super(CodeEditor.class.getResource("intern/code_editor.fxml"), 
-			  CodeEditor.class.getResource("intern/code_editor.html"));
+	public TextEditor() {
+		super(TextEditor.class.getResource("intern/text_editor.fxml"),
+			  TextEditor.class.getResource("intern/text_editor.html"));
 	}
 
 	/**
