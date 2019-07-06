@@ -111,6 +111,10 @@ export class CodeEditor {
         this.setFontSize(14);
     }
 
+    clear() {
+        this.setText("");
+    }
+
     setText(text) {
         // force reset of placeholder (because it sometime fails to update when setting content)
         var placeholder = this.cm.getOption("placeholder");
@@ -122,13 +126,16 @@ export class CodeEditor {
     }
 
     setContent(text, ext) {
+        // clear buffer first
+        this.clear();
+
         // set mode
         var mode = getModeFromExtension(ext);
         CodeMirror.autoLoadMode(this.cm, mode.mode);
+        this.mode = mode;
 
         // set text
         this.setText(text);
-        this.mode = mode;
 
         // inform Java code that the buffer is clean
         bridge.setDirty(false);
