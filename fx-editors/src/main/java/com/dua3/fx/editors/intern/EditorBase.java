@@ -208,11 +208,11 @@ public abstract class EditorBase extends BorderPane {
 	public void paste() { bridge.call("paste"); }
 
 	public int getLineCount() {
-		return (int) bridge.call("getLineCount()");
+		return (int) bridge.call("getLineCount");
 	}
 	
 	public int getLineNumber() {
-		return (int) bridge.call("getLineNumber()");
+		return (int) bridge.call("getLineNumber");
 	}
 	
 	public String getLine(int idx) { return (String) bridge.call("getLine", idx); }
