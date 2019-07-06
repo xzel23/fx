@@ -38,7 +38,11 @@ public class EditorController extends FxController<EditorApp, EditorController> 
             editor.setDirty(false);
             LOG.info(() -> String.format("document written to '%s' using charset %s", uri, charset));
         }
-    }
+
+		public void setDirty(boolean dirty) {
+			dirtyProperty.setValue(dirty);
+		}
+	}
 
 	private static final String PREF_EDITOR_PATH = "editor";
 
@@ -55,7 +59,6 @@ public class EditorController extends FxController<EditorApp, EditorController> 
 		// handle command line arguments
 		Cli.apply(this, getApp().getParameters().getRaw().toArray(String[]::new));
 
-		// use system menubar
 		menubar.setUseSystemMenuBar(true);
 
 		dirtyProperty.bind(editor.dirtyProperty());
@@ -66,7 +69,13 @@ public class EditorController extends FxController<EditorApp, EditorController> 
 			editor.apply(EditorSetting.fromPreference(editorPref));
 			// create a new document
 			createDocument();
-		});		
+		});
+
+		dirtyProperty.addListener((v,o,n) -> {
+			if (hasCurrentDocument() || newDocument()) {
+				getCurrentDocument().setDirty(n);
+			}
+		});
 	}
 	
 	@Override
@@ -90,7 +99,7 @@ public class EditorController extends FxController<EditorApp, EditorController> 
 
 	@Override
 	protected void createDocument() {
-		editor.setText("", "txt");
+		setCurrentDocument(new TextDocument(FxDocument.VOID_URI));
 	}
 	
 	@FXML
@@ -148,4 +157,5 @@ public class EditorController extends FxController<EditorApp, EditorController> 
         boolean dirty = hasCurrentDocument() && getCurrentDocument().isDirty();
         return dirty ? List.of(getCurrentDocument()) : Collections.emptyList();
     }
+
 }
