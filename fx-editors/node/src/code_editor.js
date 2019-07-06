@@ -19,7 +19,6 @@ import 'codemirror/addon/selection/active-line.js';
 import 'codemirror/addon/scroll/simplescrollbars.js';
 import 'codemirror/addon/search/searchcursor.js';
 import 'codemirror/addon/search/search.js';
-import 'codemirror/addon/mode/loadmode.js';
 import 'codemirror/addon/display/fullscreen.js';
 import 'codemirror/addon/display/placeholder.js';
 
@@ -46,14 +45,48 @@ function trace(m) {
 }
 
 // CodeMirror settings
-CodeMirror.modeURL = "codemirror/mode/%N/%N.js";
 
-// ensure webpack pulls in all mode files
-require.context(
-    "codemirror/mode", // context folder
-    true, // include subdirectories
-    /.*/ // RegExp
-)
+// ----<8--------<8--------<8--------<8--------<8--------<8--------<8----
+
+// CodeMirror, copyright (c) by Marijn Haverbeke and others
+// Distributed under an MIT license: https://codemirror.net/LICENSE
+
+    var loading = {};
+    function splitCallback(cont, n) {
+        var countDown = n;
+        return function() { if (--countDown == 0) cont(); };
+    }
+    function ensureDeps(mode, cont) {
+        var deps = CodeMirror.modes[mode].dependencies;
+        if (!deps) return cont();
+        var missing = [];
+        for (var i = 0; i < deps.length; ++i) {
+            if (!CodeMirror.modes.hasOwnProperty(deps[i]))
+                missing.push(deps[i]);
+        }
+        if (!missing.length) return cont();
+        var split = splitCallback(cont, missing.length);
+        for (var i = 0; i < missing.length; ++i)
+            CodeMirror.requireMode(missing[i], split);
+    }
+
+    CodeMirror.requireMode = function(mode, cont) {
+        if (typeof mode != "string") mode = mode.name;
+        if (CodeMirror.modes.hasOwnProperty(mode)) return ensureDeps(mode, cont);
+        if (loading.hasOwnProperty(mode)) return loading[mode].push(cont);
+
+        require("codemirror/mode/"+mode+"/"+mode+".js");
+        cont();
+    };
+
+    CodeMirror.autoLoadMode = function(instance, mode) {
+        if (!CodeMirror.modes.hasOwnProperty(mode))
+            CodeMirror.requireMode(mode, function() {
+                instance.setOption("mode", instance.getOption("mode"));
+            });
+    };
+
+// ---->8-------->8-------->8-------->8-------->8-------->8-------->8----
 
 const mode_info_text = CodeMirror.findModeByExtension('txt');
 function getModeFromExtension(ext) {
