@@ -78,7 +78,8 @@ public abstract class EditorBase extends BorderPane {
 
 		// get the engine
 		WebEngine engine = webview.getEngine();
-		
+		LOG.fine(() -> "user agent:" + engine.getUserAgent());
+
 		// instantiate bridge
 		bridge = new JavaScriptBridge(webview);
 		
