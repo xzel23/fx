@@ -14,6 +14,7 @@
 
 package com.dua3.fx.editors.intern;
 
+import com.dua3.fx.util.PlatformHelper;
 import com.dua3.utility.lang.LangUtil;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
@@ -68,7 +69,7 @@ public class JavaScriptBridge {
 	 *  the method return
 	 */
 	public Object call(String method, Object... args) {
-		return jsEditor.call(method, args);
+		return PlatformHelper.runAndWait(() -> jsEditor.call(method, args));
 	}
 
 	/**
