@@ -20,6 +20,7 @@ dependencies {
     compile project(':fx-util')
     compile project(':fx-web')
     compile project(':fx-editors')
+    compile project(':fx-editors:fx-editors-text')
     compile project(':fx-application')
 
     // picocli

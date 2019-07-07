@@ -9,6 +9,7 @@ module com.dua3.fx.editor {
     requires com.dua3.fx.util;
     requires com.dua3.fx.application;
     requires com.dua3.fx.editors;
+    requires com.dua3.fx.editors.text;
 
     requires info.picocli;
 

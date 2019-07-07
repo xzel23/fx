@@ -3,9 +3,9 @@ package com.dua3.fx.editor;
 import com.dua3.fx.editor.cli.Cli;
 import com.dua3.fx.application.FxController;
 import com.dua3.fx.application.FxDocument;
-import com.dua3.fx.editors.TextEditor;
-import com.dua3.fx.editors.TextEditorSettings;
-import com.dua3.fx.editors.TextEditorSettingsDialog;
+import com.dua3.fx.editors.text.TextEditor;
+import com.dua3.fx.editors.text.TextEditorSettings;
+import com.dua3.fx.editors.text.TextEditorSettingsDialog;
 import com.dua3.utility.io.IOUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.ButtonType;
@@ -142,7 +142,7 @@ public class EditorController extends FxController<EditorApp, EditorController> 
 				s.store(getPreferences().node(PREF_EDITOR_PATH));
 			},
 			() -> { 
-				TextEditorSettings s = dlg.getOldSetting();
+				TextEditorSettings s = dlg.getOldSettings();
 				editor.apply(s);
 			});
 	}

@@ -15,7 +15,6 @@
 module com.dua3.fx.editors {
 	exports com.dua3.fx.editors;
 	opens com.dua3.fx.editors;
-	opens com.dua3.fx.editors.intern;
 
 	requires com.dua3.fx.util;
 	requires com.dua3.fx.web;

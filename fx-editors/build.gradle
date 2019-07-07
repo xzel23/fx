@@ -16,13 +16,3 @@ dependencies {
     compile project(':fx-util')
     compile project(':fx-web')
 }
-
-def currentOS = org.gradle.internal.os.OperatingSystem.current()
-def scriptExtension = currentOS.isWindows() ? '.bat' : '.sh'
-
-task createBundle(type:Exec) {
-    println("creating bundle ...")
-    commandLine "$projectDir/node/create_bundle${scriptExtension}"
-}
-
-build.dependsOn createBundle
