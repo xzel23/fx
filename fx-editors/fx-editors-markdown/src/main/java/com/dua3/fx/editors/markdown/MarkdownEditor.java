@@ -12,23 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.dua3.fx.editors.text;
+package com.dua3.fx.editors.markdown;
 
 import com.dua3.fx.editors.EditorBase;
 import com.dua3.fx.editors.EditorSettings;
 
 import java.util.logging.Logger;
 
-public class TextEditor extends EditorBase {
+public class MarkdownEditor extends EditorBase {
 	/** Logger */
-    private static final Logger LOG = Logger.getLogger(TextEditor.class.getName());
+    private static final Logger LOG = Logger.getLogger(MarkdownEditor.class.getName());
 
     /**
      * Default constructor.
      */
-	public TextEditor() {
-		super(TextEditor.class.getResource("text_editor.fxml"),
-			  TextEditor.class.getResource("text_editor.html"));
+	public MarkdownEditor() {
+		super(MarkdownEditor.class.getResource("text_editor.fxml"),
+			  MarkdownEditor.class.getResource("text_editor.html"));
 	}
 
 	/**
@@ -89,8 +89,8 @@ public class TextEditor extends EditorBase {
 	}
 
 	@Override
-	public TextEditorSettings getSettings() {
-		TextEditorSettings setting = new TextEditorSettings();
+	public MarkdownEditorSettings getSettings() {
+		MarkdownEditorSettings setting = new MarkdownEditorSettings();
 		setting.setTheme(getTheme());
 		setting.setFontSize(getFontSize());
 		setting.setShowLineNumbers(isShowLineNumbers());
@@ -100,14 +100,14 @@ public class TextEditor extends EditorBase {
 
 	@Override
 	public void apply(EditorSettings settings) {
-		TextEditorSettings s = (TextEditorSettings) settings;
+		MarkdownEditorSettings s = (MarkdownEditorSettings) settings;
 		setTheme(s.getTheme());
 		setFontSize(s.getFontSize());
 		setShowLineNumbers(s.isShowLineNumbers());
 		setHighlightCurrentLine(s.isHighlightCurrentLine());
 	}
 
-	public TextEditorSettingsDialog settingsDialog() {
-		return new TextEditorSettingsDialog(this);
+	public MarkdownEditorSettingsDialog settingsDialog() {
+		return new MarkdownEditorSettingsDialog(this);
 	}
 }

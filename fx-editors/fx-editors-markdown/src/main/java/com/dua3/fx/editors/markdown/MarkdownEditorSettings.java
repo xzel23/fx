@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.dua3.fx.editors.text;
+package com.dua3.fx.editors.markdown;
 
 import com.dua3.fx.editors.EditorSettings;
 
 import java.util.prefs.Preferences;
 
-public class TextEditorSettings implements EditorSettings {
+public class MarkdownEditorSettings implements EditorSettings {
 	private static final boolean DEFAULT_SHOW_LINE_NUMBERS = false;
 	private static final boolean DEFAULT_HIGHLIGHT_CURRENT_LINE = false;
 	private static final int DEFAULT_FONT_SIZE = 14;
@@ -32,7 +32,7 @@ public class TextEditorSettings implements EditorSettings {
 	private boolean showLineNumbers;
 	private boolean highlightCurrentLine;
 
-	public TextEditorSettings() {
+	public MarkdownEditorSettings() {
 		this.theme = DEFAULT_THEME;
 		this.fontSize = DEFAULT_FONT_SIZE;
 		this.showLineNumbers = DEFAULT_SHOW_LINE_NUMBERS;
@@ -71,14 +71,14 @@ public class TextEditorSettings implements EditorSettings {
 		return highlightCurrentLine;
 	}
 	
-	public static TextEditorSettings copyOf(TextEditorSettings other) {
-		TextEditorSettings inst = new TextEditorSettings();
+	public static MarkdownEditorSettings copyOf(MarkdownEditorSettings other) {
+		MarkdownEditorSettings inst = new MarkdownEditorSettings();
 		inst.assign(other);
 		return inst;
 	}
 
-	public static TextEditorSettings fromPreference(Preferences node) {
-		TextEditorSettings cs = new TextEditorSettings();
+	public static MarkdownEditorSettings fromPreference(Preferences node) {
+		MarkdownEditorSettings cs = new MarkdownEditorSettings();
 		cs.load(node);
 		return cs;
 	}
@@ -100,7 +100,7 @@ public class TextEditorSettings implements EditorSettings {
 	}
 
 	public void assign(EditorSettings other) {
-		TextEditorSettings s = (TextEditorSettings) other;
+		MarkdownEditorSettings s = (MarkdownEditorSettings) other;
 		this.theme = s.theme;
 		this.fontSize = s.fontSize;
 		this.showLineNumbers = s.showLineNumbers;

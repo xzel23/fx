@@ -1,2 +1,2 @@
 rootProject.name = 'fx'
-include 'fx-util', 'fx-util-db', 'fx-editors', 'fx-editors:fx-editors-text', 'fx-application', 'fx-web', 'fx-samples', 'fx-controls', 'fx-editor'
+include 'fx-util', 'fx-util-db', 'fx-editors', 'fx-editors:fx-editors-text', 'fx-editors:fx-editors-markdown', 'fx-application', 'fx-web', 'fx-samples', 'fx-controls', 'fx-editor'

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.dua3.fx.editors.text;
+package com.dua3.fx.editors.markdown;
 
 import com.dua3.fx.editors.EditorBase;
 import com.dua3.fx.editors.EditorSettingsDialog;
@@ -28,12 +28,12 @@ import java.util.logging.Logger;
 /**
  * Dialog to configure a editor settings.
  */
-public class TextEditorSettingsDialog extends EditorSettingsDialog {
+public class MarkdownEditorSettingsDialog extends EditorSettingsDialog {
 
     /**
      * Logger instance
      */
-    private static final Logger LOG = Logger.getLogger(TextEditorSettingsDialog.class.getName());
+    private static final Logger LOG = Logger.getLogger(MarkdownEditorSettingsDialog.class.getName());
 
     private static final int FONT_SIZE_MIN = 5;
 
@@ -41,7 +41,7 @@ public class TextEditorSettingsDialog extends EditorSettingsDialog {
 
     private static final int FONT_SIZE_MAJOR_TICK = 10;
 
-    private TextEditorSettings oldSetting;
+    private MarkdownEditorSettings oldSetting;
 
     // -- button types
     public static final ButtonType OK = ButtonType.OK;
@@ -64,7 +64,7 @@ public class TextEditorSettingsDialog extends EditorSettingsDialog {
      *
      * @param editor the editor instance
      */
-    public TextEditorSettingsDialog(TextEditor editor) {
+    public MarkdownEditorSettingsDialog(MarkdownEditor editor) {
         this.editor = Objects.requireNonNull(editor);
 
         try {
@@ -77,7 +77,7 @@ public class TextEditorSettingsDialog extends EditorSettingsDialog {
             dialogPane.getButtonTypes().addAll(RESET, OK);
 
             // store current seeting
-            oldSetting = TextEditorSettings.copyOf(editor.getSettings());
+            oldSetting = MarkdownEditorSettings.copyOf(editor.getSettings());
 
             // finally set the pane
             setDialogPane(dialogPane);
@@ -117,8 +117,8 @@ public class TextEditorSettingsDialog extends EditorSettingsDialog {
         });
     }
 
-    public TextEditorSettings getSetting() {
-        TextEditorSettings s = new TextEditorSettings();
+    public MarkdownEditorSettings getSetting() {
+        MarkdownEditorSettings s = new MarkdownEditorSettings();
         s.setTheme(comboTheme.getValue());
         s.setFontSize((int) sliderFontSize.getValue());
         s.setShowLineNumbers(toggleShowLineNumbers.isSelected());
@@ -126,8 +126,8 @@ public class TextEditorSettingsDialog extends EditorSettingsDialog {
         return s;
     }
 
-    public TextEditorSettings getSettings() {
-        TextEditorSettings s = new TextEditorSettings();
+    public MarkdownEditorSettings getSettings() {
+        MarkdownEditorSettings s = new MarkdownEditorSettings();
         s.setTheme(comboTheme.getValue());
         s.setFontSize((int) sliderFontSize.getValue());
         s.setShowLineNumbers(toggleShowLineNumbers.isSelected());
@@ -135,7 +135,7 @@ public class TextEditorSettingsDialog extends EditorSettingsDialog {
         return s;
     }
 
-    public TextEditorSettings getOldSettings() {
+    public MarkdownEditorSettings getOldSettings() {
         return oldSetting;
     }
 }
