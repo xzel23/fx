@@ -1,11 +1,11 @@
-import tui from 'tui-editor';
+import Editor from 'tui-editor';
 
 import 'codemirror/lib/codemirror.css';
 import 'tui-editor/dist/tui-editor.css';
 import 'tui-editor/dist/tui-editor-contents.css';
 import 'highlight.js/styles/github.css'; 
 
-var editor = new tui.Editor({
+var editor = new Editor({
     el: document.querySelector('#editSection'),
     initialEditType: 'markdown',
     previewStyle: 'vertical',
