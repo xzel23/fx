@@ -1,10 +1,10 @@
 const path = require('path');
 
 module.exports = {
-    entry: './src/text_editor.js',
+    entry: './src/editor.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'text_editor.bundle.js'
+        filename: 'editor.js'
     },
     module: {
         rules: [

@@ -21,7 +21,7 @@ def scriptExtension = currentOS.isWindows() ? '.bat' : '.sh'
 
 task createBundle(type:Exec) {
     println("creating bundle ...")
-    commandLine "$projectDir/node/create_bundle${scriptExtension}"
+    commandLine "$projectDir/../scripts/create_bundle${scriptExtension}", "text"
 }
 
 build.dependsOn createBundle
