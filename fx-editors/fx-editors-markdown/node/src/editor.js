@@ -21,8 +21,6 @@ function trace(m) {
     }
 }
 
-trace("MarkdownEditor class definition");
-
 export class MarkdownEditor {
     constructor() {
         this.editor = new MediumEditor('.editable');
@@ -135,7 +133,5 @@ export class MarkdownEditor {
     }
 
 }
-
-trace("MarkdownEditor define instance");
 
 global.editorInstance = new MarkdownEditor();
