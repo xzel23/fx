@@ -20,8 +20,10 @@ function trace(m) {
     }
 }
 
+trace("MarkdownEditor class definition");
+
 export class MarkdownEditor {
-    constructor(textArea, options) {
+    constructor() {
         this.editor = new Editor({
             el: document.querySelector('#editSection'),
             initialEditType: 'markdown',
@@ -139,10 +141,6 @@ export class MarkdownEditor {
 
 }
 
-global.editorInstance = new MarkdownEditor(document.getElementById("editor"), {
-    fullScreen : true,
-    scrollbarStyle : 'overlay',
-    mode : 'text',
-    lineNumbers : false,
-    inputStyle : 'textarea'
-});
+trace("MarkdownEditor define instance");
+
+global.editorInstance = new MarkdownEditor();
