@@ -30,9 +30,11 @@ import 'codemirror/addon/scroll/simplescrollbars.css';
 import 'codemirror/addon/search/matchesonscrollbar.css';
 
 // connect to logger
-console.log = function(m) {
-    bridge.log(m);
-};
+if (window.hasOwnProperty('bridge')) {
+    console.log = function (m) {
+        bridge.log(m);
+    };
+}
 
 // set to true to enable trace messages
 var debug = false;

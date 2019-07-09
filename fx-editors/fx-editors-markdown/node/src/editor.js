@@ -1,14 +1,15 @@
-import Editor from 'tui-editor';
+import MediumEditor from 'medium-editor/dist/js/medium-editor.js';
 
-import 'codemirror/lib/codemirror.css';
-import 'tui-editor/dist/tui-editor.css';
-import 'tui-editor/dist/tui-editor-contents.css';
-import 'highlight.js/styles/github.css';
+import 'medium-editor/dist/css/medium-editor.css';
+import 'medium-editor/dist/css/medium-editor.css';
+import 'medium-editor/dist/css/themes/bootstrap.css';
 
 // connect to logger
-console.log = function(m) {
-    bridge.log(m);
-};
+if (window.hasOwnProperty('bridge')) {
+    console.log = function (m) {
+        bridge.log(m);
+    };
+}
 
 // set to true to enable trace messages
 var debug = true;
@@ -24,13 +25,7 @@ trace("MarkdownEditor class definition");
 
 export class MarkdownEditor {
     constructor() {
-        this.editor = new Editor({
-            el: document.querySelector('#editSection'),
-            initialEditType: 'markdown',
-            previewStyle: 'vertical',
-            height: '300px'
-        });
-
+        this.editor = new MediumEditor('.editable');
         // TODO track dirty state
     }
 
