@@ -27,4 +27,4 @@ dependencies {
     compile 'info.picocli:picocli:4.0.0-beta-1b'
 }
 
-mainClassName = 'com.dua3.fx.editor.Editor'
+mainClassName = 'com.dua3.fx.markdowneditor.Editor'

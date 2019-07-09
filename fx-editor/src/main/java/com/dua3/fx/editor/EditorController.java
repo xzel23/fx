@@ -137,7 +137,7 @@ public class EditorController extends FxController<EditorApp, EditorController> 
 		.filter(b -> b==ButtonType.OK)
 		.ifPresentOrElse(
 			b -> { 
-				TextEditorSettings s = dlg.getSetting();
+				TextEditorSettings s = dlg.getSettings();
 				editor.apply(s);
 				s.store(getPreferences().node(PREF_EDITOR_PATH));
 			},

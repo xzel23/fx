@@ -35,27 +35,13 @@ public class MarkdownEditorSettingsDialog extends EditorSettingsDialog {
      */
     private static final Logger LOG = Logger.getLogger(MarkdownEditorSettingsDialog.class.getName());
 
-    private static final int FONT_SIZE_MIN = 5;
-
-    private static final int FONT_SIZE_MAX = 30;
-
-    private static final int FONT_SIZE_MAJOR_TICK = 10;
-
-    private MarkdownEditorSettings oldSetting;
+    private MarkdownEditorSettings oldSettings;
 
     // -- button types
     public static final ButtonType OK = ButtonType.OK;
     public static final ButtonType RESET = new ButtonType("RESET");
 
     // -- input controls
-    @FXML
-    ComboBox<String> comboTheme;
-    @FXML
-    Slider sliderFontSize;
-    @FXML
-    CheckBox toggleShowLineNumbers;
-    @FXML
-    CheckBox toggleHighlightCurrentLine;
 
     private final EditorBase editor;
 
@@ -69,7 +55,7 @@ public class MarkdownEditorSettingsDialog extends EditorSettingsDialog {
 
         try {
             // load FXML
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("text_editor_settings.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("editor_settings.fxml"));
             loader.setController(this);
             DialogPane dialogPane = loader.load();
 
@@ -77,7 +63,7 @@ public class MarkdownEditorSettingsDialog extends EditorSettingsDialog {
             dialogPane.getButtonTypes().addAll(RESET, OK);
 
             // store current seeting
-            oldSetting = MarkdownEditorSettings.copyOf(editor.getSettings());
+            oldSettings = MarkdownEditorSettings.copyOf(editor.getSettings());
 
             // finally set the pane
             setDialogPane(dialogPane);
@@ -88,54 +74,14 @@ public class MarkdownEditorSettingsDialog extends EditorSettingsDialog {
 
     @FXML
     private void initialize() {
-        // theme
-        String theme = editor.getTheme();
-        comboTheme.getItems().setAll("default", "xq-light", "xq-dark");
-        comboTheme.setValue(theme);
-        comboTheme.valueProperty().addListener((ov, o, n) -> editor.setTheme(n));
-
-        // line numbers
-        toggleShowLineNumbers.setSelected(editor.isShowLineNumbers());
-        toggleShowLineNumbers.selectedProperty().addListener((ov, o, n) -> editor.setShowLineNumbers(n));
-
-        // highlight current line
-        toggleHighlightCurrentLine.setSelected(editor.isHighlightCurrentLine());
-        toggleHighlightCurrentLine.selectedProperty().addListener((ov, o, n) -> editor.setHighlightCurrentLine(n));
-
-        // font size
-        sliderFontSize.setMin(FONT_SIZE_MIN);
-        sliderFontSize.setMax(FONT_SIZE_MAX);
-        sliderFontSize.setMajorTickUnit(FONT_SIZE_MAJOR_TICK);
-        sliderFontSize.setMinorTickCount(FONT_SIZE_MAJOR_TICK);
-        sliderFontSize.setValue(editor.getFontSize());
-        sliderFontSize.valueProperty().addListener((ov, o, n) -> {
-            int oldSize = o.intValue();
-            int newSize = n.intValue();
-            if (newSize != oldSize) {
-                editor.setFontSize(newSize);
-            }
-        });
-    }
-
-    public MarkdownEditorSettings getSetting() {
-        MarkdownEditorSettings s = new MarkdownEditorSettings();
-        s.setTheme(comboTheme.getValue());
-        s.setFontSize((int) sliderFontSize.getValue());
-        s.setShowLineNumbers(toggleShowLineNumbers.isSelected());
-        s.setHighlightCurrentLine(toggleHighlightCurrentLine.isSelected());
-        return s;
     }
 
     public MarkdownEditorSettings getSettings() {
         MarkdownEditorSettings s = new MarkdownEditorSettings();
-        s.setTheme(comboTheme.getValue());
-        s.setFontSize((int) sliderFontSize.getValue());
-        s.setShowLineNumbers(toggleShowLineNumbers.isSelected());
-        s.setHighlightCurrentLine(toggleHighlightCurrentLine.isSelected());
         return s;
     }
 
     public MarkdownEditorSettings getOldSettings() {
-        return oldSetting;
+        return oldSettings;
     }
 }

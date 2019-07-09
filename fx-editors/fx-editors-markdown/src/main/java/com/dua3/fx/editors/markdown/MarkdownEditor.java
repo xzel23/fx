@@ -91,20 +91,12 @@ public class MarkdownEditor extends EditorBase {
 	@Override
 	public MarkdownEditorSettings getSettings() {
 		MarkdownEditorSettings setting = new MarkdownEditorSettings();
-		setting.setTheme(getTheme());
-		setting.setFontSize(getFontSize());
-		setting.setShowLineNumbers(isShowLineNumbers());
-		setting.setHighlightCurrentLine(isHighlightCurrentLine());
 		return setting;
 	}
 
 	@Override
 	public void apply(EditorSettings settings) {
 		MarkdownEditorSettings s = (MarkdownEditorSettings) settings;
-		setTheme(s.getTheme());
-		setFontSize(s.getFontSize());
-		setShowLineNumbers(s.isShowLineNumbers());
-		setHighlightCurrentLine(s.isHighlightCurrentLine());
 	}
 
 	public MarkdownEditorSettingsDialog settingsDialog() {

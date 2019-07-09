@@ -41,7 +41,7 @@ public class TextEditorSettingsDialog extends EditorSettingsDialog {
 
     private static final int FONT_SIZE_MAJOR_TICK = 10;
 
-    private TextEditorSettings oldSetting;
+    private TextEditorSettings oldSettings;
 
     // -- button types
     public static final ButtonType OK = ButtonType.OK;
@@ -77,7 +77,7 @@ public class TextEditorSettingsDialog extends EditorSettingsDialog {
             dialogPane.getButtonTypes().addAll(RESET, OK);
 
             // store current seeting
-            oldSetting = TextEditorSettings.copyOf(editor.getSettings());
+            oldSettings = TextEditorSettings.copyOf(editor.getSettings());
 
             // finally set the pane
             setDialogPane(dialogPane);
@@ -117,15 +117,6 @@ public class TextEditorSettingsDialog extends EditorSettingsDialog {
         });
     }
 
-    public TextEditorSettings getSetting() {
-        TextEditorSettings s = new TextEditorSettings();
-        s.setTheme(comboTheme.getValue());
-        s.setFontSize((int) sliderFontSize.getValue());
-        s.setShowLineNumbers(toggleShowLineNumbers.isSelected());
-        s.setHighlightCurrentLine(toggleHighlightCurrentLine.isSelected());
-        return s;
-    }
-
     public TextEditorSettings getSettings() {
         TextEditorSettings s = new TextEditorSettings();
         s.setTheme(comboTheme.getValue());
@@ -136,6 +127,6 @@ public class TextEditorSettingsDialog extends EditorSettingsDialog {
     }
 
     public TextEditorSettings getOldSettings() {
-        return oldSetting;
+        return oldSettings;
     }
 }
