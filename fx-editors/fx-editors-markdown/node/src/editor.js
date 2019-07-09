@@ -1,3 +1,5 @@
+import './editor.css';
+
 import MediumEditor from 'medium-editor/dist/js/medium-editor.js';
 
 import 'medium-editor/dist/css/medium-editor.css';

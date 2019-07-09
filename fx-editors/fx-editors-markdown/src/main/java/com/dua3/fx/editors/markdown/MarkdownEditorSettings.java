@@ -44,7 +44,6 @@ public class MarkdownEditorSettings implements EditorSettings {
 	}
 
 	public void assign(EditorSettings other) {
-		MarkdownEditorSettings s = (MarkdownEditorSettings) other;
 	}
 
 }

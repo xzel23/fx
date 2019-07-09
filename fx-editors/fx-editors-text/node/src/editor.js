@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import './editor.css';
+
 import CodeMirror from 'codemirror';
 
 import 'codemirror/mode/meta.js';

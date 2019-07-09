@@ -96,7 +96,6 @@ public class MarkdownEditor extends EditorBase {
 
 	@Override
 	public void apply(EditorSettings settings) {
-		MarkdownEditorSettings s = (MarkdownEditorSettings) settings;
 	}
 
 	public MarkdownEditorSettingsDialog settingsDialog() {

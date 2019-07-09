@@ -6,7 +6,6 @@ NAME=$1
 test -z "$NAME" && die die "usage: `basename $0` <implementation_name>"
 
 DIR="`dirname $0`/../fx-editors-${NAME}"
-echo $DIR
 test -d "${DIR}" || die "no implementation '${NAME}'"
 
 NODE_DIR=${DIR}/node
@@ -16,10 +15,12 @@ TARGET_DIR=${DIR}/src/main/resources/com/dua3/fx/editors/${NAME}
 
 echo "preparing dist ..."
 cp ${SRC_DIR}/editor.html ${DIST_DIR}/ || die "could not copy HTML"
+cp ${SRC_DIR}/editor.css ${DIST_DIR}/ || die "could not copy CSS"
 ( cd ${NODE_DIR} && npx webpack --mode=production ) || die "webpack command failed"
 
 echo "copying files to ${TARGET_DIR} ..."
 cp ${DIST_DIR}/editor.js ${TARGET_DIR}/ || die "could not copy bundle to src folder"
 cp ${DIST_DIR}/editor.html ${TARGET_DIR}/ || die "could not copy HTML to src folder"
+cp ${DIST_DIR}/editor.css ${TARGET_DIR}/ || die "could not copy bundle to src folder"
 
 echo "SUCCESS"
