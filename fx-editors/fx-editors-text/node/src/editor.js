@@ -99,7 +99,7 @@ function getModeFromExtension(ext) {
     }
 }
 
-export class CodeEditor {
+export class TextEditor {
     constructor(textArea, options) {
         this.cm = CodeMirror.fromTextArea(textArea, options);
         this.mode = options["mode"];
@@ -263,7 +263,7 @@ export class CodeEditor {
 
 }
 
-global.editorInstance = new CodeEditor(document.getElementById("editor"), {
+global.editorInstance = new TextEditor(document.getElementById("editor"), {
     fullScreen : true,
     scrollbarStyle : 'overlay',
     mode : 'text',
