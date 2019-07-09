@@ -27,8 +27,8 @@ public class MarkdownEditor extends EditorBase {
      * Default constructor.
      */
 	public MarkdownEditor() {
-		super(MarkdownEditor.class.getResource("text_editor.fxml"),
-			  MarkdownEditor.class.getResource("text_editor.html"));
+		super(MarkdownEditor.class.getResource("editor.fxml"),
+			  MarkdownEditor.class.getResource("editor.html"));
 	}
 
 	/**
