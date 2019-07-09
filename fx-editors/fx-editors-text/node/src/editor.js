@@ -35,7 +35,7 @@ console.log = function(m) {
 };
 
 // set to true to enable trace messages
-var debug = true;
+var debug = false;
 
 // output trace messages in debug mode
 function trace(m) {
@@ -45,7 +45,7 @@ function trace(m) {
 }
 
 // Code taken from codemirror/loadmode extension and changed to be compatible with webpack:
-// ----<8--------<8--------<8--------<8--------<8--------<8--------<8----
+// ----8<--------8<--------8<--------8<--------8<--------8<--------8<----
 
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: https://codemirror.net/LICENSE
