@@ -28,7 +28,7 @@ public class TextEditor extends EditorBase {
      */
 	public TextEditor() {
 		super(TextEditor.class.getResource("editor.fxml"),
-			  TextEditor.class.getResource("text_editor.html"));
+			  TextEditor.class.getResource("editor.html"));
 	}
 
 	/**
