@@ -1,10 +1,6 @@
+var showdown  = require('showdown');
+
 import './editor.css';
-
-import MediumEditor from 'medium-editor/dist/js/medium-editor.js';
-
-import 'medium-editor/dist/css/medium-editor.css';
-import 'medium-editor/dist/css/medium-editor.css';
-import 'medium-editor/dist/css/themes/bootstrap.css';
 
 // connect to logger
 if (window.hasOwnProperty('bridge')) {
@@ -23,22 +19,23 @@ function trace(m) {
     }
 }
 
-export class MarkdownEditor {
+class MarkdownEditor {
     constructor() {
-        this.editor = new MediumEditor('.editable');
-        // TODO track dirty state
+        this.converter = new showdown.Converter();
+        this.div = document.getElementById("editor");
     }
 
     clear() {
-        // TODO
+        this.div.setContent("");
     }
 
     setText(text) {
-        // TODO
+        var html = this.converter.makeHtml(text);
+        this.div.innerHTML=html;
     }
 
     setContent(text, ext) {
-        // TODO
+        this.setText(text);
     }
 
     // Set the editor content. Called from Java.

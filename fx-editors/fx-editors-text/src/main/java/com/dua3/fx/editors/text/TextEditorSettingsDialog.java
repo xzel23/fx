@@ -14,7 +14,6 @@
 
 package com.dua3.fx.editors.text;
 
-import com.dua3.fx.editors.EditorBase;
 import com.dua3.fx.editors.EditorSettingsDialog;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -57,7 +56,7 @@ public class TextEditorSettingsDialog extends EditorSettingsDialog {
     @FXML
     CheckBox toggleHighlightCurrentLine;
 
-    private final EditorBase editor;
+    private final TextEditor editor;
 
     /**
      * Construct new dialog instance.

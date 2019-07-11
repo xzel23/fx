@@ -42,48 +42,40 @@ public class TextEditor extends EditorBase {
 		getBridge().call("setModeFromExtension", extension);
 	}
 	
-	@Override
 	public void setShowLineNumbers(Boolean flag) {
 		LOG.fine(() -> String.format("setting line number mode: %s", flag));
 		getBridge().call("setShowLineNumbers", flag);
 	}
 	
-	@Override
     public boolean isHighlightCurrentLine() {
 		return Boolean.TRUE.equals(getBridge().call("isHighlightCurrentLine"));
 	}
 	
-	@Override
 	public void setHighlightCurrentLine(Boolean flag) {
 		LOG.fine(() -> String.format("setting highlight current line mode: %s", flag));
 		getBridge().call("setHighlightCurrentLine", flag);
 	}
 	
-	@Override
     public boolean isShowLineNumbers() {
 		return Boolean.TRUE.equals(getBridge().call("isShowLineNumbers()"));
 	}
 	
-	@Override
 	public void setFontSize(int size) {
 		LOG.fine(() -> String.format("setting font size: %d", size));
 		getBridge().call("setFontSize", size);
 	}
 
-	@Override
 	public int getFontSize() {
 		int size = ((Number) getBridge().call("getFontSize")).intValue();
 		LOG.fine(() -> String.format("font size: %d", size));		
 		return size;
 	}
 	
-	@Override
 	public void setTheme(String theme) {
 		LOG.fine(() -> String.format("setting theme: %s", theme));
 		getBridge().call("setTheme", theme);
 	}
 	
-	@Override
 	public String getTheme() {
 		return String.valueOf(getBridge().call("getTheme"));
 	}

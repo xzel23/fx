@@ -248,23 +248,7 @@ public abstract class EditorBase extends BorderPane {
 
 	public abstract EditorSettingsDialog settingsDialog();
 
-	public abstract void setShowLineNumbers(Boolean flag);
-	
-	public abstract boolean isShowLineNumbers();
-	
-	public abstract void setHighlightCurrentLine(Boolean flag);
-
-	public abstract boolean isHighlightCurrentLine();
-
-	public abstract void setFontSize(int szz);
-	
-	public abstract int getFontSize();
-	
-	public abstract void setTheme(String theme);
-	
-	public abstract String getTheme();
-
 	public abstract EditorSettings getSettings();
-	
+
 	public abstract void apply(EditorSettings setting);
 }
