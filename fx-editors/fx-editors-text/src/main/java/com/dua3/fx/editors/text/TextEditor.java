@@ -20,86 +20,134 @@ import com.dua3.fx.editors.EditorSettings;
 import java.util.logging.Logger;
 
 public class TextEditor extends EditorBase {
-	/** Logger */
+    /**
+     * Logger
+     */
     private static final Logger LOG = Logger.getLogger(TextEditor.class.getName());
 
     /**
      * Default constructor.
      */
-	public TextEditor() {
-		super(TextEditor.class.getResource("editor.fxml"),
-			  TextEditor.class.getResource("editor.html"));
-	}
+    public TextEditor() {
+        super(TextEditor.class.getResource("editor.fxml"),
+                TextEditor.class.getResource("editor.html"));
+    }
 
-	/**
-	 * Set editing mode from file extension.
-	 * 
-	 * @param extension
-	 *  the file extension
-	 */
-	public void setModeFromExtension(String extension) {
-		LOG.fine(() -> String.format("setting mode by file extension: %s", extension));
-		getBridge().call("setModeFromExtension", extension);
-	}
-	
-	public void setShowLineNumbers(Boolean flag) {
-		LOG.fine(() -> String.format("setting line number mode: %s", flag));
-		getBridge().call("setShowLineNumbers", flag);
-	}
-	
+    /**
+     * Set editing mode from file extension.
+     *
+     * @param extension the file extension
+     */
+    public void setModeFromExtension(String extension) {
+        LOG.fine(() -> String.format("setting mode by file extension: %s", extension));
+        getBridge().call("setModeFromExtension", extension);
+    }
+
     public boolean isHighlightCurrentLine() {
-		return Boolean.TRUE.equals(getBridge().call("isHighlightCurrentLine"));
-	}
-	
-	public void setHighlightCurrentLine(Boolean flag) {
-		LOG.fine(() -> String.format("setting highlight current line mode: %s", flag));
-		getBridge().call("setHighlightCurrentLine", flag);
-	}
-	
+        return Boolean.TRUE.equals(getBridge().call("isHighlightCurrentLine"));
+    }
+
+    public void setHighlightCurrentLine(Boolean flag) {
+        LOG.fine(() -> String.format("setting highlight current line mode: %s", flag));
+        getBridge().call("setHighlightCurrentLine", flag);
+    }
+
     public boolean isShowLineNumbers() {
-		return Boolean.TRUE.equals(getBridge().call("isShowLineNumbers()"));
-	}
-	
-	public void setFontSize(int size) {
-		LOG.fine(() -> String.format("setting font size: %d", size));
-		getBridge().call("setFontSize", size);
-	}
+        return Boolean.TRUE.equals(getBridge().call("isShowLineNumbers()"));
+    }
 
-	public int getFontSize() {
-		int size = ((Number) getBridge().call("getFontSize")).intValue();
-		LOG.fine(() -> String.format("font size: %d", size));		
-		return size;
-	}
-	
-	public void setTheme(String theme) {
-		LOG.fine(() -> String.format("setting theme: %s", theme));
-		getBridge().call("setTheme", theme);
-	}
-	
-	public String getTheme() {
-		return String.valueOf(getBridge().call("getTheme"));
-	}
+    public void setShowLineNumbers(Boolean flag) {
+        LOG.fine(() -> String.format("setting line number mode: %s", flag));
+        getBridge().call("setShowLineNumbers", flag);
+    }
 
-	@Override
-	public TextEditorSettings getSettings() {
-		TextEditorSettings setting = new TextEditorSettings();
-		setting.setTheme(getTheme());
-		setting.setFontSize(getFontSize());
-		setting.setShowLineNumbers(isShowLineNumbers());
-		setting.setHighlightCurrentLine(isHighlightCurrentLine());
-		return setting;
-	}
+    public int getFontSize() {
+        int size = ((Number) getBridge().call("getFontSize")).intValue();
+        LOG.fine(() -> String.format("font size: %d", size));
+        return size;
+    }
 
-	@Override
-	public void apply(EditorSettings settings) {
-		TextEditorSettings s = (TextEditorSettings) settings;
-		setTheme(s.getTheme());
-		setFontSize(s.getFontSize());
-		setShowLineNumbers(s.isShowLineNumbers());
-		setHighlightCurrentLine(s.isHighlightCurrentLine());
-	}
+    public void setFontSize(int size) {
+        LOG.fine(() -> String.format("setting font size: %d", size));
+        getBridge().call("setFontSize", size);
+    }
 
-	public TextEditorSettingsDialog settingsDialog() {
-		return new TextEditorSettingsDialog(this);
-	}
+    public String getTheme() {
+        return String.valueOf(getBridge().call("getTheme"));
+    }
+
+    public void setTheme(String theme) {
+        LOG.fine(() -> String.format("setting theme: %s", theme));
+        getBridge().call("setTheme", theme);
+    }
+
+    @Override
+    public TextEditorSettings getSettings() {
+        TextEditorSettings setting = new TextEditorSettings();
+        setting.setTheme(getTheme());
+        setting.setFontSize(getFontSize());
+        setting.setShowLineNumbers(isShowLineNumbers());
+        setting.setHighlightCurrentLine(isHighlightCurrentLine());
+        return setting;
+    }
+
+    @Override
+    public void apply(EditorSettings settings) {
+        TextEditorSettings s = (TextEditorSettings) settings;
+        setTheme(s.getTheme());
+        setFontSize(s.getFontSize());
+        setShowLineNumbers(s.isShowLineNumbers());
+        setHighlightCurrentLine(s.isHighlightCurrentLine());
+    }
+
+    @Override
+    public TextEditorSettingsDialog settingsDialog() {
+        return new TextEditorSettingsDialog(this);
+    }
+
+    @Override
+    public void cut() {
+        callJS("cut");
+    }
+
+    @Override
+    public void copy() {
+        callJS("copy");
+    }
+
+    @Override
+    public void paste() {
+        callJS("paste");
+    }
+
+    @Override
+    public int getLineCount() {
+        return (int) callJS("getLineCount");
+    }
+
+    @Override
+    public int getLineNumber() {
+        return (int) callJS("getLineNumber");
+    }
+
+    @Override
+    public String getLine(int idx) {
+        return (String) callJS("getLine", idx);
+    }
+
+    @Override
+    public void addLine(String s) {
+        callJS("addLine", s);
+    }
+
+    @Override
+    public void setLine(int i, String s) {
+        callJS("setLine", i, s);
+    }
+
+    @Override
+    public void search() {
+        callJS("search");
+    }
+
 }

@@ -30,27 +30,26 @@ class MarkdownEditor {
     }
 
     setText(text) {
+        trace("setting text");
         var html = this.converter.makeHtml(text);
         this.div.innerHTML=html;
     }
 
+    // Set the editor content. Called from Java.
     setContent(text, ext) {
+        trace("setting content");
         this.setText(text);
     }
 
-    // Set the editor content. Called from Java.
     // Paste text at current position. Called from Java code.
     replaceSelection(text) {
-        // TODO
-    }
-
-    setModeFromExtension(ext) {
-        // TODO
+        div.execCommand('insertText', false, data);
     }
 
     // set readonly mode
     setReadOnly(flag) {
-        // TODO
+        trace("readonly mode: "+flag);
+        div.setAttribute("contenteditable", !flag);
     }
 
     // set the placeholder text
