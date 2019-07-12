@@ -24,6 +24,8 @@ class MarkdownEditor {
         this.converter = new showdown.Converter();
         this.div = document.getElementById("editor");
         this.promptText = '';
+
+        this.converter.setFlavor("github");
     }
 
     clear() {
