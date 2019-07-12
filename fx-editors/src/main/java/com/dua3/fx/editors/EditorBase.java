@@ -220,23 +220,41 @@ public abstract class EditorBase extends BorderPane {
         return bridge.call(command, args);
     }
 
-    public abstract void cut();
+    public void cut() {
+        callJS("cut");
+    }
 
-    public abstract void copy();
+    public void copy() {
+        callJS("copy");
+    }
 
-    public abstract void paste();
+    public void paste() {
+        callJS("paste");
+    }
 
-    public abstract int getLineCount();
+    public int getLineCount() {
+        return (int) callJS("getLineCount");
+    }
 
-    public abstract int getLineNumber();
+    public int getLineNumber() {
+        return (int) callJS("getLineNumber");
+    }
 
-    public abstract String getLine(int idx);
+    public String getLine(int idx) {
+        return (String) callJS("getLine", idx);
+    }
 
-    public abstract void addLine(String s);
+    public void addLine(String s) {
+        callJS("addLine", s);
+    }
 
-    public abstract void setLine(int i, String s);
+    public void setLine(int i, String s) {
+        callJS("setLine", i, s);
+    }
 
-    public abstract void search();
+    public void search() {
+        callJS("search");
+    }
 
     public abstract EditorSettingsDialog settingsDialog();
 

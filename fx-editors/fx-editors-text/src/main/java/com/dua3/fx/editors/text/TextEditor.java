@@ -105,49 +105,4 @@ public class TextEditor extends EditorBase {
         return new TextEditorSettingsDialog(this);
     }
 
-    @Override
-    public void cut() {
-        callJS("cut");
-    }
-
-    @Override
-    public void copy() {
-        callJS("copy");
-    }
-
-    @Override
-    public void paste() {
-        callJS("paste");
-    }
-
-    @Override
-    public int getLineCount() {
-        return (int) callJS("getLineCount");
-    }
-
-    @Override
-    public int getLineNumber() {
-        return (int) callJS("getLineNumber");
-    }
-
-    @Override
-    public String getLine(int idx) {
-        return (String) callJS("getLine", idx);
-    }
-
-    @Override
-    public void addLine(String s) {
-        callJS("addLine", s);
-    }
-
-    @Override
-    public void setLine(int i, String s) {
-        callJS("setLine", i, s);
-    }
-
-    @Override
-    public void search() {
-        callJS("search");
-    }
-
 }

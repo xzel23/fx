@@ -41,51 +41,6 @@ public class MarkdownEditor extends EditorBase {
 	public void apply(EditorSettings settings) {
 	}
 
-	@Override
-	public void cut() {
-
-	}
-
-	@Override
-	public void copy() {
-
-	}
-
-	@Override
-	public void paste() {
-
-	}
-
-	@Override
-	public int getLineCount() {
-		return 0;
-	}
-
-	@Override
-	public int getLineNumber() {
-		return 0;
-	}
-
-	@Override
-	public String getLine(int idx) {
-		return null;
-	}
-
-	@Override
-	public void addLine(String s) {
-
-	}
-
-	@Override
-	public void setLine(int i, String s) {
-
-	}
-
-	@Override
-	public void search() {
-
-	}
-
 	public MarkdownEditorSettingsDialog settingsDialog() {
 		return new MarkdownEditorSettingsDialog(this);
 	}
