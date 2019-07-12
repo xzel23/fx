@@ -23,6 +23,7 @@ class MarkdownEditor {
     constructor() {
         this.converter = new showdown.Converter();
         this.div = document.getElementById("editor");
+        this.promptText = '';
     }
 
     clear() {
@@ -31,7 +32,7 @@ class MarkdownEditor {
 
     setText(text) {
         trace("setting text");
-        var html = this.converter.makeHtml(text);
+        let  html = this.converter.makeHtml(text);
         this.div.innerHTML=html;
     }
 
@@ -43,35 +44,47 @@ class MarkdownEditor {
 
     // Paste text at current position. Called from Java code.
     replaceSelection(text) {
-        div.execCommand('insertText', false, data);
+        this.div.execCommand('insertText', false, data);
     }
 
     // set readonly mode
     setReadOnly(flag) {
         trace("readonly mode: "+flag);
-        div.setAttribute("contenteditable", !flag);
+        this.div.setAttribute("contenteditable", !flag);
     }
 
     // set the placeholder text
     setPromptText(text) {
-        // TODO
+        this.promptText = text;
     }
 
     // use the system clipboard for cut & paste
     paste() {
-        // TODO
+        trace("paste");
+        let text = document.querySelector("#output");
+        text.focus();
+        document.execCommand("paste");
     }
 
     copy() {
-        // TODO
+        trace("copy");
+        let selection = document.querySelector("#input");
+        selection.select();
+        document.execCommand("copy");
     }
 
     cut() {
-        // TODO
+        trace("cut");
+        let selection = document.querySelector("#input");
+        selection.select();
+        document.execCommand("cut");
     }
 
     getText() {
-        // TODO
+        trace("getText");
+        let html = this.div.innerHTML;
+        var text = this.converter.makeMarkdown(html);
+        return text;
     }
 
     getLineCount() {
@@ -87,38 +100,6 @@ class MarkdownEditor {
     }
 
     search() {
-        // TODO
-    }
-
-    setShowLineNumbers(flag) {
-        // TODO
-    }
-
-    isShowLineNumbers() {
-        // TODO
-    }
-
-    setHighlightCurrentLine(flag) {
-        // TODO
-    }
-
-    isHighlightCurrentLine() {
-        // TODO
-    }
-
-    setFontSize(size) {
-        // TODO
-    }
-
-    getFontSize() {
-        // TODO
-    }
-
-    setTheme(theme) {
-        // TODO
-    }
-
-    getTheme() {
         // TODO
     }
 
