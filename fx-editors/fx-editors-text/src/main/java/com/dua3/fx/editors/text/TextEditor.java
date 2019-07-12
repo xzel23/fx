@@ -17,6 +17,8 @@ package com.dua3.fx.editors.text;
 import com.dua3.fx.editors.EditorBase;
 import com.dua3.fx.editors.EditorSettings;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.logging.Logger;
 
 public class TextEditor extends EditorBase {
@@ -79,6 +81,49 @@ public class TextEditor extends EditorBase {
     public void setTheme(String theme) {
         LOG.fine(() -> String.format("setting theme: %s", theme));
         getBridge().call("setTheme", theme);
+    }
+
+    public Iterator<String> lineIterator() {
+        return new Iterator<String>() {
+            int i = 0;
+
+            @Override
+            public boolean hasNext() {
+                return i < getLineCount();
+            }
+
+            @Override
+            public String next() {
+                if (i >= getLineCount()) {
+                    throw new NoSuchElementException();
+                }
+                return getLine(i++);
+            }
+        };
+    }
+
+    public int getLineCount() {
+        return (int) callJS("getLineCount");
+    }
+
+    public int getLineNumber() {
+        return (int) callJS("getLineNumber");
+    }
+
+    public String getLine(int idx) {
+        return (String) callJS("getLine", idx);
+    }
+
+    public void addLine(String s) {
+        callJS("addLine", s);
+    }
+
+    public void setLine(int i, String s) {
+        callJS("setLine", i, s);
+    }
+
+    public void search() {
+        callJS("search");
     }
 
     @Override

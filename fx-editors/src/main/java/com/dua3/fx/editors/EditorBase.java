@@ -29,8 +29,6 @@ import javafx.scene.web.WebView;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URL;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -196,25 +194,6 @@ public abstract class EditorBase extends BorderPane {
         promptTextProperty().set(text);
     }
 
-    public Iterator<String> lineIterator() {
-        return new Iterator<String>() {
-            int i = 0;
-
-            @Override
-            public boolean hasNext() {
-                return i < getLineCount();
-            }
-
-            @Override
-            public String next() {
-                if (i >= getLineCount()) {
-                    throw new NoSuchElementException();
-                }
-                return getLine(i++);
-            }
-        };
-    }
-
     protected Object callJS(String command, Object... args) {
         LOG.finer(() -> "JS: " + command + " " + args);
         return bridge.call(command, args);
@@ -242,30 +221,6 @@ public abstract class EditorBase extends BorderPane {
      */
     public void paste() {
         callJS("paste");
-    }
-
-    public int getLineCount() {
-        return (int) callJS("getLineCount");
-    }
-
-    public int getLineNumber() {
-        return (int) callJS("getLineNumber");
-    }
-
-    public String getLine(int idx) {
-        return (String) callJS("getLine", idx);
-    }
-
-    public void addLine(String s) {
-        callJS("addLine", s);
-    }
-
-    public void setLine(int i, String s) {
-        callJS("setLine", i, s);
-    }
-
-    public void search() {
-        callJS("search");
     }
 
     public abstract EditorSettingsDialog settingsDialog();

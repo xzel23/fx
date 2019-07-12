@@ -125,8 +125,7 @@ public class EditorController extends FxController<EditorApp, EditorController> 
 	
 	@FXML
 	public void search() {
-		LOG.fine("search()");
-		editor.search();
+		// TODO
 	}
 	
 	@FXML

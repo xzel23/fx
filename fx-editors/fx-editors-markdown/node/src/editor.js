@@ -87,30 +87,6 @@ class MarkdownEditor {
         return text;
     }
 
-    getLineCount() {
-        // TODO
-    }
-
-    getLine(idx) {
-        // TODO
-    }
-
-    getLineNumber(idx) {
-        // TODO
-    }
-
-    search() {
-        // TODO
-    }
-
-    setLine(i,s) {
-        // TODO
-    }
-
-    addLine(s) {
-        // TODO
-    }
-
 }
 
 global.editorInstance = new MarkdownEditor();
