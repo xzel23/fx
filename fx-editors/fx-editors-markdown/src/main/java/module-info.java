@@ -20,10 +20,13 @@ module com.dua3.fx.editors.markdown {
 	requires com.dua3.fx.util;
 	requires com.dua3.fx.web;
 
+	requires com.dua3.utility;
+	requires com.dua3.utility.json;
+
 	requires java.logging;
 	requires java.prefs;
 	requires jdk.jsobject;
-    requires com.dua3.utility;
 	requires javafx.fxml;
 	requires javafx.controls;
+	requires org.json;
 }

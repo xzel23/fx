@@ -42,7 +42,7 @@
       "command": "heading",
       "args": [ 6 ]
     },
-    "----------",
+    "---",
     {
       "id": "EMPHASIS",
       "button_text": "<em>I</em>",

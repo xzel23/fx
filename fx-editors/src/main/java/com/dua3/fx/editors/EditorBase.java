@@ -22,6 +22,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.concurrent.Worker.State;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Control;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
@@ -29,6 +30,8 @@ import javafx.scene.web.WebView;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URL;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -149,17 +152,29 @@ public abstract class EditorBase extends BorderPane {
         return bridge.editorReadyProperty.get();
     }
 
-    /** Get the editor-ready-property. */
+    /**
+     * Get editor-ready-property.
+     * @return
+     *  this editor's editor-ready-property
+     */
     public ReadOnlyBooleanProperty editorReadyProperty() {
         return bridge.editorReadyProperty;
     }
 
-    /** Get the editor-dirty-property. */
+    /**
+     * Get dirty-property.
+     * @return
+     *  this editor's dirty-property
+     */
     public BooleanProperty dirtyProperty() {
         return bridge.dirtyProperty;
     }
 
-    /** Get the readonly-property. */
+    /**
+     * Get readonly-property.
+     * @return
+     *  this editor's readonly-property
+     */
     public BooleanProperty readOnlyProperty() {
         return bridge.readOnlyProperty;
     }
@@ -272,4 +287,8 @@ public abstract class EditorBase extends BorderPane {
      *  the settings to apply
      */
     public abstract void apply(EditorSettings settings);
+
+    public List<Control> toolbarControls() {
+        return Collections.emptyList();
+    }
 }

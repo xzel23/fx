@@ -72,7 +72,7 @@ public class TextEditorSettingsDialog extends EditorSettingsDialog {
             loader.setController(this);
             DialogPane dialogPane = loader.load();
 
-            // define buttons
+            // define toolbarControls
             dialogPane.getButtonTypes().addAll(RESET, OK);
 
             // store current seeting
