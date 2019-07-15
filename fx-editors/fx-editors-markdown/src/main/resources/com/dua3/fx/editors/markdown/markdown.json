@@ -1,0 +1,71 @@
+{
+  "commands": [
+    {
+      "id": "HEADING1",
+      "button_text": "H1",
+      "text": "Heading 1",
+      "command": "heading",
+      "args": [ 1 ]
+    },
+    {
+      "id": "HEADING2",
+      "button_text": "H2",
+      "text": "Heading 2",
+      "command": "heading",
+      "args": [ 2 ]
+    },
+    {
+      "id": "HEADING3",
+      "button_text": "H3",
+      "text": "Heading 3",
+      "command": "heading",
+      "args": [ 3 ]
+    },
+    {
+      "id": "HEADING4",
+      "button_text": "H4",
+      "text": "Heading 4",
+      "command": "heading",
+      "args": [ 4 ]
+    },
+    {
+      "id": "HEADING5",
+      "button_text": "H5",
+      "text": "Heading 5",
+      "command": "heading",
+      "args": [ 5 ]
+    },
+    {
+      "id": "HEADING6",
+      "button_text": "H6",
+      "text": "Heading 6",
+      "command": "heading",
+      "args": [ 6 ]
+    },
+    "----------",
+    {
+      "id": "EMPHASIS",
+      "button_text": "<em>I</em>",
+      "text": "emphasis",
+      "command": "emphasis"
+    },
+    {
+      "id": "STRONG",
+      "button_text": "<b>B</b>",
+      "text": "strong",
+      "command": "document.execCommand('formatBlock', false, '<bold>');"
+    },
+    {
+      "id": "STRIKETHROUGH",
+      "button_text": "<s>S</s>",
+      "text": "strikethrough",
+      "command": "document.execCommand('formatBlock', false, '<strikethrough>');"
+    },
+    {
+      "id": "UNDERLINE",
+      "button_text": "<u>U</u>",
+      "text": "underline",
+      "command": "document.execCommand('formatBlock', false, '<underline>');"
+    }
+  ]
+}

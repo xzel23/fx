@@ -108,6 +108,15 @@ public abstract class EditorBase extends BorderPane {
         LOG.fine("Editor component created");
     }
 
+    /**
+     * Wait until the editor's implementation is ready to be used, i. e. the HTML and Javascript resources have
+     * been loaded.
+     * @param millis
+     *  timeout
+     * @return
+     *  true, if editor is ready
+     *  false, if timed out before editor ready
+     */
     public boolean waitReady(int millis) {
         final CountDownLatch latch = new CountDownLatch(1);
 
@@ -140,28 +149,48 @@ public abstract class EditorBase extends BorderPane {
         return bridge.editorReadyProperty.get();
     }
 
+    /** Get the editor-ready-property. */
     public ReadOnlyBooleanProperty editorReadyProperty() {
         return bridge.editorReadyProperty;
     }
 
+    /** Get the editor-dirty-property. */
     public BooleanProperty dirtyProperty() {
         return bridge.dirtyProperty;
     }
 
+    /** Get the readonly-property. */
     public BooleanProperty readOnlyProperty() {
         return bridge.readOnlyProperty;
     }
 
-    public void setText(String text) {
+    /**
+     * Set the text of this editor instance.
+     * @param text
+     *  the text to set
+     */
+    public void setContent(String text) {
         LOG.fine("setting editor content");
-        callJS("setText", text);
+        callJS("setContent", text);
     }
 
-    public void setText(String text, String ext) {
+    /**
+     * Set the text of this editor instance.
+     * @param text
+     *  the text to set
+     * @param extension
+     *  the file extension to determine the correct type (for editors supporting multiple file types)
+     */
+    public void setContent(String text, String extension) {
         LOG.fine("setting editor content");
-        callJS("setContent", text, ext);
+        callJS("setContent", text, extension);
     }
 
+    /**
+     * Get the text edited.
+     * @return
+     *  the current text
+     */
     public String getText() {
         return (String) callJS("getText");
     }
@@ -223,9 +252,24 @@ public abstract class EditorBase extends BorderPane {
         callJS("paste");
     }
 
+    /**
+     * Create settings dialog for editor.
+     * @return
+     *  An instance of EditorSettingsDialog for this editor instance
+     */
     public abstract EditorSettingsDialog settingsDialog();
 
+    /**
+     * Get editor settings.
+     * @return
+     *  the settings for this editor instance
+     */
     public abstract EditorSettings getSettings();
 
-    public abstract void apply(EditorSettings setting);
+    /**
+     * Apply editor settings.
+     * @param settings
+     *  the settings to apply
+     */
+    public abstract void apply(EditorSettings settings);
 }

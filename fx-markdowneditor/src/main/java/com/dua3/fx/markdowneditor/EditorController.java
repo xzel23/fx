@@ -90,7 +90,7 @@ public class EditorController extends FxController<EditorApp, EditorController> 
         Path path = Paths.get(uri);
         String content = IOUtil.loadText(path, cs -> charset = cs);
         String extension = IOUtil.getExtension(path);
-        editor.setText(content, extension);
+        editor.setContent(content, extension);
         editor.setReadOnly(!Files.isWritable(path));
         editor.setDirty(false);
         LOG.info(() -> String.format("document read from '%s'", uri));
