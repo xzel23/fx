@@ -25,8 +25,8 @@ import java.util.prefs.Preferences;
 
 public class EditorController extends FxController<EditorApp, EditorController> {
 
-    public class TextDocument extends FxDocument {
-        TextDocument(URI location) {
+    public class MarkdownDocument extends FxDocument {
+        MarkdownDocument(URI location) {
             super(location);
         }
         
@@ -86,7 +86,7 @@ public class EditorController extends FxController<EditorApp, EditorController> 
 	}
 	
 	@Override
-	protected TextDocument loadDocument(URI uri) throws IOException {
+	protected MarkdownDocument loadDocument(URI uri) throws IOException {
         Path path = Paths.get(uri);
         String content = IOUtil.loadText(path, cs -> charset = cs);
         String extension = IOUtil.getExtension(path);
@@ -94,12 +94,12 @@ public class EditorController extends FxController<EditorApp, EditorController> 
         editor.setReadOnly(!Files.isWritable(path));
         editor.setDirty(false);
         LOG.info(() -> String.format("document read from '%s'", uri));
-        return new TextDocument(uri);
+        return new MarkdownDocument(uri);
 	}
 
 	@Override
 	protected void createDocument() {
-		setCurrentDocument(new TextDocument(FxDocument.VOID_URI));
+		setCurrentDocument(new MarkdownDocument(FxDocument.VOID_URI));
 	}
 	
 	@FXML
@@ -147,12 +147,12 @@ public class EditorController extends FxController<EditorApp, EditorController> 
 	}
 
     @Override
-    public TextDocument getCurrentDocument() {
-        return (TextDocument) super.getCurrentDocument();
+    public MarkdownDocument getCurrentDocument() {
+        return (MarkdownDocument) super.getCurrentDocument();
     }
 
     @Override
-    public List<TextDocument> dirtyDocuments() {
+    public List<MarkdownDocument> dirtyDocuments() {
         boolean dirty = hasCurrentDocument() && getCurrentDocument().isDirty();
         return dirty ? List.of(getCurrentDocument()) : Collections.emptyList();
     }
