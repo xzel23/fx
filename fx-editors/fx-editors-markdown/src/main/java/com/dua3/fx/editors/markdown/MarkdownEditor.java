@@ -17,6 +17,7 @@ package com.dua3.fx.editors.markdown;
 import com.dua3.fx.editors.EditorBase;
 import com.dua3.fx.editors.EditorSettings;
 import com.dua3.utility.json.JsonUtil;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.Separator;
@@ -58,8 +59,8 @@ public class MarkdownEditor extends EditorBase {
 	}
 
 	@Override
-	public List<Control> toolbarControls() {
-		URL url = MarkdownEditor.class.getResource("markdown.properties");
+	public Node[] toolbarControls() {
+		URL url = MarkdownEditor.class.getResource("commands.json");
 		try {
 			JSONArray jsa = JsonUtil.read(url).getJSONArray("commands");
 
@@ -71,7 +72,12 @@ public class MarkdownEditor extends EditorBase {
 					String buttonText = jso.getString("button_text");
 					String text = jso.getString("text");
 					String command = jso.getString("command");
-					JSONArray args = jso.getJSONArray("args");
+
+					JSONArray jsargs = jso.getJSONArray("args");
+					Object[] args = new Object[jsargs.length()];
+					for (int i = 0; i < jsargs.length(); i++) {
+						args[i] = jsargs.get(i);
+					}
 
 					Button button = new Button(buttonText);
 					button.setTooltip(new Tooltip(text));
@@ -85,12 +91,12 @@ public class MarkdownEditor extends EditorBase {
 							list.add(new Separator());
 							break;
 						default:
-							LOG.warning(String.format("in file %s: ignoring invalid entry: %s", url, text));
+							LOG.warning(String.format("[in %s] ignoring invalid entry: %s", url, text));
 							break;
 					}
 				}
 			}
-			return list;
+			return list.toArray(Node[]::new);
 		} catch (IOException e) {
 			// should not happen
 			throw new IllegalStateException(e);

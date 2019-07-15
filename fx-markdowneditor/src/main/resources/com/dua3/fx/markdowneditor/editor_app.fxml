@@ -8,6 +8,7 @@
 <?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.ToolBar?>
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dua3.fx.markdowneditor.EditorController">
   <children>
     <MenuBar fx:id="menubar">
@@ -66,6 +67,7 @@
         </Menu>
       </menus>
     </MenuBar>
+    <ToolBar fx:id="toolbar" visible="false"/>
     <MarkdownEditor fx:id="editor" VBox.vgrow="ALWAYS" />
   </children>
 </VBox>

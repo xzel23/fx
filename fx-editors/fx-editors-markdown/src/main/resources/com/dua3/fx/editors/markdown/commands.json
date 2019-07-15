@@ -45,27 +45,31 @@
     "---",
     {
       "id": "EMPHASIS",
-      "button_text": "<em>I</em>",
+      "button_text": "𝐼",
       "text": "emphasis",
-      "command": "emphasis"
+      "command": "emphasis",
+      "args": []
     },
     {
       "id": "STRONG",
-      "button_text": "<b>B</b>",
+      "button_text": "𝐁",
       "text": "strong",
-      "command": "document.execCommand('formatBlock', false, '<bold>');"
+      "command": "strong",
+      "args": []
     },
     {
       "id": "STRIKETHROUGH",
-      "button_text": "<s>S</s>",
+      "button_text": "̶S",
       "text": "strikethrough",
-      "command": "document.execCommand('formatBlock', false, '<strikethrough>');"
+      "command": "strikethrough",
+      "args": []
     },
     {
       "id": "UNDERLINE",
-      "button_text": "<u>U</u>",
+      "button_text": "̲U",
       "text": "underline",
-      "command": "document.execCommand('formatBlock', false, '<underline>');"
+      "command": "underline",
+      "args": []
     }
   ]
 }

@@ -3,14 +3,12 @@ var showdown  = require('showdown');
 import './editor.css';
 
 // connect to logger
-if (window.hasOwnProperty('bridge')) {
-    console.log = function (m) {
-        bridge.log(m);
-    };
-}
+console.log = function (m) {
+    bridge.log(m);
+};
 
 // set to true to enable trace messages
-var debug = true;
+let debug = true;
 
 // output trace messages in debug mode
 function trace(m) {
@@ -89,6 +87,31 @@ class MarkdownEditor {
         return text;
     }
 
+    heading(level) {
+        this.div.focus();
+        document.execCommand('formatBlock', false, '<h' + level + '>');
+    }
+
+    toggleStyleFlag(style) {
+        this.div.focus();
+        document.execCommand(style, false, null);
+    }
+
+    emphasis() {
+       this.toggleStyleFlag("italic");
+    }
+
+    strong() {
+        this.toggleStyleFlag("bold");
+    }
+
+    underline() {
+        this.toggleStyleFlag("underline");
+    }
+
+    strikethrough() {
+        this.toggleStyleFlag("strikethrough");
+    }
 }
 
 global.editorInstance = new MarkdownEditor();

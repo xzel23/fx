@@ -22,7 +22,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.concurrent.Worker.State;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Control;
+import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
@@ -30,8 +30,6 @@ import javafx.scene.web.WebView;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URL;
-import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -288,7 +286,12 @@ public abstract class EditorBase extends BorderPane {
      */
     public abstract void apply(EditorSettings settings);
 
-    public List<Control> toolbarControls() {
-        return Collections.emptyList();
+    /**
+     * Get Array with Controls to show in ToolBar.
+     * @return
+     *  Array with toolbar controls
+     */
+    public Node[] toolbarControls() {
+        return new Node[0];
     }
 }

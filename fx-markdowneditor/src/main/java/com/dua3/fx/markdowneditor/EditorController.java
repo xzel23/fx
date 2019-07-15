@@ -10,6 +10,7 @@ import com.dua3.utility.io.IOUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.ToolBar;
 import javafx.stage.FileChooser;
 
 import java.io.IOException;
@@ -48,21 +49,22 @@ public class EditorController extends FxController<EditorApp, EditorController> 
 
 	private Charset charset = StandardCharsets.UTF_8;
 
-	@FXML
-	MenuBar menubar;
-
-	@FXML
-    MarkdownEditor editor;
+	@FXML MenuBar menubar;
+	@FXML ToolBar toolbar;
+	@FXML MarkdownEditor editor;
 	
 	@Override
 	protected void init(EditorApp app) {
 		// handle command line arguments
 		Cli.apply(this, getApp().getParameters().getRaw().toArray(String[]::new));
 
+		// native look on MacOS
 		menubar.setUseSystemMenuBar(true);
 
+		// use the editor control's dirty property
 		dirtyProperty.bind(editor.dirtyProperty());
-		
+
+		// apply preferences when editor is loaded
 		editor.editorReadyProperty().addListener((v,o,n) -> {
 			// restore editor settings from preferences
 			Preferences editorPref = getPreferences().node(PREF_EDITOR_PATH);
@@ -71,11 +73,16 @@ public class EditorController extends FxController<EditorApp, EditorController> 
 			createDocument();
 		});
 
+		// track dirty state
 		dirtyProperty.addListener((v,o,n) -> {
 			if (hasCurrentDocument() || newDocument()) {
 				getCurrentDocument().setDirty(n);
 			}
 		});
+
+		// add actions to toolbar
+		toolbar.getItems().addAll(editor.toolbarControls());
+		toolbar.setVisible(true);
 	}
 	
 	@Override
