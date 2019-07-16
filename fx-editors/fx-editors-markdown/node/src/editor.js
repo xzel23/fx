@@ -1,6 +1,7 @@
 var showdown  = require('showdown');
 
 import './editor.css';
+import './github-markdown.css';
 
 // connect to logger
 console.log = function (m) {
@@ -92,25 +93,24 @@ class MarkdownEditor {
         document.execCommand('formatBlock', false, '<h' + level + '>');
     }
 
-    toggleStyleFlag(style) {
-        this.div.focus();
-        document.execCommand(style, false, null);
-    }
-
     emphasis() {
-       this.toggleStyleFlag("italic");
+        this.div.focus();
+        document.execCommand("italic");
     }
 
     strong() {
-        this.toggleStyleFlag("bold");
+        this.div.focus();
+        document.execCommand("bold");
     }
 
     underline() {
-        this.toggleStyleFlag("underline");
+        this.div.focus();
+        document.execCommand("underline");
     }
 
     strikethrough() {
-        this.toggleStyleFlag("strikethrough");
+        this.div.focus();
+        document.execCommand("strikethrough");
     }
 }
 

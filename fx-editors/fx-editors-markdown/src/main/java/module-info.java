@@ -23,6 +23,10 @@ module com.dua3.fx.editors.markdown {
 	requires com.dua3.utility;
 	requires com.dua3.utility.json;
 
+	requires org.kordamp.iconli.core;
+	requires org.kordamp.ikonli.javafx;
+	requires org.kordamp.ikonli.fontawesome5;
+
 	requires java.logging;
 	requires java.prefs;
 	requires jdk.jsobject;

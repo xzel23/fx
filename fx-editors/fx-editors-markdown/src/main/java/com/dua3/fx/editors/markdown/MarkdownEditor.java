@@ -25,6 +25,8 @@ import javafx.scene.control.Tooltip;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.kordamp.ikonli.Ikon;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.io.IOException;
 import java.net.URL;
@@ -68,20 +70,36 @@ public class MarkdownEditor extends EditorBase {
 			for (var it: jsa) {
 				if (it instanceof JSONObject) {
 					JSONObject jso = (JSONObject) it;
-					String id = jso.getString("id");
-					String buttonText = jso.getString("button_text");
-					String text = jso.getString("text");
-					String command = jso.getString("command");
 
-					JSONArray jsargs = jso.getJSONArray("args");
-					Object[] args = new Object[jsargs.length()];
-					for (int i = 0; i < jsargs.length(); i++) {
-						args[i] = jsargs.get(i);
+					String id = jso.getString("id");
+					Button button = new Button();
+
+					JSONObject buttonDef = jso.getJSONObject("button");
+					if (buttonDef.has("text")) {
+						button.setText(buttonDef.getString("text"));
+					}
+					if (buttonDef.has("tooltip")) {
+						button.setTooltip(new Tooltip(buttonDef.getString("tooltip")));
+					}
+					if (buttonDef.has("graphic")) {
+						Node graphic = graphicFromName(buttonDef.getString("graphic"));
+						button.setGraphic(graphic);
 					}
 
-					Button button = new Button(buttonText);
-					button.setTooltip(new Tooltip(text));
-					button.setOnAction(evt -> callJS(command, args));
+					JSONObject command = jso.getJSONObject("command");
+					String function = command.getString("function");
+					final Object[] args;
+					if (command.has("args")) {
+						JSONArray jsargs = command.getJSONArray("args");
+						args = new Object[jsargs.length()];
+						for (int i = 0; i < jsargs.length(); i++) {
+							args[i] = jsargs.get(i);
+						}
+					} else {
+						args = new Object[0];
+					}
+
+					button.setOnAction(evt -> callJS(function, args));
 
 					list.add(button);
 				} else if (it instanceof String) {
@@ -104,6 +122,19 @@ public class MarkdownEditor extends EditorBase {
 			LOG.warning("could not load button data");
 			throw new IllegalStateException(e);
 		}
+	}
+
+    private Node graphicFromName(String name) {
+        int idx = name.lastIndexOf('.');
+        String pack = name.substring(0, idx);
+        String iconName = name.substring(idx + 1);
+
+        try {
+            Ikon ikon = (Ikon) Class.forName(pack).getDeclaredField(iconName).get(null);
+            return new FontIcon(ikon);
+        } catch (IllegalAccessException | ClassNotFoundException | NoSuchFieldException e) {
+            throw new IllegalStateException("could not load icon: " + name, e);
+        }
 	}
 
 }

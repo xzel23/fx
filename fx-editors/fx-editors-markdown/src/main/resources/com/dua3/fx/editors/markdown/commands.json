@@ -1,75 +1,113 @@
 {
   "commands": [
     {
-      "id": "HEADING1",
-      "button_text": "H1",
-      "text": "Heading 1",
-      "command": "heading",
-      "args": [ 1 ]
+      "id": "H1",
+      "button": {
+        "text": "H1"
+      },
+      "command": {
+        "function": "heading",
+        "args": [
+          1
+        ]
+      }
     },
     {
-      "id": "HEADING2",
-      "button_text": "H2",
-      "text": "Heading 2",
-      "command": "heading",
-      "args": [ 2 ]
+      "id": "H12",
+      "button": {
+        "text": "H2"
+      },
+      "command": {
+        "function": "heading",
+        "args": [
+          2
+        ]
+      }
     },
     {
-      "id": "HEADING3",
-      "button_text": "H3",
-      "text": "Heading 3",
-      "command": "heading",
-      "args": [ 3 ]
+      "id": "H3",
+      "button": {
+        "text": "H3"
+      },
+      "command": {
+        "function": "heading",
+        "args": [
+          3
+        ]
+      }
     },
     {
-      "id": "HEADING4",
-      "button_text": "H4",
-      "text": "Heading 4",
-      "command": "heading",
-      "args": [ 4 ]
+      "id": "H4",
+      "button": {
+        "text": "H4"
+      },
+      "command": {
+        "function": "heading",
+        "args": [
+          4
+        ]
+      }
     },
     {
-      "id": "HEADING5",
-      "button_text": "H5",
-      "text": "Heading 5",
-      "command": "heading",
-      "args": [ 5 ]
+      "id": "H5",
+      "button": {
+        "text": "H5"
+      },
+      "command": {
+        "function": "heading",
+        "args": [
+          5
+        ]
+      }
     },
     {
-      "id": "HEADING6",
-      "button_text": "H6",
-      "text": "Heading 6",
-      "command": "heading",
-      "args": [ 6 ]
+      "id": "H6",
+      "button": {
+        "text": "H6"
+      },
+      "command": {
+        "function": "heading",
+        "args": [
+          6
+        ]
+      }
     },
     "---",
     {
       "id": "EMPHASIS",
-      "button_text": "𝐼",
-      "text": "emphasis",
-      "command": "emphasis",
-      "args": []
+      "button": {
+        "graphic": "org.kordamp.ikonli.fontawesome5.FontAwesomeSolid.ITALIC"
+      },
+      "command": {
+        "function": "emphasis"
+      }
     },
     {
       "id": "STRONG",
-      "button_text": "𝐁",
-      "text": "strong",
-      "command": "strong",
-      "args": []
+      "button": {
+        "graphic": "org.kordamp.ikonli.fontawesome5.FontAwesomeSolid.BOLD"
+      },
+      "command": {
+        "function": "strong"
+      }
     },
     {
       "id": "STRIKETHROUGH",
-      "button_text": "̶S",
-      "text": "strikethrough",
-      "command": "strikethrough",
-      "args": []
+      "button": {
+        "graphic": "org.kordamp.ikonli.fontawesome5.FontAwesomeSolid.STRIKETHROUGH"
+      },
+      "command": {
+        "function": "strikethrough"
+      }
     },
     {
       "id": "UNDERLINE",
-      "button_text": "̲U",
-      "text": "underline",
-      "command": "underline",
-      "args": []
+      "button": {
+        "graphic": "org.kordamp.ikonli.fontawesome5.FontAwesomeSolid.UNDERLINE"
+      },
+      "command": {
+        "function": "underline"
+      }
     }
   ]
 }
