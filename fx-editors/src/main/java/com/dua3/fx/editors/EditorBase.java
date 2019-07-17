@@ -22,6 +22,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.concurrent.Worker.State;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.web.WebEngine;
@@ -290,8 +291,9 @@ public abstract class EditorBase extends BorderPane {
      * Get Array with Controls to show in ToolBar.
      * @return
      *  Array with toolbar controls
+     * @param orientation
      */
-    public Node[] toolbarControls() {
+    public Node[] toolbarControls(Orientation orientation) {
         return new Node[0];
     }
 }

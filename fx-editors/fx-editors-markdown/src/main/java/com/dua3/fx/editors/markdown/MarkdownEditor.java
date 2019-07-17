@@ -14,10 +14,11 @@
 
 package com.dua3.fx.editors.markdown;
 
-import com.dua3.fx.icons.IconUtil;
 import com.dua3.fx.editors.EditorBase;
 import com.dua3.fx.editors.EditorSettings;
+import com.dua3.fx.icons.IconUtil;
 import com.dua3.utility.json.JsonUtil;
+import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
@@ -60,7 +61,7 @@ public class MarkdownEditor extends EditorBase {
 	}
 
 	@Override
-	public Node[] toolbarControls() {
+    public Node[] toolbarControls(Orientation orientation) {
 		URL url = MarkdownEditor.class.getResource("commands.json");
 		try {
 			JSONArray jsa = JsonUtil.read(url).getJSONArray("commands");
@@ -105,7 +106,7 @@ public class MarkdownEditor extends EditorBase {
 					String text = String.valueOf(it);
 					switch (text) {
 						case "---":
-							list.add(new Separator());
+                            list.add(new Separator(orientation));
 							break;
 						default:
 							LOG.warning(String.format("[in %s] ignoring invalid entry: %s", url, text));
