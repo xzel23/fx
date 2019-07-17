@@ -14,4 +14,7 @@
 
 dependencies {
     compile project(':fx-util')
+
+    implementation "org.kordamp.ikonli:ikonli-javafx:${iconly_version}"
+    implementation "org.kordamp.ikonli:ikonli-fontawesome5-pack:${iconly_version}"
 }

@@ -16,16 +16,13 @@ module com.dua3.fx.editors.markdown {
 	exports com.dua3.fx.editors.markdown;
 	opens com.dua3.fx.editors.markdown;
 
+	requires com.dua3.fx.controls;
 	requires com.dua3.fx.editors;
 	requires com.dua3.fx.util;
 	requires com.dua3.fx.web;
 
 	requires com.dua3.utility;
 	requires com.dua3.utility.json;
-
-	requires org.kordamp.iconli.core;
-	requires org.kordamp.ikonli.javafx;
-	requires org.kordamp.ikonli.fontawesome5;
 
 	requires java.logging;
 	requires java.prefs;

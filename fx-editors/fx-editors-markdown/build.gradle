@@ -13,10 +13,9 @@
 // limitations under the License.
 
 dependencies {
+    implementation project(':fx-controls')
     api project(':fx-editors')
     implementation "com.dua3.utility:utility-json:${dua3_utility_version}"
-    implementation "org.kordamp.ikonli:ikonli-javafx:${iconly_version}"
-    implementation "org.kordamp.ikonli:ikonli-fontawesome5-pack:${iconly_version}"
 }
 
 def currentOS = org.gradle.internal.os.OperatingSystem.current()
