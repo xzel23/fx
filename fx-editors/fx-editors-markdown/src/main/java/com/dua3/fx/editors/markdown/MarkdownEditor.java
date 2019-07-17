@@ -14,6 +14,7 @@
 
 package com.dua3.fx.editors.markdown;
 
+import com.dua3.fx.icons.IconUtil;
 import com.dua3.fx.editors.EditorBase;
 import com.dua3.fx.editors.EditorSettings;
 import com.dua3.utility.json.JsonUtil;
@@ -25,8 +26,6 @@ import javafx.scene.control.Tooltip;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.kordamp.ikonli.Ikon;
-import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.io.IOException;
 import java.net.URL;
@@ -82,7 +81,7 @@ public class MarkdownEditor extends EditorBase {
 						button.setTooltip(new Tooltip(buttonDef.getString("tooltip")));
 					}
 					if (buttonDef.has("graphic")) {
-						Node graphic = graphicFromName(buttonDef.getString("graphic"));
+						Node graphic = IconUtil.iconFromName(buttonDef.getString("graphic"));
 						button.setGraphic(graphic);
 					}
 
@@ -122,19 +121,6 @@ public class MarkdownEditor extends EditorBase {
 			LOG.warning("could not load button data");
 			throw new IllegalStateException(e);
 		}
-	}
-
-    private Node graphicFromName(String name) {
-        int idx = name.lastIndexOf('.');
-        String pack = name.substring(0, idx);
-        String iconName = name.substring(idx + 1);
-
-        try {
-            Ikon ikon = (Ikon) Class.forName(pack).getDeclaredField(iconName).get(null);
-            return new FontIcon(ikon);
-        } catch (IllegalAccessException | ClassNotFoundException | NoSuchFieldException e) {
-            throw new IllegalStateException("could not load icon: " + name, e);
-        }
 	}
 
 }

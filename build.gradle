@@ -50,7 +50,7 @@ subprojects {
         dua3_utility_version = '4.0.2-SNAPSHOT'
         dua3_meja_version = '2.0-BETA6'
 
-        iconly_version = '11.3.4'
+        ikonli_version = '11.3.4'
     }
 
     sourceCompatibility = java_version
@@ -59,6 +59,8 @@ subprojects {
     // repositories
     repositories {
         jcenter()
+
+        maven { url  "https://dl.bintray.com/dua3/oss" }
 
         // no dependencies on local versions in release
         if (!project.hasProperty('release')) {

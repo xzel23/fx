@@ -7,7 +7,9 @@ import com.dua3.fx.editors.markdown.MarkdownEditorSettings;
 import com.dua3.fx.editors.markdown.MarkdownEditorSettingsDialog;
 import com.dua3.fx.markdowneditor.cli.Cli;
 import com.dua3.utility.io.IOUtil;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.ToolBar;
@@ -81,7 +83,8 @@ public class EditorController extends FxController<EditorApp, EditorController> 
 		});
 
 		// add actions to toolbar
-		toolbar.getItems().addAll(editor.toolbarControls());
+		ObservableList<Node> toolbarItems = toolbar.getItems();
+		toolbarItems.addAll(editor.toolbarControls());
 		toolbar.setVisible(true);
 	}
 	

@@ -12,24 +12,5 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-module com.dua3.fx.editors.markdown {
-	exports com.dua3.fx.editors.markdown;
-	opens com.dua3.fx.editors.markdown;
-
-	requires com.dua3.fx.controls;
-	requires com.dua3.fx.editors;
-	requires com.dua3.fx.util;
-	requires com.dua3.fx.web;
-
-	requires com.dua3.utility;
-	requires com.dua3.utility.json;
-
-	requires java.logging;
-	requires java.prefs;
-	requires jdk.jsobject;
-	requires javafx.fxml;
-	requires javafx.controls;
-
-	requires org.json;
-    requires com.dua3.fx.icons;
+dependencies {
 }
