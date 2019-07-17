@@ -31,4 +31,5 @@ module com.dua3.fx.editors.markdown {
 	requires javafx.controls;
 
 	requires org.json;
+    requires com.dua3.fx.icons;
 }

@@ -14,8 +14,12 @@
 
 dependencies {
     implementation project(':fx-controls')
+    implementation project(':fx-icons')
     api project(':fx-editors')
     implementation "com.dua3.utility:utility-json:${dua3_utility_version}"
+
+    runtimeOnly project(':fx-icons:fx-icons-ikonli')
+    runtimeOnly "org.kordamp.ikonli:ikonli-materialdesign-pack:${ikonli_version}"
 }
 
 def currentOS = org.gradle.internal.os.OperatingSystem.current()

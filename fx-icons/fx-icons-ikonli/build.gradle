@@ -13,5 +13,7 @@
 // limitations under the License.
 
 dependencies {
-    compile project(':fx-util')
+    api project(':fx-icons')
+
+    implementation "org.kordamp.ikonli:ikonli-javafx:${ikonli_version}"
 }

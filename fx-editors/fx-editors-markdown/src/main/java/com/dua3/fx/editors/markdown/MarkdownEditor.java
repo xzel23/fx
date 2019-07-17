@@ -14,7 +14,7 @@
 
 package com.dua3.fx.editors.markdown;
 
-import com.dua3.fx.controls.ControlsUtil;
+import com.dua3.fx.icons.IconUtil;
 import com.dua3.fx.editors.EditorBase;
 import com.dua3.fx.editors.EditorSettings;
 import com.dua3.utility.json.JsonUtil;
@@ -81,7 +81,7 @@ public class MarkdownEditor extends EditorBase {
 						button.setTooltip(new Tooltip(buttonDef.getString("tooltip")));
 					}
 					if (buttonDef.has("graphic")) {
-						Node graphic = ControlsUtil.iconFromName(buttonDef.getString("graphic"));
+						Node graphic = IconUtil.iconFromName(buttonDef.getString("graphic"));
 						button.setGraphic(graphic);
 					}
 
