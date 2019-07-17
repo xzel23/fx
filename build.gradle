@@ -60,6 +60,8 @@ subprojects {
     repositories {
         jcenter()
 
+        maven { url  "https://dl.bintray.com/dua3/oss" }
+
         // no dependencies on local versions in release
         if (!project.hasProperty('release')) {
             mavenLocal()
