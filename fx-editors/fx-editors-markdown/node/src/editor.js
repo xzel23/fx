@@ -1,4 +1,5 @@
-var showdown  = require('showdown');
+var MarkdownIt = require('markdown-it');
+var TurndownService = require('turndown');
 
 import './editor.css';
 import './github-markdown.css';
@@ -20,11 +21,14 @@ function trace(m) {
 
 class MarkdownEditor {
     constructor() {
-        this.converter = new showdown.Converter();
+        /** markdown-it instance for converting Markdown to HTML. */
+        this.md = new new MarkdownIt();
+        /** turndown instance for converting HTML to Markdown. */
+        this.td = new TurndownService();
+        /** The DIV used as editor. */
         this.div = document.getElementById("editor");
+        /** The text to display in an empty editor. */
         this.promptText = '';
-
-        this.converter.setFlavor("github");
     }
 
     clear() {
@@ -33,7 +37,7 @@ class MarkdownEditor {
 
     setText(text) {
         trace("setting text");
-        let  html = this.converter.makeHtml(text);
+        let html = this.md.render(text);
         this.div.innerHTML=html;
     }
 
@@ -84,7 +88,7 @@ class MarkdownEditor {
     getText() {
         trace("getText");
         let html = this.div.innerHTML;
-        var text = this.converter.makeMarkdown(html);
+        var text = this.td.turndown(html);
         return text;
     }
 
