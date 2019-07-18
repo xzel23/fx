@@ -108,6 +108,62 @@
       "command": {
         "function": "underline"
       }
+    },
+    "---",
+    {
+      "id": "BULLETED",
+      "button": {
+        "graphic": "mdi-format-list-bulleted"
+      },
+      "command": {
+        "function": "bulletedList"
+      }
+    },
+    {
+      "id": "NUMERED",
+      "button": {
+        "graphic": "mdi-format-list-numbers"
+      },
+      "command": {
+        "function": "numberedList"
+      }
+    },
+    {
+      "id": "QUOTED",
+      "button": {
+        "graphic": "mdi-format-quote"
+      },
+      "command": {
+        "function": "blockQuote"
+      }
+    },
+    {
+      "id": "CODE",
+      "button": {
+        "graphic": "mdi-code-braces"
+      },
+      "command": {
+        "function": "blockCode"
+      }
+    },
+    "---",
+    {
+      "id": "IMAGE",
+      "button": {
+        "graphic": "mdi-image"
+      },
+      "command": {
+        "function": "image"
+      }
+    },
+    {
+      "id": "LINK",
+      "button": {
+        "graphic": "mdi-link-variant"
+      },
+      "command": {
+        "function": "link"
+      }
     }
   ]
 }
