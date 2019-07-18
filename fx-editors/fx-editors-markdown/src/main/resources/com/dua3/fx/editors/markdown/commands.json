@@ -159,7 +159,7 @@
     {
       "id": "LINK",
       "button": {
-        "graphic": "mdi-link-variantF"
+        "graphic": "mdi-link-variant"
       },
       "command": {
         "function": "link"
