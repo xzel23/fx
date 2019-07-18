@@ -1,5 +1,9 @@
+// markdown-it
 var MarkdownIt = require('markdown-it');
+
+// Turndown
 var TurndownService = require('turndown');
+var turndownPluginGfm = require('turndown-plugin-gfm');
 
 import './editor.css';
 import './github-markdown.css';
@@ -25,6 +29,7 @@ class MarkdownEditor {
         this.md = new new MarkdownIt();
         /** turndown instance for converting HTML to Markdown. */
         this.td = new TurndownService();
+        this.td.use(turndownPluginGfm.gfm);
         /** The DIV used as editor. */
         this.div = document.getElementById("editor");
         /** The text to display in an empty editor. */
@@ -88,7 +93,7 @@ class MarkdownEditor {
     getText() {
         trace("getText");
         let html = this.div.innerHTML;
-        var text = this.td.turndown(html);
+        let text = this.td.turndown(html);
         return text;
     }
 

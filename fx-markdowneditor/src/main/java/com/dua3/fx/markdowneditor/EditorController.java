@@ -88,6 +88,7 @@ public class EditorController extends FxController<EditorApp, EditorController> 
 		ObservableList<Node> toolbarItems = toolbar.getItems();
 		Orientation orientation = toolbar.getOrientation();
 		toolbarItems.addAll(
+				Buttons.button().graphic("mdi-open-in-app").action(() -> open()).build(),
 				Buttons.button().graphic("mdi-content-save").action(this::save).build(),
 				Buttons.separator(orientation)
 		);
