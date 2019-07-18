@@ -74,15 +74,6 @@
     },
     "---",
     {
-      "id": "EMPHASIS",
-      "button": {
-        "graphic": "mdi-format-italic"
-      },
-      "command": {
-        "function": "emphasis"
-      }
-    },
-    {
       "id": "STRONG",
       "button": {
         "graphic": "mdi-format-bold"
@@ -92,12 +83,12 @@
       }
     },
     {
-      "id": "STRIKETHROUGH",
+      "id": "EMPHASIS",
       "button": {
-        "graphic": "mdi-format-strikethrough"
+        "graphic": "mdi-format-italic"
       },
       "command": {
-        "function": "strikethrough"
+        "function": "emphasis"
       }
     },
     {
@@ -107,6 +98,15 @@
       },
       "command": {
         "function": "underline"
+      }
+    },
+    {
+      "id": "STRIKETHROUGH",
+      "button": {
+        "graphic": "mdi-format-strikethrough"
+      },
+      "command": {
+        "function": "strikethrough"
       }
     },
     "---",
