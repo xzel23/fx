@@ -24,7 +24,7 @@ dependencies {
     compile project(':fx-application')
 
     // picocli
-    compile 'info.picocli:picocli:4.0.0-beta-1b'
+    compile "info.picocli:picocli:${picocli_version}"
 }
 
 mainClassName = 'com.dua3.fx.markdowneditor.Editor'
