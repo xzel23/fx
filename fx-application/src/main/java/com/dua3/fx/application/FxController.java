@@ -266,7 +266,10 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		}
 
 		// open the document and handle errors
-		URI uri = file.get().toURI();
+		return open(file.get().toURI());
+	}
+
+	protected boolean open(URI uri) {
 		try {
 			setCurrentDocument(loadDocument(uri));
 			return true;
@@ -275,13 +278,13 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 			Dialogs.error()
 			.title(TITLE_ERROR)
 			.header("'%s' could not be opened.", getDisplayName(uri))
-			.text(e.getMessage())
+					.text(Objects.toString(e.getMessage()))
 			.build()
 			.showAndWait();
 			return false;
 		}
 	}
-	
+
 	protected ExtensionFilter selectedOpenFilter() {
 		return null;
 	}

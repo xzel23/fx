@@ -19,7 +19,7 @@ dependencies {
     implementation "com.dua3.utility:utility-json:${dua3_utility_version}"
 
     runtimeOnly project(':fx-icons:fx-icons-ikonli')
-    runtimeOnly "org.kordamp.ikonli:ikonli-materialdesign-pack:${ikonli_version}"
+    implementation "org.kordamp.ikonli:ikonli-materialdesign-pack:${ikonli_version}"
 }
 
 def currentOS = org.gradle.internal.os.OperatingSystem.current()

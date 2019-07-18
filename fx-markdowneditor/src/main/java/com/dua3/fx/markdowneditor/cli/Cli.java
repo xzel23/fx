@@ -3,7 +3,9 @@ package com.dua3.fx.markdowneditor.cli;
 import com.dua3.fx.markdowneditor.EditorController;
 import picocli.CommandLine;
 
+import java.nio.file.Path;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.logging.*;
 
 public class Cli implements Runnable {
@@ -14,13 +16,17 @@ public class Cli implements Runnable {
     @CommandLine.Option(names={"-l", "--log-level"})
     Level logLevel = Level.INFO;
 
+    @CommandLine.Parameters(arity = "0..1", description = "the file to open")
+    Path file = null;
+
     private Cli(EditorController controller) { this.controller = Objects.requireNonNull(controller); }
 
-    public static void apply(EditorController controller, String... args) {
+    public static Cli apply(EditorController controller, String... args) {
         Cli cli = new Cli(controller);
         CommandLine cl =  new CommandLine(cli);
         cl.registerConverter(Level.class, s -> Level.parse(s));
         cl.execute(args);
+        return cli;
     }
 
     @Override
@@ -51,4 +57,7 @@ public class Cli implements Runnable {
         LOG.info(() -> "log level set to "+logLevel);
     }
 
+    public Optional<Path> getFile() {
+        return Optional.ofNullable(file);
+    }
 }

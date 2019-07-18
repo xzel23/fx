@@ -60,7 +60,7 @@ public class EditorController extends FxController<EditorApp, EditorController> 
 	@Override
 	protected void init(EditorApp app) {
 		// handle command line arguments
-		Cli.apply(this, getApp().getParameters().getRaw().toArray(String[]::new));
+		Cli cli = Cli.apply(this, getApp().getParameters().getRaw().toArray(String[]::new));
 
 		// native look on MacOS
 		menubar.setUseSystemMenuBar(true);
@@ -73,8 +73,8 @@ public class EditorController extends FxController<EditorApp, EditorController> 
 			// restore editor settings from preferences
 			Preferences editorPref = getPreferences().node(PREF_EDITOR_PATH);
 			editor.apply(MarkdownEditorSettings.fromPreference(editorPref));
-			// create a new document
-			createDocument();
+			// load initial document or create an empty one
+			cli.getFile().ifPresentOrElse(path -> open(path.toUri()), this::createDocument);
 		});
 
 		// track dirty state
