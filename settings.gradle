@@ -2,12 +2,12 @@ rootProject.name = 'fx'
 
 include 'fx-util',
         'fx-util-db',
-        'fx-editors', 'fx-editors:fx-editors-text', 'fx-editors:fx-editors-markdown',
+        'fx-editors', 'fx-editors:fx-editors-text', /*'fx-editors:fx-editors-markdown',*/
         'fx-application',
         'fx-controls',
         'fx-icons', 'fx-icons:fx-icons-ikonli',
         'fx-web',
         // samples and apps
         'fx-samples',
-        'fx-editor',
-        'fx-markdowneditor'
+        'fx-editor'
+        /*'fx-markdowneditor'*/

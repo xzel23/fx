@@ -16,12 +16,26 @@ dependencies {
     api project(':fx-editors')
 }
 
-def currentOS = org.gradle.internal.os.OperatingSystem.current()
-def scriptExtension = currentOS.isWindows() ? '.bat' : '.sh'
+def nodeFolder = './node'
+def distFolder = './node/dist'
+def targetFolder = './src/main/resources/com/dua3/fx/editors/text/node'
 
-task createBundle(type:Exec) {
-    println("creating bundle ...")
-    commandLine "$projectDir/../scripts/create_bundle${scriptExtension}", "text"
+task runWebpack(type:Exec) {
+    workingDir nodeFolder
+    commandLine "npm", "run", "build"
 }
 
-build.dependsOn createBundle
+task cleanBundle(type: Delete) {
+    delete targetFolder
+}
+
+task copyBundle(type: Copy) {
+    from distFolder
+    into targetFolder
+}
+
+task updateBundle {
+    dependsOn(runWebpack, cleanBundle, copyBundle)
+}
+
+compileJava.dependsOn updateBundle

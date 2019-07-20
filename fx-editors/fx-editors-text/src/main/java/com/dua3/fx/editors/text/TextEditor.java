@@ -31,8 +31,8 @@ public class TextEditor extends EditorBase {
      * Default constructor.
      */
     public TextEditor() {
-        super(TextEditor.class.getResource("editor.fxml"),
-                TextEditor.class.getResource("editor.html"));
+        super(TextEditor.class.getResource("editor_text.fxml"),
+              TextEditor.class.getResource("node/editor_text.html"));
     }
 
     /**
