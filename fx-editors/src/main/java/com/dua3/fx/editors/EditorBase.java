@@ -292,8 +292,9 @@ public abstract class EditorBase extends BorderPane {
      * @return
      *  Array with toolbar controls
      * @param orientation
+     *  horizontal or vertical (to instantiate the correct Separator)
      */
-    public Node[] toolbarControls(Orientation orientation) {
+    public Node[] toolbarControls(Orientation /*unused*/ orientation) {
         return new Node[0];
     }
 }

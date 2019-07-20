@@ -2,34 +2,69 @@
 
 // define the Editor prototype
 
-function Editor(name) { this.name = name; }
+const logToConsole = function (name, level, msg) {
+    console.log("[" + name + ":" + level + "] " + msg);
+};
 
-// define some logging methods - trace only outputs in debug mode
-Editor.prototype.log              = console.log;
-Editor.prototype.warning          = (msg)  => "[WARN] "+msg;
-Editor.prototype.error            = (msg)  => "[ERROR] "+msg;
-Editor.prototype.trace            = (msg)  => {};
+class Editor {
+    constructor(name, elementId, log = logToConsole) {
+        this.name = name;
+        this.element = document.getElementById(elementId);
+        this.log = (level, msg) => log(this.name, level, msg);
 
-Editor.debug                      = false;
-Editor.isDebug                    = ()     => this.debug;
-Editor.setDebug                   = (flag) => {
-    if (flag) {
-        this.debug = true;
-        this.trace = (msg)  => this.log("[TRACE] "+msg);
-    } else {
-        this.debug = false;
-        this.trace = (msg)  => {};
+        this.LEVEL_ERROR = 3;
+        this.LEVEL_WARNING = 2;
+        this.LEVEL_INFO = 1;
+        this.LEVEL_TRACE = 0;
+
+        this.level = this.LEVEL_INFO;
+    }
+
+    error(msg) {
+        log(this.LEVEL_ERROR, msg);
+    }
+
+    warning(msg) {
+        this.log(this.LEVEL_WARNING, msg);
+    }
+
+    info(msg) {
+        this.log(this.LEVEL_INFO, msg);
+    }
+
+    trace(msg) {
+        this.log(this.LEVEL_TRACE, msg);
+    }
+
+    //  the remaining methods are implementation dependent
+    setReadOnly(flag) {
+        this.error("method not overridden");
+    }
+
+    setPromptText(text) {
+        this.error("missing override: Editor.setPromptText()");
+    }
+
+    clear() {
+        this.error("missing override: Editor.clear()");
+    }
+
+    setText(text) {
+        this.error("missing override: Editor.setText(...)");
+    }
+
+    replaceSelection(text) {
+        this.error("missing override: Editor.replaceSelection(...)");
+    }
+
+    getText() {
+        this.error("missing override: Editor.getText()");
+    }
+
+    getSelection() {
+        this.error("missing override: Editor.getSelection()");
     }
 }
-
-//  the remaining methods are implementation dependent
-Editor.prototype.setReadOnly      = (flag) => this.warning("missing override: Editor.setReadOnly(...)");
-Editor.prototype.setPromptText    = (text) => this.warning("missing override: Editor.setPromptText()");
-Editor.prototype.clear            = ()     => this.warning("missing override: Editor.clear()");
-Editor.prototype.setText          = (text) => this.warning("missing override: Editor.setText(...)");
-Editor.prototype.replaceSelection = (text) => this.warning("missing override: Editor.replaceSelection(...)");
-Editor.prototype.getText          = ()     => this.warning("missing override: Editor.getText()");
-Editor.prototype.getSelection     = ()     => this.warning("missing override: Editor.getSelection()");
 
 // === Text Editor ====================================================================================================
 
@@ -56,41 +91,55 @@ self.MonacoEnvironment = {
         }
         return './editor.worker.bundle.js';
     }
-}
+};
 
 // --- create Text Editor instance
 
-const editor_text = new Editor("txt");
+class TextEditor extends Editor {
 
-editor_text.init = (name) => {
-    editor_text.monaco = monaco.editor.create(document.getElementById('container'), {
-        value: [
-            'function x() {',
-            '\tconsole.log("Hello world!");',
-            '}'
-        ].join('\n'),
-        language: 'javascript'
-    });
+    constructor(name, elementId, log = logToConsole) {
+        super(name, elementId, log);
+
+        this.monaco = monaco.editor.create(this.element, {});
+    }
+
+    setReadOnly(flag) {
+        this.trace("setReadOnly(...)");
+        this.monaco.updateOptions({readOnly: flag});
+    }
+
+    setPromptText(text) {
+        this.trace("setPromptText()");
+    }
+
+    clear() {
+        this.trace("clear()");
+        this.monaco.getModel().setValue("");
+    }
+
+    setText(text) {
+        this.trace("setText(...)");
+        this.monaco.getModel().setValue(text);
+    }
+
+    replaceSelection(text) {
+        this.trace("replaceSelection(...)");
+        this.monaco.replaceSelection(text);
+    }
+
+    getText() {
+        this.trace("getText()");
+        return this.monaco.getModel().getValue();
+    }
+
+    getSelection() {
+        this.trace("getSelection()");
+        return this.monaco.getModel().getSelection();
+    }
+
 }
 
-editor_text.setReadOnly      = (flag) => { this.trace("setReadOnly(...)"); this.monaco.updateOptions({ readOnly: flag }); }
-editor_text.setPromptText    = (text) => this.trace("setPromptText()");
-editor_text.clear            = ()     => { this.trace("clear()"); this.monaco.getModel().setValue(""); }
-editor_text.setText          = (text) => { this.trace("setText(...)"); this.monaco.getModel().setValue(text); }
-editor_text.replaceSelection = (text) => { this.trace("replaceSelection(...)"); this.monaco.replaceSelection(text); }
-editor_text.getText          = ()     => { this.trace("getText()"); return this.monaco.getModel().getValue(); }
-editor_text.getSelection     = ()     => { this.trace("getSelection()"); return this.monaco.getModel().getSelection(); }
-
-window.editor_text = editor_text;
-
-// === Markdown Editor ================================================================================================
-
-// --- create Markdown Editor instance
-
-const editor_markdown = new Editor("md");
-
-editor_markdown.init = () => {
-    // TODO
-}
-
-window.editor_markdown = editor_markdown;
+window.createTextEditor = function (name, element, log = logToConsole) {
+    log("-", 1, "creating Text Editor instance");
+    return new TextEditor(name, element, log);
+};

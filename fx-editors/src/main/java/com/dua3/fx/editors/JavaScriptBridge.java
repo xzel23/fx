@@ -88,13 +88,22 @@ public class JavaScriptBridge {
 	void bind() {
 		Platform.runLater(() -> {
 			log("setting bridge");
-				// set reference to bridge in editor
+			// get some references to objects and ethods
 				JSObject win = (JSObject) engine.executeScript("window");
-				win.setMember("bridge", this);
 
-				// make sure that the editor script has loaded and retrieve handle to JavaScript editor instance
-				Object ret = engine.executeScript("window.editorInstance");
-				LangUtil.check(ret instanceof JSObject, "editor script failed to load");
+			// set  reference to bridge
+			win.setMember("bridge", JavaScriptBridge.this);
+
+			// create method that logs to Java
+			Object ret = callScript("(name,level,msg) => window.bridge.logJSMessage(name,level,msg)");
+			LangUtil.check(ret instanceof JSObject, "error creating logging method");
+			JSObject log = (JSObject) ret;
+
+			// create editor instance
+			String name = "@" + Integer.toHexString(System.identityHashCode(this));
+			String container = "container";
+			ret = win.call("createTextEditor", name, container, log);
+			LangUtil.check(ret instanceof JSObject, "editor construction failed");
 				jsEditor = (JSObject) ret;
 
 				// bind properties
@@ -113,6 +122,26 @@ public class JavaScriptBridge {
 				editorReadyProperty.set(true);
 				log("bridge set.");
 		});
+	}
+
+	public void logJSMessage(String name, Integer level, String message) {
+		Level logLevel;
+		switch (level) {
+			case 3:
+				logLevel = Level.SEVERE;
+				break;
+			case 2:
+				logLevel = Level.WARNING;
+				break;
+			case 1:
+				logLevel = Level.INFO;
+				break;
+			case 0:
+			default:
+				logLevel = Level.FINE;
+				break;
+		}
+		LOG.log(logLevel, () -> String.format("[%s] %s", name, message));
 	}
 
 	/** The logging level. */
