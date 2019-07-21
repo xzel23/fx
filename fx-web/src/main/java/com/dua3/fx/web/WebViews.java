@@ -48,11 +48,11 @@ public class WebViews {
         JSObject win = (JSObject) engine.executeScript("window");
         win.setMember("javaLogger", new JSLogger(logger));
         String script = "(function () {\n"
-                + "  console.error = (msg, ...data) => javaLogger.error(msg, 'data');\n"
-                + "  console.warn = (msg, ...data) => javaLogger.warn(msg, 'data');\n"
-                + "  console.info = (msg, ...data) => javaLogger.info(msg, 'data');\n"
+                + "  console.error = function() { javaLogger.error(arguments) };\n"
+                + "  console.warn = function() { javaLogger.warn(arguments) };\n"
+                + "  console.info = function() { javaLogger.info(arguments) };\n"
                 + "  console.log = function() { javaLogger.log(arguments) };\n"
-                + "  console.debug = (msg, ...data) => javaLogger.debug(msg, 'data');\n"
+                + "  console.debug = function() { javaLogger.debug(arguments) };\n"
                 + "  console.log('logging initialised %s', 'success')\n"
                 + "  return true\n"
                 + "}) ();";
