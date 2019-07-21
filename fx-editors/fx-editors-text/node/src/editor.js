@@ -69,7 +69,7 @@ class TextEditor extends Editor {
 
     constructor(name, elementId) {
         super(name, elementId);
-        this.monaco = monaco.editor.create(this.element, {});
+        this.monaco = monaco.editor.create(this.element, {automaticLayout: true});
         console.info("new TextEditor instance: " + name);
     }
 
