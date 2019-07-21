@@ -29,7 +29,6 @@ import netscape.javascript.JSException;
 import netscape.javascript.JSObject;
 
 import java.util.Collections;
-import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -93,7 +92,6 @@ public class JavaScriptBridge {
 	 */
 	void bind() {
 		Platform.runLater(() -> {
-			log("setting bridge");
 			// get some references to objects and ethods
 			JSObject win = (JSObject) engine.executeScript("window");
 
@@ -108,7 +106,7 @@ public class JavaScriptBridge {
 			// create editor instance
 			String name = "@" + Integer.toHexString(System.identityHashCode(this));
 			String container = "container";
-			ret = win.call("createTextEditor", name, container, log);
+			ret = win.call("createTextEditor", name, container);
 			LangUtil.check(ret instanceof JSObject, "editor construction failed");
 			jsEditor = (JSObject) ret;
 
@@ -126,7 +124,6 @@ public class JavaScriptBridge {
 
 			// mark editor as ready for use
 			editorReadyProperty.set(true);
-			log("bridge set.");
 		});
 	}
 
@@ -151,19 +148,6 @@ public class JavaScriptBridge {
 	}
 
 	/**
-	 * Log a debug message. Called from JavaScript.
-	 *
-	 * @param msg the message
-	 */
-	public void log(String msg) {
-		LOG.log(level, msg);
-	}
-
-	public void logs(Supplier<String> msgSupplier) {
-		LOG.log(level, msgSupplier);
-	}
-
-	/**
 	 * Set the dirty flag. Called from JavaScript.
 	 *
 	 * @param dirty the dirty flag
@@ -178,11 +162,11 @@ public class JavaScriptBridge {
 	public void paste() {
 		String content = (String) Clipboard.getSystemClipboard().getContent(DataFormat.PLAIN_TEXT);
 		if (content == null) {
-			log("paste() called while clipboard is empty - ignoring");
+			LOG.fine("paste() called while clipboard is empty - ignoring");
 			return;
 		}
 
-		logs(() -> String.format("paste(): '%s'", content));
+		LOG.fine(() -> String.format("paste(): '%s'", content));
 		call("replaceSelection", content);
 	}
 
@@ -251,12 +235,12 @@ public class JavaScriptBridge {
 		Object content = arg.getMember("content");
 		switch (format) {
 			case "text":
+				LOG.fine(() -> String.format("copyToSystemClipboard, task='%s'  - unknown format '%s'", task, format));
 				Clipboard.getSystemClipboard()
 						.setContent(Collections.singletonMap(DataFormat.PLAIN_TEXT, String.valueOf(content)));
-				logs(() -> String.format("%s: plain text '%s'", task, content));
 				break;
 			default:
-				logs(() -> String.format("%s: unkknown format %s", task, format));
+				LOG.warning(() -> String.format("%s: unknown format %s", task, format));
 				break;
 		}
 	}

@@ -18,4 +18,6 @@ module com.dua3.fx.web {
 	
 	requires com.dua3.fx.util;
 	requires javafx.web;
+    requires jdk.jsobject;
+    requires java.logging;
 }

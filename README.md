@@ -4,7 +4,9 @@
 
 #### Version 0.5.0
 
-- add markdown support
+- fx-web: redirecting javaScript console to Java
+- fx-editors: switch to Monaco Editor
+- fx-editors: add markdown support
 
 #### Version 0.4.2
 

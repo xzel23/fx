@@ -40,6 +40,9 @@ import java.util.logging.Logger;
 public abstract class EditorBase extends BorderPane {
     private static final Logger LOG = Logger.getLogger(EditorBase.class.getName());
 
+    public static final String LOGGER_TAG_JAVA_SCRIPT = "[JavaScript]";
+    private static final Logger LOG_JS = Logger.getLogger(EditorBase.class.getName() + LOGGER_TAG_JAVA_SCRIPT);
+
     @FXML
     protected WebView webview;
 
@@ -93,10 +96,8 @@ public abstract class EditorBase extends BorderPane {
                 evt -> LOG.warning("[webengine] " + evt.getMessage())
         );
 
-        // enable alert, prompt, and confirmation
-        WebViews.setAlertHandler(engine);
-        WebViews.setConfirmationHandler(engine);
-        WebViews.setPromptHandler(engine);
+        // enable alert, prompt, and confirmation and logging
+        WebViews.setupEngine(engine, LOG_JS);
 
         // inject JavaScript bridge after loading
         engine.getLoadWorker().stateProperty().addListener((observable, oldState, newState) -> {
