@@ -17,7 +17,7 @@ public class Cli implements Runnable {
     Level logLevel = Level.INFO;
 
     @CommandLine.Option(names = {"-lj", "--log-level-javascript"}, description = "set log level for JavaScript messages")
-    Level logLevelJavaScript = Level.ALL;
+    Level logLevelJavaScript = Level.INFO;
 
     @CommandLine.Option(names = {"-lg", "--log-level-global"}, description = "set global log level")
     Level logLevelGlobal = Level.WARNING;
