@@ -22,23 +22,21 @@ def nodeFolder = './node'
 def distFolder = './node/dist'
 def targetFolder = './src/main/resources/com/dua3/fx/editors/text/node'
 
+task cleanBundle(type: Delete) {
+    delete targetFolder
+}
+
 task runWebpack(type:Exec) {
+    dependsOn(cleanBundle)
     String npm = Os.isFamily(Os.FAMILY_WINDOWS) ? 'npm.cmd' : 'npm'
     workingDir nodeFolder
     commandLine npm, "run", "build"
 }
 
-task cleanBundle(type: Delete) {
-    delete targetFolder
-}
-
 task copyBundle(type: Copy) {
+    dependsOn(runWebpack)
     from distFolder
     into targetFolder
 }
 
-task updateBundle {
-    dependsOn(runWebpack, cleanBundle, copyBundle)
-}
-
-compileJava.dependsOn updateBundle
+compileJava.dependsOn copyBundle
