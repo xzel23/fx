@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import org.apache.tools.ant.taskdefs.condition.Os
+
 dependencies {
     api project(':fx-editors')
 }
@@ -21,8 +23,9 @@ def distFolder = './node/dist'
 def targetFolder = './src/main/resources/com/dua3/fx/editors/text/node'
 
 task runWebpack(type:Exec) {
+    String npm = Os.isFamily(Os.FAMILY_WINDOWS) ? 'npm.cmd' : 'npm'
     workingDir nodeFolder
-    commandLine "npm", "run", "build"
+    commandLine npm, "run", "build"
 }
 
 task cleanBundle(type: Delete) {
