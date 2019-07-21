@@ -11,8 +11,11 @@ public class Cli implements Runnable {
     private static final Logger LOG = Logger.getLogger(Cli.class.getName());
     private final EditorController controller;
 
-    @CommandLine.Option(names={"-l", "--log-level"})
-    Level logLevel = Level.INFO;
+    @CommandLine.Option(names = {"-l", "--log-level"}, description = "set log level for application package")
+    Level logLevel = Level.ALL;
+
+    @CommandLine.Option(names = {"-lg", "--log-level-global"}, description = "set global log level")
+    Level logLevelGlobal = Level.WARNING;
 
     private Cli(EditorController controller) { this.controller = Objects.requireNonNull(controller); }
 
@@ -28,18 +31,18 @@ public class Cli implements Runnable {
         initLogger();
     }
 
-    private static final int logLevelAllPackages = Level.WARNING.intValue();
-
     private void initLogger() {
+        int minLevel = Math.min(logLevel.intValue(), logLevelGlobal.intValue());
+
         Logger rootLogger = LogManager.getLogManager().getLogger("");
-        rootLogger.setLevel(logLevel);
+        rootLogger.setLevel(Level.parse("" + minLevel));
 
         Filter f = record -> {
             String loggerName = record.getLoggerName();
-            if (!loggerName.startsWith("javafx.") && !loggerName.startsWith("com.sun.webkit.")) {
+            if (loggerName.startsWith("com.dua3.")) {
                 return record.getLevel().intValue() >= logLevel.intValue();
             } else {
-                return record.getLevel().intValue() >= logLevelAllPackages;
+                return record.getLevel().intValue() >= logLevelGlobal.intValue();
             }
         };
 

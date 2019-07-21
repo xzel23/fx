@@ -30,6 +30,7 @@ import javafx.scene.web.WebView;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.net.URI;
 import java.net.URL;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -192,12 +193,12 @@ public abstract class EditorBase extends BorderPane {
      * Set the text of this editor instance.
      * @param text
      *  the text to set
-     * @param extension
-     *  the file extension to determine the correct type (for editors supporting multiple file types)
+     * @param uri
+     *  the uri (i. e. used to determine the correct type)
      */
-    public void setContent(String text, String extension) {
+    public void setContent(String text, URI uri) {
         LOG.fine("setting editor content");
-        callJS("setContent", text, extension);
+        callJS("setContent", text, uri.toString());
     }
 
     /**

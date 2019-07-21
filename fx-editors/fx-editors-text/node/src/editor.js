@@ -99,13 +99,14 @@ class TextEditor extends Editor {
 
     constructor(name, elementId, log = logToConsole) {
         super(name, elementId, log);
-
         this.monaco = monaco.editor.create(this.element, {});
+        this.info("new TextEditor instance: " + name);
     }
 
     setReadOnly(flag) {
         this.trace("setReadOnly(...)");
         this.monaco.updateOptions({readOnly: flag});
+        this.info("readonly: " + flag);
     }
 
     setPromptText(text) {
@@ -117,9 +118,17 @@ class TextEditor extends Editor {
         this.monaco.getModel().setValue("");
     }
 
+    setContent(text, uri) {
+        this.trace("setContent(...)");
+        const model = this.monaco.editor.createModel(text, undefined, uri);
+        this.monaco.setModel(model);
+        this.info("content set, language: " + model.language);
+    }
+
     setText(text) {
         this.trace("setText(...)");
         this.monaco.getModel().setValue(text);
+        this.info("text set, language: " + model.language);
     }
 
     replaceSelection(text) {

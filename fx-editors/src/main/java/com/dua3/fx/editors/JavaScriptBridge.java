@@ -38,48 +38,54 @@ import java.util.logging.Logger;
  * inside the WebView.
  */
 public class JavaScriptBridge {
-	/** The logger instance. */
-	public static final Logger LOG = Logger.getLogger(JavaScriptBridge.class.getName());
-
-	/** The WebEngine instance. */
-	private final WebEngine engine;
-
-	private JSObject jsEditor;
-
-	/** Property that indicates whether current document is editable. */
-	final BooleanProperty readOnlyProperty = new SimpleBooleanProperty(false);
-
-	/** Property that indicates editor's dirty state. */
-	final BooleanProperty dirtyProperty = new SimpleBooleanProperty(false);
-
-	/** Property that indicates whether the editor is ready to be used. */
-	final BooleanProperty editorReadyProperty = new SimpleBooleanProperty(false);
-
-	/** Property for the prompt/placeholder that is displayed when the editor is empty. */
-	final StringProperty promptTextProperty = new SimpleStringProperty("");
-
 	/**
-	 * Execute method of the JavaScript editor.
-	 *
-	 * @param method
-	 * 	the method name
-	 * @param args
-	 *  the method arguments
-	 * @return
-	 *  the method return
+	 * The logger instance.
 	 */
-	public Object call(String method, Object... args) {
-		return PlatformHelper.runAndWait(() -> jsEditor.call(method, args));
-	}
+	public static final Logger LOG = Logger.getLogger(JavaScriptBridge.class.getName());
+	/**
+	 * Property that indicates whether current document is editable.
+	 */
+	final BooleanProperty readOnlyProperty = new SimpleBooleanProperty(false);
+	/**
+	 * Property that indicates editor's dirty state.
+	 */
+	final BooleanProperty dirtyProperty = new SimpleBooleanProperty(false);
+	/**
+	 * Property that indicates whether the editor is ready to be used.
+	 */
+	final BooleanProperty editorReadyProperty = new SimpleBooleanProperty(false);
+	/**
+	 * Property for the prompt/placeholder that is displayed when the editor is empty.
+	 */
+	final StringProperty promptTextProperty = new SimpleStringProperty("");
+	/**
+	 * The WebEngine instance.
+	 */
+	private final WebEngine engine;
+	private JSObject jsEditor;
+	/**
+	 * The logging level.
+	 */
+	private Level level = Level.INFO;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param webView
-	 *  the WebView instance where the editor is displayed
+	 * @param webView the WebView instance where the editor is displayed
 	 */
 	public JavaScriptBridge(WebView webView) {
 		this.engine = webView.getEngine();
+	}
+
+	/**
+	 * Execute method of the JavaScript editor.
+	 *
+	 * @param method the method name
+	 * @param args   the method arguments
+	 * @return the method return
+	 */
+	public Object call(String method, Object... args) {
+		return PlatformHelper.runAndWait(() -> jsEditor.call(method, args));
 	}
 
 	/**
@@ -89,7 +95,7 @@ public class JavaScriptBridge {
 		Platform.runLater(() -> {
 			log("setting bridge");
 			// get some references to objects and ethods
-				JSObject win = (JSObject) engine.executeScript("window");
+			JSObject win = (JSObject) engine.executeScript("window");
 
 			// set  reference to bridge
 			win.setMember("bridge", JavaScriptBridge.this);
@@ -104,23 +110,23 @@ public class JavaScriptBridge {
 			String container = "container";
 			ret = win.call("createTextEditor", name, container, log);
 			LangUtil.check(ret instanceof JSObject, "editor construction failed");
-				jsEditor = (JSObject) ret;
+			jsEditor = (JSObject) ret;
 
-				// bind properties
-				readOnlyProperty.addListener((v, ov, nv) ->
-						Platform.runLater(() -> call("setReadOnly", nv))
-				);
-				promptTextProperty.addListener((v, ov, nv) ->
+			// bind properties
+			readOnlyProperty.addListener((v, ov, nv) ->
+					Platform.runLater(() -> call("setReadOnly", nv))
+			);
+			promptTextProperty.addListener((v, ov, nv) ->
 					Platform.runLater(() -> call("setPromptText", nv))
-				);
+			);
 
-				// sync properties
-				call("setReadOnly", readOnlyProperty.get());
-				call("setPromptText", promptTextProperty.get());
+			// sync properties
+			call("setReadOnly", readOnlyProperty.get());
+			call("setPromptText", promptTextProperty.get());
 
-				// mark editor as ready for use
-				editorReadyProperty.set(true);
-				log("bridge set.");
+			// mark editor as ready for use
+			editorReadyProperty.set(true);
+			log("bridge set.");
 		});
 	}
 
@@ -144,9 +150,6 @@ public class JavaScriptBridge {
 		LOG.log(logLevel, () -> String.format("[%s] %s", name, message));
 	}
 
-	/** The logging level. */
-	private Level level = Level.INFO;
-	
 	/**
 	 * Log a debug message. Called from JavaScript.
 	 *
@@ -162,7 +165,7 @@ public class JavaScriptBridge {
 
 	/**
 	 * Set the dirty flag. Called from JavaScript.
-	 * 
+	 *
 	 * @param dirty the dirty flag
 	 */
 	public void setDirty(boolean dirty) {
@@ -185,15 +188,15 @@ public class JavaScriptBridge {
 
 	/**
 	 * Execute JavaScript code asynchronously.
-	 * @param script
-	 *  the code to execute
+	 *
+	 * @param script the code to execute
 	 */
 	public void executeScript(String script) {
 		Platform.runLater(() -> {
 			try {
 				engine.executeScript(script);
 			} catch (JSException e) {
-				LOG.log(Level.WARNING, e.getMessage()+" - script: "+script);
+				LOG.log(Level.WARNING, e.getMessage() + " - script: " + script);
 				throw e;
 			}
 		});
@@ -201,24 +204,22 @@ public class JavaScriptBridge {
 
 	/**
 	 * Execute JavaScript code synchronously and return result.
-	 * @param script
-	 *  the code to execute
-	 *  
-	 *  @return
-	 *   the value returned by the script
+	 *
+	 * @param script the code to execute
+	 * @return the value returned by the script
 	 */
 	public Object callScript(String script) {
 		try {
 			return engine.executeScript(script);
 		} catch (JSException e) {
-			LOG.log(Level.WARNING, e.getMessage()+" - script: "+script);
+			LOG.log(Level.WARNING, e.getMessage() + " - script: " + script);
 			throw e;
 		}
 	}
 
 	/**
 	 * Copy to system clipboard. Called from JavaScript.
-	 * 
+	 *
 	 * @param arg the data to be copied to the clipboard
 	 */
 	public void copy(JSObject arg) {
@@ -227,7 +228,7 @@ public class JavaScriptBridge {
 
 	/**
 	 * Cut text to system clipboard. Called from JavaScript.
-	 * 
+	 *
 	 * @param arg the data to be cut to the clipboard ("cut" = copy to clipboard and
 	 *            clear selection)
 	 */
@@ -241,23 +242,22 @@ public class JavaScriptBridge {
 
 	/**
 	 * Copy JavaScript object to system clipboard.
-	 * @param task
-	 *  task name for logging (usually "copy" or "cut")
-	 * @param arg
-	 *  the object to copy to clipboard should have the attributes "format" and "content"
+	 *
+	 * @param task task name for logging (usually "copy" or "cut")
+	 * @param arg  the object to copy to clipboard should have the attributes "format" and "content"
 	 */
 	private void copyToSystemClipboard(String task, JSObject arg) {
 		String format = String.valueOf(arg.getMember("format"));
 		Object content = arg.getMember("content");
 		switch (format) {
-		case "text":
-			Clipboard.getSystemClipboard()
-					.setContent(Collections.singletonMap(DataFormat.PLAIN_TEXT, String.valueOf(content)));
-			logs(() -> String.format("%s: plain text '%s'", task, content));
-			break;
-		default:
-			logs(() -> String.format("%s: unkknown format %s", task, format));
-			break;
+			case "text":
+				Clipboard.getSystemClipboard()
+						.setContent(Collections.singletonMap(DataFormat.PLAIN_TEXT, String.valueOf(content)));
+				logs(() -> String.format("%s: plain text '%s'", task, content));
+				break;
+			default:
+				logs(() -> String.format("%s: unkknown format %s", task, format));
+				break;
 		}
 	}
 

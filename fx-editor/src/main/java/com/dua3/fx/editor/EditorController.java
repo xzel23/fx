@@ -1,8 +1,8 @@
 package com.dua3.fx.editor;
 
-import com.dua3.fx.editor.cli.Cli;
 import com.dua3.fx.application.FxController;
 import com.dua3.fx.application.FxDocument;
+import com.dua3.fx.editor.cli.Cli;
 import com.dua3.fx.editors.text.TextEditor;
 import com.dua3.fx.editors.text.TextEditorSettings;
 import com.dua3.fx.editors.text.TextEditorSettingsDialog;
@@ -89,8 +89,7 @@ public class EditorController extends FxController<EditorApp, EditorController> 
 	protected TextDocument loadDocument(URI uri) throws IOException {
         Path path = Paths.get(uri);
         String content = IOUtil.loadText(path, cs -> charset = cs);
-        String extension = IOUtil.getExtension(path);
-        editor.setContent(content, extension);
+		editor.setContent(content, uri);
         editor.setReadOnly(!Files.isWritable(path));
         editor.setDirty(false);
         LOG.info(() -> String.format("document read from '%s'", uri));
