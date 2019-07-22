@@ -92,7 +92,6 @@ class TextEditor extends Editor {
         console.debug("setContent()");
         const model = monaco.editor.createModel(text, undefined, uri);
         this.monaco.setModel(model);
-        console.info("content set, language: " + model.language);
     }
 
     setText(text) {
@@ -116,6 +115,36 @@ class TextEditor extends Editor {
         return this.monaco.getModel().getSelection();
     }
 
+    setShowLineNumbers(flag) {
+        console.debug("setShowLineNumbers(%s)", flag);
+        this.monaco.updateOptions({lineNumbers: flag});
+    }
+
+    isShowLineNumbers() {
+        console.debug("isShowLineNumbers()");
+        return this.monaco.getOptions().lineNumbers;
+    }
+
+    setFontSize(sz) {
+        console.debug("setFontSize(%s)", sz);
+        this.monaco.updateOptions({fontSize: sz + 'px'});
+    }
+
+    getFontSize() {
+        console.debug("getFontSize()");
+        return this.monaco.getConfiguration().fontInfo.fontSize;
+    }
+
+    setHighlightCurrentLine(flag) {
+        console.debug("setHighlightCurrentLine()");
+        let highlight = flag ? 'line' : 'none';
+        this.monaco.updateOptions({renderLineHighlight: highlight});
+    }
+
+    isHighlightCurrentLine() {
+        console.debug("isHighlightCurrentLine()");
+        return this.monaco.getConfiguration().renderLineHighlight!='none';
+    }
 }
 
 window.createTextEditor = function (name, element) {
