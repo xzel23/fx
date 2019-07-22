@@ -143,7 +143,7 @@ class TextEditor extends Editor {
 
     isHighlightCurrentLine() {
         console.debug("isHighlightCurrentLine()");
-        return this.monaco.getConfiguration().renderLineHighlight!='none';
+        return this.monaco.getConfiguration().renderLineHighlight!=='none';
     }
 }
 
