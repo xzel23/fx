@@ -90,7 +90,7 @@ class TextEditor extends Editor {
 
     setContent(text, uri) {
         console.debug("setContent()");
-        const model = monaco.editor.createModel(text, undefined, uri);
+        const model = monaco.editor.createModel(text, undefined, monaco.Uri.parse(uri));
         this.monaco.setModel(model);
         console.info("content set, language: %s", this.monaco.getModel().getModeId())
     }
