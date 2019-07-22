@@ -89,7 +89,7 @@ public class TextEditorSettingsDialog extends EditorSettingsDialog {
     private void initialize() {
         // theme
         String theme = editor.getTheme();
-        comboTheme.getItems().setAll("default", "xq-light", "xq-dark");
+        comboTheme.getItems().setAll("light", "dark", "high contrast");
         comboTheme.setValue(theme);
         comboTheme.valueProperty().addListener((ov, o, n) -> editor.setTheme(n));
 

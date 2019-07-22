@@ -4,6 +4,7 @@ class Editor {
     constructor(name, elementId) {
         this.name = name;
         this.element = document.getElementById(elementId);
+        this.setTheme('light');
     }
 
     //  the remaining methods are implementation dependent
@@ -79,6 +80,11 @@ class TextEditor extends Editor {
         console.info("readonly: %s", flag);
     }
 
+    isReadOnly() {
+        console.debug("isReadOnly(%s)");
+        return this.monaco.getConfiguration().readOnly;
+    }
+
     setPromptText(text) {
         console.debug("setPromptText()");
     }
@@ -145,6 +151,33 @@ class TextEditor extends Editor {
     isHighlightCurrentLine() {
         console.debug("isHighlightCurrentLine()");
         return this.monaco.getConfiguration().renderLineHighlight!=='none';
+    }
+
+    setTheme(theme) {
+        console.debug("setTheme()");
+        let monacoTheme = undefined;
+        switch (theme) {
+            default:
+            case 'light':
+                this.theme = 'light';
+                monacoTheme = 'vs';
+                break;
+            case 'dark':
+                this.theme = 'dark';
+                monacoTheme = 'vs-dark';
+                break;
+            case 'high contrast':
+                this.theme = 'high contrast';
+                monacoTheme = 'hc-black';
+                break;
+        }
+
+        monaco.editor.setTheme(monacoTheme);
+    }
+
+    getTheme() {
+        console.debug("getTheme()");
+        return this.theme;
     }
 }
 
