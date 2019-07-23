@@ -14,10 +14,10 @@ public class Cli implements Runnable {
     private final EditorController controller;
 
     @CommandLine.Option(names = {"-l", "--log-level"}, description = "set log level for application package")
-    Level logLevel = Level.INFO;
+    Level logLevel = Level.WARNING;
 
     @CommandLine.Option(names = {"-lj", "--log-level-javascript"}, description = "set log level for JavaScript messages")
-    Level logLevelJavaScript = Level.INFO;
+    Level logLevelJavaScript = Level.WARNING;
 
     @CommandLine.Option(names = {"-lg", "--log-level-global"}, description = "set global log level")
     Level logLevelGlobal = Level.WARNING;

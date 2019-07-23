@@ -102,30 +102,9 @@ public class EditorController extends FxController<EditorApp, EditorController> 
 	}
 	
 	@FXML
-	void copy() {
-		editor.copy();
-	}
-	
-	@FXML
-	void cut() {
-		editor.cut();
-	}
-	
-	@FXML
-	void paste() {
-		editor.paste();
-	}
-	
-	@FXML
 	public void about() {
 		LOG.fine("about()");
 		createAboutDialog().showAndWait();
-	}
-	
-	@FXML
-	public void search() {
-		LOG.fine("search()");
-		editor.search();
 	}
 	
 	@FXML

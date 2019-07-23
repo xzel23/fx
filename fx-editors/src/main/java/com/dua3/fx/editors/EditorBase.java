@@ -264,30 +264,6 @@ public abstract class EditorBase extends BorderPane {
     }
 
     /**
-     * Cut selection to system clipboard.
-     * This method will be called from the UI to be processed by the editor.
-     */
-    public void cut() {
-        callJS("cut");
-    }
-
-    /**
-     * Copy selection to system clipboard.
-     * This method will be called from the UI to be processed by the editor.
-     */
-    public void copy() {
-        callJS("copy");
-    }
-
-    /**
-     * Paste system clipboard content.
-     * This method will be called from the UI to be processed by the editor.
-     */
-    public void paste() {
-        callJS("paste");
-    }
-
-    /**
      * Create settings dialog for editor.
      * @return
      *  An instance of EditorSettingsDialog for this editor instance
