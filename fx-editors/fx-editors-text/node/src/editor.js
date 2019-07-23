@@ -74,8 +74,7 @@ class TextEditor extends Editor {
         this.setTheme('light');
 
         // track dirt state (see https://github.com/Microsoft/monaco-editor/issues/353)
-        this.onChangedDirtyState = (flag) => {
-        };
+        this.onChangedDirtyState = (flag) => {};
         this.trackDirtyState(this.monaco.getModel());
 
         console.info("new TextEditor instance: " + name);
@@ -97,6 +96,14 @@ class TextEditor extends Editor {
                 this.onChangedDirtyState(this.dirty);
             }
         });
+    }
+
+    markEditorClean() {
+        this.lastSavedVersionId = this.monaco.getModel().getAlternativeVersionId();
+        if (this.dirty) {
+            this.dirty = false;
+            this.onChangedDirtyState(this.dirty);
+        }
     }
 
     setOnChangedDirtyState(callback) {

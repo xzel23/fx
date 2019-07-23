@@ -35,7 +35,7 @@ public class EditorController extends FxController<EditorApp, EditorController> 
             String text = editor.getText();
             Path path = Paths.get(uri);
             Files.write(path, text.getBytes(charset));
-            editor.setDirty(false);
+            editor.markEditorClean();
             LOG.info(() -> String.format("document written to '%s' using charset %s", uri, charset));
         }
 
@@ -72,7 +72,7 @@ public class EditorController extends FxController<EditorApp, EditorController> 
 		});
 
 		dirtyProperty.addListener((v,o,n) -> {
-			if (hasCurrentDocument() || newDocument()) {
+ 			if (hasCurrentDocument() || newDocument()) {
 				getCurrentDocument().setDirty(n);
 			}
 		});
@@ -91,7 +91,7 @@ public class EditorController extends FxController<EditorApp, EditorController> 
         String content = IOUtil.loadText(path, cs -> charset = cs);
 		editor.setContent(content, uri);
         editor.setReadOnly(!Files.isWritable(path));
-        editor.setDirty(false);
+        editor.markEditorClean();
         LOG.info(() -> String.format("document read from '%s'", uri));
         return new TextDocument(uri);
 	}

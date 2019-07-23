@@ -149,4 +149,7 @@ public class JavaScriptBridge {
 		}
 	}
 
+	public void markEditorClean() {
+		jsEditor.call("markEditorClean");
+	}
 }

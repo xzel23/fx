@@ -233,8 +233,8 @@ public abstract class EditorBase extends BorderPane {
         return bridge.dirtyProperty.get();
     }
 
-    public void setDirty(boolean flag) {
-        bridge.setDirty(flag);
+    public void markEditorClean() {
+        bridge.markEditorClean();
     }
 
     public boolean isReadOnly() {
