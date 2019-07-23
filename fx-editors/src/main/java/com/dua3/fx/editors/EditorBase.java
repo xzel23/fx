@@ -181,13 +181,21 @@ public abstract class EditorBase extends BorderPane {
     }
 
     /**
-     * Set the text of this editor instance.
+     * Set the text of this editor, keeping the current language.
      * @param text
      *  the text to set
      */
-    public void setContent(String text) {
-        LOG.fine("setting editor content");
-        callJS("setContent", text);
+    public void setText(String text) {
+        LOG.fine("setting editor text");
+        callJS("setText", text);
+    }
+
+    /**
+     * Clear the text of this editor, keeping the current language.
+     */
+    public void clear() {
+        LOG.fine("clearing the editor");
+        callJS("clear");
     }
 
     /**
@@ -200,6 +208,17 @@ public abstract class EditorBase extends BorderPane {
     public void setContent(String text, URI uri) {
         LOG.fine("setting editor content");
         callJS("setContent", text, uri.toString());
+    }
+
+    /**
+     * Set the text of this editor instance.
+     *
+     * @param text the text to set
+     * @param arg  either the document language or the URI to determine the language
+     */
+    public void setContent(String text, String arg) {
+        LOG.fine("setting editor content");
+        callJS("setContent", text, arg);
     }
 
     /**
