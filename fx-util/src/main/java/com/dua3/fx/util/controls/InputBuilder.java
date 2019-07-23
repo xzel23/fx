@@ -286,9 +286,11 @@ public interface InputBuilder<B extends InputBuilder<B>> {
      *  supplier of default value
      * @param mode
      *  the mode, either {@link FileDialogMode#OPEN} or {@link FileDialogMode#SAVE}
+     * @param filter
+     *  the extension filter to use
      * @return
      *  {@code this}
      */
-    B chooseFile(String id, String label, Supplier<File> dflt, FileDialogMode mode, FileChooser.ExtensionFilter fiilter);
+    B chooseFile(String id, String label, Supplier<File> dflt, FileDialogMode mode, FileChooser.ExtensionFilter filter);
 
 }
