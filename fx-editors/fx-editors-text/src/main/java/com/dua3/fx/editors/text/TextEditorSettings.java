@@ -22,7 +22,7 @@ public class TextEditorSettings implements EditorSettings {
 	private static final boolean DEFAULT_SHOW_LINE_NUMBERS = false;
 	private static final boolean DEFAULT_HIGHLIGHT_CURRENT_LINE = false;
 	private static final int DEFAULT_FONT_SIZE = 14;
-	private static final String DEFAULT_THEME = "default";
+	private static final String DEFAULT_THEME = "light";
 	private static final String PREF_THEME = "theme";
 	private static final String PREF_FONT_SIZE = "font_size";
 	private static final String PREF_SHOW_LINE_NUMBERS = "show_line_numbers";

@@ -4,6 +4,11 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     mode: 'production',
+    /*
+    optimization: {
+        minimize: false
+    },
+     */
     entry: {
         "editor": './src/editor.js',
         "editor.worker": 'monaco-editor/esm/vs/editor/editor.worker.js',

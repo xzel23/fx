@@ -4,6 +4,7 @@ class Editor {
     constructor(name, elementId) {
         this.name = name;
         this.element = document.getElementById(elementId);
+        this.setTheme('light');
     }
 
     //  the remaining methods are implementation dependent
@@ -79,6 +80,11 @@ class TextEditor extends Editor {
         console.info("readonly: %s", flag);
     }
 
+    isReadOnly() {
+        console.debug("isReadOnly(%s)");
+        return this.monaco.getConfiguration().readOnly;
+    }
+
     setPromptText(text) {
         console.debug("setPromptText()");
     }
@@ -89,10 +95,10 @@ class TextEditor extends Editor {
     }
 
     setContent(text, uri) {
-        console.debug("setContent() - uri: %s", uri);
+        console.debug("setContent()");
         const model = monaco.editor.createModel(text, undefined, monaco.Uri.parse(uri));
         this.monaco.setModel(model);
-        console.info("content set, language: " + model.language);
+        console.info("content set, language: %s", this.monaco.getModel().getModeId())
     }
 
     setText(text) {
@@ -116,6 +122,63 @@ class TextEditor extends Editor {
         return this.monaco.getModel().getSelection();
     }
 
+    setShowLineNumbers(flag) {
+        console.debug("setShowLineNumbers(%s)", flag);
+        this.monaco.updateOptions({lineNumbers: flag});
+    }
+
+    isShowLineNumbers() {
+        console.debug("isShowLineNumbers()");
+        return this.monaco.getOptions().lineNumbers;
+    }
+
+    setFontSize(sz) {
+        console.debug("setFontSize(%s)", sz);
+        this.monaco.updateOptions({fontSize: sz + 'px'});
+    }
+
+    getFontSize() {
+        console.debug("getFontSize()");
+        return this.monaco.getConfiguration().fontInfo.fontSize;
+    }
+
+    setHighlightCurrentLine(flag) {
+        console.debug("setHighlightCurrentLine()");
+        let highlight = flag ? 'line' : 'none';
+        this.monaco.updateOptions({renderLineHighlight: highlight});
+    }
+
+    isHighlightCurrentLine() {
+        console.debug("isHighlightCurrentLine()");
+        return this.monaco.getConfiguration().renderLineHighlight!=='none';
+    }
+
+    setTheme(theme) {
+        console.debug("setTheme()");
+        let monacoTheme = undefined;
+        switch (theme) {
+            default:
+            case 'light':
+                this.theme = 'light';
+                monacoTheme = 'vs';
+                break;
+            case 'dark':
+                this.theme = 'dark';
+                monacoTheme = 'vs-dark';
+                break;
+            case 'high contrast':
+                this.theme = 'high contrast';
+                monacoTheme = 'hc-black';
+                break;
+        }
+
+        monaco.editor.setTheme(monacoTheme);
+    }
+
+    getTheme() {
+        console.debug("getTheme()");
+        return this.theme;
+    }
 }
 
 window.createTextEditor = function (name, element) {
