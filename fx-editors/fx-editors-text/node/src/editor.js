@@ -94,9 +94,21 @@ class TextEditor extends Editor {
         this.monaco.getModel().setValue("");
     }
 
-    setContent(text, uri) {
+    setContent(text, arg) {
         console.debug("setContent()");
-        const model = monaco.editor.createModel(text, undefined, monaco.Uri.parse(uri));
+        let uri = undefined, language = undefined;
+
+        if (typeof arg === 'string' && arg.indexOf(':') >= 0) {
+            try {
+                uri = monaco.Uri.parse(arg);
+            } catch (err) {
+                console.warn("could not parse URI: %s", arg);
+            }
+        } else {
+            language = arg;
+        }
+
+        const model = monaco.editor.createModel(text, language, uri);
         this.monaco.setModel(model);
         console.info("content set, language: %s", this.monaco.getModel().getModeId())
     }
