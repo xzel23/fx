@@ -4,7 +4,6 @@ class Editor {
     constructor(name, elementId) {
         this.name = name;
         this.element = document.getElementById(elementId);
-        this.setTheme('light');
     }
 
     //  the remaining methods are implementation dependent
@@ -71,7 +70,38 @@ class TextEditor extends Editor {
     constructor(name, elementId) {
         super(name, elementId);
         this.monaco = monaco.editor.create(this.element, {automaticLayout: true});
+
+        this.setTheme('light');
+
+        // track dirt state (see https://github.com/Microsoft/monaco-editor/issues/353)
+        this.onChangedDirtyState = (flag) => {
+        };
+        this.trackDirtyState(this.monaco.getModel());
+
         console.info("new TextEditor instance: " + name);
+    }
+
+    trackDirtyState(model) {
+        console.info(">trackDirtyState");
+        this.lastSavedVersionId = model.getAlternativeVersionId();
+        this.dirty = false;
+
+        model.onDidChangeContent((evt) => {
+            let oldDirtyState = this.dirty;
+
+            let versionId = model.getAlternativeVersionId();
+            this.dirty = versionId !== this.lastSavedVersionId;
+
+            if (this.dirty != oldDirtyState) {
+                console.debug("dirty: %s", this.dirty);
+                this.onChangedDirtyState(this.dirty);
+            }
+        });
+    }
+
+    setOnChangedDirtyState(callback) {
+        console.debug("setOnChangedDirtyState()");
+        this.onChangedDirtyState = callback;
     }
 
     setReadOnly(flag) {
@@ -116,6 +146,8 @@ class TextEditor extends Editor {
         }
 
         this.monaco.setModel(model);
+        this.trackDirtyState(model);
+
         console.info("content set, language: %s", this.monaco.getModel().getModeId())
     }
 

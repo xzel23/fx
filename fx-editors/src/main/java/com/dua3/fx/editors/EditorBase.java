@@ -17,7 +17,6 @@ package com.dua3.fx.editors;
 import com.dua3.fx.web.WebViews;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyBooleanProperty;
-import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.concurrent.Worker.State;
 import javafx.fxml.FXML;
@@ -244,18 +243,6 @@ public abstract class EditorBase extends BorderPane {
 
     public void setReadOnly(boolean flag) {
         bridge.readOnlyProperty.set(flag);
-    }
-
-    public StringProperty promptTextProperty() {
-        return bridge.promptTextProperty;
-    }
-
-    public String getPromptText() {
-        return promptTextProperty().get();
-    }
-
-    public void setPromptText(String text) {
-        promptTextProperty().set(text);
     }
 
     protected Object callJS(String command, Object... args) {
