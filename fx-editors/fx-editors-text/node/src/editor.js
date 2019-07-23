@@ -134,6 +134,21 @@ class TextEditor extends Editor {
         return this.monaco.getModel().getSelection();
     }
 
+    getLine(i) {
+        console.debug("getLine()");
+        return this.monaco.getModel().getLineContent(i - 1); // Java class is zero based!
+    }
+
+    getLineCount() {
+        console.debug("getLineCount()");
+        return this.monaco.getModel().getLineCount();
+    }
+
+    getLineNumber() {
+        console.debug("getLineNumber()");
+        return this.monaco.getPosition().lineNumber;
+    }
+
     setShowLineNumbers(flag) {
         console.debug("setShowLineNumbers(%s)", flag);
         this.monaco.updateOptions({lineNumbers: flag});
