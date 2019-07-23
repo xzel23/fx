@@ -116,7 +116,7 @@ class TextEditor extends Editor {
     setText(text) {
         console.debug("setText()");
         this.monaco.getModel().setValue(text);
-        console.info("text set, language: " + model.language);
+        console.info("text set, language: %s", this.monaco.getModel().getModeId());
     }
 
     replaceSelection(text) {
@@ -136,7 +136,7 @@ class TextEditor extends Editor {
 
     getLine(i) {
         console.debug("getLine()");
-        return this.monaco.getModel().getLineContent(i - 1); // Java class is zero based!
+        return this.monaco.getModel().getLineContent(i + 1); // Java class is zero based!
     }
 
     getLineCount() {
