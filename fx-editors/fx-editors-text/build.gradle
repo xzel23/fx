@@ -12,7 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import org.apache.tools.ant.taskdefs.condition.Os
+plugins {
+    id "com.moowork.node" version "1.3.1"
+}
 
 dependencies {
     api project(':fx-editors')
@@ -26,11 +28,9 @@ task cleanBundle(type: Delete) {
     delete targetFolder
 }
 
-task runWebpack(type:Exec) {
+task runWebpack(type:NpmTask) {
     dependsOn(cleanBundle)
-    String npm = Os.isFamily(Os.FAMILY_WINDOWS) ? 'npm.cmd' : 'npm'
-    workingDir nodeFolder
-    commandLine npm, "run", "build"
+    args = ['--prefix', nodeFolder, 'run', 'build']
 }
 
 task copyBundle(type: Copy) {
