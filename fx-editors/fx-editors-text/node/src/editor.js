@@ -82,6 +82,10 @@ class TextEditor extends Editor {
         console.info("new TextEditor instance: " + name);
     }
 
+    refresh() {
+        // for overloading
+    }
+
     trackEditorChanges(model) {
         console.debug("trackEditorChanges()");
         this.lastSavedVersionId = model.getAlternativeVersionId();
@@ -136,6 +140,7 @@ class TextEditor extends Editor {
     clear() {
         console.debug("clear()");
         this.monaco.getModel().setValue("");
+        this.refresh();
     }
 
     setContent(text, arg) {
@@ -161,6 +166,7 @@ class TextEditor extends Editor {
 
         this.monaco.setModel(model);
         this.trackEditorChanges(model);
+        this.refresh();
 
         console.info("content set, language: %s", this.monaco.getModel().getModeId())
     }
@@ -168,12 +174,14 @@ class TextEditor extends Editor {
     setText(text) {
         console.debug("setText()");
         this.monaco.getModel().setValue(text);
+        this.refresh();
         console.info("text set, language: %s", this.monaco.getModel().getModeId());
     }
 
     replaceSelection(text) {
         console.debug("replaceSelection()");
         this.monaco.replaceSelection(text);
+        this.refresh();
     }
 
     getText() {
@@ -280,7 +288,7 @@ class MarkdownEditor extends TextEditor {
         this.lastPreviewVersionId = 0;
         this.elementPreview = document.getElementById(elementIdPreview);
 
-        this.updatePreview();
+        this.refresh();
 
         const instance = this;
         window.setInterval(function() {
