@@ -13,5 +13,5 @@
 // limitations under the License.
 
 dependencies {
-    compile project(':fx-icons')
+    implementation project(':fx-icons')
 }
