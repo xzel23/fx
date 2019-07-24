@@ -275,12 +275,15 @@ class MarkdownEditor extends TextEditor {
         super(name, elementIdEditor);
         this.md = new MarkdownIt();
         this.lastPreviewVersionId = 0;
+        this.elementPreview = document.getElementById(elementIdPreview);
+
+        this.updatePreview();
 
         const instance = this;
         window.setInterval(function() {
             console.info("update markdown");
             instance.updatePreview();
-        }, 5000);
+        }, 200);
     }
 
     updatePreview() {
@@ -293,12 +296,23 @@ class MarkdownEditor extends TextEditor {
         }
 
         console.info("updating preview");
+
+        let tStart = performance.now();
+        let text = this.getText();
+        let tText = performance.now();
+        this.elementPreview.innerHTML = this.md.render(text);
+        let tTranslate = performance.now();
+
         this.lastPreviewVersionId = versionId;
+
+        console.info("text retrieval:       %5d ms", (tText-tStart));
+        console.info("markdown translation: %5d ms", (tTranslate-tText));
+
     }
 
 }
 
-window.createMarkdownEditor = function (name, elementEditor, elementPreview) {
+window.createMarkdownEditor = function (name, elementIdEditor, elementIdPreview) {
     console.info("creating Markdown Editor instance with name '%s'", name);
-    return new MarkdownEditor(name, elementEditor, elementPreview);
+    return new MarkdownEditor(name, elementIdEditor, elementIdPreview);
 };
