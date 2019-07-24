@@ -63,7 +63,7 @@ self.MonacoEnvironment = {
     }
 };
 
-// --- create Text Editor instance
+// --- Text Editor class definition
 
 class TextEditor extends Editor {
 
@@ -256,4 +256,27 @@ class TextEditor extends Editor {
 window.createTextEditor = function (name, element) {
     console.info("creating Text Editor instance with name '%s'", name);
     return new TextEditor(name, element);
+};
+
+// === Markdown Editor ================================================================================================
+
+// load Markdown-it
+
+const MarkdownIt = require('markdown-it')
+
+class MarkdownEditor extends TextEditor {
+
+    constructor(name, elementIdEditor, elementIdPreview) {
+        super(name, elementIdEditor);
+        this.md = new MarkdownIt();
+    }
+
+    updatePreview() {
+
+    }
+}
+
+window.createMarkdownEditor = function (name, elementEditor, elementPreview) {
+    console.info("creating Markdown Editor instance with name '%s'", name);
+    return new MarkdownEditor(name, elementEditor, elementPreview);
 };

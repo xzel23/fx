@@ -20,11 +20,13 @@ plugins {
 
 subprojects {
 
+    ext.fast_build   = project.findProperty("fast_build")!=null
+    ext.run_spotbugs = !fast_build
+
     apply plugin: 'java'
     apply plugin: 'java-library'
     apply plugin: 'maven-publish'
     apply plugin: 'idea'
-    apply plugin: 'com.github.spotbugs'
     apply plugin: 'com.dua3.gradle.jpms'
     apply plugin: 'com.jfrog.bintray'
 
@@ -182,8 +184,11 @@ subprojects {
 
     artifacts {
         archives jar
-        archives sourcesJar
-        archives javadocJar
+
+        if (!fast_build) {
+            archives sourcesJar
+            archives javadocJar
+        }
     }
 
 // === MAVEN publication === >
@@ -232,12 +237,16 @@ subprojects {
 
 // === SPOTBUGS === >
 
-    spotbugs.excludeFilter = rootProject.file('spotbugs-exclude.xml')
+    if (run_spotbugs) {
+        apply plugin: 'com.github.spotbugs'
 
-    tasks.withType(com.github.spotbugs.SpotBugsTask) {
-        reports {
-            xml.enabled false
-            html.enabled true
+        spotbugs.excludeFilter = rootProject.file('spotbugs-exclude.xml')
+
+        tasks.withType(com.github.spotbugs.SpotBugsTask) {
+            reports {
+                xml.enabled false
+                html.enabled true
+            }
         }
     }
 
