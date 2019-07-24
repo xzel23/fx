@@ -289,10 +289,16 @@ class MarkdownEditor extends TextEditor {
     }
 
     updatePreview() {
-        let versionId = this.currentVersionId;
-        if (versionId===this.lastPreviewVersionId) {
+        if (this.currentVersionId===this.lastPreviewVersionId) {
+            // preview is up to date
             return;
         }
+
+        this.refresh();
+    }
+
+    refresh() {
+        this.lastPreviewVersionId = this.currentVersionId;
 
         let tStart = performance.now();
         let text = this.getText();
@@ -300,15 +306,12 @@ class MarkdownEditor extends TextEditor {
         this.elementPreview.innerHTML = this.md.render(text);
         let tTranslate = performance.now();
 
-        this.lastPreviewVersionId = versionId;
-
         console.debug("updatePreview() - times:\n"
             + "    text retrieval:       %5d ms\n"
             + "    markdown translation: %5d ms",
-            (tText-tStart),
-            (tTranslate-tText));
+            (tText - tStart),
+            (tTranslate - tText));
     }
-
 }
 
 window.createMarkdownEditor = function (name, elementIdEditor, elementIdPreview) {
