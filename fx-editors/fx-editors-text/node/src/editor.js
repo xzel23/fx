@@ -284,21 +284,15 @@ class MarkdownEditor extends TextEditor {
 
         const instance = this;
         window.setInterval(function() {
-            console.info("update markdown");
             instance.updatePreview();
         }, 200);
     }
 
     updatePreview() {
-        console.debug("updatePreview()");
-
         let versionId = this.currentVersionId;
         if (versionId===this.lastPreviewVersionId) {
-            console.info("preview is up to date");
             return;
         }
-
-        console.info("updating preview");
 
         let tStart = performance.now();
         let text = this.getText();
@@ -308,9 +302,11 @@ class MarkdownEditor extends TextEditor {
 
         this.lastPreviewVersionId = versionId;
 
-        console.info("text retrieval:       %5d ms", (tText-tStart));
-        console.info("markdown translation: %5d ms", (tTranslate-tText));
-
+        console.debug("updatePreview() - times:\n"
+            + "    text retrieval:       %5d ms\n"
+            + "    markdown translation: %5d ms",
+            (tText-tStart),
+            (tTranslate-tText));
     }
 
 }
