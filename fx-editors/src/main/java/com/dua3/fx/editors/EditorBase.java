@@ -102,13 +102,19 @@ public abstract class EditorBase extends BorderPane {
         engine.getLoadWorker().stateProperty().addListener((observable, oldState, newState) -> {
             if (newState == State.SUCCEEDED) {
                 LOG.info("[webengine] " + newState + " - binding bridge");
-                bridge.bind();
+                bindBridge();
             }
         });
 
         // load editor
         engine.load(html.toString());
         LOG.fine("Editor component created");
+    }
+
+    protected abstract void bindBridge();
+
+    protected final void doBindBridge(String creationMethod, Object... args) {
+        bridge.bind(creationMethod, args);
     }
 
     /**
@@ -281,4 +287,5 @@ public abstract class EditorBase extends BorderPane {
     public Node[] toolbarControls(Orientation /*unused*/ orientation) {
         return new Node[0];
     }
+
 }

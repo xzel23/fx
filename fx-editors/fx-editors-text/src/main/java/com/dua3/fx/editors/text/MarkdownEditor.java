@@ -11,4 +11,9 @@ public class MarkdownEditor extends TextEditor {
         super(FXML_URL, HTML_URL);
     }
 
+    @Override
+    protected void bindBridge() {
+        super.doBindBridge("createMarkdownEditor", "Markdown Editor", "editor_markdown", "preview_markdown");
+    }
+
 }

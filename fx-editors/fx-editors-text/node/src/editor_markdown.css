@@ -1,11 +1,19 @@
 /* use absolute positioning to ensure editor fills the entire webview instance */
 
-#editor {
-    position: absolute;
+#editor_markdown {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+}
+
+#preview_markdown {
+    position: fixed;
     top: 0;
     right: 0;
-    bottom: 0;
-    left: 0;
+    width: 50%;
+    height: 100%;
 }
 
 /* follow recommendations on github-markdown-css site for margins and page widths */

@@ -65,6 +65,8 @@ self.MonacoEnvironment = {
 
 // --- Text Editor class definition
 
+import './editor_text.css';
+
 class TextEditor extends Editor {
 
     constructor(name, elementId) {
@@ -265,7 +267,8 @@ window.createTextEditor = function (name, element) {
 
 // === Markdown Editor ================================================================================================
 
-// load Markdown-it
+import './editor_markdown.css';
+import './github-markdown.css';
 
 const MarkdownIt = require('markdown-it')
 

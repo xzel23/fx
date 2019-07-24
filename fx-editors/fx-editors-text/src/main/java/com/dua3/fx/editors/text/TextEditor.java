@@ -48,6 +48,11 @@ public class TextEditor extends EditorBase {
         super(fxml, html);
     }
 
+    @Override
+    protected void bindBridge() {
+        super.doBindBridge("createTextEditor", "Text Editor", "editor_text");
+    }
+
     /**
      * Set editing mode from file extension.
      *

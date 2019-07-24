@@ -15,6 +15,7 @@
 package com.dua3.fx.editors;
 
 import com.dua3.fx.util.PlatformHelper;
+import com.dua3.fx.web.WebViews;
 import com.dua3.utility.lang.LangUtil;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
@@ -81,7 +82,7 @@ public class JavaScriptBridge {
 	/**
 	 * Bind bridge to JavaScript editor instance.
 	 */
-	void bind() {
+	void bind(String methodCreateEditorInstance, Object[] args) {
 		Platform.runLater(() -> {
 			// get some references to objects and ethods
 			JSObject win = (JSObject) engine.executeScript("window");
@@ -89,8 +90,7 @@ public class JavaScriptBridge {
 
 			// create editor instance
 			String name = "@" + Integer.toHexString(System.identityHashCode(this));
-			String container = "container";
-			Object ret = win.call("createTextEditor", name, container);
+			Object ret = createObject(win, methodCreateEditorInstance, args);
 			LangUtil.check(ret instanceof JSObject, "editor construction failed");
 			jsEditor = (JSObject) ret;
 
@@ -107,6 +107,10 @@ public class JavaScriptBridge {
 			// mark editor as ready for use
 			editorReadyProperty.set(true);
 		});
+	}
+
+	private Object createObject(JSObject win, String createMethod, Object... args) {
+		return WebViews.callMethod(win, createMethod, args);
 	}
 
 	/**
