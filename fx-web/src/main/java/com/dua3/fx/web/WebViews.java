@@ -17,8 +17,10 @@ package com.dua3.fx.web;
 import com.dua3.fx.util.Dialogs;
 import javafx.scene.control.ButtonType;
 import javafx.scene.web.WebEngine;
+import netscape.javascript.JSException;
 import netscape.javascript.JSObject;
 
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -118,6 +120,21 @@ public class WebViews {
 
         public void debug(JSObject args) {
             logger.log(Level.FINER, () -> formatMessage(args));
+        }
+    }
+
+    public static Object callMethod(JSObject object, String methodName, Object[] args) {
+        try {
+            return object.call(methodName, args);
+        } catch (JSException e) {
+            String msg = String.format(
+                    "JSException: %s%n    when calling:    %s.%s()%n    with arguments:  %s",
+                    e.getMessage(),
+                    object.toString(),
+                    methodName,
+                    Arrays.toString(args));
+            LOG.warning(msg);
+            throw new JSException(msg);
         }
     }
 }
