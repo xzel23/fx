@@ -69,9 +69,9 @@ import './editor_text.css';
 
 class TextEditor extends Editor {
 
-    constructor(name, elementId) {
+    constructor(name, elementId, options) {
         super(name, elementId);
-        this.monaco = monaco.editor.create(this.element, {automaticLayout: true});
+        this.monaco = monaco.editor.create(this.element, options);
 
         this.setTheme('light');
 
@@ -262,7 +262,7 @@ class TextEditor extends Editor {
 
 window.createTextEditor = function (name, element) {
     console.info("creating Text Editor instance with name '%s'", name);
-    return new TextEditor(name, element);
+    return new TextEditor(name, element, {automaticLayout: true});
 };
 
 // === Markdown Editor ================================================================================================
@@ -274,8 +274,8 @@ const MarkdownIt = require('markdown-it')
 
 class MarkdownEditor extends TextEditor {
 
-    constructor(name, elementIdEditor, elementIdPreview) {
-        super(name, elementIdEditor);
+    constructor(name, elementIdEditor, elementIdPreview, options) {
+        super(name, elementIdEditor, options);
         this.md = new MarkdownIt();
         this.lastPreviewVersionId = 0;
         this.elementPreview = document.getElementById(elementIdPreview);
@@ -313,5 +313,8 @@ class MarkdownEditor extends TextEditor {
 
 window.createMarkdownEditor = function (name, elementIdEditor, elementIdPreview) {
     console.info("creating Markdown Editor instance with name '%s'", name);
-    return new MarkdownEditor(name, elementIdEditor, elementIdPreview);
+    return new MarkdownEditor(name, elementIdEditor, elementIdPreview, {
+        automaticLayout: true,
+        wordWrap: 'on'
+    });
 };
