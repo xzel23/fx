@@ -35,65 +35,59 @@ public class DialogSample extends Application {
         VBox container = new VBox();
 
         // Confirmation
-        container.getChildren().add(createButton("Confirmation", () -> {
-            Dialogs.confirmation()
-                    .title("Elevator cleaning")
-                    .header("Good for you!")
-                    .text("You've decided to clean the elevator.")
-                    .showAndWait();
-        }));
+        container.getChildren().add(createButton("Confirmation", () ->
+                Dialogs.confirmation()
+                        .title("Elevator cleaning")
+                        .header("Good for you!")
+                        .text("You've decided to clean the elevator.")
+                        .showAndWait()));
 
         // Information
-        container.getChildren().add(createButton("Info", () -> {
+        container.getChildren().add(createButton("Info", () ->
             Dialogs.information()
                     .title("Info")
                     .header("Elevator cleaning")
                     .text("To clean and service the electromagnetic coils in the bottom, " +
                             "it is necessary to jettison the access plate in the floor.")
-                    .showAndWait();
-        }));
+                    .showAndWait()));
 
         // Warning
-        container.getChildren().add(createButton("Warning", () -> {
-            Dialogs.warning()
-                    .title("Warning")
-                    .header("Attention... danger")
-                    .text("Automatic charges will now blow the explosive bolts in the floor plate unit. " +
-                            "The plate will disengage from the floor in 5 seconds.")
-                    .showAndWait();
-        }));
+        container.getChildren().add(createButton("Warning", () ->
+                Dialogs.warning()
+                        .title("Warning")
+                        .header("Attention... danger")
+                        .text("Automatic charges will now blow the explosive bolts in the floor plate unit. " +
+                                "The plate will disengage from the floor in 5 seconds.")
+                        .showAndWait()));
 
         // Error
-        container.getChildren().add(createButton("Error", () -> {
-            Dialogs.error()
-                    .title("Error")
-                    .header("Please leave the elevator immediately")
-                    .text("5-4-3-2-1...")
-                    .showAndWait();
-        }));
+        container.getChildren().add(createButton("Error", () ->
+                Dialogs.error()
+                        .title("Error")
+                        .header("Please leave the elevator immediately")
+                        .text("5-4-3-2-1...")
+                        .showAndWait()));
 
         // Prompt
-        container.getChildren().add(createButton("Prompt", () -> {
-            Dialogs.prompt()
-                    .title("Prompt")
-                    .header("This is a prompt dialog.")
-                    .showAndWait();
-        }));
+        container.getChildren().add(createButton("Prompt", () ->
+                Dialogs.prompt()
+                        .title("Prompt")
+                        .header("This is a prompt dialog.")
+                        .showAndWait()));
 
         // Input
-        container.getChildren().add(createButton("Input", () -> {
-            Dialogs.input()
-                    .title("Input")
-                    .header("This is an input dialog.")
-                    .string("txt", "enter text", () -> "dflt")
-                    .integer("integer", "enter number", () -> 0)
-                    .integer("integer from 4 to 7", "enter number", () -> 0,
-                            i -> i >= 4 && i <= 7 ? Optional.empty() : Optional.of(i + " is not between 4 and 7"))
-                    .comboBox("list", "choose one", () -> "Maybe", String.class, List.of("Yes", "No", "Maybe"))
-                    .checkBox("bool", "Yes or No:", () -> false, "yes")
-                    .chooseFile("file", "File", () -> null, InputBuilder.FileDialogMode.OPEN, new FileChooser.ExtensionFilter("all files", "*"))
-                    .showAndWait();
-        }));
+        container.getChildren().add(createButton("Input", () ->
+                Dialogs.input()
+                        .title("Input")
+                        .header("This is an input dialog.")
+                        .string("txt", "enter text", () -> "dflt")
+                        .integer("integer", "enter number", () -> 0)
+                        .integer("integer from 4 to 7", "enter number", () -> 0,
+                                i -> i >= 4 && i <= 7 ? Optional.empty() : Optional.of(i + " is not between 4 and 7"))
+                        .comboBox("list", "choose one", () -> "Maybe", String.class, List.of("Yes", "No", "Maybe"))
+                        .checkBox("bool", "Yes or No:", () -> false, "yes")
+                        .chooseFile("file", "File", () -> null, InputBuilder.FileDialogMode.OPEN, new FileChooser.ExtensionFilter("all files", "*"))
+                        .showAndWait()));
 
         // Options
         container.getChildren().add(createButton("Options", () -> {
