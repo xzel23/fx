@@ -17,6 +17,7 @@ package com.dua3.fx.editors.text;
 import com.dua3.fx.editors.EditorBase;
 import com.dua3.fx.editors.EditorSettings;
 
+import java.net.URL;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.logging.Logger;
@@ -27,12 +28,24 @@ public class TextEditor extends EditorBase {
      */
     private static final Logger LOG = Logger.getLogger(TextEditor.class.getName());
 
+    public static final URL FXML_URL = TextEditor.class.getResource("editor_text.fxml");
+    public static final URL HTML_URL = TextEditor.class.getResource("node/editor_text.html");
+
     /**
      * Default constructor.
      */
     public TextEditor() {
-        super(TextEditor.class.getResource("editor_text.fxml"),
-              TextEditor.class.getResource("node/editor_text.html"));
+        this(FXML_URL, HTML_URL);
+    }
+
+    /**
+     * Constructor
+     *
+     * @param fxml the fxml file for the editor component
+     * @param html the html file for the component
+     */
+    protected TextEditor(URL fxml, URL html) {
+        super(fxml, html);
     }
 
     /**

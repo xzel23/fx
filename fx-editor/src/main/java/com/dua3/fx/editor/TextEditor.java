@@ -6,7 +6,7 @@ import javafx.application.Application;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Editor {
+public class TextEditor {
 
 	public static void main(String[] args) {
 		LangUtil.setLogLevel(Level.FINE);
@@ -14,7 +14,7 @@ public class Editor {
 				Logger.getLogger("com.sun"),
 				Logger.getLogger("javafx")
 			);
-		Application.launch(EditorApp.class, args);
+        Application.launch(TextEditorApp.class, args);
 	}
 
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.dua3.fx.editors.text.TextEditor?>
+<?import com.dua3.fx.editors.text.MarkdownEditor?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.input.*?>
 <?import javafx.scene.layout.VBox?>
@@ -49,6 +49,6 @@
         </Menu>
       </menus>
     </MenuBar>
-    <TextEditor fx:id="editor" VBox.vgrow="ALWAYS" />
+    <MarkdownEditor fx:id="editor" VBox.vgrow="ALWAYS"/>
   </children>
 </VBox>

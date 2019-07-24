@@ -23,7 +23,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.prefs.Preferences;
 
-public class EditorController extends FxController<EditorApp, EditorController> {
+public class EditorController extends FxController<EditorAppBase, EditorController> {
 
     public class TextDocument extends FxDocument {
         TextDocument(URI location) {
@@ -55,7 +55,7 @@ public class EditorController extends FxController<EditorApp, EditorController> 
     TextEditor editor;
 	
 	@Override
-	protected void init(EditorApp app) {
+	protected void init(EditorAppBase app) {
 		// handle command line arguments
 		Cli.apply(this, getApp().getParameters().getRaw().toArray(String[]::new));
 
