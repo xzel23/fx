@@ -14,7 +14,7 @@
 
 plugins {
     id 'com.dua3.gradle.jpms' version '0.8.3' apply false
-    id 'com.github.spotbugs' version '1.6.10' apply false
+    id 'com.github.spotbugs' version '2.0.0' apply false
     id 'com.jfrog.bintray' version '1.8.4' apply false
 }
 
@@ -43,9 +43,9 @@ subprojects {
     ////////////////////////////////////////////////////////////////////////////
 
     ext {
-        java_version='11'
-        javafx_version='12.0.1'
-        junit_version='5.3.1'
+        java_version = '11'
+        javafx_version = '12.0.1'
+        junit_version = '5.3.1'
 
         dua3_utility_version = '4.0.2'
         dua3_meja_version = '2.0-BETA6'
@@ -61,7 +61,7 @@ subprojects {
     repositories {
         jcenter()
 
-        maven { url  "https://dl.bintray.com/dua3/oss" }
+        maven { url "https://dl.bintray.com/dua3/oss" }
 
         // no dependencies on local versions in release
         if (!project.hasProperty('release')) {
@@ -111,7 +111,7 @@ subprojects {
             testOutputDir = file("$buildDir/classes/java/test/")
         }
     }
-    
+
     test {
         useJUnitPlatform()
 
@@ -232,7 +232,6 @@ subprojects {
 
 // === SPOTBUGS === >
 
-    spotbugs.toolVersion = '3.1.12'
     spotbugs.excludeFilter = rootProject.file('spotbugs-exclude.xml')
 
     tasks.withType(com.github.spotbugs.SpotBugsTask) {
