@@ -285,7 +285,7 @@ class MarkdownEditor extends TextEditor {
         const instance = this;
         window.setInterval(function() {
             instance.updatePreview();
-        }, 200);
+        }, 100);
     }
 
     updatePreview() {
