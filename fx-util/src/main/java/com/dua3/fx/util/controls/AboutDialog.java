@@ -14,21 +14,19 @@
 
 package com.dua3.fx.util.controls;
 
-import java.awt.Desktop;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
+import javafx.scene.control.*;
+
+import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.DialogPane;
-import javafx.scene.control.Hyperlink;
-import javafx.scene.control.Label;
 
 public class AboutDialog extends Dialog<Void> {
     /** Logger instance */
@@ -54,6 +52,7 @@ public class AboutDialog extends Dialog<Void> {
 
     @FXML
     public void initialize() {
+        // no content. may be overridden.
     }
 
     public AboutDialog() {

@@ -30,23 +30,43 @@ public class DialogSample extends Application {
   public void start(Stage primaryStage) {
     VBox container = new VBox();
 
+      // Confirmation
+      container.getChildren().add(createButton("Confirmation", () -> {
+          Dialogs.confirmation()
+                  .title("Elevator cleaning")
+                  .header("Good for you!")
+                  .text("You've decided to clean the elevator.")
+                  .showAndWait();
+      }));
+
     // Information
     container.getChildren().add(createButton("Info", () -> {
       Dialogs.information()
           .title("Info")
-          .header("This is an information.")
-          .text("And this is an additional text providing details.")
+              .header("Elevator cleaning")
+              .text("To clean and service the electromagnetic coils in the bottom, " +
+                      "it is necessary to jettison the access plate in the floor.")
           .showAndWait();
     }));
 
-    // Confirmation
-    container.getChildren().add(createButton("Confirmation", () -> {
-      Dialogs.confirmation()
-          .title("Confirmation")
-          .header("This is a conformation dialog.")
-          .text("And this is an additional text providing details.")
-          .showAndWait();
+      // Warning
+      container.getChildren().add(createButton("Warning", () -> {
+          Dialogs.warning()
+                  .title("Warning")
+                  .header("Attention... danger")
+                  .text("Automatic charges will now blow the explosive bolts in the floor plate unit. " +
+                          "The plate will disengage from the floor in 5 seconds.")
+                  .showAndWait();
     }));
+
+      // Error
+      container.getChildren().add(createButton("Error", () -> {
+          Dialogs.error()
+                  .title("Error")
+                  .header("Please leave the elevator immediately")
+                  .text("5-4-3-2-1...")
+                  .showAndWait();
+      }));
 
     // Prompt
     container.getChildren().add(createButton("Prompt", () -> {
