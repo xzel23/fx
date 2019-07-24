@@ -75,27 +75,32 @@ class TextEditor extends Editor {
 
         // track dirt state (see https://github.com/Microsoft/monaco-editor/issues/353)
         this.onChangedDirtyState = (flag) => {};
-        this.trackDirtyState(this.monaco.getModel());
+        this.trackEditorChanges(this.monaco.getModel());
 
         console.info("new TextEditor instance: " + name);
     }
 
-    trackDirtyState(model) {
-        console.info(">trackDirtyState");
+    trackEditorChanges(model) {
+        console.debug("trackEditorChanges()");
         this.lastSavedVersionId = model.getAlternativeVersionId();
         this.dirty = false;
 
         model.onDidChangeContent((evt) => {
-            let oldDirtyState = this.dirty;
-
-            let versionId = model.getAlternativeVersionId();
-            this.dirty = versionId !== this.lastSavedVersionId;
-
-            if (this.dirty != oldDirtyState) {
-                console.debug("dirty: %s", this.dirty);
-                this.onChangedDirtyState(this.dirty);
-            }
+            this.onContentChange(model.getAlternativeVersionId());
         });
+    }
+
+    onContentChange(newVersionId) {
+        let oldDirtyState = this.dirty;
+
+        this.dirty = newVersionId !== this.lastSavedVersionId;
+
+        if (this.dirty != oldDirtyState) {
+            console.debug("dirty: %s", this.dirty);
+            this.onChangedDirtyState(this.dirty);
+        }
+
+        this.currentVersionId = newVersionId;
     }
 
     markEditorClean() {
@@ -153,7 +158,7 @@ class TextEditor extends Editor {
         }
 
         this.monaco.setModel(model);
-        this.trackDirtyState(model);
+        this.trackEditorChanges(model);
 
         console.info("content set, language: %s", this.monaco.getModel().getModeId())
     }
@@ -269,11 +274,28 @@ class MarkdownEditor extends TextEditor {
     constructor(name, elementIdEditor, elementIdPreview) {
         super(name, elementIdEditor);
         this.md = new MarkdownIt();
+        this.lastPreviewVersionId = 0;
+
+        const instance = this;
+        window.setInterval(function() {
+            console.info("update markdown");
+            instance.updatePreview();
+        }, 5000);
     }
 
     updatePreview() {
+        console.debug("updatePreview()");
 
+        let versionId = this.currentVersionId;
+        if (versionId===this.lastPreviewVersionId) {
+            console.info("preview is up to date");
+            return;
+        }
+
+        console.info("updating preview");
+        this.lastPreviewVersionId = versionId;
     }
+
 }
 
 window.createMarkdownEditor = function (name, elementEditor, elementPreview) {
