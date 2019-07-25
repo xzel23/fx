@@ -7,6 +7,7 @@
 - fx-web: redirecting javaScript console to Java
 - fx-editors: switch to Monaco Editor
 - fx-editors: add markdown support
+- fx-editors: math support in markdown using [kaTeX](https://www.katex.org)
 
 #### Version 0.4.2
 
