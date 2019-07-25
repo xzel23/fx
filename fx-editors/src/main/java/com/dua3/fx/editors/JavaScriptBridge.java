@@ -82,15 +82,14 @@ public class JavaScriptBridge {
 	/**
 	 * Bind bridge to JavaScript editor instance.
 	 */
-	void bind(String methodCreateEditorInstance, Object[] args) {
+	void bind(String jsEditorInstance) {
 		Platform.runLater(() -> {
 			// get some references to objects and ethods
 			JSObject win = (JSObject) engine.executeScript("window");
 			win.setMember("bridge", this);
 
-			// create editor instance
-			String name = "@" + Integer.toHexString(System.identityHashCode(this));
-			Object ret = createObject(win, methodCreateEditorInstance, args);
+			// get editor instance
+			Object ret = win.getMember(jsEditorInstance);
 			LangUtil.check(ret instanceof JSObject, "editor construction failed");
 			jsEditor = (JSObject) ret;
 

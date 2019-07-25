@@ -5,14 +5,14 @@
 </head>
 <body>
 
-<div id="editor_markdown"></div>
-<div id="preview_markdown" class="markdown-body"></div>
+<div id="editor_markdown" class="markdown-source"></div>
+<div id="preview_markdown" class="markdown-preview markdown-body"></div>
 
-<!--
 <script type="text/javascript">
-    window.onload = () => window.createMarkdownEditor("test", "editor_markdown", "preview_markdown");
+    window.onload = () => {
+        window.markdown_editor = window.createMarkdownEditor("Markdown Editor", "editor_markdown", "preview_markdown");
+    }
 </script>
--->
 
 </body>
 </html>

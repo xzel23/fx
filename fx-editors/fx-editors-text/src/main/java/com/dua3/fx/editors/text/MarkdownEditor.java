@@ -6,14 +6,10 @@ public class MarkdownEditor extends TextEditor {
 
     public static final URL FXML_URL = MarkdownEditor.class.getResource("editor_markdown.fxml");
     public static final URL HTML_URL = MarkdownEditor.class.getResource("node/editor_markdown.html");
+    public static final String JS_EDITOR_INSTANCE = "markdown_editor";
 
     public MarkdownEditor() {
-        super(FXML_URL, HTML_URL);
-    }
-
-    @Override
-    protected void bindBridge() {
-        super.doBindBridge("createMarkdownEditor", "Markdown Editor", "editor_markdown", "preview_markdown");
+        super(FXML_URL, HTML_URL, JS_EDITOR_INSTANCE);
     }
 
 }

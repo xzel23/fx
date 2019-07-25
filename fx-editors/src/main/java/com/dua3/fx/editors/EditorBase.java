@@ -60,7 +60,7 @@ public abstract class EditorBase extends BorderPane {
      * @param fxml the FXML resource to load the user interface definition from (filename)
      * @param html the HTML resource to load (filename)
      */
-    protected EditorBase(URL fxml, URL html) {
+    protected EditorBase(URL fxml, URL html, String jsEditorInstance) {
         LOG.fine(() -> "creating Editor component");
 
         // load FXML
@@ -102,19 +102,13 @@ public abstract class EditorBase extends BorderPane {
         engine.getLoadWorker().stateProperty().addListener((observable, oldState, newState) -> {
             if (newState == State.SUCCEEDED) {
                 LOG.info("[webengine] " + newState + " - binding bridge");
-                bindBridge();
+                bridge.bind(jsEditorInstance);
             }
         });
 
         // load editor
         engine.load(html.toString());
         LOG.fine("Editor component created");
-    }
-
-    protected abstract void bindBridge();
-
-    protected final void doBindBridge(String creationMethod, Object... args) {
-        bridge.bind(creationMethod, args);
     }
 
     /**

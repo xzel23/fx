@@ -30,12 +30,13 @@ public class TextEditor extends EditorBase {
 
     public static final URL FXML_URL = TextEditor.class.getResource("editor_text.fxml");
     public static final URL HTML_URL = TextEditor.class.getResource("node/editor_text.html");
+    public static final String JS_EDITOR_INSTANCE = "text_editor";
 
     /**
      * Default constructor.
      */
     public TextEditor() {
-        this(FXML_URL, HTML_URL);
+        this(FXML_URL, HTML_URL, JS_EDITOR_INSTANCE);
     }
 
     /**
@@ -44,13 +45,8 @@ public class TextEditor extends EditorBase {
      * @param fxml the fxml file for the editor component
      * @param html the html file for the component
      */
-    protected TextEditor(URL fxml, URL html) {
-        super(fxml, html);
-    }
-
-    @Override
-    protected void bindBridge() {
-        super.doBindBridge("createTextEditor", "Text Editor", "editor_text");
+    protected TextEditor(URL fxml, URL html, String jsEditorInstance) {
+        super(fxml, html, jsEditorInstance);
     }
 
     /**

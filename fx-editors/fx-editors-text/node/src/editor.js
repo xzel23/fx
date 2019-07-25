@@ -42,9 +42,6 @@ class Editor {
 
 import * as monaco from 'monaco-editor';
 import './editor_text.css';
-import './editor_markdown.css';
-import './github-markdown.css';
-import './katex/katex.min.css';
 
 // Since packaging is done by you, you need
 // to instruct the editor how you named the
@@ -279,12 +276,16 @@ window.createTextEditor = function (name, element) {
 
 const MarkdownIt = require('markdown-it');
 
+import './editor_markdown.css';
+import './github-markdown.css';
+import './katex/katex.css';
+
 class MarkdownEditor extends TextEditor {
 
     constructor(name, elementIdEditor, elementIdPreview, options) {
         super(name, elementIdEditor, options);
         this.md = new MarkdownIt();
-        this.md.use(require('markdown-it-katex'), {
+        this.md.use(require('markdown-it-katex-newcommand'), {
             "throwOnError": false,
             "errorColor": "#cc0000"
         });
