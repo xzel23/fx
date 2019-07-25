@@ -106,6 +106,8 @@ class TextEditor extends Editor {
         }
 
         this.currentVersionId = newVersionId;
+
+        this.refresh();
     }
 
     markEditorClean() {
@@ -295,9 +297,6 @@ class MarkdownEditor extends TextEditor {
         this.refresh();
 
         const instance = this;
-        window.setInterval(function() {
-            instance.updatePreview();
-        }, 100);
     }
 
     updatePreview() {
