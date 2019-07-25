@@ -41,6 +41,10 @@ class Editor {
 // load Monaco Editor
 
 import * as monaco from 'monaco-editor';
+import './editor_text.css';
+import './editor_markdown.css';
+import './github-markdown.css';
+import './katex/katex.min.css';
 
 // Since packaging is done by you, you need
 // to instruct the editor how you named the
@@ -64,8 +68,6 @@ self.MonacoEnvironment = {
 };
 
 // --- Text Editor class definition
-
-import './editor_text.css';
 
 class TextEditor extends Editor {
 
@@ -275,16 +277,17 @@ window.createTextEditor = function (name, element) {
 
 // === Markdown Editor ================================================================================================
 
-import './editor_markdown.css';
-import './github-markdown.css';
-
-const MarkdownIt = require('markdown-it')
+const MarkdownIt = require('markdown-it');
 
 class MarkdownEditor extends TextEditor {
 
     constructor(name, elementIdEditor, elementIdPreview, options) {
         super(name, elementIdEditor, options);
         this.md = new MarkdownIt();
+        this.md.use(require('markdown-it-katex'), {
+            "throwOnError": false,
+            "errorColor": "#cc0000"
+        });
         this.lastPreviewVersionId = 0;
         this.elementPreview = document.getElementById(elementIdPreview);
 
