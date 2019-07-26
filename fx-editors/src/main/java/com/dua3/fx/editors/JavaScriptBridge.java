@@ -25,6 +25,7 @@ import javafx.scene.web.WebView;
 import netscape.javascript.JSException;
 import netscape.javascript.JSObject;
 
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -154,5 +155,13 @@ public class JavaScriptBridge {
 
 	public void markEditorClean() {
 		jsEditor.call("markEditorClean");
+	}
+
+	public String getSelection() {
+		return Objects.toString(jsEditor.call("getSelection"));
+	}
+
+	public void replaceSelection(String text) {
+		jsEditor.call("replaceSelection", text);
 	}
 }

@@ -125,6 +125,22 @@ public class EditorController extends FxController<EditorAppBase, EditorControll
 			});
 	}
 
+    @FXML
+    public void copy() {
+		editor.copy();
+    }
+
+    @FXML
+    public void cut() {
+		editor.cut();
+    }
+
+    @FXML
+    public void paste() {
+        editor.paste();
+    }
+
+
     @Override
     public TextDocument getCurrentDocument() {
         return (TextDocument) super.getCurrentDocument();

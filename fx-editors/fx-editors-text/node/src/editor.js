@@ -192,7 +192,7 @@ class TextEditor extends Editor {
 
     getSelection() {
         console.debug("getSelection()");
-        return this.monaco.getModel().getSelection();
+        return this.monaco.getModel().getValueInRange(this.monaco.getSelection());
     }
 
     getLine(i) {
@@ -267,6 +267,7 @@ class TextEditor extends Editor {
         console.debug("getTheme()");
         return this.theme;
     }
+
 }
 
 window.createTextEditor = function (name, element) {

@@ -23,6 +23,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.DataFormat;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
@@ -31,6 +33,8 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URI;
 import java.net.URL;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -282,4 +286,21 @@ public abstract class EditorBase extends BorderPane {
         return new Node[0];
     }
 
+    private final Clipboard clipboard = Clipboard.getSystemClipboard();
+
+    public void copy() {
+        String text = bridge.getSelection();
+        clipboard.setContent(Map.of(DataFormat.PLAIN_TEXT, text));
+    }
+
+    public void cut() {
+        String text = bridge.getSelection();
+        clipboard.setContent(Map.of(DataFormat.PLAIN_TEXT, text));
+        bridge.replaceSelection("");
+    }
+
+    public void paste() {
+        String text = Objects.toString(clipboard.getContent(DataFormat.PLAIN_TEXT));
+        bridge.replaceSelection(text);
+    }
 }
