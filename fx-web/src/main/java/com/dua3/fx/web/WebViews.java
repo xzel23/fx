@@ -15,13 +15,20 @@
 package com.dua3.fx.web;
 
 import com.dua3.fx.util.Dialogs;
+import javafx.event.Event;
+import javafx.event.EventDispatchChain;
+import javafx.event.EventDispatcher;
 import javafx.scene.control.ButtonType;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import netscape.javascript.JSException;
 import netscape.javascript.JSObject;
 
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -135,6 +142,51 @@ public class WebViews {
                     Arrays.toString(args));
             LOG.warning(msg);
             throw new JSException(msg);
+        }
+    }
+
+    /**
+     * Setup an event filter for WebView.
+     *
+     * @param wv          the WebView instance
+     * @param filterKey   the KeyEvent filter
+     * @param filterMouse the MouseEvent filter
+     */
+    public static void filterEvents(WebView wv, Predicate<KeyEvent> filterKey, Predicate<MouseEvent> filterMouse) {
+        WebEventDispatcher dispatcher = new WebEventDispatcher(wv.getEventDispatcher(), filterKey, filterMouse);
+        wv.setEventDispatcher(dispatcher);
+    }
+
+    /**
+     * EventDispatcher implementation for use by
+     * {@link #filterEvents(WebView, Predicate, Predicate)}.
+     */
+    private static class WebEventDispatcher implements EventDispatcher {
+        private final EventDispatcher originalDispatcher;
+        private final Predicate<KeyEvent> filterKey;
+        private final Predicate<MouseEvent> filterMouse;
+
+        WebEventDispatcher(EventDispatcher originalDispatcher, Predicate<KeyEvent> filterKey, Predicate<MouseEvent> filterMouse) {
+            this.originalDispatcher = Objects.requireNonNull(originalDispatcher);
+            this.filterKey = Objects.requireNonNull(filterKey);
+            this.filterMouse = Objects.requireNonNull(filterMouse);
+        }
+
+        @Override
+        public Event dispatchEvent(Event event, EventDispatchChain tail) {
+            if (event instanceof KeyEvent) {
+                KeyEvent keyEvent = (KeyEvent) event;
+                if (filterKey.test(keyEvent)) {
+                    keyEvent.consume();
+                }
+            }
+            if (event instanceof MouseEvent) {
+                MouseEvent mouseEvent = (MouseEvent) event;
+                if (filterMouse.test(mouseEvent)) {
+                    event.consume();
+                }
+            }
+            return originalDispatcher.dispatchEvent(event, tail);
         }
     }
 }

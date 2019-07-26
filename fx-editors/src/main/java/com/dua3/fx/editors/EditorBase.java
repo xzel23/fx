@@ -25,6 +25,8 @@ import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.DataFormat;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
@@ -81,6 +83,12 @@ public abstract class EditorBase extends BorderPane {
 
         // disable context menu
         webview.setContextMenuEnabled(false);
+        WebViews.filterEvents(webview,
+                k -> k.getEventType().equals(KeyEvent.KEY_PRESSED) && k.isShortcutDown()
+                        && ((k.getCode().equals(KeyCode.C) || k.getCode().equals(KeyCode.INSERT))
+                        || (k.getCode().equals(KeyCode.X) || k.getCode().equals(KeyCode.CUT))
+                        || (k.getCode().equals(KeyCode.V) || k.getCode().equals(KeyCode.PASTE))),
+                m -> false);
 
         // get the engine
         WebEngine engine = webview.getEngine();

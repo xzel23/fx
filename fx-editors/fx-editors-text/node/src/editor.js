@@ -181,7 +181,9 @@ class TextEditor extends Editor {
 
     replaceSelection(text) {
         console.debug("replaceSelection()");
-        this.monaco.replaceSelection(text);
+        this.monaco.executeEdits("", [
+            { range: this.monaco.getSelection(), text: text }
+        ]);
         this.refresh();
     }
 
