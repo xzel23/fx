@@ -42,6 +42,9 @@ class Editor {
 
 import * as monaco from 'monaco-editor';
 import './editor_text.css';
+import './editor_markdown.css';
+import './github-markdown.css';
+import './katex/katex.css';
 
 // Since packaging is done by you, you need
 // to instruct the editor how you named the
@@ -278,15 +281,17 @@ window.createTextEditor = function (name, element) {
 
 const MarkdownIt = require('markdown-it');
 
-import './editor_markdown.css';
-import './github-markdown.css';
-import './katex/katex.css';
-
 class MarkdownEditor extends TextEditor {
 
     constructor(name, elementIdEditor, elementIdPreview, options) {
         super(name, elementIdEditor, options);
-        this.md = new MarkdownIt();
+        this.md = new MarkdownIt({
+            html: false,        // Enable HTML tags in source
+            xhtmlOut: false,        // Use '/' to close single tags (<br />).
+            breaks: false,        // Convert '\n' in paragraphs into <br>
+            linkify: false,        // Autoconvert URL-like text to links
+            typographer: true
+        });
         this.md.use(require('markdown-it-katex-newcommand'), {
             "throwOnError": false,
             "errorColor": "#cc0000"
