@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "markdown-it": "^9.0.1",
+    "markdown-it-diagrams": "0.0.6",
     "markdown-it-katex-newcommand": "^1.1.0",
     "monaco-editor": "^0.17.1"
   }

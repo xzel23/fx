@@ -281,6 +281,7 @@ window.createTextEditor = function (name, element) {
 
 const MarkdownIt = require('markdown-it');
 const MarkdownIt_katex = require('markdown-it-katex-newcommand');
+const MarkdownIt_diagrams = require('markdown-it-diagrams');
 
 class MarkdownEditor extends TextEditor {
 
@@ -296,7 +297,13 @@ class MarkdownEditor extends TextEditor {
         this.md.use(MarkdownIt_katex, {
             "throwOnError": false,
             "errorColor": "#cc0000"
-        });
+        })
+            .use(MarkdownIt_diagrams.diagramPlugin);
+
+        MarkdownIt_diagrams.awaitRenderAvailable()
+            .then(fullfilled => console.debug('markdownit-diagrams ready'))
+            .catch(error => console.error(error.message()));
+
         this.lastPreviewVersionId = 0;
         this.elementPreview = document.getElementById(elementIdPreview);
 
