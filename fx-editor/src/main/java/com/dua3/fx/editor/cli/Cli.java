@@ -3,6 +3,7 @@ package com.dua3.fx.editor.cli;
 import com.dua3.fx.editor.EditorController;
 import picocli.CommandLine;
 
+import java.nio.file.Path;
 import java.util.Objects;
 import java.util.logging.*;
 
@@ -14,21 +15,25 @@ public class Cli implements Runnable {
     private final EditorController controller;
 
     @CommandLine.Option(names = {"-l", "--log-level"}, description = "set log level for application package")
-    Level logLevel = Level.WARNING;
+    public Level logLevel = Level.WARNING;
 
     @CommandLine.Option(names = {"-lj", "--log-level-javascript"}, description = "set log level for JavaScript messages")
-    Level logLevelJavaScript = Level.WARNING;
+    public Level logLevelJavaScript = Level.WARNING;
 
     @CommandLine.Option(names = {"-lg", "--log-level-global"}, description = "set global log level")
-    Level logLevelGlobal = Level.WARNING;
+    public Level logLevelGlobal = Level.WARNING;
+
+    @CommandLine.Parameters(index = "0")
+    public Path documentPath = null;
 
     private Cli(EditorController controller) { this.controller = Objects.requireNonNull(controller); }
 
-    public static void apply(EditorController controller, String... args) {
+    public static Cli apply(EditorController controller, String... args) {
         Cli cli = new Cli(controller);
         CommandLine cl =  new CommandLine(cli);
         cl.registerConverter(Level.class, s -> Level.parse(s));
         cl.execute(args);
+        return cli;
     }
 
     @Override
