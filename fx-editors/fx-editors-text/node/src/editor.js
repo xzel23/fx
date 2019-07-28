@@ -280,6 +280,7 @@ window.createTextEditor = function (name, element) {
 // === Markdown Editor ================================================================================================
 
 const MarkdownIt = require('markdown-it');
+const MarkdownIt_katex = require('markdown-it-katex-newcommand');
 
 class MarkdownEditor extends TextEditor {
 
@@ -292,7 +293,7 @@ class MarkdownEditor extends TextEditor {
             linkify: false,        // Autoconvert URL-like text to links
             typographer: true
         });
-        this.md.use(require('markdown-it-katex-newcommand'), {
+        this.md.use(MarkdownIt_katex, {
             "throwOnError": false,
             "errorColor": "#cc0000"
         });
