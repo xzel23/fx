@@ -23,7 +23,7 @@ public class Cli implements Runnable {
     @CommandLine.Option(names = {"-lg", "--log-level-global"}, description = "set global log level")
     public Level logLevelGlobal = Level.WARNING;
 
-    @CommandLine.Parameters(index = "0")
+    @CommandLine.Parameters(index = "0", arity = "0..1")
     public Path documentPath = null;
 
     private Cli(EditorController controller) { this.controller = Objects.requireNonNull(controller); }
