@@ -297,11 +297,22 @@ class MarkdownEditor extends TextEditor {
             linkify: false,        // Autoconvert URL-like text to links
             typographer: true
         });
-        this.md.use(MarkdownIt_katex, {
-            "throwOnError": false,
-            "errorColor": "#cc0000"
-        })
-            .use(MarkdownIt_diagrams.diagramPlugin);
+        this.md
+            .use(MarkdownIt_katex, {
+                "throwOnError": false,
+                "errorColor": "#cc0000"
+             })
+            .use(MarkdownIt_diagrams.diagramPlugin)
+            .use(require('markdown-it-sub'))
+            .use(require('markdown-it-sup'))
+            .use(require('markdown-it-mark'))
+            .use(require('markdown-it-task-lists'))
+            .use(require('markdown-it-anchor').default, { permalink: true, permalinkBefore: true, permalinkSymbol: '§' } )
+            .use(require('markdown-it-toc-done-right').default)
+            .use(require('markdown-it-emoji'))
+            .use(require('markdown-it-abbr'))
+            .use(require('markdown-it-deflist'));
+        ;
 
         MarkdownIt_diagrams.awaitRenderAvailable()
             .then(fullfilled => console.debug('markdownit-diagrams ready'))
