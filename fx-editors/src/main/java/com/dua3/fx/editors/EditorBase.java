@@ -1,11 +1,11 @@
 // Copyright 2019 Axel Howind
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URI;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
@@ -136,7 +137,7 @@ public abstract class EditorBase extends BorderPane {
         final CountDownLatch latch = new CountDownLatch(1);
 
         ChangeListener<? super Boolean> cl = (ov, oldValue, newValue) -> {
-            if (newValue.booleanValue()) {
+            if (newValue) {
                 latch.countDown();
             }
         };
@@ -258,7 +259,7 @@ public abstract class EditorBase extends BorderPane {
     }
 
     protected Object callJS(String command, Object... args) {
-        LOG.finer(() -> "JS: " + command + " " + args);
+        LOG.finer(() -> "JS: " + command + " " + Arrays.toString(args));
         return bridge.call(command, args);
     }
 

@@ -2,6 +2,7 @@ package com.dua3.fx.icons;
 
 import javafx.scene.Node;
 
+import java.util.Objects;
 import java.util.ServiceLoader;
 import java.util.logging.Logger;
 
@@ -14,7 +15,7 @@ public class IconUtil {
                 .stream()
                 .peek(provider -> LOG.fine(() -> "found "+iconProviderClass.getName()+" implementation: "+provider.getClass().getName()))
                 .map(provider->provider.get().forName(name))
-                .filter(n -> n!= null)
+                .filter(Objects::nonNull)
                 .findFirst()
                 .orElse(null);
     }

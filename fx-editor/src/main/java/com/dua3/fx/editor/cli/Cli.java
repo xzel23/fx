@@ -31,7 +31,7 @@ public class Cli implements Runnable {
     public static Cli apply(EditorController controller, String... args) {
         Cli cli = new Cli(controller);
         CommandLine cl =  new CommandLine(cli);
-        cl.registerConverter(Level.class, s -> Level.parse(s));
+        cl.registerConverter(Level.class, Level::parse);
         cl.execute(args);
         return cli;
     }

@@ -1,11 +1,11 @@
 // Copyright 2019 Axel Howind
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -50,16 +50,16 @@ public class FxDbUtil {
 
     // utility - no instances
 	private FxDbUtil() {}
-    
+
     /**
      * Fill TableView instance with data from {@link ResultSet}.
-     * 
+     *
      * All columns will be removed and recreated based on the ResultSet's metadata.
      * @param tv
      *  the TableView
      * @param rs
      *  the ResultSet
-     * @return 
+     * @return
      *  the number of rows read
      * @throws SQLException
      *  if an error occurs while reading from the ResultSet.
@@ -79,7 +79,7 @@ public class FxDbUtil {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM);
         DateTimeFormatter timestampFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM);
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM);
-        
+
         // read result metadata
         LOG.finer("reading result meta data ...");
         ResultSetMetaData meta = rs.getMetaData();
@@ -110,14 +110,14 @@ public class FxDbUtil {
             case NUMERIC:
                 if (scale > 0) {
                     format = item -> String.format(
-                                locale, 
-                                "%.0"+scale+"f", 
+                                locale,
+                                "%.0"+scale+"f",
                                 ((Number)item).doubleValue());
                 } else {
                     format = String::valueOf;
                 }
                 break;
-                
+
             // numbers that do not have scale
             case DOUBLE:
             case REAL:
@@ -130,30 +130,30 @@ public class FxDbUtil {
             	break;
             }
             LOG.log(Level.FINER, () -> String.format("column name: %s label: %s type: %s scale: %d", name, label, sqlType, scale));
-            
+
             // CellValueFactory
             Callback<CellDataFeatures<ObservableList<Object>, Object>, ObservableValue<Object>> cellValueFactory
             	= param -> {
 	                var list = param.getValue();
 	                var x = idx < list.size() ? list.get(idx) : null;
-	                return new ReadOnlyObjectWrapper<Object>(x);
+	                return new ReadOnlyObjectWrapper<>(x);
 	            };
 
 	        // CellFactory
 	        Callback<TableColumn<ObservableList<Object>, Object>, TableCell<ObservableList<Object>, Object>> cellFactory
-				= col -> new TableCell<ObservableList<Object>, Object>() {				
-				    @Override
-				    protected void updateItem(Object item, boolean empty) {
-						super.updateItem(item,empty);
-						
-						if (empty || item==null) {
-							setText(null);
-							setGraphic(null);
-						} else {							
-							setText(format.apply(item));
-						}
-				    }
-				};
+				= col -> new TableCell<>() {
+                @Override
+                protected void updateItem(Object item, boolean empty) {
+                    super.updateItem(item, empty);
+
+                    if (empty || item == null) {
+                        setText(null);
+                        setGraphic(null);
+                    } else {
+                        setText(format.apply(item));
+                    }
+                }
+            };
 
 	        // create column
             TableColumn<ObservableList<Object>, Object> column = new TableColumn<>(label);
@@ -178,17 +178,17 @@ public class FxDbUtil {
         	columns.setAll(newColumns);
         	items.setAll(newItems);
         });
-        
+
         return newItems.size();
     }
 
 	private static Object getObject(ResultSet rs, int i) throws SQLException {
 		Object obj = rs.getObject(i);
-		
+
 		if (obj instanceof Clob) {
 			obj = toString((Clob) obj);
 		}
-		
+
 		return obj;
 	}
 
@@ -200,5 +200,5 @@ public class FxDbUtil {
 			return ERROR_TEXT;
 		}
 	}
-    
+
 }
