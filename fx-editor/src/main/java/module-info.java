@@ -1,15 +1,15 @@
-module com.dua3.fx.editor {
+module dua3_fx.editor {
     exports com.dua3.fx.editor;
     opens com.dua3.fx.editor;
     opens com.dua3.fx.editor.cli;
 
     requires java.logging;
-    
-    requires com.dua3.utility;
-    requires com.dua3.fx.util;
-    requires com.dua3.fx.application;
-    requires com.dua3.fx.editors;
-    requires com.dua3.fx.editors.text;
+
+    requires dua3_utility;
+    requires dua3_fx.util;
+    requires dua3_fx.application;
+    requires dua3_fx.editors;
+    requires dua3_fx.editors.text;
 
     requires info.picocli;
 
