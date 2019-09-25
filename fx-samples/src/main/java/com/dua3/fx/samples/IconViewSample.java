@@ -19,7 +19,7 @@ public class IconViewSample extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        IconView iv = new IconView("fas-exclamation-triangle");
+        IconView iv = new IconView("fa-exclamation-triangle");
 
         StackPane root = new StackPane();
         root.getChildren().add(iv);
