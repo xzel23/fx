@@ -9,21 +9,22 @@
 
 <DialogPane style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <content>
-      <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
-         <children>
-            <VBox maxHeight="-Infinity" maxWidth="-Infinity" spacing="4.0">
-               <children>
-                  <Label fx:id="labelName" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="name">
-                     <font>
-                        <Font name="Courier New" size="64.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="labelVersion" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="version" />
-                  <Label fx:id="labelCopyright" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="copyright" />
-                  <Hyperlink fx:id="hlMail" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" onAction="#mail" text="email" />
-               </children>
-            </VBox>
-         </children>
-      </StackPane>
+       <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                  prefHeight="400.0" prefWidth="600.0">
+           <VBox maxHeight="-Infinity" maxWidth="-Infinity" spacing="4.0">
+               <Label fx:id="labelName" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308"
+                      text="name">
+                   <font>
+                       <Font name="Courier New" size="64.0"/>
+                   </font>
+               </Label>
+               <Label fx:id="labelVersion" alignment="CENTER" contentDisplay="CENTER"
+                      maxWidth="1.7976931348623157E308" text="version"/>
+               <Label fx:id="labelCopyright" alignment="CENTER" contentDisplay="CENTER"
+                      maxWidth="1.7976931348623157E308" text="copyright"/>
+               <Hyperlink fx:id="hlMail" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308"
+                          onAction="#mail" text="email"/>
+           </VBox>
+       </StackPane>
    </content>
 </DialogPane>

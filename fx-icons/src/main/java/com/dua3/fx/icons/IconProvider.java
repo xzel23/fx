@@ -1,7 +1,5 @@
 package com.dua3.fx.icons;
 
-import javafx.scene.Node;
-
 public interface IconProvider {
     /**
      * Get this provider*s name.

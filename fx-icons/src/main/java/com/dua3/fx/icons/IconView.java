@@ -132,7 +132,7 @@ public class IconView extends StackPane implements Styleable {
 
     private static class StyleableProperties {
         public static final CssMetaData<IconView, Number> ICON_SIZE =
-                new CssMetaData<IconView, Number>("-fx-icon-size",
+                new CssMetaData<>("-fx-icon-size",
                         SizeConverter.getInstance(), 16.0) {
 
                     @Override
@@ -146,7 +146,7 @@ public class IconView extends StackPane implements Styleable {
                     }
                 };
         public static final CssMetaData<IconView, Paint> ICON_COLOR =
-                new CssMetaData<IconView, Paint>("-fx-icon-color",
+                new CssMetaData<>("-fx-icon-color",
                         PaintConverter.getInstance(), Color.BLACK) {
 
                     @Override
@@ -161,7 +161,7 @@ public class IconView extends StackPane implements Styleable {
                 };
         public static final List<CssMetaData<? extends Styleable, ?>> STYLEABLES;
         private static final CssMetaData<IconView, String> ICON_IDENTIFIER =
-                new CssMetaData<IconView, String>("-fx-icon-identifier",
+                new CssMetaData<>("-fx-icon-identifier",
                         StringConverter.getInstance(), "") {
 
                     @Override

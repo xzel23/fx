@@ -4,9 +4,6 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.ObservableList;
-import javafx.collections.ObservableSet;
-import javafx.css.*;
 import javafx.scene.Node;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
@@ -43,8 +40,8 @@ public class IconUtil {
 
 class EmptyIcon extends Text implements Icon {
 
-    private IntegerProperty iconSize = new SimpleIntegerProperty();;
-    private ObjectProperty<Paint> iconColor = new SimpleObjectProperty<Paint>(Paint.valueOf("BLACK"));
+    private IntegerProperty iconSize = new SimpleIntegerProperty();
+    private ObjectProperty<Paint> iconColor = new SimpleObjectProperty<>(Paint.valueOf("BLACK"));
 
     @Override
     public String getIconIdentifier() {
