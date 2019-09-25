@@ -4,6 +4,8 @@
 
 #### Version 0.5.0 (TBR)
 
+- module descriptors changed from `com.dua3.fx` to `dua3_fx`
+- fx-icons: IconView class, many fixes
 - fx-web: redirecting javaScript console to Java
 - fx-editors: switch to Monaco Editor
 - fx-editors: add markdown support
