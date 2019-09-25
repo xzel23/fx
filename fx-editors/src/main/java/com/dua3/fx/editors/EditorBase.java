@@ -66,6 +66,8 @@ public abstract class EditorBase extends BorderPane {
      *
      * @param fxml the FXML resource to load the user interface definition from (filename)
      * @param html the HTML resource to load (filename)
+     * @param jsEditorInstance
+     *  the JavaScript variable that holds the editor instance
      */
     protected EditorBase(URL fxml, URL html, String jsEditorInstance) {
         LOG.fine(() -> "creating Editor component");

@@ -44,6 +44,8 @@ public class TextEditor extends EditorBase {
      *
      * @param fxml the fxml file for the editor component
      * @param html the html file for the component
+     * @param jsEditorInstance
+     *  the JavaScript variable that holds the editor instance
      */
     protected TextEditor(URL fxml, URL html, String jsEditorInstance) {
         super(fxml, html, jsEditorInstance);
