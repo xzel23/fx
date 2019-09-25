@@ -9,13 +9,12 @@
 <fx:root type="javafx.scene.layout.HBox"
 	xmlns:fx="http://javafx.com/fxml/1"
 	xmlns="http://javafx.com/javafx/11.0.1"
-   maxWidth="1.7976931348623157E308" 
-   prefHeight="28.0" 
-   prefWidth="100000.0">
+   maxWidth="1.7976931348623157E308"
+   prefHeight="28.0">
    <children>
       <StackPane>
          <children>
-            <Label fx:id="text" maxWidth="1.7976931348623157E308" prefWidth="100000.0" text="" />
+            <Label fx:id="text" maxWidth="1.7976931348623157E308" text="" />
          </children>
       </StackPane>
       <StackPane>
