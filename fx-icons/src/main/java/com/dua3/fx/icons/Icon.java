@@ -1,23 +1,25 @@
 package com.dua3.fx.icons;
 
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.Property;
+import javafx.beans.property.ObjectProperty;
 import javafx.css.Styleable;
 import javafx.scene.Node;
 import javafx.scene.paint.Paint;
 
 public interface Icon extends Styleable {
-    void setIconSize(int size);
+    String getIconIdentifier();
 
     int getIconSize();
 
-    IntegerProperty iconSizeProperty();
+    void setIconSize(int size);
 
-    void setIconColor(Paint paint);
+    IntegerProperty iconSizeProperty();
 
     Paint getIconColor();
 
-    Property<Paint> iconColorProperty();
+    void setIconColor(Paint paint);
+
+    ObjectProperty<Paint> iconColorProperty();
 
     Node node();
 }

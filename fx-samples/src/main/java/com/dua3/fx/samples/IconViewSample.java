@@ -5,6 +5,7 @@ import com.dua3.fx.icons.IconView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
 public class IconViewSample extends Application {
@@ -16,8 +17,10 @@ public class IconViewSample extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        IconView iv = new IconView("fa-exclamation-triangle");
-        iv.getIcon().setIconSize(80);
+        IconView iv = new IconView();
+        iv.setIconIdentifier("fa-exclamation-triangle");
+        iv.setIconSize(80);
+        iv.setIconColor(Paint.valueOf("DARKBLUE"));
 
         StackPane root = new StackPane(iv);
 
