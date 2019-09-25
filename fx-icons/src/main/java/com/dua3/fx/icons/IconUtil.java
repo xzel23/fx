@@ -12,12 +12,12 @@ import java.util.stream.Collectors;
 public class IconUtil {
     private static final Logger LOG = Logger.getLogger(IconUtil.class.getName());
 
-    public static Optional<Node> iconFromName(String name) {
+    public static Optional<Icon> iconFromName(String name) {
         Class<IconProvider> iconProviderClass = IconProvider.class;
         return ServiceLoader.load(iconProviderClass)
                 .stream()
-                .peek(provider -> LOG.fine(() -> "found "+iconProviderClass.getName()+" implementation: "+provider.getClass().getName()))
-                .map(provider->provider.get().forName(name))
+                .peek(provider -> LOG.fine(() -> "found " + iconProviderClass.getName() + " implementation: " + provider.getClass().getName()))
+                .map(provider -> provider.get().forName(name))
                 .filter(Objects::nonNull)
                 .findFirst();
     }

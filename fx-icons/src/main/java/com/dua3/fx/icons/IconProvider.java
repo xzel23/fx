@@ -17,5 +17,5 @@ public interface IconProvider {
      * @return
      *  icon or {@code null} if this provider does not offer the requested icon
      */
-    Node forName(String name);
+    Icon forName(String name);
 }

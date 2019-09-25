@@ -27,22 +27,22 @@ public class WizardDialog extends Dialog<Map<String,Object>> {
 
     /** Cancelable flag. */
 	private boolean cancelable = true;
-	
+
 	/** Flag: show 'previous'-button? */
 	private boolean showPreviousButton = true;
-	
+
 	public WizardDialog() {
 		setResultConverter(btn -> {
 			// add current page to the stack, then build and return the result map
 			pageStack.add(current);
-			
+
 			LinkedHashMap<String, Object> result = new LinkedHashMap<>();
-			pageStack.stream().forEach( p -> result.put(p.first, p.second.result) );
-				
+			pageStack.forEach(p -> result.put(p.first, p.second.result) );
+
 			return result;
 		});
 	}
-	
+
 	/**
 	 * Check if dialog can be canceled.
 	 * @return true if dialog is cancelable
@@ -50,7 +50,7 @@ public class WizardDialog extends Dialog<Map<String,Object>> {
 	public boolean isCancelable() {
 		return cancelable;
 	}
-	
+
 	/**
 	 * Check if a 'previous' ( or 'navigate-back') button should be displayed.
 	 * @return true if dialog is cancelable
@@ -58,7 +58,7 @@ public class WizardDialog extends Dialog<Map<String,Object>> {
 	public boolean isShowPreviousButton() {
 		return showPreviousButton;
 	}
-	
+
 	/**
 	 * Wizard page information class.
 	 */
@@ -67,15 +67,15 @@ public class WizardDialog extends Dialog<Map<String,Object>> {
 		private String next;
 		private R result;
 		private ResultHandler<R> resultHandler;
-		
+
 		String getNext() {
 			return next;
 		}
-		
+
 		void setNext(String next) {
 			this.next = next;
 		}
-		
+
 		D getPane() {
 			return pane;
 		}
@@ -84,7 +84,7 @@ public class WizardDialog extends Dialog<Map<String,Object>> {
 			this.pane = pane;
 			this.resultHandler = resultHandler;
 		}
-		
+
 		boolean apply(ButtonType btn) {
 			R r = pane.get();
 			boolean done = resultHandler.handleResult(btn, r);
@@ -93,7 +93,7 @@ public class WizardDialog extends Dialog<Map<String,Object>> {
 		}
 	}
 
-	/** Map {@code <page-name> |-> <page-information>}. */ 
+	/** Map {@code <page-name> |-> <page-information>}. */
 	private Map<String, Page<?,?>> pages;
 	/** The currently displayed page. */
 	private Pair<String,Page<?,?>> current;
@@ -102,33 +102,33 @@ public class WizardDialog extends Dialog<Map<String,Object>> {
 
 	public void setPages(Map<String,Page<?,?>> pages, String startPage) {
 		this.pages = pages;
-	
+
 		checkPages();
-		
+
 		setPage(startPage);
 	}
 
-	private void checkPages() {		
+	private void checkPages() {
 		Set<String> pageNames = pages.keySet();
 		for (Entry<String, Page<?,?>> entry: pages.entrySet()) {
 			String name = entry.getKey();
 			Page<?,?> page = entry.getValue();
 			InputDialogPane<?> pane = page.getPane();
-			
+
 			// check page names
 			String next = page.getNext();
 			if (next != null && !pageNames.contains(next)) {
 				throw new IllegalStateException(String.format("Page '%s': next page doesn't exist ['%s']", name, next));
 			}
-			
+
 			// prepare buttons
 			pane.initButtons();
-			 
+
 			// cancel button
 			if (isCancelable()) {
 				addButtonToDialogPane(page, ButtonType.CANCEL, p -> {}, null);
 			}
-			
+
 			// next button
 			if (page.getNext()==null) {
 				addButtonToDialogPane(page, ButtonType.FINISH, p -> {}, pane.validProperty());
@@ -142,7 +142,7 @@ public class WizardDialog extends Dialog<Map<String,Object>> {
 						},
 						pane.validProperty());
 			}
-			
+
 			// prev button
 			if (isShowPreviousButton()) {
 				addButtonToDialogPane(
@@ -151,27 +151,27 @@ public class WizardDialog extends Dialog<Map<String,Object>> {
 						p -> setPage(pageStack.remove(pageStack.size()-1).first),
 						Bindings.isNotEmpty(pageStack)
 				);
-			}					
+			}
 		}
 	}
 
 	private void setPage(String pageName) {
 		this.current = Pair.of(pageName, pages.get(pageName));
-		
+
 		InputDialogPane<?> pane = current.second.pane;
-		setDialogPane(pane);		
+		setDialogPane(pane);
 
 		pane.init();
 		pane.layout();
 		pane.getScene().getWindow().sizeToScene();
-		
+
 		LOG.log(Level.FINE, () -> "current page: "+pageName);
 	}
 
 	public Page<?,?> getCurrentPage() {
 		return current.second;
 	}
-	
+
 	private void addButtonToDialogPane(
 			Page<?,?> page,
 			ButtonType bt,
@@ -179,10 +179,10 @@ public class WizardDialog extends Dialog<Map<String,Object>> {
 			BooleanExpression enabled) {
 		InputDialogPane<?> pane = page.pane;
 		List<ButtonType> buttons = pane.getButtonTypes();
-		
-		buttons.add(bt);	
+
+		buttons.add(bt);
 		Button btn = (Button) pane.lookupButton(bt);
-		
+
 		// it seems counter-intuitive to use an event filter instead of a handler, but
 		// when using an event handler, Dialog.close() is called before our own
 		// event handler.
@@ -195,10 +195,10 @@ public class WizardDialog extends Dialog<Map<String,Object>> {
 
 			action.accept(page.getPane());
 		});
-		
+
 		if (enabled!=null) {
 			btn.disableProperty().bind(Bindings.not(enabled));
 		}
 	}
-	
+
 }

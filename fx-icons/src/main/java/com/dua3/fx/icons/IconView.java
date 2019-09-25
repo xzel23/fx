@@ -3,38 +3,47 @@ package com.dua3.fx.icons;
 import javafx.scene.Node;
 import javafx.scene.control.Control;
 
+import java.util.Objects;
 import java.util.Optional;
-import java.util.logging.Logger;
 
 public class IconView extends Control {
 
-    private static final Logger LOG = Logger.getLogger(IconView.class.getName());
+    private Icon icon;
 
-    private String iconName = "";
-
-    public IconView() {}
+    public IconView() {
+    }
 
     public IconView(String iconName) {
         super();
         setIcon(iconName);
     }
 
+    public void setIcon(Icon icon) {
+        this.icon = icon;
+        if (icon == null) {
+            this.getChildren().clear();
+        } else {
+            this.getChildren().setAll(icon.node());
+        }
+    }
+
     public void setIcon(String iconName) {
-        Optional<Node> icon = IconUtil.iconFromName(iconName);
-        icon.ifPresentOrElse(ic -> {
-                    this.getChildren().setAll(ic);
-                    this.iconName = iconName;
-                },
-                () -> {
-                    this.getChildren().clear();
-                    this.iconName = iconName + " (missing)";
-                    LOG.warning("missing icon: "+iconName);
-                }
-        );
+        Optional<Icon> icon = IconUtil.iconFromName(iconName);
+        setIcon(icon.orElse(null));
     }
 
     @Override
     public String toString() {
-        return "icon[" + iconName + "]";
+        return Objects.toString(icon);
     }
+
+    @Override
+    public Node getStyleableNode() {
+        return icon.getStyleableNode();
+    }
+
+    public Icon getIcon() {
+        return icon;
+    }
+
 }

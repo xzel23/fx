@@ -3,10 +3,7 @@ package com.dua3.fx.samples;
 import com.dua3.fx.icons.IconUtil;
 import com.dua3.fx.icons.IconView;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
@@ -20,13 +17,13 @@ public class IconViewSample extends Application {
     @Override
     public void start(Stage primaryStage) {
         IconView iv = new IconView("fa-exclamation-triangle");
+        iv.getIcon().setIconSize(80);
 
-        StackPane root = new StackPane();
-        root.getChildren().add(iv);
+        StackPane root = new StackPane(iv);
 
         Scene scene = new Scene(root, 300, 250);
 
-        primaryStage.setTitle("Hello World!");
+        primaryStage.setTitle("IconView");
         primaryStage.setScene(scene);
         primaryStage.show();
     }

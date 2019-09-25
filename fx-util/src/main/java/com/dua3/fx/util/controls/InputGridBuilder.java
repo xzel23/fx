@@ -1,11 +1,11 @@
 // Copyright 2019 Axel Howind
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -54,7 +54,7 @@ implements InputBuilder<InputGridBuilder> {
         Objects.requireNonNull(label);
 		return doAdd(id, label, type, dflt, control);
     }
-    
+
     /* (non-Javadoc)
      * @see com.dua3.fx.util.controls.InputBuilder#add(java.lang.String, java.lang.String, java.lang.Class, T, com.dua3.fx.util.controls.InputDialogPane.InputControl)
      */
@@ -109,7 +109,7 @@ implements InputBuilder<InputGridBuilder> {
 
 	@Override
 	public InputGridBuilder addNode(String id, String label, Node node) {
-		Meta<Void> meta = new Meta<Void>(id, label, Void.class, null, new ControlWrapper(node));
+		Meta<Void> meta = new Meta<>(id, label, Void.class, null, new ControlWrapper(node));
 		Meta<?> prev = data.put(id, meta);
 		LangUtil.check(prev == null, "Input with id '" + id + "' already defined");
 		return this;
@@ -117,7 +117,7 @@ implements InputBuilder<InputGridBuilder> {
 
 	@Override
 	public InputGridBuilder addNode(String id, Node node) {
-		Meta<Void> meta = new Meta<Void>(id, "", Void.class, null, new ControlWrapper(node));
+		Meta<Void> meta = new Meta<>(id, "", Void.class, null, new ControlWrapper(node));
 		Meta<?> prev = data.put(id, meta);
 		LangUtil.check(prev == null, "Input with id '" + id + "' already defined");
 		return this;
@@ -180,7 +180,7 @@ implements InputBuilder<InputGridBuilder> {
     public <T> InputGridBuilder radioList(String id, String label, Supplier<T> dflt, Class<T> cls, Collection<T> items) {
 		 return add(id, label, cls, dflt, new RadioPane<>(items, null));
 	}
-	
+
 	@Override
 	public InputGridBuilder options(String id, String label, Supplier<OptionValues> dflt, Supplier<OptionSet> options) {
 		return add(id, label, OptionValues.class, dflt, new OptionsPane(options, dflt));

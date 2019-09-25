@@ -1,11 +1,11 @@
 // Copyright 2019 Axel Howind
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,13 +15,14 @@
 package com.dua3.fx.util.controls;
 
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.DialogPane;
 
-/** 
+/**
  * Builder for Alert Dialogs.
- * 
- * Provides a fluent interface to create Alerts. 
+ *
+ * Provides a fluent interface to create Alerts.
  */
-public class AlertPaneBuilder 
+public class AlertPaneBuilder
 extends AbstractPaneBuilder<InputDialogPane<Void>, AlertPaneBuilder, Void> {
 	private String text = null;
 
@@ -52,7 +53,7 @@ extends AbstractPaneBuilder<InputDialogPane<Void>, AlertPaneBuilder, Void> {
 	@Override
 	public InputDialogPane<Void> build() {
 		InputDialogPane<Void> inputPane = super.build();
-		applyIfNotNull((pane,t) -> pane.setContentText(t), inputPane, text);
+		applyIfNotNull(DialogPane::setContentText, inputPane, text);
 		inputPane.setValidate(getValidate());
 		return inputPane;
 	}

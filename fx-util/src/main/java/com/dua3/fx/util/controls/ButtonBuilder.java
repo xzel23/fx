@@ -24,7 +24,7 @@ public class ButtonBuilder {
     }
 
     public ButtonBuilder graphic(String name) {
-        this.graphic = IconUtil.iconFromName(name).orElseThrow(() -> new IllegalStateException("unknown icon: "+name));
+        this.graphic = IconUtil.iconFromName(name).orElseThrow(() -> new IllegalStateException("unknown icon: "+name)).node();
         return this;
     }
 
