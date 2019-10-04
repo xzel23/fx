@@ -51,8 +51,8 @@ subprojects {
         javafx_version = '13'
         junit_version = '5.5.1'
 
-        dua3_utility_version = '5-BETA2'
-        dua3_meja_version = '2.0-BETA16'
+        dua3_utility_version = '5-BETA3'
+        dua3_meja_version = '2.0-BETA17'
 
         picocli_version = '4.0.4'
         ikonli_version = '11.3.4'

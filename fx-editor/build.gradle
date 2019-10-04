@@ -27,4 +27,13 @@ dependencies {
     compile "info.picocli:picocli:${picocli_version}"
 }
 
-mainClassName = 'com.dua3.fx.editor.Editor'
+jigsaw {
+    bundleType = 'image'
+    bundleName = 'Editor'
+    module = 'dua3_fx.editor'
+    main = 'com.dua3.fx.editor.Editor'
+    version = new Date().format('yyyyMMddHHmmss')
+}
+
+mainClassName = jigsaw.main
+
