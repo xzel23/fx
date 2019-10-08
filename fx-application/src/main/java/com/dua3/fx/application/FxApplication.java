@@ -149,7 +149,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
     @SuppressWarnings("unchecked")
     @Override
     public void start(Stage stage) throws IOException {
-        LOG.log(Level.FINE, () -> "starting application ...");
+        LOG.log(Level.INFO, () -> "starting application ...");
 
         // store reference to stage
         this.mainStage = stage;
