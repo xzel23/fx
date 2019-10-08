@@ -10,7 +10,8 @@
 - fx-editors: switch to Monaco Editor
 - fx-editors: add markdown support
 - fx-editors: math support in markdown using [kaTeX](https://www.katex.org)
-
+- log filtering (use `--log=<global_level>,<package_name>:<level>,...)
+ 
 #### Version 0.4.2
 
 - avoid deadlocks when methods are not called on the Fx-Application thread

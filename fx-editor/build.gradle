@@ -22,9 +22,6 @@ dependencies {
     compile project(':fx-editors')
     compile project(':fx-editors:fx-editors-text')
     compile project(':fx-application')
-
-    // picocli
-    compile "info.picocli:picocli:${picocli_version}"
 }
 
 jigsaw {

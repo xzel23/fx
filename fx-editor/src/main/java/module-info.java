@@ -1,7 +1,6 @@
 module dua3_fx.editor {
     exports com.dua3.fx.editor;
     opens com.dua3.fx.editor;
-    opens com.dua3.fx.editor.cli;
 
     requires java.logging;
 
@@ -10,8 +9,6 @@ module dua3_fx.editor {
     requires dua3_fx.application;
     requires dua3_fx.editors;
     requires dua3_fx.editors.text;
-
-    requires info.picocli;
 
     requires javafx.base;
     requires javafx.controls;

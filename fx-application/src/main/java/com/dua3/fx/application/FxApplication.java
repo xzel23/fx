@@ -30,13 +30,13 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.*;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxController<A, C>> extends Application {
 
@@ -155,7 +155,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
         this.mainStage = stage;
 
         // handle program arguments
-        getParameterValue("log").ifPresent(level -> LangUtil.setLogLevel(Level.parse(level)));
+        getParameterValue("log").ifPresent(this::setLogLevel);
 
         // create a loader and load FXML
         LOG.log(Level.FINE, () -> "loading FXML ...");
@@ -204,6 +204,74 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
         });
 
         LOG.fine(() -> "done.");
+    }
+
+    /**
+     * Pattern for parsing the log configuration string.
+     * Example:
+     * <code>
+     *     --log=INFO,com.dua3:FINE,com.sun:WARNING
+     * </code>
+     */
+    private static final Pattern patternLogCfg = Pattern.compile("(?:(?<PACKAGE>(?:\\w|\\.)+):)?(?<LEVEL>[A-Z0-9]+)(?:,|$)");
+
+    private final Map<String,Level> logLevel = new ConcurrentHashMap<>();
+    private Level globalLogLevel = Level.INFO;
+    
+    private void setLogLevel(String logStr) {
+        // determine the global and minumum log levels and store mapping package -> level
+        Matcher matcher = patternLogCfg.matcher(logStr);
+        Level minLevel = Level.OFF;
+        while (matcher.find()) {
+            String levelStr = matcher.group("LEVEL");
+            if (levelStr!=null) {
+                String p = matcher.group("PACKAGE");
+                Level l = Level.parse(levelStr);
+                if (p != null) {
+                    var old = logLevel.put(p, l);
+                    LangUtil.check(old == null, "log level for package '%s' defined twice", p);
+                } else {
+                    globalLogLevel = l;
+                }
+                if (l.intValue()<minLevel.intValue()) {
+                    minLevel = l;
+                }
+            }
+        }
+
+        globalLogLevel = logLevel.getOrDefault("", globalLogLevel);
+
+        if (globalLogLevel.intValue()<minLevel.intValue()) {
+            minLevel = globalLogLevel;
+        }
+        
+        // set root level
+        Logger rootLogger = LogManager.getLogManager().getLogger("");
+        rootLogger.setLevel(minLevel);
+
+        // set filter
+        Filter f = record -> {
+            String loggerName = record.getLoggerName();
+            boolean show = true;
+            boolean match = false;
+            Level level = globalLogLevel;
+            for (var entry: logLevel.entrySet()) {
+                if (loggerName.startsWith(entry.getKey())) {
+                    match = true;
+                    level = entry.getValue();
+                } else if (match) {
+                    break;
+                }
+            }
+            return record.getLevel().intValue()>=level.intValue();
+        };
+
+        for (Handler h : rootLogger.getHandlers()) {
+            h.setFilter(f);
+            h.setLevel(globalLogLevel);
+        }
+
+        LOG.info(() -> "log level set to "+logLevel);
     }
 
     protected void updateApplicationTitle() {

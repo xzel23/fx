@@ -2,7 +2,6 @@ package com.dua3.fx.editor;
 
 import com.dua3.fx.application.FxController;
 import com.dua3.fx.application.FxDocument;
-import com.dua3.fx.editor.cli.Cli;
 import com.dua3.fx.editors.text.TextEditor;
 import com.dua3.fx.editors.text.TextEditorSettings;
 import com.dua3.fx.editors.text.TextEditorSettingsDialog;
@@ -37,7 +36,8 @@ public class EditorController extends FxController<EditorAppBase, EditorControll
     @Override
     protected void init(EditorAppBase app) {
         // handle command line arguments
-        Cli cli = Cli.apply(this, getApp().getParameters().getRaw().toArray(String[]::new));
+        List<String> args = getApp().getParameters().getUnnamed();
+        URI documentPath = args.isEmpty() ? null : Paths.get(args.get(0)).toUri();
 
         menubar.setUseSystemMenuBar(true);
 
@@ -48,14 +48,14 @@ public class EditorController extends FxController<EditorAppBase, EditorControll
             Preferences editorPref = getPreferences().node(PREF_EDITOR_PATH);
             editor.apply(TextEditorSettings.fromPreference(editorPref));
             // load or create a new document
-            if (cli.documentPath != null) {
+            if (documentPath != null) {
                 try {
-                    loadDocument(cli.documentPath.toUri());
+                    loadDocument(documentPath);
                 } catch (IOException e) {
-                    LOG.log(Level.WARNING, "could not load document: " + cli.documentPath, e);
+                    LOG.log(Level.WARNING, "could not load document: " + documentPath, e);
                     Dialogs.error()
                             .title("Error")
-                            .header("Document could not be loaded: %s", cli.documentPath)
+                            .header("Document could not be loaded: %s", documentPath)
                             .text(e.getMessage())
                             .showAndWait();
                 }
