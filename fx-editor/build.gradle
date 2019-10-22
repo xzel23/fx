@@ -28,7 +28,7 @@ jigsaw {
     bundleType = 'image'
     bundleName = 'Editor'
     module = 'dua3_fx.editor'
-    main = 'com.dua3.fx.editor.Editor'
+    main = 'com.dua3.fx.editor.TextEditor'
     version = new Date().format('yyyyMMddHHmmss')
 }
 
