@@ -9,12 +9,12 @@ import java.util.logging.Logger;
 public class MarkdownEditor {
 
     public static void main(String[] args) {
-        LangUtil.setLogLevel(Level.FINE);
-        LangUtil.setLogLevel(Level.WARNING,
-                Logger.getLogger("com.sun"),
-                Logger.getLogger("javafx")
-        );
-        Application.launch(MarkdownEditorApp.class, args);
+        try {
+            Application.launch(MarkdownEditorApp.class, args);
+        } catch (Exception e) {
+            e.printStackTrace(System.err);
+            System.exit(1);
+        }
     }
 
 }

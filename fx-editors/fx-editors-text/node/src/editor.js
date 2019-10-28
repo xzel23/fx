@@ -296,7 +296,7 @@ window.createTextEditor = function (name, element) {
 // === Markdown Editor ================================================================================================
 
 const MarkdownIt = require('markdown-it');
-const MarkdownIt_katex = require('markdown-it-katex-newcommand');
+const MarkdownIt_katex = require('markdown-it-katex');
 const MarkdownIt_diagrams = require('markdown-it-diagrams');
 
 class MarkdownEditor extends TextEditor {
@@ -320,7 +320,7 @@ class MarkdownEditor extends TextEditor {
             .use(require('markdown-it-sup'))
             .use(require('markdown-it-mark'))
             .use(require('markdown-it-task-lists'))
-            .use(require('markdown-it-anchor').default, { permalink: true, permalinkBefore: true, permalinkSymbol: '§' } )
+            .use(require('markdown-it-anchor').default)
             .use(require('markdown-it-toc-done-right').default)
             .use(require('markdown-it-emoji'))
             .use(require('markdown-it-abbr'))
