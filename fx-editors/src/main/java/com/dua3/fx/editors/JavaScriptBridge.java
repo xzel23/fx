@@ -166,4 +166,8 @@ public class JavaScriptBridge {
 	public void replaceSelection(String text) {
 		jsEditor.call("replaceSelection", text);
 	}
+
+	public void unselectText() {
+		jsEditor.call("unselectText");
+	}
 }

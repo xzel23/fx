@@ -313,5 +313,6 @@ public abstract class EditorBase extends BorderPane {
     public void paste() {
         String text = Objects.toString(clipboard.getContent(DataFormat.PLAIN_TEXT));
         bridge.replaceSelection(text);
+        bridge.unselectText();
     }
 }

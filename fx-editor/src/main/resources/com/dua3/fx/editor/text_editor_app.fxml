@@ -64,7 +64,6 @@
                                         shortcut="DOWN"/>
                 </accelerator>
             </MenuItem>
-
         </Menu>
         <Menu mnemonicParsing="false" text="Help">
             <MenuItem mnemonicParsing="false" onAction="#about" text="About"/>

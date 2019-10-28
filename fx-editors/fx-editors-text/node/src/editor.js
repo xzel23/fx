@@ -34,6 +34,10 @@ class Editor {
     getSelection() {
         console.error("missing override: Editor.getSelection()");
     }
+
+    unselectText() {
+        console.error("missing override: Editor.unselectText()");
+    }
 }
 
 // === Text Editor ====================================================================================================
@@ -200,6 +204,15 @@ class TextEditor extends Editor {
         return this.monaco.getModel().getValueInRange(this.monaco.getSelection());
     }
 
+    unselectText() {
+        console.debug("unselectText()");
+        let s = this.monaco.getSelection();
+        if (s!=null) {
+            let end = s.getEndPosition();
+            this.monaco.setSelection(monaco.Range.fromPositions(end, end));
+        }
+    }
+    
     getLine(i) {
         console.debug("getLine()");
         return this.monaco.getModel().getLineContent(i + 1); // Java class is zero based!
