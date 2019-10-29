@@ -48,7 +48,7 @@ import * as monaco from 'monaco-editor';
 import './editor_text.css';
 import './editor_markdown.css';
 import './github-markdown.css';
-import './katex/katex.css';
+import 'katex/dist/katex.css';
 
 // Since packaging is done by you, you need
 // to instruct the editor how you named the

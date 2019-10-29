@@ -20,6 +20,7 @@
     "webpack-cli": "^3.3.6"
   },
   "dependencies": {
+    "katex": "^0.11.1",
     "markdown-it": "^9.1.0",
     "markdown-it-abbr": "^1.0.4",
     "markdown-it-anchor": "^5.2.4",
@@ -32,6 +33,6 @@
     "markdown-it-sup": "^1.0.0",
     "markdown-it-task-lists": "^2.1.1",
     "markdown-it-toc-done-right": "^4.0.2",
-    "monaco-editor": "^0.17.1"
+    "monaco-editor": "^0.18.1"
   }
 }
