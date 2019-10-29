@@ -20,14 +20,14 @@
     "webpack-cli": "^3.3.6"
   },
   "dependencies": {
-    "katex": "^0.11.1",
+    "katex": "^0.9.0",
     "markdown-it": "^9.1.0",
     "markdown-it-abbr": "^1.0.4",
     "markdown-it-anchor": "^5.2.4",
     "markdown-it-deflist": "^2.0.3",
     "markdown-it-diagrams": "0.0.6",
     "markdown-it-emoji": "^1.4.0",
-    "markdown-it-katex": "^2.0.3",
+    "markdown-it-texmath": "^0.6.0",
     "markdown-it-mark": "^2.0.0",
     "markdown-it-sub": "^1.0.0",
     "markdown-it-sup": "^1.0.0",

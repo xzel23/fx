@@ -296,7 +296,11 @@ window.createTextEditor = function (name, element) {
 // === Markdown Editor ================================================================================================
 
 const MarkdownIt = require('markdown-it');
-const MarkdownIt_katex = require('markdown-it-katex');
+const katex = require ('katex');
+const MarkdownIt_texmath = require('markdown-it-texmath').use(katex, {
+    throwOnError: false,
+    errorColor: "#cc0000"
+});
 const MarkdownIt_diagrams = require('markdown-it-diagrams');
 
 class MarkdownEditor extends TextEditor {
@@ -311,10 +315,7 @@ class MarkdownEditor extends TextEditor {
             typographer: true
         });
         this.md
-            .use(MarkdownIt_katex, {
-                "throwOnError": false,
-                "errorColor": "#cc0000"
-             })
+            .use(MarkdownIt_texmath)
             .use(MarkdownIt_diagrams.diagramPlugin)
             .use(require('markdown-it-sub'))
             .use(require('markdown-it-sup'))
