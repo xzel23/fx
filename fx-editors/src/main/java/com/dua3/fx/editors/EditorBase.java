@@ -260,6 +260,12 @@ public abstract class EditorBase extends BorderPane {
         bridge.readOnlyProperty.set(flag);
     }
 
+    public void undo() {
+        bridge.undo();
+    }
+
+    public void redo() { bridge.redo(); }
+    
     protected Object callJS(String command, Object... args) {
         LOG.finer(() -> "JS: " + command + " " + Arrays.toString(args));
         return bridge.call(command, args);

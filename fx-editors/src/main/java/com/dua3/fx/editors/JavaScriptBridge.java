@@ -159,6 +159,14 @@ public class JavaScriptBridge {
 		jsEditor.call("markEditorClean");
 	}
 
+	public void undo() {
+		jsEditor.call("undo");
+	}
+
+	public void redo() {
+		jsEditor.call("redo");
+	}
+
 	public String getSelection() {
 		return Objects.toString(jsEditor.call("getSelection"));
 	}

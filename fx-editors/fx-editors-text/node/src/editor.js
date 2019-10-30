@@ -38,6 +38,14 @@ class Editor {
     unselectText() {
         console.error("missing override: Editor.unselectText()");
     }
+
+    undo() {
+        console.error("missing override: Editor.undo()");
+    }
+
+    redo() {
+        console.error("missing override: Editor.redo()");
+    }
 }
 
 // === Text Editor ====================================================================================================
@@ -286,6 +294,17 @@ class TextEditor extends Editor {
         return this.theme;
     }
 
+    undo() {
+        console.debug("undo()");
+        this.monaco.trigger('', 'undo', '');
+        this.monaco.focus();
+    }
+
+    redo() {
+        console.debug("undo()");
+        this.monaco.trigger('', 'redo', '');
+        this.monaco.focus();
+    }
 }
 
 window.createTextEditor = function (name, element) {

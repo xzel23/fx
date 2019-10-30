@@ -146,10 +146,14 @@ public class EditorController extends FxController<EditorAppBase, EditorControll
     }
 
     @FXML
-    public void paste() {
-        editor.paste();
-    }
-    
+    public void paste() { editor.paste(); }
+
+    @FXML
+    public void undo() { editor.undo(); }
+
+    @FXML
+    public void redo() { editor.redo(); }
+
     @Override
     public TextDocument getCurrentDocument() {
         return (TextDocument) super.getCurrentDocument();
