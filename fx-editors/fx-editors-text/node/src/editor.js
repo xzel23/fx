@@ -327,10 +327,10 @@ class MarkdownEditor extends TextEditor {
     constructor(name, elementIdEditor, elementIdPreview, options) {
         super(name, elementIdEditor, options);
         this.md = new MarkdownIt({
-            html: false,        // Enable HTML tags in source
-            xhtmlOut: false,        // Use '/' to close single tags (<br />).
-            breaks: false,        // Convert '\n' in paragraphs into <br>
-            linkify: false,        // Autoconvert URL-like text to links
+            html: true,          // Enable HTML tags in source
+            xhtmlOut: false,     // Use '/' to close single tags (<br />).
+            breaks: false,       // Convert '\n' in paragraphs into <br>
+            linkify: false,      // Autoconvert URL-like text to links
             typographer: true
         });
         this.md
