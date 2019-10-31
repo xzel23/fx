@@ -334,7 +334,7 @@ class MarkdownEditor extends TextEditor {
             typographer: true
         });
         this.md
-            .use(MarkdownIt_texmath)
+            .use(MarkdownIt_texmath, { delimiters: "dollars" })
             .use(MarkdownIt_diagrams.diagramPlugin)
             .use(require('markdown-it-sub'))
             .use(require('markdown-it-sup'))
