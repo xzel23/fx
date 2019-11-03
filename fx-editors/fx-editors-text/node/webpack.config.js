@@ -3,7 +3,7 @@ const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-    mode: 'development',
+    mode: 'production',
     entry: {
         "editor": './src/editor.js',
         "editor.worker": 'monaco-editor/esm/vs/editor/editor.worker.js',
