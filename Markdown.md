@@ -109,5 +109,3 @@ Math blocks are enclosed in `$$`:
 $$ V = \frac{4}{3} \pi r^3 $$
 ```
 $$ V = \frac{4}{3} \pi r^3 $$
-
-

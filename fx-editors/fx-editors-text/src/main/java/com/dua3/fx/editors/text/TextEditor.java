@@ -16,6 +16,7 @@ package com.dua3.fx.editors.text;
 
 import com.dua3.fx.editors.EditorBase;
 import com.dua3.fx.editors.EditorSettings;
+import com.dua3.utility.text.TextUtil;
 
 import java.net.URL;
 import java.util.Iterator;
@@ -153,5 +154,4 @@ public class TextEditor extends EditorBase {
     public TextEditorSettingsDialog settingsDialog() {
         return new TextEditorSettingsDialog(this);
     }
-
 }

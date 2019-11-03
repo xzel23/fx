@@ -7,7 +7,7 @@
 <VBox xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
       minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1"
       fx:controller="com.dua3.fx.editor.EditorController">
-    <MenuBar fx:id="menubar" useSystemMenuBar="true">
+    <MenuBar fx:id="menubar" useSystemMenuBar="false">
         <Menu mnemonicParsing="false" text="File">
             <MenuItem mnemonicParsing="false" onAction="#newDocument" text="New">
                 <accelerator>

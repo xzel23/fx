@@ -16,12 +16,23 @@ plugins {
     id 'application'
 }
 
+ext {
+    jsoup_version = '1.8.3'
+    openhtmltopdf_version = '1.0.0'
+}
+
 dependencies {
     compile project(':fx-util')
     compile project(':fx-web')
     compile project(':fx-editors')
     compile project(':fx-editors:fx-editors-text')
     compile project(':fx-application')
+
+    compile "org.jsoup:jsoup:${jsoup_version}"
+
+    compile "com.openhtmltopdf:openhtmltopdf-core:${openhtmltopdf_version}"
+    compile "com.openhtmltopdf:openhtmltopdf-pdfbox:${openhtmltopdf_version}"
+    compile "com.openhtmltopdf:openhtmltopdf-java2d:${openhtmltopdf_version}"
 }
 
 jigsaw {

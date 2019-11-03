@@ -46,6 +46,10 @@ class Editor {
     redo() {
         console.error("missing override: Editor.redo()");
     }
+
+    getPreviewHtml() {
+        console.error("missing override: Editor.getPreviewHtml()");
+    }
 }
 
 // === Text Editor ====================================================================================================
@@ -305,6 +309,18 @@ class TextEditor extends Editor {
         this.monaco.trigger('', 'redo', '');
         this.monaco.focus();
     }
+
+    getPreviewHtml() {
+        console.debug("getPreviewHtml()");
+        return "<html><head>\n" +
+        "<meta charset=\"UTF-8\"/>\n" +
+        "<title>Preview</title>\n" +
+        "</head>\n" +
+        "<body>" +
+        this.getText().replace("\r?\n", "<br>\n") +
+        "</body>\n" +
+        "</html>";
+    }
 }
 
 window.createTextEditor = function (name, element) {
@@ -383,6 +399,18 @@ class MarkdownEditor extends TextEditor {
             (tText - tStart),
             (tTranslate - tText));
     }
+
+    getPreviewHtml() {
+        return "<html><head>\n" +
+        "<meta charset=\"UTF-8\"/>\n" +
+        "<title>Preview</title>\n" +
+        "</head>\n" +
+        "<body>" +
+        this.md.render(this.getText()) +
+        "</body>\n" +
+        "</html>";
+    }
+
 }
 
 window.createMarkdownEditor = function (name, elementIdEditor, elementIdPreview) {

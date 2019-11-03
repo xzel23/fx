@@ -241,7 +241,16 @@ public abstract class EditorBase extends BorderPane {
      *  the current text
      */
     public String getText() {
-        return (String) callJS("getText");
+        return bridge.getText();
+    }
+
+    /**
+     * Get HTML version of the text edited.
+     * @return
+     *  the current text as HTML
+     */
+    public String getPreviewHtml() {
+        return bridge.getPreviewHtml();
     }
 
     public boolean isDirty() {
@@ -321,4 +330,5 @@ public abstract class EditorBase extends BorderPane {
         bridge.replaceSelection(text);
         bridge.unselectText();
     }
+
 }

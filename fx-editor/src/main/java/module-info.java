@@ -15,4 +15,10 @@ module dua3_fx.editor {
     requires javafx.fxml;
     requires javafx.graphics;
 	requires java.desktop;
+
+	requires jsoup;
+	
+    requires openhtmltopdf.core;
+    requires openhtmltopdf.pdfbox;
+    requires openhtmltopdf.java2d;
 }

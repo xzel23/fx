@@ -7,12 +7,17 @@ import com.dua3.fx.editors.text.TextEditorSettings;
 import com.dua3.fx.editors.text.TextEditorSettingsDialog;
 import com.dua3.fx.util.Dialogs;
 import com.dua3.utility.io.IOUtil;
+import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 import javafx.fxml.FXML;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuBar;
 import javafx.stage.FileChooser;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URI;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -21,6 +26,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.prefs.Preferences;
 
@@ -38,8 +45,6 @@ public class EditorController extends FxController<EditorAppBase, EditorControll
         // handle command line arguments
         List<String> args = getApp().getParameters().getUnnamed();
         URI documentPath = args.isEmpty() ? null : Paths.get(args.get(0)).toUri();
-
-        menubar.setUseSystemMenuBar(true);
 
         dirtyProperty.bind(editor.dirtyProperty());
 
@@ -134,6 +139,88 @@ public class EditorController extends FxController<EditorAppBase, EditorControll
 
         public void setDirty(boolean dirty) {
             dirtyProperty.setValue(dirty);
+        }
+    }
+
+    @FXML
+    public boolean exportPdf() {
+        if (!hasCurrentDocument()) {
+            LOG.info("no document; not exporting");
+            return false;
+        }
+
+        Path parent = null;
+        String initialFileName = "";
+        FxDocument document = getCurrentDocument();
+        try {
+            if (document.hasLocation()) {
+                document = getCurrentDocument();
+                parent = document.getPath().getParent();
+                initialFileName = Objects.toString(document.getPath().getFileName(), "");
+            } else {
+                String lastDocument = getPreference(PREF_DOCUMENT, "");
+                if (lastDocument.isBlank()) {
+                    parent = USER_HOME.toPath();
+                } else {
+                    Path path = Paths.get(URI.create(lastDocument));
+                    parent = path.getParent();
+                    initialFileName = Objects.toString(path.getFileName(), "");
+                    initialFileName = IOUtil.replaceExtension(initialFileName, "pdf");
+                }
+            }
+        } catch (IllegalStateException e) {
+            // might for example be thrown by URI.create()
+            LOG.log(Level.WARNING, "could not determine initial folder", e);
+        }
+
+        File initialDir = parent!=null ? parent.toFile() :  null;
+
+        if (initialDir == null || !initialDir.isDirectory()) {
+            initialDir = USER_HOME;
+        }
+
+        Optional<File> file = Dialogs
+                .chooseFile()
+                .initialDir(initialDir)
+                .initialFileName(initialFileName)
+                .filter(saveFilters())
+                .selectedFilter(selectedSaveFilter())
+                .showSaveDialog(getApp().getStage());
+
+        if (file.isEmpty()) {
+            LOG.fine("exportPDF(): no file was chosen");
+        }
+
+        // save document content
+        return exportAsPdfAndHandleErrors(editor.getPreviewHtml(), file.get().toURI());
+    }
+
+    private String toXHTML( String html ) {
+        final Document document = Jsoup.parse(html);
+        document.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
+        return document.html();
+    }
+    
+    private boolean exportAsPdfAndHandleErrors(String html, URI uri) {
+        assert html!= null;
+        assert uri != null;
+        try (OutputStream out=IOUtil.getOutputStream(uri)) {
+            String xhtml = toXHTML(html);
+            PdfRendererBuilder builder = new PdfRendererBuilder();
+            builder.useFastMode();
+            builder.withHtmlContent(xhtml, uri.toString());
+            builder.toStream(out);
+            builder.run();
+            return true;
+        } catch (Exception e) {
+            LOG.log(Level.WARNING, "error exporting document", e);
+            Dialogs.error()
+                    .title(TITLE_ERROR)
+                    .header("'%s' could not be exported.", getDisplayName(uri))
+                    .text("%s: %s", e.getClass().getSimpleName(), e.getMessage())
+                    .build()
+                    .showAndWait();
+            return false;
         }
     }
 

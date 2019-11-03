@@ -178,4 +178,13 @@ public class JavaScriptBridge {
 	public void unselectText() {
 		jsEditor.call("unselectText");
 	}
+
+	public String getText() {
+		return Objects.toString(jsEditor.call("getText"));
+	}
+
+	public String getPreviewHtml() {
+		return Objects.toString(jsEditor.call("getPreviewHtml"));
+	}
+
 }
