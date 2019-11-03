@@ -59,7 +59,7 @@ class Editor {
 import * as monaco from 'monaco-editor';
 import './editor_text.css';
 import './editor_markdown.css';
-import './github-markdown.css';
+import './markdown.css';
 import 'katex/dist/katex.css';
 
 // Since packaging is done by you, you need
@@ -312,14 +312,21 @@ class TextEditor extends Editor {
 
     getPreviewHtml() {
         console.debug("getPreviewHtml()");
-        return "<html><head>\n" +
-        "<meta charset=\"UTF-8\"/>\n" +
-        "<title>Preview</title>\n" +
-        "</head>\n" +
-        "<body>" +
-        this.getText().replace("\r?\n", "<br>\n") +
-        "</body>\n" +
-        "</html>";
+        let title = "preview";
+        let html = this.md.render(this.getText());
+        let css = this.getText().replace("\r?\n", "<br>\n");
+        return `
+<html>
+  <head>
+    <meta charset=\"UTF-8\"/>
+    <title>${title}</title>
+    <style>${css}</style>
+  </head>
+  <body>
+    ${html}
+  </body>
+</html>
+`;
     }
 }
 
@@ -401,14 +408,21 @@ class MarkdownEditor extends TextEditor {
     }
 
     getPreviewHtml() {
-        return "<html><head>\n" +
-        "<meta charset=\"UTF-8\"/>\n" +
-        "<title>Preview</title>\n" +
-        "</head>\n" +
-        "<body>" +
-        this.md.render(this.getText()) +
-        "</body>\n" +
-        "</html>";
+        let title = "preview";
+        let html = this.md.render(this.getText());
+        let css = "";
+        return `
+<html>
+  <head>
+    <meta charset=\"UTF-8\"/>
+    <title>${title}</title>
+    <style>${css}</style>
+  </head>
+  <body>
+    ${html}
+  </body>
+</html>
+`;
     }
 
 }
