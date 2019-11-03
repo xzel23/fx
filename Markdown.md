@@ -85,24 +85,24 @@ Links
 ```
 Markdown description on [Wikipedia](en.wikipedia.org).
 ```
-Markdown description on [Wikipedia](en.wikipedia.org).
+Markdown description on [Wikipedia](http://en.wikipedia.org).
 ```
 
 Markdown description on [Wikipedia][1].
 
-[1]: http://www.en.wikipedia.org
+[1]: http://en.wikipedia.org
 ```
 Markdown description on [Wikipedia][1].
 
-[1]: http://www.en.wikipedia.org
+[1]: http://en.wikipedia.org
 
 Math
 ----
 
 ```
-Inline Mathematical expressions in $\LaTeX$ syntax like $f(x)=x^2$ are ecclosed in '$'.
+Inline Mathematical expressions in $\LaTeX$ syntax like $f(x)=x^2$ are enclosed in '$'.
 ```
-Inline Mathematical expressions in $\LaTeX$ syntax like $f(x)=x^2$ are ecclosed in '$'.
+Inline Mathematical expressions in $\LaTeX$ syntax like $f(x)=x^2$ are enclosed in '$'.
 
 Math blocks are enclosed in `$$`:
 ```

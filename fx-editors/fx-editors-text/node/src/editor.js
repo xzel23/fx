@@ -62,6 +62,10 @@ import './editor_markdown.css';
 import './markdown.css';
 import 'katex/dist/katex.css';
 
+// Adding `!!` to a request will disable all loaders specified in the configuration
+import markdown_css from '!!raw-loader!./markdown.css';
+import katex_css from '!!raw-loader!katex/dist/katex.css';
+
 // Since packaging is done by you, you need
 // to instruct the editor how you named the
 // bundles that contain the web workers.
@@ -410,15 +414,17 @@ class MarkdownEditor extends TextEditor {
     getPreviewHtml() {
         let title = "preview";
         let html = this.md.render(this.getText());
-        let css = "";
         return `
 <html>
   <head>
     <meta charset=\"UTF-8\"/>
     <title>${title}</title>
-    <style>${css}</style>
+    <style>
+${markdown_css}
+${katex_css}
+    </style>
   </head>
-  <body>
+  <body class="markdown-body">
     ${html}
   </body>
 </html>
