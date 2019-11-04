@@ -54,16 +54,7 @@ public class EditorController extends FxController<EditorAppBase, EditorControll
             editor.apply(TextEditorSettings.fromPreference(editorPref));
             // load or create a new document
             if (documentPath != null) {
-                try {
-                    loadDocument(documentPath);
-                } catch (IOException e) {
-                    LOG.log(Level.WARNING, "could not load document: " + documentPath, e);
-                    Dialogs.error()
-                            .title("Error")
-                            .header("Document could not be loaded: %s", documentPath)
-                            .text(e.getMessage())
-                            .showAndWait();
-                }
+                open(documentPath);
             } else {
                 createDocument();
             }
