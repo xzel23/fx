@@ -1,10 +1,6 @@
 package com.dua3.fx.editor;
 
-import com.dua3.utility.lang.LangUtil;
 import javafx.application.Application;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class MarkdownEditor {
 
