@@ -61,7 +61,7 @@ public class EditorController extends FxController<EditorAppBase, EditorControll
         });
 
         dirtyProperty.addListener((v, o, n) -> {
-            if (hasCurrentDocument() || newDocument()) {
+            if (hasCurrentDocument() || (n && newDocument())) {
                 getCurrentDocument().setDirty(n);
             }
         });
@@ -87,6 +87,9 @@ public class EditorController extends FxController<EditorAppBase, EditorControll
 
     @Override
     protected void createDocument() {
+        editor.clear();
+        editor.setReadOnly(false);
+        editor.markEditorClean();
         setCurrentDocument(new TextDocument(FxDocument.VOID_URI));
     }
 

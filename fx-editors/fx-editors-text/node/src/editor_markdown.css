@@ -32,3 +32,14 @@
         padding: 15px;
     }
 }
+
+@media print {
+    .noPrint {
+        display:none;
+    }
+}
+@media screen {
+    .onlyPrint {
+        display: none;
+    }
+}

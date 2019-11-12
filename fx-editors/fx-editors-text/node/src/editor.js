@@ -60,7 +60,6 @@ import * as monaco from 'monaco-editor';
 import './editor_text.css';
 import './editor_markdown.css';
 import './markdown.css';
-import 'katex/dist/katex.css';
 
 // Adding `!!` to a request will disable all loaders specified in the configuration
 import markdown_css from '!!raw-loader!./markdown.css';
@@ -181,12 +180,13 @@ class TextEditor extends Editor {
             language = arg;
         }
 
-        const model = monaco.editor.createModel(text, language, uri);
-
+        // destroy old model first
         const oldModel = this.monaco.getModel();
         if (oldModel !== undefined) {
             oldModel.dispose();
         }
+
+        const model = monaco.editor.createModel(text, language, uri);
 
         this.monaco.setModel(model);
         this.trackEditorChanges(model);
@@ -421,7 +421,6 @@ class MarkdownEditor extends TextEditor {
     <title>${title}</title>
     <style>
 ${markdown_css}
-${katex_css}
     </style>
   </head>
   <body class="markdown-body">
