@@ -8,5 +8,4 @@ include 'fx-util',
         'fx-icons', 'fx-icons:fx-icons-ikonli',
         'fx-web',
         // samples and apps
-        'fx-samples',
-        'fx-editor'
+        'fx-samples'
