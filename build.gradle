@@ -34,7 +34,7 @@ subprojects {
 
     /////////////////////////////////////////////////////////////////////////////
     group = 'com.dua3.fx'
-    version = '0.5.0-BETA5'
+    version = '0.5.0-BETA6'
 
     ext.moduleName = project.group
     ext.scm = 'https://gitlab.com/com.dua3/lib/fx.git'
@@ -52,7 +52,7 @@ subprojects {
         junit_version = '5.5.1'
 
         dua3_utility_version = '5-BETA6'
-        dua3_meja_version = '2.0-BETA18'
+        dua3_meja_version = '2.0-BETA19'
 
         picocli_version = '4.0.4'
         ikonli_version = '11.3.4'
