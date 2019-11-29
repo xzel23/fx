@@ -1,6 +1,7 @@
 const path = require('path');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     mode: 'production',
@@ -21,13 +22,39 @@ module.exports = {
         rules: [
             {
                 test: /\.css$/,
-                use: ['style-loader', 'css-loader']
+                use: [
+                    'style-loader',
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            url: (url, resourcePath) => {
+                                // resourcePath - path to css file
+
+                                if (url.match('\.(woff2|ttf)$')) {
+                                    return false;
+                                }
+
+                                return true;
+                            }
+                        }
+                    }
+                ]
             },
             {
-                test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+                test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
                 use: [
                     {
                         loader: 'url-loader',
+                        options: {
+                        }
+                    }
+                ]
+            },
+            {
+                test: /\.(woff2|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+                use: [
+                    {
+                        loader: 'ignore-loader',
                         options: {
                         }
                     }
@@ -36,6 +63,23 @@ module.exports = {
         ]
     },
     plugins: [
+        new CopyPlugin([
+            {
+                from: 'katex.min.*',
+                to: '../src/katex/',
+                context: 'node_modules/katex/dist'
+            },
+            {
+                from: 'fonts/*.woff',
+                to: '../src/katex/',
+                context: 'node_modules/katex/dist'
+            },
+            {
+                from: 'contrib/*.min.*',
+                to: '../src/katex/',
+                context: 'node_modules/katex/dist'
+            }
+        ]),
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
             filename: 'editor_text.html',

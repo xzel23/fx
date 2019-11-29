@@ -61,9 +61,8 @@ import './editor_text.css';
 import './editor_markdown.css';
 import './markdown.css';
 
-// Adding `!!` to a request will disable all loaders specified in the configuration
 import markdown_css from '!!raw-loader!./markdown.css';
-import katex_css from '!!raw-loader!katex/dist/katex.css';
+import katex_css from '!!raw-loader!./katex/katex.min.css';
 
 // Since packaging is done by you, you need
 // to instruct the editor how you named the
@@ -342,7 +341,7 @@ window.createTextEditor = function (name, element) {
 // === Markdown Editor ================================================================================================
 
 const MarkdownIt = require('markdown-it');
-const katex = require ('katex');
+const katex = require ('./katex/katex.min');
 const MarkdownIt_texmath = require('markdown-it-texmath').use(katex, {
     throwOnError: false,
     errorColor: "#cc0000"
@@ -421,6 +420,7 @@ class MarkdownEditor extends TextEditor {
     <title>${title}</title>
     <style>
 ${markdown_css}
+${katex_css}
     </style>
   </head>
   <body class="markdown-body">
