@@ -62,7 +62,7 @@ import './editor_markdown.css';
 import './markdown.css';
 
 import markdown_css from '!!raw-loader!./markdown.css';
-import katex_css from '!!raw-loader!./katex/katex.min.css';
+import katex_css from '!!raw-loader!./katex/katex.css';
 
 // Since packaging is done by you, you need
 // to instruct the editor how you named the
@@ -341,7 +341,7 @@ window.createTextEditor = function (name, element) {
 // === Markdown Editor ================================================================================================
 
 const MarkdownIt = require('markdown-it');
-const katex = require ('./katex/katex.min');
+const katex = require ('./katex/katex');
 const MarkdownIt_texmath = require('markdown-it-texmath').use(katex, {
     throwOnError: false,
     errorColor: "#cc0000"

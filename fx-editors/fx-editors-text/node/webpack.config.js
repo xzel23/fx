@@ -63,23 +63,6 @@ module.exports = {
         ]
     },
     plugins: [
-        new CopyPlugin([
-            {
-                from: 'katex.min.*',
-                to: '../src/katex/',
-                context: 'node_modules/katex/dist'
-            },
-            {
-                from: 'fonts/*.woff',
-                to: '../src/katex/',
-                context: 'node_modules/katex/dist'
-            },
-            {
-                from: 'contrib/*.min.*',
-                to: '../src/katex/',
-                context: 'node_modules/katex/dist'
-            }
-        ]),
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
             filename: 'editor_text.html',
