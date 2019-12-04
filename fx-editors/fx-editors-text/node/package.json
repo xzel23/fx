@@ -16,14 +16,6 @@
     "css-loader": "^3.2.0",
     "file-loader": "^4.2.0",
     "html-webpack-plugin": "^3.2.0",
-    "ignore-loader": "^0.1.2",
-    "mini-css-extract-plugin": "^0.8.0",
-    "postcss": "^7.0.21",
-    "postcss-base64": "^0.7.1",
-    "postcss-font-base64": "^1.0.5",
-    "postcss-inline-base64": "^4.1.0",
-    "postcss-loader": "^3.0.0",
-    "precss": "^4.0.0",
     "raw-loader": "^3.1.0",
     "style-loader": "^0.23.1",
     "url-loader": "^2.2.0",
@@ -31,7 +23,6 @@
     "webpack-cli": "^3.3.10"
   },
   "dependencies": {
-    "katex": "^0.9.0",
     "markdown-it": "^10.0.0",
     "markdown-it-abbr": "^1.0.4",
     "markdown-it-anchor": "^5.2.5",

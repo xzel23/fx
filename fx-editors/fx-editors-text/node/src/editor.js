@@ -59,6 +59,7 @@ class Editor {
 import * as monaco from 'monaco-editor';
 import './editor_text.css';
 import './editor_markdown.css';
+import './katex/katex.css';
 import './markdown.css';
 
 import markdown_css from '!!raw-loader!./markdown.css';
@@ -419,8 +420,8 @@ class MarkdownEditor extends TextEditor {
     <meta charset=\"UTF-8\"/>
     <title>${title}</title>
     <style>
-${markdown_css}
 ${katex_css}
+${markdown_css}
     </style>
   </head>
   <body class="markdown-body">
