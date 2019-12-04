@@ -431,6 +431,36 @@ ${markdown_css}
 `;
     }
 
+    updateDivSizes() {
+        let n = 0;
+        if (this.isShowEditor()) n++;
+        if (this.isShowPreview()) n++;
+        let size = n == 0 ? 100 : 100/n;
+        document.getElementById("editor_markdown").style.width = size+"%";
+        document.getElementById("preview_markdown").style.width = size+"%";
+    }
+
+    setShowPreview(flag) {
+        console.debug("setShowPreview(%s)", flag);
+        document.getElementById("preview_markdown").hidden=!flag;
+        this.updateDivSizes();
+    }
+
+    setShowEditor(flag) {
+        console.debug("setShowEditor(%s)", flag);
+        document.getElementById("editor_markdown").hidden=!flag;
+        this.updateDivSizes();
+    }
+
+    isShowPreview() {
+        console.debug("isShowPreview()");
+        return !document.getElementById("preview_markdown").hidden;
+    }
+
+    isShowEditor() {
+        console.debug("isShowEditor)");
+        return !document.getElementById("editor_markdown").hidden;
+    }
 }
 
 window.createMarkdownEditor = function (name, elementIdEditor, elementIdPreview) {
