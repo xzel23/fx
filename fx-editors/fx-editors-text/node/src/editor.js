@@ -381,6 +381,12 @@ class MarkdownEditor extends TextEditor {
         this.lastPreviewVersionId = 0;
         this.elementPreview = document.getElementById(elementIdPreview);
 
+        this.monaco.onDidScrollChange(e => {
+            console.debug("onDidScrollChange()");
+            let top = this.monaco.getScrollTop();
+            this.elementPreview.scrollTop = top;
+        });
+        
         this.refresh();
 
         const instance = this;
@@ -405,8 +411,8 @@ class MarkdownEditor extends TextEditor {
         let tTranslate = performance.now();
 
         console.debug("updatePreview() - times:\n"
-            + "    text retrieval:       %5d ms\n"
-            + "    markdown translation: %5d ms",
+            + "    text retrieval:       %s ms\n"
+            + "    markdown translation: %s ms",
             (tText - tStart),
             (tTranslate - tText));
     }
