@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 public class PromptPane extends InputDialogPane<String> {
 
     /** Logger */
-    protected static final Logger LOG = Logger.getLogger(PromptPane.class.getSimpleName());
+    protected static final Logger LOG = Logger.getLogger(PromptPane.class.getName());
 
     private TextField text;
 

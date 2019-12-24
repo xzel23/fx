@@ -61,7 +61,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
     /**
      * Logger
      */
-    protected static final Logger LOG = Logger.getLogger(FxApplication.class.getSimpleName());
+    protected static final Logger LOG = Logger.getLogger(FxApplication.class.getName());
 
     /**
      * Preferences
@@ -252,15 +252,10 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
         // set filter
         Filter f = record -> {
             String loggerName = record.getLoggerName();
-            boolean show = true;
-            boolean match = false;
             Level level = globalLogLevel;
             for (var entry: logLevel.entrySet()) {
                 if (loggerName.startsWith(entry.getKey())) {
-                    match = true;
                     level = entry.getValue();
-                } else if (match) {
-                    break;
                 }
             }
             return record.getLevel().intValue()>=level.intValue();
@@ -268,7 +263,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
 
         for (Handler h : rootLogger.getHandlers()) {
             h.setFilter(f);
-            h.setLevel(globalLogLevel);
+            h.setLevel(minLevel);
         }
 
         LOG.info(() -> "log level set to "+logLevel);

@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 public class InputGrid extends GridPane {
 
     /** Logger */
-    protected static final Logger LOG = Logger.getLogger(InputGrid.class.getSimpleName());
+    protected static final Logger LOG = Logger.getLogger(InputGrid.class.getName());
 
 	private static final String MARKER_INITIAL = "";
 	private static final String MARKER_ERROR = "\u26A0";

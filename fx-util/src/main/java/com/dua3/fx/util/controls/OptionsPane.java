@@ -28,7 +28,7 @@ import java.util.logging.Logger;
 public class OptionsPane extends GridPane implements InputControl<OptionValues>{
 
     /** Logger */
-    protected static final Logger LOG = Logger.getLogger(OptionsPane.class.getSimpleName());
+    protected static final Logger LOG = Logger.getLogger(OptionsPane.class.getName());
 
     private final InputControl.State<OptionValues> state;
     

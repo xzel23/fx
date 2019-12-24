@@ -51,7 +51,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	// - static -
 
 	/** Logger */
-	protected static final Logger LOG = Logger.getLogger(FxController.class.getSimpleName());
+	protected static final Logger LOG = Logger.getLogger(FxController.class.getName());
 	public static final String TITLE_ERROR = "Error";
 	public static final File USER_HOME = new File(System.getProperty("user.home"));
 

@@ -4,6 +4,7 @@
 
 #### Version 0.5.0
 
+- use gradle 6
 - removed the `fx-editor` sub project which contained two sample applications
 - module descriptors changed from `com.dua3.fx` to `dua3_fx`
 - fx-icons: IconView class, many fixes

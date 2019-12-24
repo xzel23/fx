@@ -22,7 +22,7 @@ import javafx.scene.control.TableView;
 public class TableViews {
 
     /** Logger */
-    protected static final Logger LOG = Logger.getLogger(TableViews.class.getSimpleName());
+    protected static final Logger LOG = Logger.getLogger(TableViews.class.getName());
 
     // utility - no instances
 	private TableViews() {}

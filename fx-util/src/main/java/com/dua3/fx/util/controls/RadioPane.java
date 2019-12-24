@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 public class RadioPane<T> extends VBox implements InputControl<T> {
 
     /** Logger */
-    protected static final Logger LOG = Logger.getLogger(RadioPane.class.getSimpleName());
+    protected static final Logger LOG = Logger.getLogger(RadioPane.class.getName());
 
     private final LinkedHashMap<T, RadioButton> items = new LinkedHashMap<>();
 	private final ToggleGroup group;

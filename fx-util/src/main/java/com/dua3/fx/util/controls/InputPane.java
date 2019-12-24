@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 public class InputPane extends InputDialogPane<Map<String,Object>> {
 
     /** Logger */
-    protected static final Logger LOG = Logger.getLogger(InputPane.class.getSimpleName());
+    protected static final Logger LOG = Logger.getLogger(InputPane.class.getName());
 
 	private final InputGrid inputGrid;
 
