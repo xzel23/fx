@@ -24,7 +24,15 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import netscape.javascript.JSException;
 import netscape.javascript.JSObject;
+import org.w3c.dom.Document;
 
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.OutputStreamWriter;
+import java.io.StringWriter;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -187,4 +195,28 @@ public class JavaScriptBridge {
 		return Objects.toString(jsEditor.call("getPreviewHtml"));
 	}
 
+	/**
+	 * Get the raw content of the editor's webview (for debugging purposes).
+	 * @return raw content of the webview
+	 */
+	public String getRawContent() {
+		try {
+			
+			Document doc = engine.getDocument();
+			Transformer transformer = TransformerFactory.newInstance().newTransformer();
+			transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+			transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+			transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+
+			StringWriter out = new StringWriter();
+			transformer.transform(new DOMSource(doc),
+					new StreamResult(out));
+			return out.toString();
+		} catch (Exception e) {
+			LOG.log(Level.WARNING, "could not get editor contents", e);
+			return "";
+		}
+	}
 }
