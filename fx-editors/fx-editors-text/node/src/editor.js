@@ -378,20 +378,73 @@ class MarkdownEditor extends TextEditor {
             .then(fullfilled => console.debug('markdownit-diagrams ready'))
             .catch(error => console.error(error.message()));
 
+        // inject line numbers -- taken from https://markdown-it.github.io/index.js
+
+        //
+        // Inject line numbers for sync scroll. Notes:
+        //
+        // - We track only headings and paragraphs on first level. That's enough.
+        // - Footnotes content causes jumps. Level limit filter it automatically.
+        function injectLineNumbers(tokens, idx, options, env, slf) {
+            var line;
+            if (tokens[idx].map && tokens[idx].level === 0) {
+                line = tokens[idx].map[0];
+                tokens[idx].attrJoin('class', 'line');
+                tokens[idx].attrSet('data-line', String(line));
+            }
+            return slf.renderToken(tokens, idx, options, env, slf);
+        }
+
+        this.md.renderer.rules.paragraph_open = this.md.renderer.rules.heading_open = injectLineNumbers;
+        
+        // track changes
+
         this.lastPreviewVersionId = 0;
         this.elementPreview = document.getElementById(elementIdPreview);
 
+        // track source editor scroll
+        
         this.monaco.onDidScrollChange(e => {
             console.debug("onDidScrollChange()");
-            let top = this.monaco.getScrollTop();
-            this.elementPreview.scrollTop = top;
+            
+            // determine visible viewport (if not accessible, just scroll amount of pixels)
+            let ranges = this.monaco.getVisibleRanges();
+            if (ranges.length<1) {
+                let top = this.monaco.getScrollTop();
+                this.elementPreview.scrollTop = top;
+            }
+
+            // get line numbers
+            let lineTop = ranges[0].startLineNumber;
+            let lineBottom = ranges[0].endLineNumber;
+            let lineWithCursor = this.monaco.getPosition().lineNumber;
+
+            let lineToShow = lineTop;
+            if (lineTop<lineWithCursor && lineWithCursor <= lineBottom) {
+                lineToShow = lineWithCursor;
+            }
+
+            // find element with matching source line
+            var element = null;
+            var elements = document.getElementsByClassName("line");
+            for(var i=0; i<elements.length; i++){
+                var currentElement = elements[i];
+                var actLineNo = parseInt(currentElement.getAttribute("data-line"));
+                if (actLineNo>lineToShow) {
+                    break;
+                }
+                element = currentElement;
+            }
+            if (element!=null) {
+                element.scrollIntoView();
+            }
         });
         
         this.refresh();
 
         const instance = this;
     }
-
+    
     updatePreview() {
         if (this.currentVersionId===this.lastPreviewVersionId) {
             // preview is up to date
@@ -469,6 +522,7 @@ ${markdown_css}
     }
 }
 
+// create editor factory
 window.createMarkdownEditor = function (name, elementIdEditor, elementIdPreview) {
     console.info("creating Markdown Editor instance with name '%s'", name);
     return new MarkdownEditor(name, elementIdEditor, elementIdPreview, {
