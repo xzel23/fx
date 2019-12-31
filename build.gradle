@@ -101,13 +101,6 @@ subprojects {
         testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junit_version}"
     }
 
-    // place resources in same directory as classes (fix resource not found in IntelliJ run/debug)
-    sourceSets {
-        main {
-            output.resourcesDir = "${buildDir}/classes/java/main"
-        }
-    }
-
     idea {
         module {
             inheritOutputDirs = false
