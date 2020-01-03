@@ -93,7 +93,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
     /**
      * Path to FXML file.
      */
-    private final String fxmlFile;
+    private final URL fxmlFile;
 
     /**
      * The controller instance.
@@ -117,7 +117,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      * @param fxmlFile the path to the FXML file to load, relative to the
      *                 application class
      */
-    protected FxApplication(String fxmlFile) {
+    protected FxApplication(URL fxmlFile) {
         this.fxmlFile = Objects.requireNonNull(fxmlFile);
     }
 
@@ -158,11 +158,8 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
         getParameterValue("log").ifPresent(this::setLogLevel);
 
         // create a loader and load FXML
-        LOG.log(Level.FINE, () -> "loading FXML ...");
-        URL fxmlUrl = LangUtil.getResourceURL(getClass(), fxmlFile);
-
-        LOG.log(Level.FINER, () -> "FXML URL: " + fxmlUrl);
-        FXMLLoader loader = new FXMLLoader(fxmlUrl);
+        LOG.log(Level.FINER, () -> "FXML URL: " + fxmlFile);
+        FXMLLoader loader = new FXMLLoader(fxmlFile);
 
         Parent root = loader.load();
 

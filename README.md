@@ -2,6 +2,10 @@
 
 ## Changes
 
+#### Version 0.6.1
+
+- change the FxApplication constructor argument to URL because of access problems in jlinked applications
+
 #### Version 0.6.0
 
 - use gradle 6
