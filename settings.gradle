@@ -1,7 +1,6 @@
 rootProject.name = 'fx'
 
 include 'fx-util',
-        'fx-preferences',
         'fx-util-db',
         'fx-editors', 'fx-editors:fx-editors-text',
         'fx-application',
