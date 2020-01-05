@@ -23,10 +23,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
-import javafx.scene.input.Clipboard;
-import javafx.scene.input.DataFormat;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
@@ -47,6 +44,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.function.BiPredicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -66,6 +64,10 @@ public abstract class EditorBase extends BorderPane {
 
     protected JavaScriptBridge getBridge() {
         return bridge;
+    }
+
+    public void seEventFilter(BiPredicate<EditorBase, KeyEvent> keyEventFilter, BiPredicate<EditorBase, MouseEvent> mouseEventFilter) {
+        WebViews.filterEvents(webview, k -> keyEventFilter.test(this, k), m -> mouseEventFilter.test(this,m));
     }
 
     /**
@@ -93,30 +95,6 @@ public abstract class EditorBase extends BorderPane {
 
         // disable context menu
         webview.setContextMenuEnabled(false);
-        WebViews.filterEvents(webview,
-                k -> {
-                    if (k.getEventType().equals(KeyEvent.KEY_PRESSED) && k.isShortcutDown()) {
-                        switch (k.getCode()) {
-                            case C:
-                                copy();
-                                LOG.fine(() -> "key event filtered, calling copy(): "+k);
-                                return true;
-                            case X:
-                                cut();
-                                LOG.fine(() -> "key event filtered, calling cut(): "+k);
-                                return true;
-                            case V:
-                                paste();
-                                LOG.fine(() -> "key event filtered, calling paste(): "+k);
-                                return true;
-                            default: 
-                                return false;
-                        }
-                    } else {
-                        return false;
-                    }
-                },
-                m -> false);
 
         // get the engine
         WebEngine engine = webview.getEngine();
