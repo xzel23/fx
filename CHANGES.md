@@ -4,6 +4,7 @@ Changelog
 #### Version 0.6.3 (to be released)
 
  - merge code for determining initial dir for saveAs() and open() and add some logging
+ - FIX: don't overwrite last location when creating a new document
  
 #### Version 0.6.2
 

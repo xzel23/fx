@@ -174,8 +174,10 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	 */
 	protected void setCurrentDocument(FxDocument document) {		
 		currentDocumentProperty.set(document);
-		setPreferenceOptional(PREF_DOCUMENT, document.getLocation().toString());
-		LOG.fine(() -> "current document: "+document);
+		if (document.hasLocation()) {
+			setPreferenceOptional(PREF_DOCUMENT, document.getLocation().toString());
+			LOG.fine(() -> "current document: " + document);
+		}
 	}
 		
 	/**
