@@ -225,28 +225,9 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 			LOG.fine("open aborted because of dirty state");
 			return false;			
 		}
-		
-		// choose file to open
-		Path parent = null;
-		String initialFileName = "";
-		try {
-			if (hasCurrentDocument() && getCurrentDocument().hasLocation()) {
-				parent = getCurrentDocument().getPath().getParent();
-			} else {
-				String lastDocument = getPreference(PREF_DOCUMENT, "");
-				if (lastDocument.isBlank()) {
-					parent = USER_HOME.toPath();
-				} else {
-					Path path = Paths.get(URI.create(lastDocument));
-					parent = path.getParent();
-					initialFileName = Objects.toString(path.getFileName(), "");
-				}
-			}
-		} catch (IllegalStateException e) {
-			// might for example be thrown by URI.create()
-			LOG.log(Level.WARNING, "could not determine initial folder", e);
-		}
-		File initialDir = parent != null ? parent.toFile() : null;
+
+		FxDocument document = getCurrentDocument();
+		File initialDir = initialDir(document);
 		
 		if (initialDir == null || !initialDir.isDirectory()) {
 			initialDir = USER_HOME;
@@ -255,7 +236,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		Optional<File> file = Dialogs
 				.chooseFile()
 				.initialDir(initialDir)
-				.initialFileName(initialFileName)
+				.initialFileName("")
 				.filter(openFilters())
 				.selectedFilter(selectedOpenFilter())
 				.showOpenDialog(getApp().getStage());
@@ -331,38 +312,13 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 			return false;
 		}
 		
-		Path parent = null;
-		String initialFileName = "";
 		FxDocument document = getCurrentDocument();
-		try {
-			if (document.hasLocation()) {
-				document = getCurrentDocument();
-				parent = document.getPath().getParent();
-			} else {
-				String lastDocument = getPreference(PREF_DOCUMENT, "");
-				if (lastDocument.isBlank()) {
-					parent = USER_HOME.toPath();
-				} else {
-					Path path = Paths.get(URI.create(lastDocument));
-					parent = path.getParent();
-					initialFileName = Objects.toString(path.getFileName(), "");
-				}
-			}
-		} catch (IllegalStateException e) {
-			// might for example be thrown by URI.create()
-			LOG.log(Level.WARNING, "could not determine initial folder", e);
-		}
-		
-		File  initialDir = parent!=null ? parent.toFile() :  null;
+		File initialDir = initialDir(document);
 
-		if (initialDir == null || !initialDir.isDirectory()) {
-			initialDir = USER_HOME;
-		}
-		
 		Optional<File> file = Dialogs
 				.chooseFile()
 				.initialDir(initialDir)
-				.initialFileName(initialFileName)
+				.initialFileName("")
 				.filter(saveFilters())
 				.selectedFilter(selectedSaveFilter())
 				.showSaveDialog(getApp().getStage());
@@ -374,6 +330,42 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		
 		// save document content
 		return saveDocumentAndHandleErrors(document, file.get().toURI());
+	}
+
+	/**
+	 * Determine the parent folder to set for open/save dialogs.
+	 * @param document the current document
+	 * @return the initial folder to set
+	 */
+	private File initialDir(FxDocument document) {
+		Path parent = null;
+		try {
+			if (document.hasLocation()) {
+				parent = document.getPath().getParent();
+				LOG.fine("initialDir() - using parent fokder of current document as parent: "+parent);
+			} else {
+				String lastDocument = getPreference(PREF_DOCUMENT, "");
+				if (lastDocument.isBlank()) {
+					parent = USER_HOME.toPath();
+					LOG.fine("initialDir() - last document location not set, using user home as parent: "+parent);
+				} else {
+					Path path = Paths.get(URI.create(lastDocument));
+					parent = path.getParent();
+					LOG.fine("initialDir() - using last document location as parent: "+parent);
+				}
+			}
+		} catch (IllegalStateException e) {
+			// might for example be thrown by URI.create()
+			LOG.log(Level.WARNING, "initialDir() - could not determine initial folder", e);
+		}
+
+		File  initialDir = parent!=null ? parent.toFile() :  null;
+
+		if (initialDir == null || !initialDir.isDirectory()) {
+			LOG.log(Level.WARNING, "initialDir() - initial directory invalid, using user home instead: "+initialDir);
+			initialDir = USER_HOME;
+		}
+		return initialDir;
 	}
 
 	private boolean saveDocumentAndHandleErrors(FxDocument document, URI uri) {
