@@ -96,7 +96,7 @@ class TextEditor extends Editor {
 
         this.setTheme('light');
 
-        // track dirt state (see https://github.com/Microsoft/monaco-editor/issues/353)
+        // track dirty state (see https://github.com/Microsoft/monaco-editor/issues/353)
         this.onChangedDirtyState = (flag) => {};
         this.trackEditorChanges(this.monaco.getModel());
 

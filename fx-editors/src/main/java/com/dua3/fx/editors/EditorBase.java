@@ -94,10 +94,28 @@ public abstract class EditorBase extends BorderPane {
         // disable context menu
         webview.setContextMenuEnabled(false);
         WebViews.filterEvents(webview,
-                k -> k.getEventType().equals(KeyEvent.KEY_PRESSED) && k.isShortcutDown()
-                        && ((k.getCode().equals(KeyCode.C) || k.getCode().equals(KeyCode.INSERT))
-                        || (k.getCode().equals(KeyCode.X) || k.getCode().equals(KeyCode.CUT))
-                        || (k.getCode().equals(KeyCode.V) || k.getCode().equals(KeyCode.PASTE))),
+                k -> {
+                    if (k.getEventType().equals(KeyEvent.KEY_PRESSED) && k.isShortcutDown()) {
+                        switch (k.getCode()) {
+                            case C:
+                                copy();
+                                LOG.fine(() -> "key event filtered, calling copy(): "+k);
+                                return true;
+                            case X:
+                                cut();
+                                LOG.fine(() -> "key event filtered, calling cut(): "+k);
+                                return true;
+                            case V:
+                                paste();
+                                LOG.fine(() -> "key event filtered, calling paste(): "+k);
+                                return true;
+                            default: 
+                                return false;
+                        }
+                    } else {
+                        return false;
+                    }
+                },
                 m -> false);
 
         // get the engine
