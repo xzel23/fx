@@ -1,39 +1,40 @@
-# fx
+fx Application Framework
+========================
 
-## Changes
+The framework consists of the following libraries:
 
-#### Version 0.6.1
-
-- change the FxApplication constructor argument to URL because of access problems in jlinked applications
-
-#### Version 0.6.0
-
-- use gradle 6
-- update dependencies
-- fix markdown-editor formula rendering
-- update dependencies
-- fix duplicate files in jar files
-
-#### Version 0.5.0
-
-- removed the fx-editor sub project which contained two sample applications
-- module descriptors changed from com.dua3.fx to dua3_fx
-- fx-icons: IconView class, many fixes
-- fx-web: redirecting javaScript console to Java
-- fx-editors: switch to Monaco Editor
-- fx-editors: add markdown support
-- fx-editors: math support in markdown using kaTeX
-- log filtering (use `--log=<global_level>,<package_name>:,...)
+ - **fxApplication:** base classes for building applications
  
-#### Version 0.4.2
+ - **fx-controls:** JavaFX controls
+ 
+ - **fx-editors:** editor components for text and code
+ 
+ - **fx-icons:** Icons to be used in JavaFX applications
+ 
+ - **fx-util:** JavaFX related utility classes
+ 
+   - **fx-util-db:** JavaFX classes related to databases
+ 
+ - **fx-web:** classes related to the JavaFX WebView component
 
-- avoid deadlocks when methods are not called on the Fx-Application thread
+ - **fx-samples:** sample applications
 
-#### Version 0.4.1
+fx-application
+--------------
 
-- fix Exception in `getLineCount()` and `getLineNumber()`
+Derive the application class from `FxApplication` and the controller from `FxController`.
 
-### Version 0.4.0
+### Logging
 
-- fx-editors: rename `CodeEditor` to `TextEditor`
-- fx-editors: use webpack bundle
+FxApplication supports a `--log` command line argument to control logging.
+
+Examples:
+
+ - set general log level to `INFO`:
+
+   `--log=INFO`
+
+ - set level for different packages:
+
+   `--log=INFO,com.dua3:FINE,com.sun:WARNING`
+
