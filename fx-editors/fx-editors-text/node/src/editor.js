@@ -430,7 +430,7 @@ class MarkdownEditor extends TextEditor {
             for(var i=0; i<elements.length; i++){
                 var currentElement = elements[i];
                 var actLineNo = parseInt(currentElement.getAttribute("data-line"));
-                if (actLineNo>lineToShow) {
+                if (actLineNo>=lineToShow) {
                     break;
                 }
                 element = currentElement;
