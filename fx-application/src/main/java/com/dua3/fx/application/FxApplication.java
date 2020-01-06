@@ -325,18 +325,10 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
         if (!hasPreferences()) {
             Class<?> cls = getClass();
             LOG.fine("creating preferences for class " + cls.getName());
-            preferences = getPreferencesUserRoot().node(getClass().getName());
+            preferences = Preferences.userRoot().node(getClass().getName());
         }
         return preferences;
     }
-
-    /**
-     * Get the preferences usert root. This is delegated to the implementing class
-     * in order to provide a solution in cases where the standard java.util.prefs implementation
-     * can be not used (i.e. current vertsion of GraalVM).
-     * @return the user root node of the preferences
-     */
-    protected abstract Preferences getPreferencesUserRoot();
 
     /**
      * Check whether a preferences object for this class has been created.
