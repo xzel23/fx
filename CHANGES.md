@@ -5,6 +5,7 @@ Changelog
 
  - merge code for determining initial dir for saveAs() and open() and add some logging
  - FIX: don't overwrite last location when creating a new document
+ - FxApplication.getController() (protected)
  
 #### Version 0.6.2
 

@@ -414,4 +414,8 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
     public File getDataDir() {
         return APPLICATION_DATA_DIR;
     }
+
+    protected C getController() {
+        return controller;
+    }
 }
