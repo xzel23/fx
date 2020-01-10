@@ -1,6 +1,8 @@
 Changelog
 =========
 
+#### Version 0.6.4 (to be released)
+
 #### Version 0.6.3
 
  - merge code for determining initial dir for saveAs() and open() and add some logging
