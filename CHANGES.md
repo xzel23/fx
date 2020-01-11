@@ -1,6 +1,12 @@
 Changelog
 =========
 
+#### Version 0.7
+
+ - don't export JavaFX dependencies
+ - revert accidentally switching back to OpenJavaFX 11
+ - cleanup the JavaFX dependency tree
+ 
 #### Version 0.6.4
 
  - use the OpenJFX Gradle plugin; this should remove platform dependencies
