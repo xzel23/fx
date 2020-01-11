@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+javafx {
+    modules = [ 'javafx.base', 'javafx.controls', 'javafx.graphics' ]
+}
+
 dependencies {
     implementation project(':fx-util')
     api "com.dua3.utility:utility-db:${dua3_utility_version}"

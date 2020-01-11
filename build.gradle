@@ -17,15 +17,16 @@ plugins {
     id 'com.adarshr.test-logger' version '1.7.0' apply false
     id 'com.github.spotbugs' version '2.0.0' apply false
     id 'com.jfrog.bintray' version '1.8.4' apply false
+    id "org.openjfx.javafxplugin" version '0.0.8' apply false
 }
 
 subprojects {
-
     ext.fast_build   = project.findProperty("fast_build")!=null
     ext.run_spotbugs = !fast_build
 
     apply plugin: 'java'
     apply plugin: 'java-library'
+    apply plugin: 'org.openjfx.javafxplugin'
     apply plugin: 'maven-publish'
     apply plugin: 'idea'
     apply plugin: 'com.dua3.gradle.jpms'
@@ -34,7 +35,7 @@ subprojects {
 
     /////////////////////////////////////////////////////////////////////////////
     group = 'com.dua3.fx'
-    version = '0.6.4-SNAPSHOT'
+    version = '0.6.4'
 
     ext.moduleName = project.group
     ext.scm = 'https://gitlab.com/com.dua3/lib/fx.git'
@@ -73,29 +74,8 @@ subprojects {
         }
     }
 
-    // get OS (because JavaFX packages are OS dependent)
-    def currentOS = org.gradle.internal.os.OperatingSystem.current()
-    if (currentOS.isWindows()) {
-        ext.platform = 'win'
-    } else if (currentOS.isLinux()) {
-        ext.platform = 'linux'
-    } else if (currentOS.isMacOsX()) {
-        ext.platform = 'mac'
-    }
-
     // dependencies
     dependencies {
-        // com.dua3 libraries
-        implementation "com.dua3.utility:utility:${dua3_utility_version}"
-
-        // JavaFX
-        implementation "org.openjfx:javafx-base:${javafx_version}:${platform}"
-        implementation "org.openjfx:javafx-fxml:${javafx_version}:${platform}"
-        implementation "org.openjfx:javafx-graphics:${javafx_version}:${platform}"
-        implementation "org.openjfx:javafx-controls:${javafx_version}:${platform}"
-        implementation "org.openjfx:javafx-web:${javafx_version}:${platform}"
-        implementation "org.openjfx:javafx-media:${javafx_version}:${platform}"
-
         // JUnit
         testImplementation "org.junit.jupiter:junit-jupiter-api:${junit_version}"
         testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junit_version}"
