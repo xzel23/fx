@@ -97,6 +97,9 @@ public class StatusBar extends HBox implements FxTaskTracker {
 				progress.setProgress(0.0);
 				progress.setVisible(false);
 				break;
+			default:
+				LOG.warning("StatusBar.updateTaskState() - unexpected state: "+state);
+				break;
 			}
 		});
 	}
