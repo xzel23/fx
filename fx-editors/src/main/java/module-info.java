@@ -21,10 +21,11 @@ module dua3_fx.editors {
 
 	requires java.logging;
 	requires java.prefs;
-	requires javafx.base;
-	requires javafx.fxml;
-	requires javafx.graphics;
-	requires javafx.web;
 	requires jdk.jsobject;
-    requires dua3_utility;
+
+	requires dua3_utility;
+	
+	requires javafx.controls;
+	requires javafx.fxml;
+	requires javafx.web;
 }

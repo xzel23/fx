@@ -18,10 +18,9 @@ module dua3_fx.util.db {
 
 	requires transitive java.logging;
 
-	requires javafx.base;
-	requires javafx.controls;
-	requires javafx.graphics;
-
     requires transitive dua3_utility.db;
     requires transitive dua3_fx.util;
+    
+	requires javafx.controls;
+	requires javafx.graphics;
 }

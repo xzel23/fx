@@ -24,9 +24,9 @@ module dua3_fx.util {
 	requires java.logging;
     requires dua3_utility;
 
+	requires java.desktop;
+    requires dua3_fx.icons;
+    
 	requires javafx.controls;
 	requires javafx.fxml;
-	requires java.desktop;
-	requires javafx.graphics;
-    requires dua3_fx.icons;
 }

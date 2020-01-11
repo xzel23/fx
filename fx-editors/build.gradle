@@ -13,7 +13,7 @@
 // limitations under the License.
 
 javafx {
-    modules = [ 'javafx.base', 'javafx.fxml', 'javafx.graphics', 'javafx.web' ]
+    modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.web' ]
 }
 
 dependencies {

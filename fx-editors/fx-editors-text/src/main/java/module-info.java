@@ -24,6 +24,7 @@ module dua3_fx.editors.text {
 	requires java.prefs;
 	requires jdk.jsobject;
     requires dua3_utility;
-	requires javafx.fxml;
+    
 	requires javafx.controls;
+	requires javafx.fxml;
 }

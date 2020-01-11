@@ -31,7 +31,6 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.util.Objects;
 import java.util.logging.Level;

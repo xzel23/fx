@@ -20,7 +20,7 @@ module dua3_fx.controls {
 	requires dua3_utility;
 
 	requires java.logging;
-	requires javafx.base;
+	
 	requires javafx.controls;
 	requires javafx.fxml;
 	requires javafx.graphics;
