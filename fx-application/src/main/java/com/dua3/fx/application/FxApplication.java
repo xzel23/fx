@@ -91,11 +91,6 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
     private String copyright = "";
 
     /**
-     * Path to FXML file.
-     */
-    private final URL fxmlFile;
-
-    /**
      * The controller instance.
      */
     private C controller;
@@ -113,14 +108,17 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
 
     /**
      * Constructor.
-     *
-     * @param fxmlFile the path to the FXML file to load, relative to the
-     *                 application class
      */
-    protected FxApplication(URL fxmlFile) {
-        this.fxmlFile = Objects.requireNonNull(fxmlFile);
+    protected FxApplication() {
     }
 
+    /**
+     * Get application main FXML file.
+     * @return the path to the FXML file to load, relative to the
+     *                 application class
+     */
+    protected abstract URL getFxml();
+    
     /**
      * Get named parameter value.
      * <p>
@@ -158,15 +156,16 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
         getParameterValue("log").ifPresent(this::setLogLevel);
 
         // create a loader and load FXML
-        LOG.log(Level.FINER, () -> "FXML URL: " + fxmlFile);
-        FXMLLoader loader = new FXMLLoader(fxmlFile);
+        URL fxml = getFxml();
+        LOG.log(Level.FINER, () -> "FXML URL: " + fxml);
+        FXMLLoader loader = new FXMLLoader(fxml);
 
         Parent root = loader.load();
 
         // set controller
         LOG.log(Level.FINER, () -> "setting FXML controller ...");
         this.controller = Objects.requireNonNull(loader.getController(),
-                "controller is null; set fx:controller in root element of FXML (" + fxmlFile + ")");
+                "controller is null; set fx:controller in root element of FXML (" + fxml + ")");
         this.controller.setApp((A) this);
 
         // create scene
