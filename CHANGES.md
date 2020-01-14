@@ -1,6 +1,11 @@
 Changelog
 =========
 
+#### Version 0.8-SNAPSHOT
+
+ - update utility to 5.0
+ - fix NPE in initialDir
+ 
 #### Version 0.7
 
  - don't export JavaFX dependencies

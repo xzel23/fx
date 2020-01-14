@@ -340,6 +340,10 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	 * @return the initial folder to set
 	 */
 	private File initialDir(FxDocument document) {
+		if (document==null) {
+			return USER_HOME;
+		}
+		
 		Path parent = null;
 		try {
 			if (document.hasLocation()) {
