@@ -5,6 +5,7 @@ Changelog
 
  - update utility to 5.0
  - fix NPE in initialDir
+ - fix entry in META-INF for non-modular apps
  
 #### Version 0.7
 
