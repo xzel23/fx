@@ -6,6 +6,7 @@ Changelog
  - update utility to 5.0
  - fix NPE in initialDir
  - fix entry in META-INF for non-modular apps
+ - add IconView constructor taking id, size and color
  
 #### Version 0.7
 
