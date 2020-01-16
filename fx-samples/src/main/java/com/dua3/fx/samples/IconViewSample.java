@@ -17,10 +17,7 @@ public class IconViewSample extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        IconView iv = new IconView();
-        iv.setIconIdentifier("fa-exclamation-triangle");
-        iv.setIconSize(80);
-        iv.setIconColor(Paint.valueOf("DARKBLUE"));
+        IconView iv = new IconView("fa-exclamation-triangle", 80, Paint.valueOf("DARKBLUE"));
 
         StackPane root = new StackPane(iv);
 

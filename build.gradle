@@ -56,7 +56,7 @@ subprojects {
         dua3_meja_version = '2.0-BETA19'
 
         picocli_version = '4.0.4'
-        ikonli_version = '11.3.4'
+        ikonli_version = '11.3.5'
     }
 
     sourceCompatibility = java_version
