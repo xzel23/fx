@@ -16,7 +16,7 @@ import java.util.List;
 
 import static java.util.Collections.unmodifiableList;
 
-public class IconView extends StackPane implements Styleable {
+public class IconView extends Control {
     private static final String DEFAULT_ICON_IDENTIFIER = "";
     private static final int DEFAULT_ICON_SIZE = 10;
     private static final Paint DEFAULT_ICON_COLOR = Paint.valueOf("BLACK");
@@ -30,7 +30,9 @@ public class IconView extends StackPane implements Styleable {
         STYLEABLES = Collections.unmodifiableList(styleables);
     }
 
+    private final StackPane pane;
     private Icon icon;
+    
     private StyleableStringProperty iconIdentifier = new StyleableStringProperty(DEFAULT_ICON_IDENTIFIER) {
         @Override
         public CssMetaData<IconView, String> getCssMetaData() {
@@ -83,29 +85,35 @@ public class IconView extends StackPane implements Styleable {
     };
 
     public IconView() {
+        this.pane = new StackPane();
+        this.getChildren().setAll(this.pane);
         iconIdentifier.addListener((v, o, n) -> setIcon(n));
     }
 
-    public IconView(String iconId, int iconSize, Paint iconColor) {
-        iconIdentifier.addListener((v, o, n) -> setIcon(n));
+    public IconView(String iconId, int size, Paint color) {
+        this();
         setIcon(iconId);
-        setIconSize(iconSize);
-        setIconColor(iconColor);
+        setIconSize(size);
+        setIconColor(color);
     }
 
     public static List<CssMetaData<? extends Styleable, ?>> getClassCssMetaData() {
         return STYLEABLES;
     }
 
-    public List<CssMetaData<? extends Styleable, ?>> getCssMetaData() {
+    public List<CssMetaData<? extends Styleable, ?>> getControlCssMetaData() {
         return STYLEABLES;
     }
 
     private void setIcon(String iconId) {
+        int size = getIconSize();
+        
         this.icon = IconUtil.iconFromName(iconId).orElse(IconUtil.emptyIcon());
         this.icon.iconSizeProperty().bindBidirectional(this.iconSize);
         this.icon.iconColorProperty().bindBidirectional(this.iconColor);
-        getChildren().setAll(this.icon.node());
+        this.icon.setIconSize(size);
+        
+        pane.getChildren().setAll(this.icon.node());
     }
 
     @Override
@@ -190,4 +198,5 @@ public class IconView extends StackPane implements Styleable {
             STYLEABLES = unmodifiableList(styleables);
         }
     }
+
 }
