@@ -112,11 +112,11 @@ public class IconView extends Control {
         
         this.icon = IconUtil.iconFromName(iconId).orElse(IconUtil.emptyIcon());
         
-        this.icon.iconSizeProperty().bindBidirectional(this.iconSize);
-        this.icon.iconColorProperty().bindBidirectional(this.iconColor);
+        this.icon.iconSizeProperty().bind(this.iconSize);
+        this.icon.iconColorProperty().bind(this.iconColor);
 
-        this.icon.setIconSize(size);
-        this.icon.setIconColor(color);
+        iconSize.set(size);
+        iconColor.set(color);
         
         pane.getChildren().setAll(this.icon.node());
     }
@@ -139,7 +139,7 @@ public class IconView extends Control {
     }
 
     public void setIconColor(Paint color) {
-        icon.setIconColor(color);
+        iconColor.set(color);
     }
 
     public int getIconSize() {
@@ -147,7 +147,7 @@ public class IconView extends Control {
     }
 
     public void setIconSize(int size) {
-        icon.setIconSize(size);
+        iconSize.set(size);
     }
 
     private static class StyleableProperties {
