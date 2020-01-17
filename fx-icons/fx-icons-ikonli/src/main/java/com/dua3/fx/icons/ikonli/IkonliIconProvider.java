@@ -34,6 +34,8 @@ public class IkonliIconProvider implements IconProvider {
         }
         
     }
+    
+    public IkonliIconProvider() {}
 
     @Override
     public IkonliIcon forName(String name) {
