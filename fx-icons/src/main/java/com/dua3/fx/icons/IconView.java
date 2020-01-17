@@ -86,11 +86,11 @@ public class IconView extends StackPane implements Styleable {
         iconIdentifier.addListener((v, o, n) -> setIcon(n));
     }
 
-    public IconView(String iconId, int size, Paint color) {
+    public IconView(String iconId, int iconSize, Paint iconColor) {
         iconIdentifier.addListener((v, o, n) -> setIcon(n));
         setIcon(iconId);
-        setIconSize(size);
-        setIconColor(color);
+        setIconSize(iconSize);
+        setIconColor(iconColor);
     }
 
     public static List<CssMetaData<? extends Styleable, ?>> getClassCssMetaData() {
