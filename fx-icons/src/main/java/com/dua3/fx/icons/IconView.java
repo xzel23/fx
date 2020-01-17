@@ -67,6 +67,7 @@ public class IconView extends Control {
         }
 
     };
+    
     private StyleableIntegerProperty iconSize = new StyleableIntegerProperty(DEFAULT_ICON_SIZE) {
         @Override
         public CssMetaData<IconView, Number> getCssMetaData() {
@@ -107,11 +108,15 @@ public class IconView extends Control {
 
     private void setIcon(String iconId) {
         int size = getIconSize();
+        Paint color = getIconColor();
         
         this.icon = IconUtil.iconFromName(iconId).orElse(IconUtil.emptyIcon());
+        
         this.icon.iconSizeProperty().bindBidirectional(this.iconSize);
         this.icon.iconColorProperty().bindBidirectional(this.iconColor);
+
         this.icon.setIconSize(size);
+        this.icon.setIconColor(color);
         
         pane.getChildren().setAll(this.icon.node());
     }
@@ -134,7 +139,7 @@ public class IconView extends Control {
     }
 
     public void setIconColor(Paint color) {
-        iconColor.set(color);
+        icon.setIconColor(color);
     }
 
     public int getIconSize() {
@@ -142,7 +147,7 @@ public class IconView extends Control {
     }
 
     public void setIconSize(int size) {
-        iconSize.set(size);
+        icon.setIconSize(size);
     }
 
     private static class StyleableProperties {

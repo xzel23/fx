@@ -32,6 +32,7 @@ public class IkonliIconProvider implements IconProvider {
         public String getIconIdentifier() {
             return name;
         }
+        
     }
 
     @Override
