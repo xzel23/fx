@@ -13,10 +13,14 @@ import javafx.scene.paint.Paint;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.logging.Logger;
 
 import static java.util.Collections.unmodifiableList;
 
 public class IconView extends Control {
+    private static final Logger LOG = Logger.getLogger(IconView.class.getName());
+    
     private static final String DEFAULT_ICON_IDENTIFIER = "";
     private static final int DEFAULT_ICON_SIZE = 10;
     private static final Paint DEFAULT_ICON_COLOR = Paint.valueOf("BLACK");
@@ -109,8 +113,14 @@ public class IconView extends Control {
     private void setIcon(String iconId) {
         int size = getIconSize();
         Paint color = getIconColor();
-        
-        this.icon = IconUtil.iconFromName(iconId).orElse(IconUtil.emptyIcon());
+
+        Optional<Icon> icon = IconUtil.iconFromName(iconId);
+        if (icon.isPresent()) {
+            this.icon = icon.get();
+        } else {
+            LOG.warning("icon not found: "+iconId);
+            this.icon = IconUtil.emptyIcon();
+        }
         
         this.icon.iconSizeProperty().bind(this.iconSize);
         this.icon.iconColorProperty().bind(this.iconColor);
