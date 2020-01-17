@@ -6,6 +6,8 @@ import javafx.css.converter.SizeConverter;
 import javafx.css.converter.StringConverter;
 import javafx.scene.Node;
 import javafx.scene.control.Control;
+import javafx.scene.control.Skin;
+import javafx.scene.control.SkinBase;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -132,6 +134,11 @@ public class IconView extends Control {
     }
 
     @Override
+    protected Skin<?> createDefaultSkin() {
+        return new IconViewSkin(this);
+    }
+
+    @Override
     public String toString() {
         return iconIdentifier.get();
     }
@@ -214,4 +221,10 @@ public class IconView extends Control {
         }
     }
 
+    private static class IconViewSkin extends SkinBase<IconView> {
+        protected IconViewSkin(IconView control) {
+            super(control);
+            consumeMouseEvents(false);
+        }
+    }
 }
