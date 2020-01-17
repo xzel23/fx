@@ -7,6 +7,7 @@ Changelog
  - fix NPE in initialDir
  - fix entry in META-INF for non-modular apps
  - add IconView constructor taking id, size and color
+ - CSS loading
  
 #### Version 0.7
 

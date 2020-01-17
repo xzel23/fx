@@ -118,7 +118,16 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      *                 application class
      */
     protected abstract URL getFxml();
-    
+
+    /**
+     * Get application main CSS file.
+     * @return the path to the CSS file to load, relative to the
+     *                 application class, or {@code null}
+     */
+    protected URL getCss() {
+        return null;
+    }
+
     /**
      * Get named parameter value.
      * <p>
@@ -170,6 +179,11 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
 
         // create scene
         Scene scene = new Scene(root);
+
+        URL css = getCss();
+        if (css != null) {
+            scene.getStylesheets().add(css.toExternalForm());
+        }
 
         // setup stage
         stage.setTitle(applicationName);
