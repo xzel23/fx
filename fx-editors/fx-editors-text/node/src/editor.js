@@ -424,19 +424,25 @@ class MarkdownEditor extends TextEditor {
                 lineToShow = lineWithCursor;
             }
 
+            console.debug("onDidScrollChange() - show line "+ lineToShow);
+            
             // find element with matching source line
             var element = null;
-            var elements = document.getElementsByClassName("line");
-            for(var i=0; i<elements.length; i++){
-                var currentElement = elements[i];
-                var actLineNo = parseInt(currentElement.getAttribute("data-line"));
-                if (actLineNo>=lineToShow) {
-                    break;
+            if (lineToShow==1) {
+                this.elementPreview.scrollTop = 0;
+            } else {
+                var elements = document.getElementsByClassName("line");
+                for (var i = 0; i < elements.length; i++) {
+                    var currentElement = elements[i];
+                    var actLineNo = parseInt(currentElement.getAttribute("data-line"));
+                    if (actLineNo >= lineToShow) {
+                        break;
+                    }
+                    element = currentElement;
                 }
-                element = currentElement;
-            }
-            if (element!=null) {
-                element.scrollIntoView();
+                if (element!=null) {
+                    element.scrollIntoView();
+                }
             }
         });
         

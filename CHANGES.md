@@ -1,8 +1,10 @@
 Changelog
 =========
 
-#### Version 0.9-SNAPSHOT
+#### Version 0.8.1-SNAPSHOT
 
+ - fix scroll to first line in markdowneditor if first line is not labeled (i.e. when using `${toc}`).
+ 
 #### Version 0.8
 
  - update utility to 5.0
