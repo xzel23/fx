@@ -1,7 +1,7 @@
 Changelog
 =========
 
-#### Version 0.8.1-SNAPSHOT
+#### Version 0.8.1
 
  - fix scroll to first line in markdowneditor if first line is not labeled (i.e. when using `${toc}`).
  - set graphics in AboutDialogBuilder
