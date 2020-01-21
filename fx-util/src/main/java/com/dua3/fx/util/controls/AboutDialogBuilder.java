@@ -16,6 +16,8 @@ package com.dua3.fx.util.controls;
 
 import javafx.scene.Node;
 import javafx.scene.image.Image;
+import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.net.URL;
@@ -38,6 +40,7 @@ public class AboutDialogBuilder {
 	private String mailText = "";
 	private String mailAddress = "";
 	private Node graphic = null;
+	private Node expandableContent = null;
 
 	public AboutDialogBuilder() {
 	}
@@ -89,12 +92,27 @@ public class AboutDialogBuilder {
 		}
 		return this;
 	}
-	
+
 	public AboutDialogBuilder graphic(Node graphic) {
 		this.graphic = graphic;
 		return this;
 	}
-	
+
+	public AboutDialogBuilder expandableContent(Node c) {
+		this.expandableContent = c;
+		return this;
+	}
+
+	public AboutDialogBuilder expandableContent(String text) {
+		if (text==null || text.isBlank()) {
+			expandableContent = null;
+			return this;
+		}
+		
+		this.expandableContent = new StackPane(new Text(text));
+		return this;
+	}
+
 	public AboutDialog build() {
 		AboutDialog dlg = new AboutDialog();
 		
@@ -118,6 +136,9 @@ public class AboutDialogBuilder {
 		}
 		if (mailAddress!=null) {
 			dlg.setEmailAddress(mailAddress);
+		}
+		if (expandableContent!=null) {
+			dlg.getDialogPane().setExpandableContent(expandableContent);
 		}
 		
 		return dlg;
