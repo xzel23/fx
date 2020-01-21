@@ -14,7 +14,14 @@
 
 package com.dua3.fx.util.controls;
 
+import javafx.scene.Node;
+import javafx.scene.image.Image;
+
+import java.io.IOException;
+import java.net.URL;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /** 
  * Builder for Alert Dialogs.
@@ -22,12 +29,15 @@ import java.util.Objects;
  * Provides a fluent interface to create Alerts. 
  */
 public class AboutDialogBuilder {
+	private static Logger LOG = Logger.getLogger(AboutDialogBuilder.class.getName());
+	
 	private String title = "";
 	private String name = "";
 	private String copyright = "";
 	private String version = "";
 	private String mailText = "";
 	private String mailAddress = "";
+	private Node graphic = null;
 
 	public AboutDialogBuilder() {
 	}
@@ -63,10 +73,34 @@ public class AboutDialogBuilder {
 		this.mailAddress = mailtoUri;
 		return this;
 	}
+	
+	public AboutDialogBuilder graphic(URL url) {
+		if (url==null) {
+			this.graphic = null;
+			return this;
+		}
 
+		try (var in = url.openStream()) {
+			Image image = new Image(in);
+			graphic(new javafx.scene.image.ImageView(image));
+		} catch (IOException e) {
+			LOG.log(Level.WARNING, "could not read image: "+url, e);
+			this.graphic = null;
+		}
+		return this;
+	}
+	
+	public AboutDialogBuilder graphic(Node graphic) {
+		this.graphic = graphic;
+		return this;
+	}
+	
 	public AboutDialog build() {
 		AboutDialog dlg = new AboutDialog();
 		
+		if (graphic!=null) {
+			dlg.setGraphic(graphic);
+		}
 		if (!title.isBlank()) {
 			dlg.setTitle(title);
 		}
