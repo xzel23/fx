@@ -18,6 +18,7 @@ import com.dua3.fx.util.Dialogs;
 import com.dua3.fx.util.FxTask;
 import com.dua3.fx.util.controls.AboutDialog;
 import com.dua3.utility.lang.LangUtil;
+import com.dua3.utility.text.TextUtil;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -430,24 +431,18 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		return hasPreferences() ? getPreferences().get(key, def) : def;
 	}
 	
-	protected AboutDialog createAboutDialog() {		
-		try {
-			return Dialogs.about()
-				.title("About")
-				.name(getApp().getApplicationName())
-				.version(getApp().getVersionString())
-				.copyright(getApp().getCopyright())
-				.mail(
-						getApp().getContactMail(), 
-					String.format(
-							"mailto:%s?subject=%s", 
+	protected AboutDialog createAboutDialog() {
+		return Dialogs.about()
+			.title("About")
+			.name(getApp().getApplicationName())
+			.version(getApp().getVersionString())
+			.copyright(getApp().getCopyright())
+			.mail(
+					getApp().getContactMail(),
+					TextUtil.generateMailToLink(
 							getApp().getContactMail(),
-							URLEncoder.encode(getApp().getApplicationName()+" "+getApp().getVersionString(), StandardCharsets.UTF_8.name())))
-				.build();
-		} catch (UnsupportedEncodingException e) {
-			LOG.log(Level.WARNING, "unsupported encoding", e);
-			throw new IllegalStateException(e);
-		}
+						getApp().getApplicationName()+" "+getApp().getVersionString()))
+			.build();
 	}
 	
 	public void setStatusText(String s) {
