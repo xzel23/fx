@@ -1,6 +1,13 @@
 Changelog
 =========
 
+#### Version 0.8.2
+
+ - added FileChooserBuilder.showOpenMultipleDialog()
+ - update JavaFX to 13.0.2
+ - update utility to 5.1.1
+ - update spotbugs to 4.0.0-RC1
+ 
 #### Version 0.8.1
 
  - fix scroll to first line in markdowneditor if first line is not labeled (i.e. when using `${toc}`).

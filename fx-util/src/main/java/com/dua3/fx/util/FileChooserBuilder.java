@@ -15,11 +15,7 @@
 package com.dua3.fx.util;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -49,6 +45,19 @@ public class FileChooserBuilder {
 	public Optional<File> showOpenDialog(Window parent) {
 		FileChooser chooser = build();
 		return Optional.ofNullable(chooser.showOpenDialog(parent));
+	}
+
+	/**
+	 * Show "Open multiple" dialog.
+	 * @param parent
+	 *  the parent window
+	 * @return
+	 *  a List containing the selected files, or an empty list if no files were selected
+	 */
+	public List<File> showOpenMultipleDialog(Window parent) {
+		FileChooser chooser = build();
+		List<File> files = chooser.showOpenMultipleDialog(parent);
+		return files == null ? Collections.emptyList() : files;
 	}
 
 	/**
