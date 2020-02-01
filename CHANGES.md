@@ -1,6 +1,10 @@
 Changelog
 =========
 
+#### Version 0.8.3
+
+ - allow about dialog to grow to allow for longer title text
+
 #### Version 0.8.2
 
  - added FileChooserBuilder.showOpenMultipleDialog()
