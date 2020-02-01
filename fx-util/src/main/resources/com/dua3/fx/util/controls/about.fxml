@@ -8,22 +8,20 @@
             xmlns:fx="http://javafx.com/fxml/1">
     <content>
         <StackPane maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="600">
-            <children>
-                <VBox maxHeight="-Infinity" maxWidth="Infinity" spacing="4.0">
-                    <Label fx:id="labelName" alignment="CENTER" contentDisplay="CENTER" maxWidth="Infinity"
-                           text="name">
-                        <font>
-                            <Font name="System Font" size="64.0"/>
-                        </font>
-                    </Label>
-                    <Label fx:id="labelVersion" alignment="CENTER" contentDisplay="CENTER"
-                           maxWidth="1.7976931348623157E308" text="version"/>
-                    <Label fx:id="labelCopyright" alignment="CENTER" contentDisplay="CENTER"
-                           maxWidth="1.7976931348623157E308" text="copyright"/>
-                    <Hyperlink fx:id="hlMail" alignment="CENTER" contentDisplay="CENTER"
-                               maxWidth="1.7976931348623157E308" onAction="#mail" text="email"/>
-                </VBox>
-            </children>
+            <VBox maxHeight="-Infinity" maxWidth="Infinity" spacing="4.0">
+                <Label fx:id="labelName" alignment="CENTER" contentDisplay="CENTER" maxWidth="Infinity"
+                       text="name">
+                    <font>
+                        <Font name="System Font" size="64.0"/>
+                    </font>
+                </Label>
+                <Label fx:id="labelVersion" alignment="CENTER" contentDisplay="CENTER"
+                       maxWidth="1.7976931348623157E308" text="version"/>
+                <Label fx:id="labelCopyright" alignment="CENTER" contentDisplay="CENTER"
+                       maxWidth="1.7976931348623157E308" text="copyright"/>
+                <Hyperlink fx:id="hlMail" alignment="CENTER" contentDisplay="CENTER"
+                           maxWidth="1.7976931348623157E308" onAction="#mail" text="email"/>
+            </VBox>
         </StackPane>
     </content>
     <expandableContent></expandableContent>
