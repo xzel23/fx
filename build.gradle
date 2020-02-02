@@ -35,7 +35,7 @@ subprojects {
 
     /////////////////////////////////////////////////////////////////////////////
     group = 'com.dua3.fx'
-    version = '0.8.4-SNAPSHOT'
+    version = '0.8.4'
 
     ext.moduleName = project.group
     ext.scm = 'https://gitlab.com/com.dua3/lib/fx.git'
@@ -222,7 +222,17 @@ subprojects {
             }
         }
     }
-
+    
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                from components.java
+            }
+        }
+        repositories {
+            maven { url "file://"+System.getProperty("user.home")+"/dua3/repository" }
+        }
+    }
 }
 
 // === DEFAULT TASKS === >

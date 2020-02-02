@@ -40,6 +40,8 @@ public class AboutDialogBuilder {
 	private String version = "";
 	private String mailText = "";
 	private String mailAddress = "";
+	
+	private String css = null;
 	private Node graphic = null;
 	private Node expandableContent = null;
 
@@ -77,7 +79,17 @@ public class AboutDialogBuilder {
 		this.mailAddress = mailtoUri;
 		return this;
 	}
-	
+
+	/**
+	 * Set supplemental CSS.
+	 * @param css the name of the CSS resource to load ({@link URL#toExternalForm()}
+	 * @return this
+	 */
+	public AboutDialogBuilder css(String css) {
+		this.css = css;
+		return this;
+	}
+
 	public AboutDialogBuilder graphic(URL url) {
 		if (url==null) {
 			this.graphic = null;
@@ -117,6 +129,9 @@ public class AboutDialogBuilder {
 	public AboutDialog build() {
 		AboutDialog dlg = new AboutDialog();
 		
+		if(css!=null) {
+			dlg.getDialogPane().getScene().getStylesheets().add(css);
+		}
 		if (graphic!=null) {
 			dlg.setGraphic(graphic);
 		}

@@ -14,6 +14,7 @@
 
 package com.dua3.fx.util.controls;
 
+import java.net.URL;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -33,6 +34,7 @@ public class AlertBuilder
     setDialogSupplier( () -> new Alert(type) );
   }
 
+  private String css = null;
   private String text = null;
   private ButtonType[] buttons;
   private ButtonType defaultButton;
@@ -46,6 +48,10 @@ public class AlertBuilder
   public Alert build() {
     Alert dlg = super.build();
 
+    if (css!=null) {
+      dlg.getDialogPane().getScene().getStylesheets().add(css);
+    }
+    
     if (buttons != null) {
       dlg.getButtonTypes().setAll(buttons);
     }
@@ -101,6 +107,16 @@ public class AlertBuilder
    */
   public AlertBuilder defaultButton(ButtonType button) {
     this.defaultButton = Objects.requireNonNull(button);
+    return this;
+  }
+
+  /**
+   * Set supplemental CSS.
+   * @param css the name of the CSS resource to load ({@link URL#toExternalForm()}
+   * @return this
+   */
+  public AlertBuilder css(String css) {
+    this.css = css;
     return this;
   }
 

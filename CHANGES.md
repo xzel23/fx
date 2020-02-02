@@ -1,6 +1,11 @@
 Changelog
 =========
 
+#### Version 0.8.4
+
+ - new publish to local repository
+ - allow to set CSS for AboutDialog and Alert
+
 #### Version 0.8.3
 
  - allow about dialog to grow to allow for longer title text
