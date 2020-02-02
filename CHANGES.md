@@ -5,6 +5,7 @@ Changelog
 
  - new publish to local repository
  - allow to set CSS for AboutDialog and Alert
+ - update utility to 5.1.2
 
 #### Version 0.8.3
 
