@@ -16,13 +16,13 @@ module dua3_fx.application {
 	exports com.dua3.fx.application;
 	opens com.dua3.fx.application;
 
-	requires transitive java.logging;
-    requires transitive dua3_utility;
     requires transitive dua3_fx.util;
-    requires transitive java.prefs;
 
+    requires dua3_utility;
+
+    requires java.logging;
+    requires java.prefs;
     requires java.desktop;
-    
     requires javafx.base;
     requires javafx.controls;
     requires javafx.fxml;

@@ -52,7 +52,7 @@ subprojects {
         javafx_version = '13.0.2'
         junit_version = '5.5.1'
 
-        dua3_utility_version = '5.1.1'
+        dua3_utility_version = '5.1.2'
         dua3_meja_version = '2.0-BETA19'
 
         picocli_version = '4.0.4'
@@ -114,8 +114,7 @@ subprojects {
         options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
     }
 
-// === BINTRAY === >
-
+    // === BINTRAY === >
     bintray {
         user = findProperty('BINTRAY_USER') ?: 'NONE'
         key = findProperty('BINTRAY_KEY') ?: 'NONE'
@@ -142,8 +141,7 @@ subprojects {
         }
     }
 
-// === ARTIFACTS === >
-
+    // === ARTIFACTS === >
     task sourcesJar(type: Jar, dependsOn: classes) {
         classifier = 'sources'
         from sourceSets.main.allSource
@@ -163,9 +161,9 @@ subprojects {
         }
     }
 
-// === MAVEN publication === >
+    // === MAVEN publication === >
 
-// Create the pom configuration:
+    // Create the pom configuration:
     def pomConfig = {
         licenses {
             license {
@@ -186,7 +184,7 @@ subprojects {
         }
     }
 
-// Create the publication with the pom configuration:
+    // Create the publication with the pom configuration:
     publishing {
         publications {
             projectPublication(MavenPublication) {
@@ -205,10 +203,13 @@ subprojects {
                 }
             }
         }
+
+        repositories {
+            maven { url "file://"+System.getProperty("user.home")+"/dua3/repository" }
+        }
     }
 
-// === SPOTBUGS === >
-
+    // === SPOTBUGS === >
     if (run_spotbugs) {
         apply plugin: 'com.github.spotbugs'
 
@@ -223,16 +224,6 @@ subprojects {
         }
     }
     
-    publishing {
-        publications {
-            mavenJava(MavenPublication) {
-                from components.java
-            }
-        }
-        repositories {
-            maven { url "file://"+System.getProperty("user.home")+"/dua3/repository" }
-        }
-    }
 }
 
 // === DEFAULT TASKS === >

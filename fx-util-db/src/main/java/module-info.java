@@ -16,11 +16,10 @@ module dua3_fx.util.db {
 	exports com.dua3.fx.util.db;
 	opens com.dua3.fx.util.db;
 
-	requires transitive java.logging;
-
-    requires transitive dua3_utility.db;
     requires transitive dua3_fx.util;
     
+    requires dua3_utility.db;
+	requires java.logging;
 	requires javafx.controls;
 	requires javafx.graphics;
 }
