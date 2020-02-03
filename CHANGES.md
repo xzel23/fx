@@ -4,7 +4,8 @@ Changelog
 #### Version 0.8.5
  
  - i18n of dialogs
- - possible to set graphic for about dialog
+ - possible to set graphic and details for about dialog
+ - support resource bundles in FxApplication
  
 #### Version 0.8.4
 

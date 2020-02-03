@@ -18,6 +18,7 @@ import com.dua3.utility.lang.LangUtil;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -120,6 +121,14 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
     protected abstract URL getFxml();
 
     /**
+     * Get application main resource bundle.
+     * @return the resource bundle or {@code null}
+     */
+    protected ResourceBundle getResourceBundle() {
+        return null;
+    }
+    
+    /**
      * Get application main CSS file.
      * @return the path to the CSS file to load, relative to the
      *                 application class, or {@code null}
@@ -167,7 +176,8 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
         // create a loader and load FXML
         URL fxml = getFxml();
         LOG.log(Level.FINER, () -> "FXML URL: " + fxml);
-        FXMLLoader loader = new FXMLLoader(fxml);
+        ResourceBundle resourceBundle = getResourceBundle();
+        FXMLLoader loader = new FXMLLoader(fxml, resourceBundle);
 
         Parent root = loader.load();
 
@@ -437,6 +447,14 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      * @return the graphic to show
      */
     public URL getAboutGraphic() {
+        return null;
+    }
+
+    /**
+     * Get the detail for the about dialog.
+     * @return the Node to display as detail
+     */
+    public Node getAboutDetail() {
         return null;
     }
 }

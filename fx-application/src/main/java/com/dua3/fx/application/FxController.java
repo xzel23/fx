@@ -464,6 +464,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 					TextUtil.generateMailToLink(
 							getApp().getContactMail(),
 						getApp().getApplicationName()+" "+getApp().getVersionString()))
+			.expandableContent(getApp().getAboutDetail())
 			.build();
 	}
 	
