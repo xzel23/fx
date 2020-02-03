@@ -4,6 +4,7 @@ Changelog
 #### Version 0.8.5
  
  - i18n of dialogs
+ - possible to set graphic for about dialog
  
 #### Version 0.8.4
 

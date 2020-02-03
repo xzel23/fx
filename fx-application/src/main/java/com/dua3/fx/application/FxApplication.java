@@ -431,4 +431,12 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
     protected C getController() {
         return controller;
     }
+
+    /**
+     * Get graphic to display in about dialog.
+     * @return the graphic to show
+     */
+    public URL getAboutGraphic() {
+        return null;
+    }
 }

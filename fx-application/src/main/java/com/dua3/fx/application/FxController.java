@@ -458,6 +458,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 			.name(getApp().getApplicationName())
 			.version(getApp().getVersionString())
 			.copyright(getApp().getCopyright())
+			.graphic(getApp().getAboutGraphic())
 			.mail(
 					getApp().getContactMail(),
 					TextUtil.generateMailToLink(
