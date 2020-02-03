@@ -16,6 +16,8 @@ public abstract class FxDocument {
 	/** The void URI that represents "no document". */
 	public static final URI VOID_URI = URI.create("");
 	
+	public static final String TEXT_UNTITLED = "untitled";
+
 	protected BooleanProperty dirtyProperty = new SimpleBooleanProperty(false);
 	protected ObjectProperty<URI> locationProperty = new SimpleObjectProperty<>(VOID_URI);
 	
@@ -57,7 +59,11 @@ public abstract class FxDocument {
 
 	public String getLocationString() {
 		URI location = getLocation();
-		return location.equals(VOID_URI) ? "untitled" : location.toString();
+		return location.equals(VOID_URI) ? getTextUntitled() : location.toString();
+	}
+
+	private String getTextUntitled() {
+		return TEXT_UNTITLED;
 	}
 
 	@Override

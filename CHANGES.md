@@ -1,6 +1,10 @@
 Changelog
 =========
 
+#### Version 0.8.5
+ 
+ - i18n of dialogs
+ 
 #### Version 0.8.4
 
  - new publish to local repository

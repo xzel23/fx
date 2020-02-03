@@ -32,10 +32,7 @@ import javafx.stage.FileChooser.ExtensionFilter;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.LinkedList;
@@ -53,7 +50,10 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 
 	/** Logger */
 	protected static final Logger LOG = Logger.getLogger(FxController.class.getName());
+	
 	public static final String TITLE_ERROR = "Error";
+	public static final String TITLE_ABOUT = "About";
+	
 	public static final File USER_HOME = new File(System.getProperty("user.home"));
 
 	/** The application instance. */
@@ -98,6 +98,22 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		// nop
 	}
 
+	/**
+	 * Get title of about dialog.
+	 * @return the text to display in the about dialog title
+	 */
+	public String getAboutDialogTitle() {
+		return TITLE_ABOUT + " " +getApp().getApplicationName();	
+	}
+
+	/**
+	 * Get title of error dialog.
+	 * @return the text to display in the error dialog title
+	 */
+	public String getErrorDialogTitle() {
+		return TITLE_ERROR;
+	}
+	
 	/**
 	 * Get the App instance.
 	 * 
@@ -211,16 +227,25 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 			return true;
 		} catch (Exception e) {
 			LOG.log(Level.WARNING, "error creating document", e);
-			Dialogs.error()
-			.title(TITLE_ERROR)
-			.header("Could not create a new document.")
-			.text(e.getMessage())
-			.build()
-			.showAndWait();
+			showErrorDialog("Could not create a new document.", e.getMessage());
 			return false;
 		}
 	}
-	
+
+	/**
+	 * Show error dialog.
+	 * @param header	the header
+	 * @param text		the text
+	 */
+	protected void showErrorDialog(String header, String text) {
+		Dialogs.error()
+			.title(getErrorDialogTitle())
+			.header(header)
+			.text(text)
+			.build()
+			.showAndWait();
+	}
+
 	@FXML
 	protected boolean open() {
 		// handle dirty state
@@ -259,12 +284,10 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 			return true;
 		} catch (Exception e) {
 			LOG.log(Level.WARNING, "error opening document", e);
-			Dialogs.error()
-			.title(TITLE_ERROR)
-			.header("'%s' could not be opened.", getDisplayName(uri))
-					.text(Objects.toString(e.getMessage()))
-			.build()
-			.showAndWait();
+			showErrorDialog(
+					String.format("'%s' could not be opened.", getDisplayName(uri)),
+					Objects.toString(e.getMessage())
+			);
 			return false;
 		}
 	}
@@ -381,12 +404,10 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 			return true;
 		} catch (Exception e) {
 			LOG.log(Level.WARNING, "error saving document", e);
-			Dialogs.error()
-			.title(TITLE_ERROR)
-			.header("'%s' could not be saved.", getDisplayName(uri))
-			.text("%s: %s", e.getClass().getSimpleName(), e.getMessage())
-			.build()
-			.showAndWait();
+			showErrorDialog(
+				String.format("'%s' could not be saved.", getDisplayName(uri)),
+				String.format("%s: %s", e.getClass().getSimpleName(), e.getMessage())
+			);
 			return false;
 		}		
 	}
@@ -433,7 +454,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	
 	protected AboutDialog createAboutDialog() {
 		return Dialogs.about()
-			.title("About")
+			.title(getAboutDialogTitle())
 			.name(getApp().getApplicationName())
 			.version(getApp().getVersionString())
 			.copyright(getApp().getCopyright())
