@@ -1,9 +1,0 @@
-/* use absolute positioning to ensure editor fills the entire webview instance */
-
-#editor_text {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-}
