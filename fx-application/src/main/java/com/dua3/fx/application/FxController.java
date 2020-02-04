@@ -239,9 +239,9 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	 */
 	protected void showErrorDialog(String header, String text) {
 		Dialogs.error()
-			.title(getErrorDialogTitle())
-			.header(header)
-			.text(text)
+			.title("%s", getErrorDialogTitle())
+			.header("%s", header)
+			.text("%s", text)
 			.build()
 			.showAndWait();
 	}
