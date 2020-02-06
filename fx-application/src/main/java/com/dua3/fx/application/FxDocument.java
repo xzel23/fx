@@ -62,7 +62,7 @@ public abstract class FxDocument {
 		return location.equals(VOID_URI) ? getTextUntitled() : location.toString();
 	}
 
-	private String getTextUntitled() {
+	public String getTextUntitled() {
 		return TEXT_UNTITLED;
 	}
 

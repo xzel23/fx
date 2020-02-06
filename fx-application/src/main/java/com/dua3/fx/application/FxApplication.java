@@ -14,13 +14,17 @@
 
 package com.dua3.fx.application;
 
+import com.dua3.fx.util.Dialogs;
+import com.dua3.fx.util.controls.AboutDialog;
 import com.dua3.utility.lang.LangUtil;
+import com.dua3.utility.text.TextUtil;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -56,6 +60,22 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      * Marker to indicate unmodified state in title.
      */
     private static final String MARKER_UNMODIFIED = " ";
+
+    /**
+     * Title for About dialog (if not overridden).
+     */
+    public static final String TITLE_ABOUT = "About";
+
+    public static final String ERROR_COULD_NOT_CREATE_A_NEW_DOCUMENT = "Could not create a new document.";
+    public static final String ERROR_TEXT_DOCUMENT_COULD_NOT_BE_OPENED = "Document could not be opened:";
+    public static final String ERROR_TEXT_DOCUMENT_COULD_NOT_BE_SAVED = "Document could not be saved:";
+    public static final String TITLE_ERROR = "Error";
+    public static final String FILE_FILTER_ALL_FILES = "all files";
+
+    public static final File USER_HOME = new File(System.getProperty("user.home"));
+
+    /** The "all files" filter. */
+    protected final FileChooser.ExtensionFilter extensionfilterAllFiles = new FileChooser.ExtensionFilter(getFileFilterNameAllFiles(), "*.*");
 
     // - static -
 
@@ -443,6 +463,14 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
     }
 
     /**
+     * Get title of about dialog.
+     * @return the text to display in the about dialog title
+     */
+    public String getAboutTitle() {
+        return TITLE_ABOUT + " " + getApplicationName();
+    }
+    
+    /**
      * Get graphic to display in about dialog.
      * @return the graphic to show
      */
@@ -456,5 +484,95 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      */
     public Node getAboutDetail() {
         return null;
+    }
+
+    /**
+     * Get the name of the "all files" filter.
+     *
+     * @return the text to display for the "all files" filter
+     */
+    public static String getFileFilterNameAllFiles() {
+        return FILE_FILTER_ALL_FILES;
+    }
+
+    /**
+     * Get title of error dialog.
+     * @return the text to display in the error dialog title
+     */
+    public String getErrorDialogTitle() {
+        return TITLE_ERROR;
+    }
+
+    public String getErrorTextDocumentCouldNotBeSaved() {
+        return ERROR_TEXT_DOCUMENT_COULD_NOT_BE_SAVED;
+    }
+
+    /**
+     * Get error message.
+     * @return the text to display when a new document could not be created
+     */
+    public String getErrorTextCouldNotCreateNewDocument() {
+        return ERROR_COULD_NOT_CREATE_A_NEW_DOCUMENT;
+    }
+
+    /**
+     * Get error message.
+     * @return the text to display when a document could not be opened
+     */
+    public String getErrorTextDocumentCouldNotBeOpened() {
+        return ERROR_TEXT_DOCUMENT_COULD_NOT_BE_OPENED;
+    }
+    
+    /**
+     * Show error dialog.
+     * @param header	the header
+     * @param text		the text
+     */
+    protected void showErrorDialog(String header, String text) {
+        Dialogs.error()
+                .title("%s", getErrorDialogTitle())
+                .header("%s", header)
+                .text("%s", text)
+                .build()
+                .showAndWait();
+    }
+
+    public boolean setPreferenceOptional(String key, String value) {
+        if (hasPreferences()) {
+            LOG.fine(() -> String.format("setting preference '%s'", key));
+            setPreference(key, value);
+            return true;
+        }
+        LOG.fine(() -> String.format("not setting preference '%s': preferences not initialised", key));
+        return false;
+    }
+
+    public void setPreference(String key, String value) {
+        getPreferences().put(key, value);
+    }
+
+    public String getPreference(String key, String def) {
+        return hasPreferences() ? getPreferences().get(key, def) : def;
+    }
+
+    public void showAboutDialog() {
+        Dialogs.about()
+                .title(getAboutTitle())
+                .name(getApplicationName())
+                .version(getVersionString())
+                .copyright(getCopyright())
+                .graphic(getAboutGraphic())
+                .mail(
+                        getContactMail(),
+                        TextUtil.generateMailToLink(
+                                getContactMail(),
+                                getApplicationName()+" "+getVersionString()))
+                .expandableContent(getAboutDetail())
+                .build()
+                .showAndWait();
+    }
+
+    public FileChooser.ExtensionFilter getExtensionfilterAllFiles() {
+        return extensionfilterAllFiles;
     }
 }

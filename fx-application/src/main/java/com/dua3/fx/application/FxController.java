@@ -16,9 +16,7 @@ package com.dua3.fx.application;
 
 import com.dua3.fx.util.Dialogs;
 import com.dua3.fx.util.FxTask;
-import com.dua3.fx.util.controls.AboutDialog;
 import com.dua3.utility.lang.LangUtil;
-import com.dua3.utility.text.TextUtil;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -42,7 +40,6 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.prefs.Preferences;
 
 public abstract class FxController<A extends FxApplication<A, C>, C extends FxController<A, C>>  {
 
@@ -51,20 +48,12 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	/** Logger */
 	protected static final Logger LOG = Logger.getLogger(FxController.class.getName());
 	
-	public static final String TITLE_ERROR = "Error";
-	public static final String TITLE_ABOUT = "About";
-	
-	public static final File USER_HOME = new File(System.getProperty("user.home"));
-
 	/** The application instance. */
 	private A app;
 
 	/** The list of current tasks. */
 	protected final ObservableList<FxTask<?>> tasks = FXCollections.observableArrayList();
-	
-	/** The "all files" filter. */
-	protected static final ExtensionFilter EXTENSIONFILTER_ALL_FILES = new FileChooser.ExtensionFilter("all files", "*.*");
-	
+
 	/** Preferece: last document. */
 	protected static final String PREF_DOCUMENT = "document_uri";
 	
@@ -98,22 +87,6 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		// nop
 	}
 
-	/**
-	 * Get title of about dialog.
-	 * @return the text to display in the about dialog title
-	 */
-	public String getAboutDialogTitle() {
-		return TITLE_ABOUT + " " +getApp().getApplicationName();	
-	}
-
-	/**
-	 * Get title of error dialog.
-	 * @return the text to display in the error dialog title
-	 */
-	public String getErrorDialogTitle() {
-		return TITLE_ERROR;
-	}
-	
 	/**
 	 * Get the App instance.
 	 * 
@@ -151,7 +124,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		if (!dirtyList.isEmpty()) {
 			AtomicBoolean goOn = new AtomicBoolean(false);
 			Dialogs.confirmation()
-			.header("Save changes?")
+			.header(getQuestionSaveChanges())
 			.text("%s",
 					String.join(
 					"\n",
@@ -172,7 +145,11 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		}
 		return rc;
 	}
-	
+
+	private String getQuestionSaveChanges() {
+		return "Save changes?";
+	}
+
 	/**
 	 * Get current document.
 	 * 
@@ -192,7 +169,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	protected void setCurrentDocument(FxDocument document) {		
 		currentDocumentProperty.set(document);
 		if (document.hasLocation()) {
-			setPreferenceOptional(PREF_DOCUMENT, document.getLocation().toString());
+			getApp().setPreferenceOptional(PREF_DOCUMENT, document.getLocation().toString());
 			LOG.fine(() -> "current document: " + document);
 		}
 	}
@@ -227,23 +204,9 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 			return true;
 		} catch (Exception e) {
 			LOG.log(Level.WARNING, "error creating document", e);
-			showErrorDialog("Could not create a new document.", e.getMessage());
+			getApp().showErrorDialog(getApp().getErrorTextCouldNotCreateNewDocument(), e.getMessage());
 			return false;
 		}
-	}
-
-	/**
-	 * Show error dialog.
-	 * @param header	the header
-	 * @param text		the text
-	 */
-	protected void showErrorDialog(String header, String text) {
-		Dialogs.error()
-			.title("%s", getErrorDialogTitle())
-			.header("%s", header)
-			.text("%s", text)
-			.build()
-			.showAndWait();
 	}
 
 	@FXML
@@ -258,7 +221,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		File initialDir = initialDir(document);
 		
 		if (initialDir == null || !initialDir.isDirectory()) {
-			initialDir = USER_HOME;
+			initialDir = getApp().USER_HOME;
 		}
 		
 		Optional<File> file = Dialogs
@@ -284,8 +247,8 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 			return true;
 		} catch (Exception e) {
 			LOG.log(Level.WARNING, "error opening document", e);
-			showErrorDialog(
-					String.format("'%s' could not be opened.", getDisplayName(uri)),
+			getApp().showErrorDialog(
+					String.format("%s '%s'", getApp().getErrorTextDocumentCouldNotBeOpened(), getDisplayName(uri)),
 					Objects.toString(e.getMessage())
 			);
 			return false;
@@ -321,13 +284,13 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 
 	protected List<FileChooser.ExtensionFilter> openFilters() {
 		List<FileChooser.ExtensionFilter> filters = new LinkedList<>();
-		filters.add(EXTENSIONFILTER_ALL_FILES);
+		filters.add(getApp().getExtensionfilterAllFiles());
 		return filters;
 	}
 	
 	protected List<FileChooser.ExtensionFilter> saveFilters() {
 		List<FileChooser.ExtensionFilter> filters = new LinkedList<>();
-		filters.add(EXTENSIONFILTER_ALL_FILES);
+		filters.add(getApp().getExtensionfilterAllFiles());
 		return filters;
 	}
 	
@@ -365,7 +328,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	 */
 	private File initialDir(FxDocument document) {
 		if (document==null) {
-			return USER_HOME;
+			return getApp().USER_HOME;
 		}
 		
 		Path parent = null;
@@ -374,9 +337,9 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 				parent = document.getPath().getParent();
 				LOG.fine("initialDir() - using parent fokder of current document as parent: "+parent);
 			} else {
-				String lastDocument = getPreference(PREF_DOCUMENT, "");
+				String lastDocument = getApp().getPreference(PREF_DOCUMENT, "");
 				if (lastDocument.isBlank()) {
-					parent = USER_HOME.toPath();
+					parent = getApp().USER_HOME.toPath();
 					LOG.fine("initialDir() - last document location not set, using user home as parent: "+parent);
 				} else {
 					Path path = Paths.get(URI.create(lastDocument));
@@ -393,7 +356,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 
 		if (initialDir == null || !initialDir.isDirectory()) {
 			LOG.log(Level.WARNING, "initialDir() - initial directory invalid, using user home instead: "+initialDir);
-			initialDir = USER_HOME;
+			initialDir = getApp().USER_HOME;
 		}
 		return initialDir;
 	}
@@ -404,14 +367,14 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 			return true;
 		} catch (Exception e) {
 			LOG.log(Level.WARNING, "error saving document", e);
-			showErrorDialog(
-				String.format("'%s' could not be saved.", getDisplayName(uri)),
+			getApp().showErrorDialog(
+				String.format("%s '%s'" , getApp().getErrorTextDocumentCouldNotBeSaved(), getDisplayName(uri)),
 				String.format("%s: %s", e.getClass().getSimpleName(), e.getMessage())
 			);
 			return false;
 		}		
 	}
-	
+
 	protected String getDisplayName(URI uri) {
 		return uri.toString();
 	}
@@ -424,48 +387,6 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	@SuppressWarnings({ "static-method", "unused" })
 	protected FxDocument loadDocument(URI uri) throws IOException {
 		throw new UnsupportedOperationException("not implemented");
-	}
-
-	boolean hasPreferences() {
-		return getApp().hasPreferences();
-	}
-	
-	protected Preferences getPreferences() {
-		return getApp().getPreferences();
-	}
-	
-	protected boolean setPreferenceOptional(String key, String value) {
-		if (hasPreferences()) {
-			LOG.fine(() -> String.format("setting preference '%s'", key));
-			setPreference(key, value);
-			return true;
-		}
-		LOG.fine(() -> String.format("not setting preference '%s': preferences not initialised", key));
-		return false;
-	}
-
-	protected void setPreference(String key, String value) {
-		getPreferences().put(key, value);
-	}
-	
-	protected String getPreference(String key, String def) {
-		return hasPreferences() ? getPreferences().get(key, def) : def;
-	}
-	
-	protected AboutDialog createAboutDialog() {
-		return Dialogs.about()
-			.title(getAboutDialogTitle())
-			.name(getApp().getApplicationName())
-			.version(getApp().getVersionString())
-			.copyright(getApp().getCopyright())
-			.graphic(getApp().getAboutGraphic())
-			.mail(
-					getApp().getContactMail(),
-					TextUtil.generateMailToLink(
-							getApp().getContactMail(),
-						getApp().getApplicationName()+" "+getApp().getVersionString()))
-			.expandableContent(getApp().getAboutDetail())
-			.build();
 	}
 	
 	public void setStatusText(String s) {
