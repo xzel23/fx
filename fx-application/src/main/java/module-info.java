@@ -22,7 +22,6 @@ module dua3_fx.application {
 
     requires java.logging;
     requires java.prefs;
-    requires java.desktop;
     requires javafx.base;
     requires javafx.controls;
     requires javafx.fxml;

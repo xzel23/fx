@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.scene.control.TableView;
 
-public class TableViews {
+public final class TableViews {
 
     /** Logger */
     protected static final Logger LOG = Logger.getLogger(TableViews.class.getName());

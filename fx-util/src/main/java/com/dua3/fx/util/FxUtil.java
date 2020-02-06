@@ -5,7 +5,7 @@ import javafx.geometry.Dimension2D;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-public class FxUtil {
+public final class FxUtil {
 
     public static Font convert(com.dua3.utility.text.Font font) {
         return new Font(font.getFamily(), font.getSizeInPoints());

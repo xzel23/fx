@@ -18,7 +18,7 @@ public class IkonliIconProvider implements IconProvider {
     static class IkonliIcon extends FontIcon implements Icon {
         private final String name;
 
-        public IkonliIcon(Ikon ikon, String name) {
+        IkonliIcon(Ikon ikon, String name) {
             super(ikon);
             this.name = Objects.requireNonNull(name);
         }

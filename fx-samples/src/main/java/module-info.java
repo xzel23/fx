@@ -17,13 +17,8 @@ module dua3_fx.samples {
 	opens com.dua3.fx.samples;
 
 	requires dua3_fx.util;
-	requires dua3_fx.controls;
 	requires dua3_utility;
 
-	requires java.logging;
-	requires java.prefs;
-	requires javafx.base;
-	requires javafx.fxml;
 	requires javafx.controls;
 	requires dua3_fx.icons;
 }

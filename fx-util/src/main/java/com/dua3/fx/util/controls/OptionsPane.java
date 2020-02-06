@@ -21,6 +21,7 @@ import javafx.stage.FileChooser;
 import java.io.File;
 import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.logging.Logger;
@@ -36,7 +37,7 @@ public class OptionsPane extends GridPane implements InputControl<OptionValues>{
 	private Supplier<OptionValues> dflt;
 	private Property<OptionValues> value = new SimpleObjectProperty<>();
 
-	private LinkedHashMap<Option<?>, InputControl<?>> items = new LinkedHashMap<>();
+	private Map<Option<?>, InputControl<?>> items = new LinkedHashMap<>();
 
 	
 	private static final Insets INSETS = new Insets(2);

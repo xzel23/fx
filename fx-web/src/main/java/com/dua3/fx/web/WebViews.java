@@ -32,7 +32,7 @@ import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class WebViews {
+public final class WebViews {
     private WebViews() {
         // utility class
     }
@@ -137,7 +137,7 @@ public class WebViews {
             String msg = String.format(
                     "JSException: %s%n    when calling:    %s.%s()%n    with arguments:  %s",
                     e.getMessage(),
-                    object.toString(),
+                    object,
                     methodName,
                     Arrays.toString(args));
             LOG.warning(msg);

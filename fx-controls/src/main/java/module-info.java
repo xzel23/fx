@@ -17,7 +17,6 @@ module dua3_fx.controls {
 	opens com.dua3.fx.controls;
 
 	requires dua3_fx.util;
-	requires dua3_utility;
 
 	requires java.logging;
 	

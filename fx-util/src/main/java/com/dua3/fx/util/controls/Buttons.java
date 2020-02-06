@@ -4,7 +4,10 @@ import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.control.Separator;
 
-public class Buttons {
+public final class Buttons {
+
+    private Buttons() {
+    }
 
     public static ButtonBuilder button() {
         return new ButtonBuilder();

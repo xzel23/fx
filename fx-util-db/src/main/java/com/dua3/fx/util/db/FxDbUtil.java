@@ -42,7 +42,7 @@ import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
 
-public class FxDbUtil {
+public final class FxDbUtil {
 
     /** Logger */
     protected static final Logger LOG = Logger.getLogger(FxDbUtil.class.getName());
@@ -194,7 +194,7 @@ public class FxDbUtil {
 
 	private static String toString(Clob clob) {
 		try {
-			return clob.getSubString(1, (int) Math.min(Integer.MAX_VALUE, clob.length()));
+			return clob.getSubString(1L, (int) Math.min((long) Integer.MAX_VALUE, clob.length()));
 		} catch (SQLException e) {
 			LOG.log(Level.WARNING, "could no convert Clob to String", e);
 			return ERROR_TEXT;

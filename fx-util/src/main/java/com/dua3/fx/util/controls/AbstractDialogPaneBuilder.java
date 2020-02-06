@@ -37,6 +37,7 @@ public abstract class AbstractDialogPaneBuilder<D, B extends AbstractDialogPaneB
 	 *
 	 * @param <R> the result type
 	 */
+	@FunctionalInterface
 	public interface ResultHandler<R> {
 		/**
 		 * Handle result.

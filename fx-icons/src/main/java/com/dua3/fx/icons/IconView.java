@@ -18,8 +18,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
-import static java.util.Collections.unmodifiableList;
-
 public class IconView extends Control {
     private static final Logger LOG = Logger.getLogger(IconView.class.getName());
     
@@ -167,7 +165,7 @@ public class IconView extends Control {
         iconSize.set(size);
     }
 
-    private static class StyleableProperties {
+    private static final class StyleableProperties {
         public static final CssMetaData<IconView, Number> ICON_SIZE =
                 new CssMetaData<>("-fx-icon-size",
                         SizeConverter.getInstance(), 16.0) {
@@ -217,7 +215,7 @@ public class IconView extends Control {
                     new ArrayList<>(Node.getClassCssMetaData());
             styleables.add(ICON_SIZE);
             styleables.add(ICON_COLOR);
-            STYLEABLES = unmodifiableList(styleables);
+            STYLEABLES = Collections.unmodifiableList(styleables);
         }
     }
 

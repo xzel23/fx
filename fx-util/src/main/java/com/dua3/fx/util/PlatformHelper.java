@@ -11,7 +11,7 @@ import com.dua3.utility.lang.LangUtil;
 
 import javafx.application.Platform;
 
-public class PlatformHelper {
+public final class PlatformHelper {
 
     /** Logger instance */
     private static final Logger LOG = Logger.getLogger(PlatformHelper.class.getName());

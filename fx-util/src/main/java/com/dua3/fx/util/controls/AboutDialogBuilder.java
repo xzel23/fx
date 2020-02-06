@@ -21,7 +21,6 @@ import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,7 +31,7 @@ import java.util.logging.Logger;
  * Provides a fluent interface to create Alerts. 
  */
 public class AboutDialogBuilder {
-	private static Logger LOG = Logger.getLogger(AboutDialogBuilder.class.getName());
+	private static final Logger LOG = Logger.getLogger(AboutDialogBuilder.class.getName());
 	
 	private String title = "";
 	private String name = "";

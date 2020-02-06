@@ -203,18 +203,18 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
         // automatically update title on document change
         final ChangeListener<Boolean> dirtyStateListener = (v, o, n) -> updateApplicationTitle();
 
-        final ChangeListener<URI> documentLocationListener = (v, o, n) -> updateApplicationTitle();
+        final ChangeListener<URI> locationListener = (v, o, n) -> updateApplicationTitle();
 
         controller.currentDocumentProperty.addListener(
                 (v, o, n) -> {
                     updateApplicationTitle();
                     if (o != null) {
                         o.dirtyProperty.removeListener(dirtyStateListener);
-                        o.locationProperty.removeListener(documentLocationListener);
+                        o.locationProperty.removeListener(locationListener);
                     }
                     if (n != null) {
                         n.dirtyProperty.addListener(dirtyStateListener);
-                        n.locationProperty.addListener(documentLocationListener);
+                        n.locationProperty.addListener(locationListener);
                     }
                 });
 
@@ -229,9 +229,9 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
     /**
      * Pattern for parsing the log configuration string.
      * Example:
-     * <code>
+     * {@code
      *     --log=INFO,com.dua3:FINE,com.sun:WARNING
-     * </code>
+     * }
      */
     private static final Pattern patternLogCfg = Pattern.compile("(?:(?<PACKAGE>(?:\\w|\\.)+):)?(?<LEVEL>[A-Z0-9]+)(?:,|$)");
 
@@ -368,7 +368,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      * @return the name of the application
      */
     public String getApplicationName() {
-        return !applicationName.isEmpty() ? applicationName : getClass().getSimpleName();
+        return applicationName.isEmpty() ? getClass().getSimpleName() : applicationName;
     }
 
     protected void setContactMail(String value) {

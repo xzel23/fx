@@ -12,8 +12,11 @@ import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-public class IconUtil {
+public final class IconUtil {
     private static final Logger LOG = Logger.getLogger(IconUtil.class.getName());
+
+    private IconUtil() {
+    }
 
     public static Optional<Icon> iconFromName(String name) {
         Class<IconProvider> iconProviderClass = IconProvider.class;

@@ -18,7 +18,7 @@ import com.dua3.fx.util.controls.*;
 
 import javafx.scene.control.Alert.AlertType;
 
-public class Dialogs {
+public final class Dialogs {
 
 	// utility - no instances
 	private Dialogs() {}
