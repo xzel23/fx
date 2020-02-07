@@ -204,7 +204,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 			return true;
 		} catch (Exception e) {
 			LOG.log(Level.WARNING, "error creating document", e);
-			getApp().showErrorDialog(resources.getString("fx.application.dialog.error.new_document"), e.getMessage());
+			getApp().showErrorDialog(resources.getString("fx.application.dialog.error.new_document"), e.getLocalizedMessage());
 			return false;
 		}
 	}
@@ -249,7 +249,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 			LOG.log(Level.WARNING, "error opening document", e);
 			getApp().showErrorDialog(
 					String.format("%s '%s'", resources.getString("fx.application.dialog.error.open_document"), getDisplayName(uri)),
-					Objects.toString(e.getMessage())
+					Objects.toString(e.getLocalizedMessage())
 			);
 			return false;
 		}
@@ -369,7 +369,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 			LOG.log(Level.WARNING, "error saving document", e);
 			getApp().showErrorDialog(
 				String.format("%s '%s'" , resources.getString("fx.application.dialog.error.save_document"), getDisplayName(uri)),
-				String.format("%s: %s", e.getClass().getSimpleName(), e.getMessage())
+				String.format("%s: %s", e.getClass().getSimpleName(), e.getLocalizedMessage())
 			);
 			return false;
 		}		
