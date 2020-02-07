@@ -31,12 +31,10 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -51,6 +49,12 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	/** The application instance. */
 	private A app;
 
+	@FXML
+	protected URL location;
+
+	@FXML
+	protected ResourceBundle resources;
+	
 	/** The list of current tasks. */
 	protected final ObservableList<FxTask<?>> tasks = FXCollections.observableArrayList();
 
@@ -124,7 +128,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		if (!dirtyList.isEmpty()) {
 			AtomicBoolean goOn = new AtomicBoolean(false);
 			Dialogs.confirmation()
-			.header(getQuestionSaveChanges())
+			.header(resources.getString("fx.application.message.save_changes"))
 			.text("%s",
 					String.join(
 					"\n",
@@ -144,10 +148,6 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 			rc = goOn.get();
 		}
 		return rc;
-	}
-
-	private String getQuestionSaveChanges() {
-		return "Save changes?";
 	}
 
 	/**
@@ -204,7 +204,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 			return true;
 		} catch (Exception e) {
 			LOG.log(Level.WARNING, "error creating document", e);
-			getApp().showErrorDialog(getApp().getErrorTextCouldNotCreateNewDocument(), e.getMessage());
+			getApp().showErrorDialog(resources.getString("fx.application.dialog.error.new_document"), e.getMessage());
 			return false;
 		}
 	}
@@ -221,7 +221,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		File initialDir = initialDir(document);
 		
 		if (initialDir == null || !initialDir.isDirectory()) {
-			initialDir = getApp().USER_HOME;
+			initialDir = getApp().getUserHome();
 		}
 		
 		Optional<File> file = Dialogs
@@ -248,7 +248,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		} catch (Exception e) {
 			LOG.log(Level.WARNING, "error opening document", e);
 			getApp().showErrorDialog(
-					String.format("%s '%s'", getApp().getErrorTextDocumentCouldNotBeOpened(), getDisplayName(uri)),
+					String.format("%s '%s'", resources.getString("fx.application.dialog.error.open_document"), getDisplayName(uri)),
 					Objects.toString(e.getMessage())
 			);
 			return false;
@@ -328,7 +328,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	 */
 	private File initialDir(FxDocument document) {
 		if (document==null) {
-			return getApp().USER_HOME;
+			return getApp().getUserHome();
 		}
 		
 		Path parent = null;
@@ -339,7 +339,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 			} else {
 				String lastDocument = getApp().getPreference(PREF_DOCUMENT, "");
 				if (lastDocument.isBlank()) {
-					parent = getApp().USER_HOME.toPath();
+					parent = getApp().getUserHome().toPath();
 					LOG.fine("initialDir() - last document location not set, using user home as parent: "+parent);
 				} else {
 					Path path = Paths.get(URI.create(lastDocument));
@@ -356,7 +356,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 
 		if (initialDir == null || !initialDir.isDirectory()) {
 			LOG.log(Level.WARNING, "initialDir() - initial directory invalid, using user home instead: "+initialDir);
-			initialDir = getApp().USER_HOME;
+			initialDir = getApp().getUserHome();
 		}
 		return initialDir;
 	}
@@ -368,7 +368,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		} catch (Exception e) {
 			LOG.log(Level.WARNING, "error saving document", e);
 			getApp().showErrorDialog(
-				String.format("%s '%s'" , getApp().getErrorTextDocumentCouldNotBeSaved(), getDisplayName(uri)),
+				String.format("%s '%s'" , resources.getString("fx.application.dialog.error.save_document"), getDisplayName(uri)),
 				String.format("%s: %s", e.getClass().getSimpleName(), e.getMessage())
 			);
 			return false;

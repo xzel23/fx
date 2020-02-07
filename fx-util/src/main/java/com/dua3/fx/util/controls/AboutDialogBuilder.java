@@ -20,6 +20,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Objects;
 import java.util.logging.Level;

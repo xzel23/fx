@@ -45,6 +45,11 @@ import java.util.regex.Pattern;
 
 public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxController<A, C>> extends Application {
 
+    /**
+     * Logger
+     */
+    private static final Logger LOG = Logger.getLogger(FxApplication.class.getName());
+
     // - constants -
 
     /**
@@ -56,60 +61,33 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      * Marker to indicate modified state in title.
      */
     private static final String MARKER_MODIFIED = "*";
+    
     /**
      * Marker to indicate unmodified state in title.
      */
     private static final String MARKER_UNMODIFIED = " ";
 
     /**
-     * Title for About dialog (if not overridden).
+     * The user's home folder.
      */
-    public static final String TITLE_ABOUT = "About";
-
-    public static final String ERROR_COULD_NOT_CREATE_A_NEW_DOCUMENT = "Could not create a new document.";
-    public static final String ERROR_TEXT_DOCUMENT_COULD_NOT_BE_OPENED = "Document could not be opened:";
-    public static final String ERROR_TEXT_DOCUMENT_COULD_NOT_BE_SAVED = "Document could not be saved:";
-    public static final String TITLE_ERROR = "Error";
-    public static final String FILE_FILTER_ALL_FILES = "all files";
-
-    public static final File USER_HOME = new File(System.getProperty("user.home"));
-
-    /** The "all files" filter. */
-    protected final FileChooser.ExtensionFilter extensionfilterAllFiles = new FileChooser.ExtensionFilter(getFileFilterNameAllFiles(), "*.*");
-
-    // - static -
+    private static final File USER_HOME = new File(System.getProperty("user.home"));
 
     /**
-     * Logger
+     * The name of the default bundle that is used if the application does not provide it's own bundle.
      */
-    protected static final Logger LOG = Logger.getLogger(FxApplication.class.getName());
+    private static final String DEFAULT_BUNDLE = "fxapp";
 
+    /**
+     * The resource bundle
+     */
+    private final ResourceBundle resources;
+    
     /**
      * Preferences
      */
     private Preferences preferences = null;
 
     // - instance -
-
-    /**
-     * The application name.
-     */
-    private String applicationName = "";
-
-    /**
-     * The application name.
-     */
-    private String versionString = "snapshot version";
-
-    /**
-     * The contact email.
-     */
-    private String contactMail = "";
-
-    /**
-     * The copyright text.
-     */
-    private String copyright = "";
 
     /**
      * The controller instance.
@@ -128,11 +106,34 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
     // - Code -
 
     /**
+     * Get default resource bundle.
+     * @return the default resource bundle
+     */
+    public static ResourceBundle getDefaultBundle() {
+        // load resource bundle
+        Locale locale = Locale.getDefault();
+        LOG.fine(() -> "current locale is: "+locale);
+        ResourceBundle resources = ResourceBundle.getBundle(FxApplication.class.getPackageName()+"."+DEFAULT_BUNDLE, locale);
+        LOG.fine(() -> "resource bundle uses locale: "+ resources.getLocale());
+        return resources;
+    }
+
+    /**
      * Constructor.
      */
     protected FxApplication() {
+        this(getDefaultBundle());
     }
 
+    /**
+     * Constructor.
+     * 
+     * @param resourceBundle the resource bundle for retrieving resources
+     */
+    protected FxApplication(ResourceBundle resourceBundle) {
+        this.resources = Objects.requireNonNull(resourceBundle);
+    }
+    
     /**
      * Get application main FXML file.
      * @return the path to the FXML file to load, relative to the
@@ -196,8 +197,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
         // create a loader and load FXML
         URL fxml = getFxml();
         LOG.log(Level.FINER, () -> "FXML URL: " + fxml);
-        ResourceBundle resourceBundle = getResourceBundle();
-        FXMLLoader loader = new FXMLLoader(fxml, resourceBundle);
+        FXMLLoader loader = new FXMLLoader(fxml, resources);
 
         Parent root = loader.load();
 
@@ -216,7 +216,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
         }
 
         // setup stage
-        stage.setTitle(applicationName);
+        stage.setTitle(resources.getString("fx.application.name"));
         stage.setScene(scene);
         stage.show();
 
@@ -311,12 +311,14 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
 
     protected void updateApplicationTitle() {
         StringBuilder title = new StringBuilder();
-        title.append(applicationName);
+        title.append(resources.getString("fx.application.name"));
 
         FxDocument document = controller.getCurrentDocument();
 
         if (document != null) {
-            String locStr = document.getLocationString();
+            String locStr = document.hasLocation() ? 
+                    document.getLocation().toString() : 
+                    resources.getString("fx.application.text.untitiled");
             boolean dirty = document.isDirty();
 
             if (!locStr.isEmpty() || document.isDirty()) {
@@ -372,7 +374,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
         }
         return preferences;
     }
-
+    
     /**
      * Check whether a preferences object for this class has been created.
      *
@@ -380,43 +382,6 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      */
     protected boolean hasPreferences() {
         return preferences != null;
-    }
-
-    /**
-     * Get application name.
-     *
-     * @return the name of the application
-     */
-    public String getApplicationName() {
-        return applicationName.isEmpty() ? getClass().getSimpleName() : applicationName;
-    }
-
-    protected void setContactMail(String value) {
-        this.contactMail = value;
-    }
-
-    protected void setCopyright(String value) {
-        this.copyright = value;
-    }
-
-    protected void setVersionString(String value) {
-        this.versionString = value;
-    }
-
-    protected void setApplicationName(String value) {
-        this.applicationName = value;
-    }
-
-    public String getVersionString() {
-        return versionString;
-    }
-
-    public String getContactMail() {
-        return contactMail;
-    }
-
-    public String getCopyright() {
-        return copyright;
     }
 
     private final File APPLICATION_DATA_DIR = initApplicationDataDir();
@@ -454,89 +419,42 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
         }
     }
 
+    /**
+     * Get this applications data folder.
+     * @return  the data folder for this application
+     */
     public File getDataDir() {
         return APPLICATION_DATA_DIR;
     }
 
+    /**
+     * Get the controller instance.
+     * @return the controller
+     */
     protected C getController() {
         return controller;
     }
 
     /**
-     * Get title of about dialog.
-     * @return the text to display in the about dialog title
-     */
-    public String getAboutTitle() {
-        return TITLE_ABOUT + " " + getApplicationName();
-    }
-    
-    /**
-     * Get graphic to display in about dialog.
-     * @return the graphic to show
-     */
-    public URL getAboutGraphic() {
-        return null;
-    }
-
-    /**
-     * Get the detail for the about dialog.
-     * @return the Node to display as detail
-     */
-    public Node getAboutDetail() {
-        return null;
-    }
-
-    /**
-     * Get the name of the "all files" filter.
-     *
-     * @return the text to display for the "all files" filter
-     */
-    public static String getFileFilterNameAllFiles() {
-        return FILE_FILTER_ALL_FILES;
-    }
-
-    /**
-     * Get title of error dialog.
-     * @return the text to display in the error dialog title
-     */
-    public String getErrorDialogTitle() {
-        return TITLE_ERROR;
-    }
-
-    public String getErrorTextDocumentCouldNotBeSaved() {
-        return ERROR_TEXT_DOCUMENT_COULD_NOT_BE_SAVED;
-    }
-
-    /**
-     * Get error message.
-     * @return the text to display when a new document could not be created
-     */
-    public String getErrorTextCouldNotCreateNewDocument() {
-        return ERROR_COULD_NOT_CREATE_A_NEW_DOCUMENT;
-    }
-
-    /**
-     * Get error message.
-     * @return the text to display when a document could not be opened
-     */
-    public String getErrorTextDocumentCouldNotBeOpened() {
-        return ERROR_TEXT_DOCUMENT_COULD_NOT_BE_OPENED;
-    }
-    
-    /**
      * Show error dialog.
      * @param header	the header
      * @param text		the text
      */
-    protected void showErrorDialog(String header, String text) {
+    public void showErrorDialog(String header, String text) {
         Dialogs.error()
-                .title("%s", getErrorDialogTitle())
+                .title("%s", resources.getString("fx.application.dialog.error.title"))
                 .header("%s", header)
                 .text("%s", text)
                 .build()
                 .showAndWait();
     }
 
+    /**
+     * If this application uses preferences, set the velue. Otherwise, do nothing.
+     * @param key   the key
+     * @param value the value
+     * @return  true if the key was set in the preferences, otherwise false
+     */
     public boolean setPreferenceOptional(String key, String value) {
         if (hasPreferences()) {
             LOG.fine(() -> String.format("setting preference '%s'", key));
@@ -547,32 +465,69 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
         return false;
     }
 
+    /**
+     * Set preference value
+     * @param key   the key
+     * @param value the value
+     */
     public void setPreference(String key, String value) {
         getPreferences().put(key, value);
     }
 
+    /**
+     * Get the preference value.
+     * @param key   the preference key
+     * @param def   the default value
+     * @return the value stored in the preferences for this key if present, or the default value
+     */
     public String getPreference(String key, String def) {
         return hasPreferences() ? getPreferences().get(key, def) : def;
     }
 
+    /**
+     * Show this application's about dialog.
+     */
     public void showAboutDialog() {
         Dialogs.about()
-                .title(getAboutTitle())
-                .name(getApplicationName())
-                .version(getVersionString())
-                .copyright(getCopyright())
-                .graphic(getAboutGraphic())
+                .title(resources.getString("fx.application.about.title"))
+                .name(resources.getString("fx.application.name"))
+                .version(getVersion())
+                .copyright(resources.getString("fx.application.about.copyright"))
+                .graphic(LangUtil.getResourceURL(
+                        getClass(), 
+                        resources.getString("fx.application.about.graphic"), 
+                        resources.getLocale()))
                 .mail(
-                        getContactMail(),
+                        resources.getString("fx.application.about.email"),
                         TextUtil.generateMailToLink(
-                                getContactMail(),
-                                getApplicationName()+" "+getVersionString()))
-                .expandableContent(getAboutDetail())
+                                resources.getString("fx.application.about.email"),
+                                resources.getString("fx.application.name")
+                                        + " "
+                                        + getVersion()))
+                .expandableContent(resources.getString("fx.application.about.detail"))
                 .build()
                 .showAndWait();
     }
 
+    /**
+     * Get this application's version string.
+     * @return version string
+     */
+    public abstract String getVersion();
+
+    /**
+     * Get file extension filter for all files ('*.*').
+     * @return file extension filter accepting all files
+     */
     public FileChooser.ExtensionFilter getExtensionfilterAllFiles() {
-        return extensionfilterAllFiles;
+        return new FileChooser.ExtensionFilter(resources.getString("fx.application.filter.all_files"), "*.*");
+    }
+
+    /**
+     * Get the user's home directory. 
+     * @return the user's home directory
+     */
+    public File getUserHome() {
+        return USER_HOME;
     }
 }
