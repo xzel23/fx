@@ -6,7 +6,7 @@
 <?import javafx.scene.text.Font?>
 <DialogPane id="dialog" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <content>
-        <StackPane maxHeight="-Infinity" maxWidth="Infinity">
+        <StackPane id="content" maxHeight="-Infinity" maxWidth="Infinity">
             <VBox maxHeight="-Infinity" maxWidth="Infinity">
                 <Label id ="title" fx:id="lTitle" text="name" />
                 <Label id="version" fx:id="lVersion" text="version" />

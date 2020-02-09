@@ -24,6 +24,7 @@ import javafx.scene.control.*;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URL;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -56,13 +57,16 @@ public class AboutDialog extends Dialog<Void> {
     }
 
     public AboutDialog() {
+        this(null);
+    }
+    
+    public AboutDialog(URL css) {
     	try {
 	        FXMLLoader loader = new FXMLLoader(getClass().getResource("about.fxml"));
 	        loader.setController(this);
 	        DialogPane dialogPane = loader.load();
-	        dialogPane.getStylesheets().add(
-                    AboutDialog.class.getResource("about.css").toExternalForm()
-            );
+	        URL dialogCss = css != null ? css : AboutDialog.class.getResource("about.css");
+	        dialogPane.getStylesheets().add(dialogCss.toExternalForm());
 	        setDialogPane(dialogPane);
 	        dialogPane.getButtonTypes().addAll(ButtonType.OK);
     	} catch (IOException e) {

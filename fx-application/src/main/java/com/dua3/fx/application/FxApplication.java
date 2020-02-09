@@ -489,14 +489,23 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      * Show this application's about dialog.
      */
     public void showAboutDialog() {
+        showAboutDialog(null);
+    }
+
+    /**
+     * Show this application's about dialog.
+     * 
+     * @param css   URL to the CSS data
+     */
+    public void showAboutDialog(URL css) {
         Dialogs.about()
                 .title(resources.getString("fx.application.about.title"))
                 .name(resources.getString("fx.application.name"))
                 .version(getVersion())
                 .copyright(resources.getString("fx.application.about.copyright"))
                 .graphic(LangUtil.getResourceURL(
-                        getClass(), 
-                        resources.getString("fx.application.about.graphic"), 
+                        getClass(),
+                        resources.getString("fx.application.about.graphic"),
                         resources.getLocale()))
                 .mail(
                         resources.getString("fx.application.about.email"),
@@ -506,6 +515,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
                                         + " "
                                         + getVersion()))
                 .expandableContent(resources.getString("fx.application.about.detail"))
+                .css(css)
                 .build()
                 .showAndWait();
     }
