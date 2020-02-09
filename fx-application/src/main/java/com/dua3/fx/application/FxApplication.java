@@ -16,6 +16,7 @@ package com.dua3.fx.application;
 
 import com.dua3.fx.util.Dialogs;
 import com.dua3.fx.util.controls.AboutDialog;
+import com.dua3.utility.data.Pair;
 import com.dua3.utility.lang.LangUtil;
 import com.dua3.utility.text.TextUtil;
 import javafx.application.Application;
@@ -529,5 +530,10 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      */
     public File getUserHome() {
         return USER_HOME;
+    }
+    
+    @SafeVarargs
+    public final String getMessage(String key, Pair<String,String>... substitutions) {
+        return TextUtil.transform(resources.getString(key), substitutions);
     }
 }

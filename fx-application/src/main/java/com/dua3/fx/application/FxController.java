@@ -16,7 +16,9 @@ package com.dua3.fx.application;
 
 import com.dua3.fx.util.Dialogs;
 import com.dua3.fx.util.FxTask;
+import com.dua3.utility.data.Pair;
 import com.dua3.utility.lang.LangUtil;
+import com.dua3.utility.text.TextUtil;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -24,6 +26,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -125,26 +128,64 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	protected boolean handleDirtyState() {
 		boolean rc = true;
 		List<? extends FxDocument> dirtyList = dirtyDocuments();
+
+		AtomicBoolean goOn = new AtomicBoolean(false);
+		switch (dirtyList.size()) {
+			case 0:
+				goOn.set(true);
+				break;
+				
+			case 1:	{
+				FxDocument doc = dirtyList.get(0);
+
+				String header;
+				if (!doc.hasLocation()) {
+					header = resources.getString("fx.application.message.unsaved_changes_single_document_untitled");
+				} else {
+					header = getApp().getMessage(
+							"fx.application.message.unsaved_changes_single_document",
+							Pair.of("document", dirtyList.get(0).getName())
+					);
+				}
+
+				ButtonType bttSave = new ButtonType(resources.getString("fx.application.button.save"), ButtonBar.ButtonData.YES);
+				ButtonType bttDontSave = new ButtonType(resources.getString("fx.application.button.dont_save"), ButtonBar.ButtonData.NO);
+				
+				Dialogs.confirmation()
+						.header(header)
+						.text(resources.getString("fx.application.message.changes_will_be_lost"))
+						.buttons(bttDontSave, bttSave, ButtonType.CANCEL)
+						.showAndWait()
+						.ifPresent(btn -> {
+							if (btn == bttSave) {
+								goOn.set(save()); // only continue if save was successful
+							}
+							if (btn == bttDontSave) {
+								goOn.set(true);   // don't save, just go on
+							}
+						});
+				break;
+			}
+
+			default: {
+				String header = getApp().getMessage(
+						"fx.application.message.unsaved_changes_multiple_documents",
+						Pair.of("count", String.valueOf(dirtyList.size()))
+				);
+
+				Dialogs.confirmation()
+						.header(header)
+						.text(resources.getString("fx.application.message.continue_without_saving"))
+						.buttons(ButtonType.YES, ButtonType.CANCEL)
+						.defaultButton(ButtonType.CANCEL)
+						.showAndWait()
+						.ifPresent(btn -> {
+							goOn.set(btn == ButtonType.YES); // only continue if "YES" was clicked
+						});
+			}
+		}
+		
 		if (!dirtyList.isEmpty()) {
-			AtomicBoolean goOn = new AtomicBoolean(false);
-			Dialogs.confirmation()
-			.header(resources.getString("fx.application.message.save_changes"))
-			.text("%s",
-					String.join(
-					"\n",
-					dirtyList.stream().map(Object::toString).toArray(String[]::new)
-			))
-			.buttons(ButtonType.YES, ButtonType.NO, ButtonType.CANCEL)
-			.defaultButton(ButtonType.YES)
-			.showAndWait()
-			.ifPresent(btn -> {
-				if (btn==ButtonType.YES) {
-					goOn.set(save()); // only continue if save was successful
-				}
-				if (btn==ButtonType.NO) {
-					goOn.set(true);   // don't save, just go on
-				}
-			});
 			rc = goOn.get();
 		}
 		return rc;
