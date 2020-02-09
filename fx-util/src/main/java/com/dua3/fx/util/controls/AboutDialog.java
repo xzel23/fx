@@ -36,13 +36,13 @@ public class AboutDialog extends Dialog<Void> {
     private String mailAddress = "";
 
     @FXML
-    Label labelName;
+    Label lTitle;
     
     @FXML
-    Label labelVersion;
+    Label lVersion;
     
     @FXML
-    Label labelCopyright;
+    Label lCopyright;
     
     @FXML
     Hyperlink hlMail;
@@ -60,6 +60,9 @@ public class AboutDialog extends Dialog<Void> {
 	        FXMLLoader loader = new FXMLLoader(getClass().getResource("about.fxml"));
 	        loader.setController(this);
 	        DialogPane dialogPane = loader.load();
+	        dialogPane.getStylesheets().add(
+                    AboutDialog.class.getResource("about.css").toExternalForm()
+            );
 	        setDialogPane(dialogPane);
 	        dialogPane.getButtonTypes().addAll(ButtonType.OK);
     	} catch (IOException e) {
@@ -95,7 +98,7 @@ public class AboutDialog extends Dialog<Void> {
      *  the text to display
      */
 	public void setName(String value) {
-		labelName.setText(value);
+		lTitle.setText(value);
 	}
 	
 	/**
@@ -104,7 +107,7 @@ public class AboutDialog extends Dialog<Void> {
 	 *  the text to display
 	 */
 	public void setVersion(String value) {
-		labelVersion.setText(value);
+		lVersion.setText(value);
 	}
 	
     /**
@@ -113,7 +116,7 @@ public class AboutDialog extends Dialog<Void> {
      *  the text to display
      */
     public void setCopyright(String value) {
-    	labelCopyright.setText(value);
+    	lCopyright.setText(value);
     }
     
     /**
