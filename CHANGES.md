@@ -1,10 +1,14 @@
 Changelog
 =========
 
+#### Version 0.9.1
+
 #### Version 0.9
 
- - BREAKING CHANGE: fx-editors subproject has been removed 
+ - lots of i18n changes
  - i18n of dialogs
+ - FxApplicationconstructor takes a resource bundle
+ - BREAKING CHANGE: fx-editors subproject has been removed 
  - possible to set graphic and details for about dialog
  - support resource bundles in FxApplication
  
