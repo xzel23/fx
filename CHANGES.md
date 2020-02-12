@@ -3,6 +3,9 @@ Changelog
 
 #### Version 0.9.1
 
+ - make About-dialog styleable
+ - update dependencies and plugins
+
 #### Version 0.9
 
  - lots of i18n changes
