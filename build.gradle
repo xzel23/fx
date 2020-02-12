@@ -13,9 +13,9 @@
 // limitations under the License.
 
 plugins {
-    id 'com.dua3.gradle.jpms' version '1.0-BETA7' apply false
+    id 'com.dua3.gradle.jpms' version '1.0' apply false
     id 'com.adarshr.test-logger' version '1.7.0' apply false
-    id 'com.github.spotbugs' version '2.0.0' apply false
+    id 'com.github.spotbugs' version '3.0.0' apply false
     id 'com.jfrog.bintray' version '1.8.4' apply false
     id "org.openjfx.javafxplugin" version '0.0.8' apply false
 }
@@ -52,8 +52,7 @@ subprojects {
         javafx_version = '13.0.2'
         junit_version = '5.5.1'
 
-        dua3_utility_version = '5.1.3'
-        dua3_meja_version = '2.0-BETA19'
+        dua3_utility_version = '5.2'
 
         picocli_version = '4.0.4'
         ikonli_version = '11.3.5'
@@ -213,7 +212,7 @@ subprojects {
     if (run_spotbugs) {
         apply plugin: 'com.github.spotbugs'
 
-        spotbugs.toolVersion = '4.0.0-RC1'
+        spotbugs.toolVersion = '4.0.0-RC3'
         spotbugs.excludeFilter = rootProject.file('spotbugs-exclude.xml')
 
         tasks.withType(com.github.spotbugs.SpotBugsTask) {
