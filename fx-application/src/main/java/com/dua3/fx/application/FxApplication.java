@@ -37,6 +37,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.Formatter;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.*;
 import java.util.prefs.BackingStoreException;
@@ -46,6 +47,37 @@ import java.util.regex.Pattern;
 
 public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxController<A, C>> extends Application {
 
+    public static
+    <A extends FxApplication<A, C>, C extends FxController<A, C>>
+    void launchApplication(Class<A> cls, String... args) {
+        String packageName = cls.getPackageName();
+        
+        String logFile = System.getenv(packageName+".log_file");
+        if (logFile!=null) {
+            try {
+                FileHandler fh = new FileHandler(logFile, true);
+                fh.setLevel(Level.ALL);
+                fh.setFormatter(new SimpleFormatter());
+                Logger.getLogger("").addHandler(fh);
+                Logger.getLogger("").setLevel(Level.ALL);
+            } catch (IOException e) {
+                Logger.getLogger(FxApplication.class.getName()).log(Level.WARNING, "cannot log to file", e);
+            }
+        }
+
+        Logger.getLogger(FxApplication.class.getName()).fine(() -> {
+            try (Formatter msg = new Formatter()) {
+                msg.format("Program arguments: %n");
+                for (int i = 0; i < args.length; i++) {
+                    msg.format("%n  %2d: \"%s\"", i, args[i]);
+                }
+                return msg.toString();
+            }
+        });
+        
+        Application.launch(cls, args);
+    }
+    
     /**
      * Logger
      */
