@@ -47,19 +47,31 @@ import java.util.regex.Pattern;
 
 public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxController<A, C>> extends Application {
 
+    // keep a strong reference to the root logger if needed, so that the configuration won't get lost
+    private static Logger rootLogger = null;
+    
+    private static synchronized Logger getRootLogger() {
+        if (rootLogger==null) {
+            rootLogger = Logger.getLogger("");
+        }
+        return rootLogger;
+    }
+    
     public static
     <A extends FxApplication<A, C>, C extends FxController<A, C>>
     void launchApplication(Class<A> cls, String... args) {
         String packageName = cls.getPackageName();
-        
+
         String logFile = System.getenv(packageName+".log_file");
+        String logLevel = System.getenv(packageName+".log_level");
         if (logFile!=null) {
+            Level lvl = logLevel==null ? Level.INFO : Level.parse(logLevel);
             try {
-                FileHandler fh = new FileHandler(logFile, true);
-                fh.setLevel(Level.ALL);
+                FileHandler fh = new FileHandler(logFile, false);
+                fh.setLevel(lvl);
                 fh.setFormatter(new SimpleFormatter());
-                Logger.getLogger("").addHandler(fh);
-                Logger.getLogger("").setLevel(Level.ALL);
+                getRootLogger().addHandler(fh);
+                getRootLogger().setLevel(lvl);
             } catch (IOException e) {
                 Logger.getLogger(FxApplication.class.getName()).log(Level.WARNING, "cannot log to file", e);
             }
