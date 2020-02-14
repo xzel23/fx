@@ -1,6 +1,12 @@
 Changelog
 =========
 
+#### Version 0.9.2
+
+ - new static method `FxApplication.launchApplication()` as replacement for `Application.launch()`. When using this method, the commandline is automatically re-parsed (see next item).
+ 
+ - new static method `FxApplication.reparseCommandLine(String[])` to fix messing up comand line arguments on windows.
+ 
 #### Version 0.9.1
 
  - make About-dialog styleable
