@@ -36,7 +36,7 @@ public class DialogSample extends Application {
 
         // Confirmation
         container.getChildren().add(createButton("Confirmation", () ->
-                Dialogs.confirmation()
+                Dialogs.confirmation(primaryStage)
                         .title("Elevator cleaning")
                         .header("Good for you!")
                         .text("You've decided to clean the elevator.")
@@ -44,7 +44,7 @@ public class DialogSample extends Application {
 
         // Information
         container.getChildren().add(createButton("Info", () ->
-            Dialogs.information()
+            Dialogs.information(primaryStage)
                     .title("Info")
                     .header("Elevator cleaning")
                     .text("To clean and service the electromagnetic coils in the bottom, " +
@@ -53,7 +53,7 @@ public class DialogSample extends Application {
 
         // Warning
         container.getChildren().add(createButton("Warning", () ->
-                Dialogs.warning()
+                Dialogs.warning(primaryStage)
                         .title("Warning")
                         .header("Attention... danger")
                         .text("Automatic charges will now blow the explosive bolts in the floor plate unit. " +
@@ -62,7 +62,7 @@ public class DialogSample extends Application {
 
         // Error
         container.getChildren().add(createButton("Error", () ->
-                Dialogs.error()
+                Dialogs.error(primaryStage)
                         .title("Error")
                         .header("Please leave the elevator immediately")
                         .text("5-4-3-2-1...")
@@ -70,14 +70,14 @@ public class DialogSample extends Application {
 
         // Prompt
         container.getChildren().add(createButton("Prompt", () ->
-                Dialogs.prompt()
+                Dialogs.prompt(primaryStage)
                         .title("Prompt")
                         .header("This is a prompt dialog.")
                         .showAndWait()));
 
         // Input
         container.getChildren().add(createButton("Input", () ->
-                Dialogs.input()
+                Dialogs.input(primaryStage)
                         .title("Input")
                         .header("This is an input dialog.")
                         .string("txt", "enter text", () -> "dflt")
@@ -91,7 +91,7 @@ public class DialogSample extends Application {
 
         // Options
         container.getChildren().add(createButton("Options", () -> {
-            var rc = Dialogs.options()
+            var rc = Dialogs.options(primaryStage)
                     .options(CsvIo.getCommonOptions())
                     .title("Options")
                     .header("This is an options dialog.")

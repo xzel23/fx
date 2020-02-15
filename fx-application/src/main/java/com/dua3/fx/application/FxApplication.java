@@ -542,7 +542,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      * @param text		the text
      */
     public void showErrorDialog(String header, String text) {
-        Dialogs.error()
+        Dialogs.error(getStage())
                 .title("%s", resources.getString("fx.application.dialog.error.title"))
                 .header("%s", header)
                 .text("%s", text)
@@ -598,7 +598,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      * @param css   URL to the CSS data
      */
     public void showAboutDialog(URL css) {
-        Dialogs.about()
+        Dialogs.about(getStage())
                 .title(resources.getString("fx.application.about.title"))
                 .name(resources.getString("fx.application.name"))
                 .version(getVersion())

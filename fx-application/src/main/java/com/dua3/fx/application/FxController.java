@@ -151,7 +151,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 				ButtonType bttSave = new ButtonType(resources.getString("fx.application.button.save"), ButtonBar.ButtonData.YES);
 				ButtonType bttDontSave = new ButtonType(resources.getString("fx.application.button.dont_save"), ButtonBar.ButtonData.NO);
 				
-				Dialogs.confirmation()
+				Dialogs.confirmation(getApp().getStage())
 						.header(header)
 						.text(resources.getString("fx.application.message.changes_will_be_lost"))
 						.buttons(bttDontSave, bttSave, ButtonType.CANCEL)
@@ -173,7 +173,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 						Pair.of("count", String.valueOf(dirtyList.size()))
 				);
 
-				Dialogs.confirmation()
+				Dialogs.confirmation(getApp().getStage())
 						.header(header)
 						.text(resources.getString("fx.application.message.continue_without_saving"))
 						.buttons(ButtonType.YES, ButtonType.CANCEL)

@@ -21,6 +21,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.stage.FileChooser;
+import javafx.stage.Window;
 
 import java.io.File;
 import java.util.Collection;
@@ -40,7 +41,8 @@ implements InputBuilder<InputDialogBuilder> {
 
 	private final InputPaneBuilder pb = new InputPaneBuilder();
 	
-	public InputDialogBuilder() {
+	public InputDialogBuilder(Window parentWindow) {
+		super(parentWindow);
 		setDialogSupplier(this::createDialog);
 	}
 

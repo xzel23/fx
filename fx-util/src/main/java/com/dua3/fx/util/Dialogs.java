@@ -17,6 +17,7 @@ package com.dua3.fx.util;
 import com.dua3.fx.util.controls.*;
 
 import javafx.scene.control.Alert.AlertType;
+import javafx.stage.Window;
 
 public final class Dialogs {
 
@@ -25,11 +26,12 @@ public final class Dialogs {
 
 	/**
 	 * Start definition of new Warning dialog.
+	 * @param parentWindow	the parent window
 	 * @return 
 	 * 	new {@link AlertBuilder} instance
 	 */
-	public static AlertBuilder warning() {
-		return new AlertBuilder(AlertType.WARNING);
+	public static AlertBuilder warning(Window parentWindow) {
+		return new AlertBuilder(AlertType.WARNING, parentWindow);
 	}
 
 	/**
@@ -43,11 +45,12 @@ public final class Dialogs {
 
 	/**
 	 * Start definition of new Error dialog.
-	 * @return 
+	 * @param parentWindow	the parent window
+	 * @return
 	 * 	new {@link AlertBuilder} instance
 	 */
-	public static AlertBuilder error() {
-		return new AlertBuilder(AlertType.ERROR);
+	public static AlertBuilder error(Window parentWindow) {
+		return new AlertBuilder(AlertType.ERROR, parentWindow);
 	}
 
 	/**
@@ -61,11 +64,12 @@ public final class Dialogs {
 
 	/**
 	 * Start definition of new Information dialog.
+	 * @param parentWindow	the parent window
 	 * @return 
 	 * 	new {@link AlertBuilder} instance
 	 */
-	public static AlertBuilder information() {
-		return new AlertBuilder(AlertType.INFORMATION);
+	public static AlertBuilder information(Window parentWindow) {
+		return new AlertBuilder(AlertType.INFORMATION, parentWindow);
 	}
 
 	/**
@@ -79,11 +83,12 @@ public final class Dialogs {
 
 	/**
 	 * Start definition of new Confirmation dialog.
+	 * @param parentWindow	the parent window
 	 * @return 
 	 * 	new {@link AlertBuilder} instance
 	 */
-	public static AlertBuilder confirmation() {
-		return new AlertBuilder(AlertType.CONFIRMATION);
+	public static AlertBuilder confirmation(Window parentWindow) {
+		return new AlertBuilder(AlertType.CONFIRMATION, parentWindow);
 	}
 
 	/**
@@ -112,23 +117,25 @@ public final class Dialogs {
 	public static DirectoryChooserBuilder chooseDirectory() {
 		return new DirectoryChooserBuilder();
 	}
-	
+
 	/**
 	 * Start definition of new AboutDialog.
-	 * @return 
+	 * @param parentWindow	the parent window
+	 * @return
 	 * 	new {@link AboutDialogBuilder} instance
 	 */
-	public static AboutDialogBuilder about() {
-		return new AboutDialogBuilder();
+	public static AboutDialogBuilder about(Window parentWindow) {
+		return new AboutDialogBuilder(parentWindow);
 	}
 
 	/**
 	 * Start definition of new prompt dialog.
+	 * @param parentWindow	the parent window
 	 * @return
 	 * 	new {@link PromptBuilder} instance
 	 */
-	public static PromptBuilder prompt() {
-		return new PromptBuilder();
+	public static PromptBuilder prompt(Window parentWindow) {
+		return new PromptBuilder(parentWindow);
 	}
 
 	/**
@@ -142,11 +149,12 @@ public final class Dialogs {
 
 	/**
 	 * Start definition of new input dialog.
+	 * @param parentWindow	the parent window
 	 * @return 
 	 * 	new {@link InputDialogBuilder} instance
 	 */
-	public static InputDialogBuilder input() {
-		return new InputDialogBuilder();
+	public static InputDialogBuilder input(Window parentWindow) {
+		return new InputDialogBuilder(parentWindow);
 	}
 
 	/**
@@ -169,11 +177,12 @@ public final class Dialogs {
 
 	/**
 	 * Start definition of new options dialog.
+	 * @param parentWindow	the parent window
 	 * @return 
 	 * 	new {@link OptionsDialogBuilder} instance
 	 */
-	public static OptionsDialogBuilder options() {
-		return new OptionsDialogBuilder();
+	public static OptionsDialogBuilder options(Window parentWindow) {
+		return new OptionsDialogBuilder(parentWindow);
 	}
 
 	/**

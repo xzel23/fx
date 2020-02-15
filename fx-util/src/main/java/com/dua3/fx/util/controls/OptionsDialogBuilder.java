@@ -18,6 +18,7 @@ import java.util.Objects;
 
 import com.dua3.utility.options.OptionSet;
 import com.dua3.utility.options.OptionValues;
+import javafx.stage.Window;
 
 /**
  * Builder for Alert Dialogs.
@@ -26,7 +27,8 @@ import com.dua3.utility.options.OptionValues;
  */
 public class OptionsDialogBuilder extends AbstractDialogBuilder<OptionsDialog, OptionsDialogBuilder, OptionValues> {
 
-	public OptionsDialogBuilder() {
+	public OptionsDialogBuilder(Window parentWindow) {
+		super(parentWindow);
 		setDialogSupplier(OptionsDialog::new);
 	}
 

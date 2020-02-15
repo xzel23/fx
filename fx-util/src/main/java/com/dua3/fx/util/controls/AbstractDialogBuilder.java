@@ -18,6 +18,8 @@ import java.util.Optional;
 import java.util.function.BiConsumer;
 
 import javafx.scene.control.Dialog;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 
 /**
  * Abstract base class for Dialog builders.
@@ -28,11 +30,13 @@ public abstract class AbstractDialogBuilder<D extends Dialog<R>, B extends Abstr
 
   private final BiConsumer<D,String> titleSetter;
 
-  protected AbstractDialogBuilder() {
+  protected AbstractDialogBuilder(Window parentWindow) {
     super(Dialog::setHeaderText);
+    this.parentWindow = parentWindow;
     this.titleSetter = Dialog::setTitle;
   }
 
+  private Window parentWindow = null;
   private String title = null;
 
   /**
@@ -44,6 +48,13 @@ public abstract class AbstractDialogBuilder<D extends Dialog<R>, B extends Abstr
   public D build() {
     D dlg = super.build();
 
+    // copy stage icons from parent
+    if (parentWindow!=null) {
+      Stage stage = (Stage) dlg.getDialogPane().getScene().getWindow();
+      stage.getIcons().addAll(((Stage) parentWindow).getIcons());
+    }
+    
+    // set title
     applyIfNotNull(titleSetter, dlg, title);
 
     return dlg;

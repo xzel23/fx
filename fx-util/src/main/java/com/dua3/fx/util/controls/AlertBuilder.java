@@ -23,6 +23,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
+import javafx.stage.Window;
 
 /**
  * Builder for Alert Dialogs.
@@ -30,7 +31,8 @@ import javafx.scene.control.DialogPane;
  */
 public class AlertBuilder
     extends AbstractDialogBuilder<Alert, AlertBuilder, ButtonType> {
-  public AlertBuilder(AlertType type) {
+  public AlertBuilder(AlertType type, Window parentWindow) {
+    super(parentWindow);
     setDialogSupplier( () -> new Alert(type) );
   }
 

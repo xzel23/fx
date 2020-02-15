@@ -18,6 +18,8 @@ import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -40,12 +42,14 @@ public class AboutDialogBuilder {
 	private String version = "";
 	private String mailText = "";
 	private String mailAddress = "";
-	
+
+	private Window parentWindow = null;
 	private URL css = null;
 	private Node graphic = null;
 	private Node expandableContent = null;
-
-	public AboutDialogBuilder() {
+	
+	public AboutDialogBuilder(Window parentWindow) {
+		this.parentWindow = parentWindow;
 	}
 	
 	public AboutDialogBuilder title(String value) {
@@ -128,7 +132,11 @@ public class AboutDialogBuilder {
 
 	public AboutDialog build() {
 		AboutDialog dlg = new AboutDialog(css);
-		
+
+		if (parentWindow!=null) {
+			Stage stage = (Stage) dlg.getDialogPane().getScene().getWindow();
+			stage.getIcons().addAll(((Stage) parentWindow).getIcons());
+		}
 		if (graphic!=null) {
 			dlg.setGraphic(graphic);
 		}
