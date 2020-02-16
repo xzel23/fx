@@ -1,6 +1,10 @@
 Changelog
 =========
 
+#### Version 0.9.3
+
+ - most Dialogs/DialogBuilders have a new  `parentWindow` parameter. Stage-Icons (Windows platform) are copied from the parent window.
+ 
 #### Version 0.9.2
 
  - new static method `FxApplication.launchApplication()` as replacement for `Application.launch()`. When using this method, the commandline is automatically re-parsed (see next item).
