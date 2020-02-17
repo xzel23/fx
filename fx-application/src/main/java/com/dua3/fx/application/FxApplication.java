@@ -102,11 +102,6 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      */
     private Stage mainStage;
 
-    /**
-     * The launcher that was used to start the application (might be {@code null}), will be set in init().
-     */
-    private FxLauncher launcher = null;
-
     // - UI -
 
     // - static initialization -
@@ -169,16 +164,15 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
     @Override
     public void init() throws Exception {
         super.init();
-        
-        this.launcher = getParameterValue(FxLauncher.PAR_FXLAUNCHER_ID)
-                .map(Integer::valueOf)
-                .flatMap(FxLauncher::get).orElse(null);
-        
-        LOG.info("Launcher: "+this.launcher);
-    }
 
-    public Optional<FxLauncher> getLauncher() {
-        return Optional.ofNullable(launcher);
+        // add URIs collected during startup to the unnamed parameters
+        Collection<URI> uris = getParameterValue(FxLauncher.PAR_FXLAUNCHER_ID)
+                .map(Integer::valueOf)
+                .flatMap(FxLauncher::get)
+                .map(FxLauncher::launchFinished)
+                .orElseGet(Collections::emptyList);
+
+        uris.stream().map(URI::toString).forEach(getParameters().getUnnamed()::add);
     }
 
     /**

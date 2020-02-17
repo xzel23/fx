@@ -22,7 +22,7 @@ import java.util.logging.Logger;
  *  the controller class
  */
 public class FxLauncher<A extends FxApplication<A, C>, C extends FxController<A, C>>
-        implements SystemEventListener, OpenFilesHandler, OpenURIHandler {
+    implements OpenFilesHandler, OpenURIHandler {
 
     /**
      * Logger
@@ -49,7 +49,6 @@ public class FxLauncher<A extends FxApplication<A, C>, C extends FxController<A,
         
         if (Desktop.isDesktopSupported()) {
             Desktop desktop = Desktop.getDesktop();
-            desktop.addAppEventListener(this);
             if (desktop.isSupported(Desktop.Action.APP_OPEN_FILE)) {
                 desktop.setOpenFileHandler(this);
             }
@@ -72,10 +71,11 @@ public class FxLauncher<A extends FxApplication<A, C>, C extends FxController<A,
     }
 
     /**
-     * Get the URIs to open.
+     * Mark launch as finished, and return the URIs collected during startup.
      * @return collection containing the URI collected by the file and URI handlers
      */
-    public Collection<URI> getUris() {
+    public Collection<URI> launchFinished() {
+        LAUNCHERS.remove(id());
         return Collections.unmodifiableCollection(uriList);
     }
 
