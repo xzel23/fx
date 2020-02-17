@@ -52,105 +52,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      * Logger
      */
     private static final Logger LOG = Logger.getLogger(FxApplication.class.getName());
-
-    /**
-     * Start application.
-     * This method is a drop-in replacement for `Application.launch(cls, args)`.
-     * <ul>
-     *     <li><strong>Comand line arguments</strong> are re-parsed on windows, for details see 
-     *     {@link #reparseCommandLine(String[])}.
-     * </ul>
-     * 
-     * @param cls
-     *  the application class
-     * @param args
-     *  the comand line arguments
-     * @param <A>
-     *  the application class
-     * @param <C>
-     *  the controller class
-     */
-    public static
-    <A extends FxApplication<A, C>, C extends FxController<A, C>>
-    void launchApplication(Class<A> cls, String... args) {
-        LOG.fine(() -> "arguments: "+Arrays.toString(args));
-        
-        var _args = reparseCommandLine(args);
-        if (_args != args) {
-            LOG.info(() -> "arguments have been re-parsed!");
-            LOG.fine(() -> "arguments: "+Arrays.toString(_args));
-        }
-        
-        Application.launch(cls, reparseCommandLine(_args));
-    }
-
-    /**
-     * Re-parse command line arguments.
-     * <ul>
-     * <li><strong>Windows:</strong>
-     * At least when using a jpackaged application with file-associations, command line arguments get messed up
-     * when the application start is the result of double-clicking on a registered file type.
-     * The command line args are split on whitespace, i. e. paths containing spaces
-     * will be split into multiple parts. This method tries to restore what was probably meant.
-     * It works by iterating over the given array of argumnents like this:
-     * <pre>
-     * let arg = "" 
-     * for each s in args:
-     *
-     *   if s starts with "--" // start of an option
-     *   or s starts with "[letter]:\" or "[letter]:/" // probable file path 
-     *   then 
-     *     append arg to the output array
-     *     arg = ""
-     *     
-     *   if arg != ""
-     *     arg = arg + " "
-     *     
-     *   arg = arg + s
-     * push arg to the output array
-     * </pre>
-     * <li><strong>Other platforms:</strong>
-     * The input array is returned without any changes.
-     * </ul>
-     * @param args
-     *   the command line arguments
-     * @return
-     *   the re-parsed argument array
-     * @deprecated this method is a workaround that will be removed once the underlying issue is fixed in the JDK.
-     */
-    @Deprecated
-    public static String[] reparseCommandLine(String[] args) {
-        if (!Platform.isWindows()) {
-            return args;
-        }
-
-        if (args.length<2) {
-            return args;
-        }
-
-        List<String> argL = new ArrayList<>();
-        StringBuilder arg = new StringBuilder();
-        for (String s:args) {
-            // split if s contains spaces, starts with a double dash, or a windows path
-            if (s.indexOf(' ')>=0 || s.matches("^(--|[a-zA-Z]:[/\\\\]).*")) {
-                if (arg.length()>0) {
-                    argL.add(arg.toString());
-                }
-                arg.setLength(0);
-            }
-
-            if (arg.length()>0) {
-                arg.append(' ');
-            }
-            arg.append(s);
-        }
-        if (arg.length()>0) {
-            argL.add(arg.toString());
-        }
-
-        return argL.toArray(String[]::new);
-    }
-
+    
     // - constants -
 
     /**
@@ -199,6 +101,11 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      * The main stage.
      */
     private Stage mainStage;
+
+    /**
+     * The launcher that was used to start the application (might be {@code null}), will be set in init().
+     */
+    private FxLauncher launcher = null;
 
     // - UI -
 
@@ -257,6 +164,21 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      */
     protected URL getCss() {
         return null;
+    }
+
+    @Override
+    public void init() throws Exception {
+        super.init();
+        
+        this.launcher = getParameterValue(FxLauncher.PAR_FXLAUNCHER_ID)
+                .map(Integer::valueOf)
+                .flatMap(FxLauncher::get).orElse(null);
+        
+        LOG.info("Launcher: "+this.launcher);
+    }
+
+    public Optional<FxLauncher> getLauncher() {
+        return Optional.ofNullable(launcher);
     }
 
     /**

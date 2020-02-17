@@ -25,4 +25,5 @@ module dua3_fx.application {
     requires javafx.base;
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.desktop;
 }
