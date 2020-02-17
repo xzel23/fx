@@ -1,6 +1,10 @@
 Changelog
 =========
 
+#### Version 0.9.4
+
+ - new FxLauncher class
+ 
 #### Version 0.9.3
 
  - most Dialogs/DialogBuilders have a new  `parentWindow` parameter. Stage-Icons (Windows platform) are copied from the parent window.

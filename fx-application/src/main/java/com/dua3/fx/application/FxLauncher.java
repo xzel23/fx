@@ -50,8 +50,12 @@ public class FxLauncher<A extends FxApplication<A, C>, C extends FxController<A,
         if (Desktop.isDesktopSupported()) {
             Desktop desktop = Desktop.getDesktop();
             desktop.addAppEventListener(this);
-            desktop.setOpenFileHandler(this);
-            desktop.setOpenURIHandler(this);
+            if (desktop.isSupported(Desktop.Action.APP_OPEN_FILE)) {
+                desktop.setOpenFileHandler(this);
+            }
+            if (desktop.isSupported(Desktop.Action.APP_OPEN_URI)) {
+                desktop.setOpenURIHandler(this);
+            }
         }
         
         LAUNCHERS.put(id, this);
