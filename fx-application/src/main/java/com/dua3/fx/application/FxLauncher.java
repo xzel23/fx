@@ -24,8 +24,6 @@ public class FxLauncher {
      */
     private static final Logger LOG = Logger.getLogger(FxLauncher.class.getName());
 
-    private static final Deque<URI> uriList = new ConcurrentLinkedDeque<URI>();
-    
     static {
         // start the runtime
         CountDownLatch latch = new CountDownLatch(1);
@@ -38,18 +36,6 @@ public class FxLauncher {
                 LOG.log(Level.FINE, "interrupted while waiting for platform startup", e);
             }
         }
-        
-        if (Desktop.isDesktopSupported()) {
-            Desktop desktop = Desktop.getDesktop();
-            if (desktop!=null) {
-                if (desktop.isSupported(Desktop.Action.APP_OPEN_FILE)) {
-                    desktop.setOpenFileHandler(e -> e.getFiles().forEach(f -> uriList.add(f.toURI())));
-                }
-                if (desktop.isSupported(Desktop.Action.APP_OPEN_URI)) {
-                    desktop.setOpenURIHandler(e -> uriList.add(e.getURI()));
-                }
-            }
-        }
     }
     
     /**
@@ -57,7 +43,7 @@ public class FxLauncher {
      * @param app the FxApplication instance that was launched
      * @return collection containing the URI collected by the file and URI handlers
      */
-    static List<URI> launchFinished(FxApplication<?,?> app) {
+    static void launchFinished(FxApplication<?,?> app) {
         Objects.requireNonNull(app);
 
         if (Desktop.isDesktopSupported()) {
@@ -75,10 +61,6 @@ public class FxLauncher {
                 desktop.setPreferencesHandler(app::handlePreferences);
             }
         }
-
-        List<URI> uris = new ArrayList<>(uriList);
-        uriList.clear();
-        return uris;
     }
 
     /**

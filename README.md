@@ -7,8 +7,6 @@ The framework consists of the following libraries:
  
  - **fx-controls:** JavaFX controls
  
- - **fx-editors:** editor components for text and code
- 
  - **fx-icons:** Icons to be used in JavaFX applications
  
  - **fx-util:** JavaFX related utility classes
@@ -38,3 +36,7 @@ Examples:
 
    `--log=INFO,com.dua3:FINE,com.sun:WARNING`
 
+Issues
+------
+
+ - On macOS documents cannot be opened by double clicking unless the application is already running. Bug filed with review ID 9063702.
