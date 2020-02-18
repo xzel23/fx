@@ -1,5 +1,6 @@
 package com.dua3.fx.application;
 
+import com.dua3.utility.lang.LangUtil;
 import com.dua3.utility.lang.Platform;
 import javafx.application.Application;
 
@@ -8,89 +9,76 @@ import java.awt.desktop.*;
 import java.net.URI;
 import java.util.*;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.CountDownLatch;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  * Application launcher class.
- * 
- * @param <A>
- *  the application class
- * @param <C>
- *  the controller class
  */
-public class FxLauncher<A extends FxApplication<A, C>, C extends FxController<A, C>>
-    implements OpenFilesHandler, OpenURIHandler {
+public class FxLauncher {
 
     /**
      * Logger
      */
     private static final Logger LOG = Logger.getLogger(FxLauncher.class.getName());
 
-    public static final String PAR_FXLAUNCHER_ID = "fxlauncherid";
+    private static final Deque<URI> uriList = new ConcurrentLinkedDeque<URI>();
     
-    private static Map<Integer, FxLauncher> LAUNCHERS = new ConcurrentHashMap<>();
-
-    private static final AtomicInteger instanceCount = new AtomicInteger();
-    
-    private final int id;
-    private final Deque<URI> uriList = new ConcurrentLinkedDeque<URI>();
-    private final Class<A> appClass;
-
-    public static Optional<FxLauncher> get(int id) {
-        return Optional.ofNullable(LAUNCHERS.get(id));    
-    }
-    
-    public FxLauncher(Class<A> cls) {
-        this.id = instanceCount.incrementAndGet();
-        this.appClass = cls;
-        
-        if (Desktop.isDesktopSupported()) {
-            Desktop desktop = Desktop.getDesktop();
-            if (desktop.isSupported(Desktop.Action.APP_OPEN_FILE)) {
-                desktop.setOpenFileHandler(this);
-            }
-            if (desktop.isSupported(Desktop.Action.APP_OPEN_URI)) {
-                desktop.setOpenURIHandler(this);
+    static {
+        // start the runtime
+        CountDownLatch latch = new CountDownLatch(1);
+        javafx.application.Platform.startup(latch::countDown);
+        while (true) {
+            try {
+                latch.await();
+                break;
+            } catch (InterruptedException e) {
+                LOG.log(Level.FINE, "interrupted while waiting for platform startup", e);
             }
         }
         
-        LAUNCHERS.put(id, this);
+        if (Desktop.isDesktopSupported()) {
+            Desktop desktop = Desktop.getDesktop();
+            if (desktop!=null) {
+                if (desktop.isSupported(Desktop.Action.APP_OPEN_FILE)) {
+                    desktop.setOpenFileHandler(e -> e.getFiles().forEach(f -> uriList.add(f.toURI())));
+                }
+                if (desktop.isSupported(Desktop.Action.APP_OPEN_URI)) {
+                    desktop.setOpenURIHandler(e -> uriList.add(e.getURI()));
+                }
+            }
+        }
     }
     
-    @Override
-    public void openFiles(OpenFilesEvent e) {
-        e.getFiles().forEach(f -> uriList.add(f.toURI()));
-    }
-
-    @Override
-    public void openURI(OpenURIEvent e) {
-        uriList.add(e.getURI());
-    }
-
     /**
      * Mark launch as finished, and return the URIs collected during startup.
+     * @param app the FxApplication instance that was launched
      * @return collection containing the URI collected by the file and URI handlers
      */
-    public Collection<URI> launchFinished() {
-        LAUNCHERS.remove(id());
-        return Collections.unmodifiableCollection(uriList);
-    }
+    static List<URI> launchFinished(FxApplication<?,?> app) {
+        Objects.requireNonNull(app);
 
-    /**
-     * Get Launcher ID.
-     * 
-     * @return the ID of this launcher
-     */
-    public int id() {
-        return id;
-    }
+        if (Desktop.isDesktopSupported()) {
+            Desktop desktop = Desktop.getDesktop();
+            if (desktop.isSupported(Desktop.Action.APP_OPEN_FILE)) {
+                desktop.setOpenFileHandler(app::openFiles);
+            }
+            if (desktop.isSupported(Desktop.Action.APP_OPEN_URI)) {
+                desktop.setOpenURIHandler(app::openURI);
+            }
+            if (desktop.isSupported(Desktop.Action.APP_ABOUT)) {
+                desktop.setAboutHandler(app::handleAbout);
+            }
+            if (desktop.isSupported(Desktop.Action.APP_PREFERENCES)) {
+                desktop.setPreferencesHandler(app::handlePreferences);
+            }
+        }
 
-    @Override
-    public String toString() {
-        return "FxLauncher{id=" + id + "}";
+        List<URI> uris = new ArrayList<>(uriList);
+        uriList.clear();
+        return uris;
     }
 
     /**
@@ -101,22 +89,25 @@ public class FxLauncher<A extends FxApplication<A, C>, C extends FxController<A,
      *     {@link #reparseCommandLine(String[])}.
      * </ul>
      *
+     * @param <A>
+     *  the application class
+     * @param <C>
+     *  the controller class
+     * @param cls
+     *  the application class
      * @param args
      *  the comand line arguments
      */
-    public void launch(String... args) {
+    public static
+    <A extends FxApplication<A, C>, C extends FxController<A, C>>
+    void launch(Class<A> cls, String... args) {
         LOG.fine(() -> "arguments: "+Arrays.toString(args));
 
         // prepare arguments
         var reparsedArgs = reparseCommandLine(args);
 
-        // add launcher-id
-        List<String> newArgs = new ArrayList<>();
-        newArgs.add(String.format("--%s=%d", PAR_FXLAUNCHER_ID, id()));
-        newArgs.addAll(reparsedArgs);
-        
         // launch
-        Application.launch(appClass, newArgs.toArray(String[]::new));
+        Application.launch(cls, reparsedArgs.toArray(String[]::new));
     }
 
     /**
@@ -154,7 +145,7 @@ public class FxLauncher<A extends FxApplication<A, C>, C extends FxController<A,
      * @deprecated this method is a workaround that will be removed once the underlying issue is fixed in the JDK.
      */
     @Deprecated
-    public static List<String> reparseCommandLine(String[] args) {
+    private static List<String> reparseCommandLine(String[] args) {
         if (!Platform.isWindows() || args.length<2) {
             return List.of(args);
         }

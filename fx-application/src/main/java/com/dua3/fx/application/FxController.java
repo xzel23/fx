@@ -18,7 +18,6 @@ import com.dua3.fx.util.Dialogs;
 import com.dua3.fx.util.FxTask;
 import com.dua3.utility.data.Pair;
 import com.dua3.utility.lang.LangUtil;
-import com.dua3.utility.text.TextUtil;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -116,13 +115,13 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	 * Called from FXML.
 	 */
 	@FXML
-	public void closeApplication() {
+	public void closeApplicationWindow() {
 		// handle dirty state
 		if (!handleDirtyState()) {
 			LOG.fine("close aborted because of dirty state");
 			return;
 		}
-		app.close();
+		app.closeApplicationWindow();
 	}
 
 	protected boolean handleDirtyState() {

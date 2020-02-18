@@ -17,7 +17,7 @@ javafx {
 }
 
 dependencies {
-    compile project(':fx-util')
+    implementation project(':fx-util')
 
     implementation "com.dua3.utility:utility:${dua3_utility_version}"
 }

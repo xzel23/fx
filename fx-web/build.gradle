@@ -17,5 +17,5 @@ javafx {
 }
 
 dependencies {
-    compile project(':fx-util')
+    implementation project(':fx-util')
 }

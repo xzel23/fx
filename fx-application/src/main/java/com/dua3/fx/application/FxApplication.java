@@ -15,20 +15,20 @@
 package com.dua3.fx.application;
 
 import com.dua3.fx.util.Dialogs;
-import com.dua3.fx.util.controls.AboutDialog;
 import com.dua3.utility.data.Pair;
 import com.dua3.utility.lang.LangUtil;
-import com.dua3.utility.lang.Platform;
 import com.dua3.utility.text.TextUtil;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.awt.*;
+import java.awt.desktop.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -38,7 +38,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.Formatter;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.*;
 import java.util.prefs.BackingStoreException;
@@ -46,7 +46,8 @@ import java.util.prefs.Preferences;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxController<A, C>> extends Application {
+public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxController<A, C>> 
+        extends Application  {
 
     /**
      * Logger
@@ -166,12 +167,9 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
         super.init();
 
         // add URIs collected during startup to the unnamed parameters
-        Collection<URI> uris = getParameterValue(FxLauncher.PAR_FXLAUNCHER_ID)
-                .map(Integer::valueOf)
-                .flatMap(FxLauncher::get)
-                .map(FxLauncher::launchFinished)
-                .orElseGet(Collections::emptyList);
-
+        List<URI> uris = new ArrayList<>();
+        List<URI> launcherUris = FxLauncher.launchFinished(this);
+        uris.addAll(launcherUris);
         uris.stream().map(URI::toString).forEach(getParameters().getUnnamed()::add);
     }
 
@@ -235,7 +233,6 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
         // setup stage
         stage.setTitle(resources.getString("fx.application.name"));
         stage.setScene(scene);
-        stage.show();
 
         // automatically update title on document change
         final ChangeListener<Boolean> dirtyStateListener = (v, o, n) -> updateApplicationTitle();
@@ -257,12 +254,14 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
 
         stage.setOnCloseRequest(e -> {
             e.consume();
-            controller.closeApplication();
+            controller.closeApplicationWindow();
         });
+
+        stage.show();
 
         LOG.fine(() -> "done.");
     }
-
+    
     /**
      * Pattern for parsing the log configuration string.
      * Example:
@@ -355,7 +354,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      * <p>
      * Don't ask the user if he wants to save his work first - this should be handled by the controller.
      */
-    public void close() {
+    public void closeApplicationWindow() {
         if (hasPreferences()) {
             try {
                 getPreferences().flush();
@@ -364,7 +363,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
             }
         }
 
-        mainStage.close();
+        mainStage.hide();
     }
 
     /**
@@ -502,6 +501,11 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
     }
 
     /**
+     * Show this application's preferences dialog.
+     */
+    public abstract void showPreferencesDialog();
+
+    /**
      * Show this application's about dialog.
      */
     public void showAboutDialog() {
@@ -513,7 +517,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      * 
      * @param css   URL to the CSS data
      */
-    public void showAboutDialog(URL css) {
+    protected void showAboutDialog(URL css) {
         Dialogs.about(getStage())
                 .title(resources.getString("fx.application.about.title"))
                 .name(resources.getString("fx.application.name"))
@@ -561,5 +565,27 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
     @SafeVarargs
     public final String getMessage(String key, Pair<String,String>... substitutions) {
         return TextUtil.transform(resources.getString(key), substitutions);
+    }
+
+    public void openFiles(OpenFilesEvent e) {
+            e.getFiles().forEach(f -> Platform.runLater(() -> {
+                mainStage.show();
+                controller.open(f.toURI()); 
+            }));
+    }
+
+    public void openURI(OpenURIEvent e) {
+            Platform.runLater(() -> {
+                mainStage.show();
+                controller.open(e.getURI());
+            });
+    }
+
+    public void handleAbout(AboutEvent e) {
+        Platform.runLater(() -> showAboutDialog());
+    }
+
+    public void handlePreferences(PreferencesEvent e) {
+        Platform.runLater(() -> showPreferencesDialog());
     }
 }

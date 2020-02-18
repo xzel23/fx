@@ -22,11 +22,11 @@ javafx {
 }
 
 dependencies {
-    compile project(':fx-util')
-    compile project(':fx-controls')
-    compile project(':fx-icons')
-    runtime project(':fx-icons:fx-icons-ikonli')
-    runtime "org.kordamp.ikonli:ikonli-fontawesome-pack:${ikonli_version}"
+    implementation project(':fx-util')
+    implementation project(':fx-controls')
+    implementation project(':fx-icons')
+    runtimeOnly project(':fx-icons:fx-icons-ikonli')
+    runtimeOnly "org.kordamp.ikonli:ikonli-fontawesome-pack:${ikonli_version}"
 
     implementation "com.dua3.utility:utility:${dua3_utility_version}"
 }
