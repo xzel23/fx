@@ -165,12 +165,8 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
     @Override
     public void init() throws Exception {
         super.init();
-
-        // add URIs collected during startup to the unnamed parameters
-        List<URI> uris = new ArrayList<>();
-        List<URI> launcherUris = FxLauncher.launchFinished(this);
-        uris.addAll(launcherUris);
-        uris.stream().map(URI::toString).forEach(getParameters().getUnnamed()::add);
+        
+        FxLauncher.launchFinished(this);
     }
 
     /**
