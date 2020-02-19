@@ -45,22 +45,6 @@ public class FxLauncher {
      */
     static void launchFinished(FxApplication<?,?> app) {
         Objects.requireNonNull(app);
-
-        if (Desktop.isDesktopSupported()) {
-            Desktop desktop = Desktop.getDesktop();
-            if (desktop.isSupported(Desktop.Action.APP_OPEN_FILE)) {
-                desktop.setOpenFileHandler(app::openFiles);
-            }
-            if (desktop.isSupported(Desktop.Action.APP_OPEN_URI)) {
-                desktop.setOpenURIHandler(app::openURI);
-            }
-            if (desktop.isSupported(Desktop.Action.APP_ABOUT)) {
-                desktop.setAboutHandler(app::handleAbout);
-            }
-            if (desktop.isSupported(Desktop.Action.APP_PREFERENCES)) {
-                desktop.setPreferencesHandler(app::handlePreferences);
-            }
-        }
     }
 
     /**
