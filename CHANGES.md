@@ -1,6 +1,10 @@
 Changelog
 =========
 
+#### Version 0.9.5
+
+ - code cleanups, remove workarounds for JavaFX bugs (working on a patch for JavaFX instead)
+ 
 #### Version 0.9.4
 
  - new FxLauncher class
