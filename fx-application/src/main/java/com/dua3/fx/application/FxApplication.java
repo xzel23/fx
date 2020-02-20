@@ -564,17 +564,21 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
     }
 
     public void openFiles(OpenFilesEvent e) {
-            e.getFiles().forEach(f -> Platform.runLater(() -> {
+        e.getFiles().forEach(f -> Platform.runLater(() -> {
+            if (f.exists()) {
                 mainStage.show();
-                controller.open(f.toURI()); 
-            }));
+                controller.open(f.toURI());
+            } else {
+                LOG.warning("openFiles: ignoring non-existent file: "+f );
+            }
+        }));
     }
 
     public void openURI(OpenURIEvent e) {
-            Platform.runLater(() -> {
-                mainStage.show();
-                controller.open(e.getURI());
-            });
+        Platform.runLater(() -> {
+            mainStage.show();
+            controller.open(e.getURI());
+        });
     }
 
     public void handleAbout(AboutEvent e) {
