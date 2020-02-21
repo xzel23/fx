@@ -382,9 +382,14 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 					parent = getApp().getUserHome().toPath();
 					LOG.fine("initialDir() - last document location not set, using user home as parent: "+parent);
 				} else {
-					Path path = Paths.get(URI.create(lastDocument));
-					parent = path.getParent();
-					LOG.fine("initialDir() - using last document location as parent: "+parent);
+					try {
+						Path path = Paths.get(URI.create(lastDocument));
+						parent = path.getParent();
+						LOG.fine("initialDir() - using last document location as parent: " + parent);
+					} catch (IllegalArgumentException|NullPointerException e) {
+						LOG.log(Level.WARNING, "could not retrieve last document location", e);
+						parent = app.getUserHome().toPath();
+					}
 				}
 			}
 		} catch (IllegalStateException e) {

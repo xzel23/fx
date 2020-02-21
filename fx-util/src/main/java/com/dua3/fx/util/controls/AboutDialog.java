@@ -90,7 +90,7 @@ public class AboutDialog extends Dialog<Void> {
             try {
                 LOG.info("opening mail application");
                 desktop.mail(URI.create(mailAddress));
-            } catch (IOException e) {
+            } catch (IOException|IllegalArgumentException e) {
                 LOG.log(Level.WARNING, "could not open mail application", e);
             }
         }
