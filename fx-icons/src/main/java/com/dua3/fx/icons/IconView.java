@@ -37,7 +37,7 @@ public class IconView extends Control {
     private final StackPane pane;
     private Icon icon;
     
-    private StyleableStringProperty iconIdentifier = new StyleableStringProperty(DEFAULT_ICON_IDENTIFIER) {
+    private final StyleableStringProperty iconIdentifier = new StyleableStringProperty(DEFAULT_ICON_IDENTIFIER) {
         @Override
         public CssMetaData<IconView, String> getCssMetaData() {
             return StyleableProperties.ICON_IDENTIFIER;
@@ -54,7 +54,7 @@ public class IconView extends Control {
         }
 
     };
-    private StyleableObjectProperty<Paint> iconColor = new StyleableObjectProperty<>(DEFAULT_ICON_COLOR) {
+    private final StyleableObjectProperty<Paint> iconColor = new StyleableObjectProperty<>(DEFAULT_ICON_COLOR) {
         @Override
         public CssMetaData<IconView, Paint> getCssMetaData() {
             return StyleableProperties.ICON_COLOR;
@@ -72,7 +72,7 @@ public class IconView extends Control {
 
     };
     
-    private StyleableIntegerProperty iconSize = new StyleableIntegerProperty(DEFAULT_ICON_SIZE) {
+    private final StyleableIntegerProperty iconSize = new StyleableIntegerProperty(DEFAULT_ICON_SIZE) {
         @Override
         public CssMetaData<IconView, Number> getCssMetaData() {
             return StyleableProperties.ICON_SIZE;

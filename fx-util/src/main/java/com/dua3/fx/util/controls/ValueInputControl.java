@@ -17,7 +17,7 @@ import java.util.Objects;
  */
 public class ValueInputControl<T> implements InputControl<Value<T>> {
 	private final InputControl<T> wrapped;
-	private Property<Value<T>> value;
+	private final Property<Value<T>> value;
 
 
 	public ValueInputControl(InputControl<T> ic) {

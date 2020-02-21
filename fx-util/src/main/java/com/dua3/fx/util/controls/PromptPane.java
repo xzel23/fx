@@ -10,7 +10,7 @@ public class PromptPane extends InputDialogPane<String> {
     /** Logger */
     protected static final Logger LOG = Logger.getLogger(PromptPane.class.getName());
 
-    private TextField text;
+    private final TextField text;
 
 	@Override
 	public String get() {

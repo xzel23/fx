@@ -43,8 +43,8 @@ public final class IconUtil {
 
 class EmptyIcon extends Text implements Icon {
 
-    private IntegerProperty iconSize = new SimpleIntegerProperty();
-    private ObjectProperty<Paint> iconColor = new SimpleObjectProperty<>(Paint.valueOf("BLACK"));
+    private final IntegerProperty iconSize = new SimpleIntegerProperty();
+    private final ObjectProperty<Paint> iconColor = new SimpleObjectProperty<>(Paint.valueOf("BLACK"));
 
     @Override
     public String getIconIdentifier() {

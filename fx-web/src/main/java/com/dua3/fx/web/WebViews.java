@@ -90,7 +90,7 @@ public final class WebViews {
             this.logger = Objects.requireNonNull(logger);
         }
 
-        private String formatMessage(JSObject args) {
+        private static String formatMessage(JSObject args) {
             Object objLength = args.getMember("length");
 
             if (!(objLength instanceof Integer)) {

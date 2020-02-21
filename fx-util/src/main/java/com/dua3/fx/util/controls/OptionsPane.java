@@ -33,11 +33,11 @@ public class OptionsPane extends GridPane implements InputControl<OptionValues>{
 
     private final InputControl.State<OptionValues> state;
     
-	private Supplier<OptionSet> options;
-	private Supplier<OptionValues> dflt;
-	private Property<OptionValues> value = new SimpleObjectProperty<>();
+	private final Supplier<OptionSet> options;
+	private final Supplier<OptionValues> dflt;
+	private final Property<OptionValues> value = new SimpleObjectProperty<>();
 
-	private Map<Option<?>, InputControl<?>> items = new LinkedHashMap<>();
+	private final Map<Option<?>, InputControl<?>> items = new LinkedHashMap<>();
 
 	
 	private static final Insets INSETS = new Insets(2);

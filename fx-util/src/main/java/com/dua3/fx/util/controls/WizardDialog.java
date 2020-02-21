@@ -98,7 +98,7 @@ public class WizardDialog extends Dialog<Map<String,Object>> {
 	/** The currently displayed page. */
 	private Pair<String,Page<?,?>> current;
 	/** Stack of displayed pages (for navigating back). */
-	private ObservableList<Pair<String,Page<?,?>>> pageStack = FXCollections.observableArrayList();
+	private final ObservableList<Pair<String,Page<?,?>>> pageStack = FXCollections.observableArrayList();
 
 	public void setPages(Map<String,Page<?,?>> pages, String startPage) {
 		this.pages = pages;

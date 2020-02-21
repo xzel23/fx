@@ -44,7 +44,7 @@ implements InputBuilder<InputGridBuilder> {
 
 	private int columns = 1;
 
-	private LinkedHashMap<String, InputGrid.Meta<?>> data = new LinkedHashMap<>();
+	private final LinkedHashMap<String, InputGrid.Meta<?>> data = new LinkedHashMap<>();
 
     /* (non-Javadoc)
      * @see com.dua3.fx.util.controls.InputBuilder#add(java.lang.String, java.lang.String, java.lang.Class, T, com.dua3.fx.util.controls.InputDialogPane.InputControl)

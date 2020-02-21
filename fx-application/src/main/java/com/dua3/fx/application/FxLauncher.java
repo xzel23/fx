@@ -17,8 +17,10 @@ import java.util.logging.Logger;
 /**
  * Application launcher class.
  */
-public class FxLauncher {
+public final class FxLauncher {
 
+    private FxLauncher() {}
+    
     /**
      * Logger
      */
@@ -41,7 +43,6 @@ public class FxLauncher {
     /**
      * Mark launch as finished, and return the URIs collected during startup.
      * @param app the FxApplication instance that was launched
-     * @return collection containing the URI collected by the file and URI handlers
      */
     static void launchFinished(FxApplication<?,?> app) {
         Objects.requireNonNull(app);

@@ -13,7 +13,7 @@ public abstract class FxTask<V> extends Task<V>{
 	private static final AtomicInteger TASK_COUNTER = new AtomicInteger(0);
 	final int taskId = TASK_COUNTER.incrementAndGet();
 
-    private StringProperty text = new SimpleStringProperty(this, "text", "");
+    private final StringProperty text = new SimpleStringProperty(this, "text", "");
     public final ReadOnlyStringProperty textProperty() { PlatformHelper.checkThread(); return text; }
 
     /* Use updateProgress() to set this task's progress. */

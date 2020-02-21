@@ -43,7 +43,7 @@ implements InputBuilder<InputPaneBuilder> {
 
 	private final InputGridBuilder pb = new InputGridBuilder();
 
-	private List<Pair<ButtonType,Consumer<InputDialogPane<Map<String, Object>>>>> buttons = new LinkedList<>();
+	private final List<Pair<ButtonType,Consumer<InputDialogPane<Map<String, Object>>>>> buttons = new LinkedList<>();
 
 	@Override
 	public <T> InputPaneBuilder add(String id, String label, Class<T> type, Supplier<T> dflt, InputControl<T> control) {

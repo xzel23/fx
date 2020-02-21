@@ -378,7 +378,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      *
      * @return the preferences object for this application
      */
-    public Preferences getPreferences() {
+    public final Preferences getPreferences() {
         if (!hasPreferences()) {
             Class<?> cls = getClass();
             LOG.fine("creating preferences for class " + cls.getName());
@@ -392,7 +392,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      *
      * @return true, if a Preferences object has been created
      */
-    protected boolean hasPreferences() {
+    protected final boolean hasPreferences() {
         return preferences != null;
     }
 
@@ -453,7 +453,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      * @param text		the text
      */
     public void showErrorDialog(String header, String text) {
-        Dialogs.error(getStage())
+        Dialogs.error(mainStage)
                 .title("%s", resources.getString("fx.application.dialog.error.title"))
                 .header("%s", header)
                 .text("%s", text)
@@ -514,7 +514,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      * @param css   URL to the CSS data
      */
     protected void showAboutDialog(URL css) {
-        Dialogs.about(getStage())
+        Dialogs.about(mainStage)
                 .title(resources.getString("fx.application.about.title"))
                 .name(resources.getString("fx.application.name"))
                 .version(getVersion())
@@ -582,10 +582,10 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
     }
 
     public void handleAbout(AboutEvent e) {
-        Platform.runLater(() -> showAboutDialog());
+        Platform.runLater(this::showAboutDialog);
     }
 
     public void handlePreferences(PreferencesEvent e) {
-        Platform.runLater(() -> showPreferencesDialog());
+        Platform.runLater(this::showPreferencesDialog);
     }
 }
