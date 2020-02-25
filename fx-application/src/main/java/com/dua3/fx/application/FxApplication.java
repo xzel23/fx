@@ -588,4 +588,5 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
     public void handlePreferences(PreferencesEvent e) {
         Platform.runLater(this::showPreferencesDialog);
     }
+
 }
