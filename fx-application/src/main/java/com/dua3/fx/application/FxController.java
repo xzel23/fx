@@ -437,5 +437,19 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	public void setStatusText(String s) {
 		LOG.fine(() -> "status: "+s);
 	}
-	
+
+	public File getCurrentDir() {
+		if (hasCurrentDocument() && getCurrentDocument().hasLocation()) {
+			Path parent = getCurrentDocument().getPath().getParent();
+			if (parent != null) {
+				try {
+					return parent.toFile();
+				} catch (UnsupportedOperationException e) {
+					LOG.log(Level.WARNING, "cannot get current directory, using home");
+				}
+			}
+		}
+		return getApp().getUserHome();
+	}
+
 }

@@ -16,6 +16,7 @@ package com.dua3.fx.util;
 
 import java.io.File;
 import java.util.*;
+import java.util.logging.Logger;
 
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -27,6 +28,8 @@ import javafx.stage.Window;
  * Provides a fluent interface to create file dialogs. 
  */
 public class FileChooserBuilder {
+	private static final Logger LOG = Logger.getLogger(FileChooserBuilder.class.getName());
+	
 	private File initialDir = new File(System.getProperty("user.home"));
 	private String initialFileName = "";
 	private List<FileChooser.ExtensionFilter> filters = new LinkedList<>();
@@ -73,14 +76,35 @@ public class FileChooserBuilder {
 	}
 
 	private FileChooser build() {
+		
 		FileChooser chooser = new FileChooser();
-		chooser.setInitialDirectory(initialDir);
+
+		try {
+			File dir = initialDir == null || initialDir.isDirectory() ? initialDir : initialDir.getParentFile();
+			chooser.setInitialDirectory(dir);
+		} catch (IllegalArgumentException e) {
+			LOG.warning("could not set initial directory: "+initialDir);
+
+		}
 		chooser.setInitialFileName(initialFileName);
 		chooser.getExtensionFilters().setAll(filters);
 		if (selectedFilter!=null) {
 			chooser.setSelectedExtensionFilter(selectedFilter);
 		}
 		return chooser;
+	}
+
+	/**
+	 * Set initial filename and directory.
+	 * @param file
+	 *  the file
+	 * @return
+	 *  this instance
+	 */
+	public FileChooserBuilder initialFile(File file) {
+		initialFileName(file.getName());
+		initialDir(file.getParentFile());
+		return this;
 	}
 
 	/**
