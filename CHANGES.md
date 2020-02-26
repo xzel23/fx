@@ -1,6 +1,14 @@
 Changelog
 =========
 
+#### Version 0.10
+
+ - do not try to open non-existent files
+ - code cleanup
+ - update utility to 5.3
+ - Controller.getCurrentDir() gets the current (document) directory
+ - fix IAE in open diualog
+ 
 #### Version 0.9.5
 
  - code cleanups, remove workarounds for JavaFX bugs (working on a patch for JavaFX instead)
