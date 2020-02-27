@@ -29,4 +29,6 @@ module dua3_fx.util {
     
 	requires javafx.controls;
 	requires javafx.fxml;
+
+	requires org.controlsfx.controls;
 }
