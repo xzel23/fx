@@ -1,6 +1,10 @@
 Changelog
 =========
 
+#### Version 0.11
+
+ - new Validator class
+
 #### Version 0.10
 
  - do not try to open non-existent files
