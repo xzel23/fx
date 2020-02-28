@@ -2,7 +2,9 @@ package com.dua3.fx.util;
 
 import com.dua3.fx.icons.IconView;
 import com.dua3.utility.lang.LangUtil;
+import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.control.Tooltip;
@@ -56,6 +58,7 @@ public class Validator {
      * @return new rule list for the control
      */
     private List<Supplier<ValidationResult>> createRuleList(Control control) {
+        control.setFocusTraversable(true);
         control.focusedProperty().addListener( (v,o,n) -> this.validate(control));
         return new LinkedList<>();
     }
@@ -125,6 +128,7 @@ public class Validator {
             icon.setIconColor(paint);
             icon.setIconSize(iconSize);
             icon.setStyle(String.format("-fx-translate-x: -%d;", (int) (1.25*iconSize/2.0+.5)));
+            icon.setFocusTraversable(false);
 
             String message = getMessage(vr.message);
             if (!message.isEmpty()) {
@@ -172,5 +176,27 @@ public class Validator {
     public void setIconSize(int iconSize) {
         LangUtil.check(iconSize>=0 );
         this.iconSize = iconSize;
+    }
+
+    /**
+     * Add validation for a button. If validation is added to a button, the validation will be performed when
+     * the buttons is pressed, and if validation fails, the button clicked event will be consumed.
+     * @param button the button to add validation to
+     */
+    public void addValidation(Button button) {
+        if (button==null) {
+            LOG.warning("addValidation(): button is null");
+            return;
+        }
+        
+        button.addEventFilter(ActionEvent.ACTION, ae -> {
+            if (validate()!= ValidationResult.Level.OK) {
+                ae.consume(); //not valid
+            }
+        });
+    }
+    
+    public void focusFirst() {
+        controls.keySet().stream().findFirst().ifPresent(Control::requestFocus);
     }
 }
