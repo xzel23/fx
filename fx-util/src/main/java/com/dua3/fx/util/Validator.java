@@ -1,6 +1,7 @@
 package com.dua3.fx.util;
 
 import com.dua3.fx.icons.IconView;
+import com.dua3.utility.lang.LangUtil;
 import javafx.geometry.Pos;
 import javafx.scene.control.Control;
 import javafx.scene.control.TextInputControl;
@@ -21,7 +22,8 @@ public class Validator {
     
     private final ResourceBundle resources;
     private final LinkedHashMap<Control, List<Supplier<ValidationResult>>> controls = new LinkedHashMap<>();
-
+    private int iconSize = 20;
+    
     /**
      * Creates a Validator instance without assigning a fresourcde bundle.
      */
@@ -109,7 +111,8 @@ public class Validator {
             IconView icon = new IconView();
             icon.setIconIdentifier(iconId);
             icon.setIconColor(paint);
-            icon.setIconSize(20);
+            icon.setIconSize(iconSize);
+            icon.setStyle(String.format("-fx-translate-x: -%d;", (int) (1.25*iconSize/2.0+.5)));
 
             String message = getMessage(vr.message);
             if (!message.isEmpty()) {
@@ -148,5 +151,14 @@ public class Validator {
                 .map(c -> validate(c))
                 .max(ValidationResult.Level::compareTo)
                 .orElse(ValidationResult.Level.OK);
+    }
+
+    /**
+     * Set the icon size for notification icons
+     * @param iconSize the icon size
+     */
+    public void setIconSize(int iconSize) {
+        LangUtil.check(iconSize>=0 );
+        this.iconSize = iconSize;
     }
 }
