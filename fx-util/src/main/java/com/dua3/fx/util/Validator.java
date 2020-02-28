@@ -13,6 +13,7 @@ import org.controlsfx.control.decoration.GraphicDecoration;
 
 import java.util.*;
 import java.util.function.BooleanSupplier;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -46,7 +47,17 @@ public class Validator {
      * @return the list of rules
      */
     private List<Supplier<ValidationResult>> rules(Control c) {
-        return controls.computeIfAbsent(c, c_ -> new LinkedList());
+        return controls.computeIfAbsent(c, this::createRuleList);
+    }
+
+    /**
+     * Crestes a new rule list and sets the contreol to be validated on focus change.
+     * @param control the contrrol to cresate a rule list for
+     * @return new rule list for the control
+     */
+    private List<Supplier<ValidationResult>> createRuleList(Control control) {
+        control.focusedProperty().addListener( (v,o,n) -> this.validate(control));
+        return new LinkedList<>();
     }
 
     /**
@@ -62,6 +73,7 @@ public class Validator {
      * Validate that entered text matches regular expression.
      * @param c the control
      * @param message the message to display if validation fails
+     * @param regex the regular expression to test the control's text
      */
     public void matches(TextInputControl c, String message, String regex) {
         rules(c).add( () -> c.getText().matches(regex) ? ValidationResult.ok() : ValidationResult.error(message) );
