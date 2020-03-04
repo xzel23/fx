@@ -1,6 +1,11 @@
 Changelog
 =========
 
+#### Version 0.12
+
+ - new class Fxsettings
+ - FxUtil: added methods to list availbale fonts
+
 #### Version 0.11
 
  - new Validator class
