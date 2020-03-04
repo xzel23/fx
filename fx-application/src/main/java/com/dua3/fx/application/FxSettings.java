@@ -17,10 +17,11 @@ package com.dua3.fx.application;
 import java.lang.reflect.InvocationTargetException;
 import java.util.prefs.Preferences;
 
-public abstract class FxSettings<S extends FxSettings> {
+public abstract class FxSettings<S extends FxSettings<S>> {
 
-	public static <T extends FxSettings> T copyOf(T other) {
+	public static <T extends FxSettings<T>> T copyOf(T other) {
 		try {
+			@SuppressWarnings("unchecked")
 			T inst = (T) other.getClass().getConstructor().newInstance();
 			inst.assign(other);
 			return inst;
@@ -29,7 +30,7 @@ public abstract class FxSettings<S extends FxSettings> {
 		}
 	}
 
-	public static <T extends FxSettings> T fromPreferences(Class<T> cls, Preferences node) {
+	public static <T extends FxSettings<T>> T fromPreferences(Class<T> cls, Preferences node) {
 		try {
 			T inst = (T) cls.getConstructor().newInstance();
 			inst.load(node);
