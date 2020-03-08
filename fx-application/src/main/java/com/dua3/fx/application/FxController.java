@@ -41,6 +41,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static com.dua3.fx.application.FxDocument.VOID_URI;
+
 public abstract class FxController<A extends FxApplication<A, C>, C extends FxController<A, C>>  {
 
 	// - static -
@@ -124,6 +126,20 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		app.closeApplicationWindow();
 	}
 
+	/**
+	 * Check for changes. If unsaved changes are detected, display a dialog with the following options (this is done 
+	 * for each unsaved document containing changes):
+	 * <ul>
+	 *     <li> Save the current document
+	 *     <li> Do not save the current document
+	 *     <li> Cancel
+	 * </ul>
+	 * If the user selects "save", the current document is saved before the method returns.
+	 * 
+	 * @return 
+	 * 	true, if either "save" (in which case the document is automatically save) or "don't save are selected
+	 * 	false, if the dialog was cancelled
+	 */
 	protected boolean handleDirtyState() {
 		boolean rc = true;
 		List<? extends FxDocument> dirtyList = dirtyDocuments();
@@ -194,12 +210,23 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	 * Get current document.
 	 * 
 	 * @return
-	 *  URI of the current document
+	 *  the current document or {@code null}
 	 */
 	public FxDocument getCurrentDocument() {
 		return currentDocumentProperty.get();
 	}
-	
+
+	/**
+	 * Get current document locationn.
+	 *
+	 * @return
+	 *  URI of the current document or {@link FxDocument#VOID_URI}
+	 */
+	public URI getCurrentDocumentLocation() {
+		FxDocument doc = getCurrentDocument();
+		return doc != null ? doc.getLocation() : VOID_URI;
+	}
+
 	/**
 	 * Set current document.
 	 * 
@@ -208,12 +235,22 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	 */
 	protected void setCurrentDocument(FxDocument document) {		
 		currentDocumentProperty.set(document);
-		if (document.hasLocation()) {
-			getApp().setPreferenceOptional(PREF_DOCUMENT, document.getLocation().toString());
-			LOG.fine(() -> "current document: " + document);
-		}
+		onDocumentUriChanged(document.getLocation());
 	}
+
+	/**
+	 * Called when the location of the main document changes. Updates the last document in the preferences.
+	 * Implementing classes can override this method to implement a recently used documents list.
+	 * @param uri the document's URI
+	 */
+	protected void onDocumentUriChanged(URI uri) {
+		if (VOID_URI.equals(uri)) {
+			return;
+		}
 		
+		getApp().setPreferenceOptional(PREF_DOCUMENT, uri.toString());
+	}
+	
 	/**
 	 * Clear the document, i.e. inform application that no document is loaded.
 	 */
@@ -358,7 +395,13 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		}
 		
 		// save document content
-		return saveDocumentAndHandleErrors(document, file.get().toURI());
+		boolean rc = saveDocumentAndHandleErrors(document, file.get().toURI());
+		
+		if (rc) {
+			setCurrentDocument(document);
+		}
+		
+		return rc;
 	}
 
 	/**

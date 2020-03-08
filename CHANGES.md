@@ -5,7 +5,9 @@ Changelog
 
  - new class Fxsettings
  - FxUtil: added methods to list availbale fonts
-
+ - FxController.getCurrentDocumentLocation()
+ - FxController.onDocumentUriChanged() (protected)
+ 
 #### Version 0.11
 
  - new Validator class
