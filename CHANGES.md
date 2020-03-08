@@ -5,6 +5,7 @@ Changelog
 
  - new class Fxsettings
  - FxUtil: added methods to list availbale fonts
+ - FxController.getCurrentDocumentLocation()
 
 #### Version 0.11
 

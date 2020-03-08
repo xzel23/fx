@@ -194,12 +194,23 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	 * Get current document.
 	 * 
 	 * @return
-	 *  URI of the current document
+	 *  the current document or {@code null}
 	 */
 	public FxDocument getCurrentDocument() {
 		return currentDocumentProperty.get();
 	}
-	
+
+	/**
+	 * Get current document locationn.
+	 *
+	 * @return
+	 *  URI of the current document or {@link FxDocument#VOID_URI}
+	 */
+	public URI getCurrentDocumentLocation() {
+		FxDocument doc = getCurrentDocument();
+		return doc != null ? doc.getLocation() : FxDocument.VOID_URI;
+	}
+
 	/**
 	 * Set current document.
 	 * 
