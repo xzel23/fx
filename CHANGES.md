@@ -7,6 +7,7 @@ Changelog
  - FxUtil: added methods to list availbale fonts
  - FxController.getCurrentDocumentLocation()
  - FxController.onDocumentUriChanged() (protected)
+ - FxUtil: new class RecentlyUsedDocumentsList
  
 #### Version 0.11
 
