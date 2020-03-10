@@ -63,24 +63,32 @@ public class RecentlyUsedDocumentsList {
      * @param name the document's display name
      */
     public void put(URI uri, String name) {
-        storeItem(uri, name);
-        shrinkToFit();
-        changed();
+        if (storeItem(uri, name)) {
+            shrinkToFit();
+            changed();
+        }
     }
 
     /**
      * Store item. This method will not update the backing store.
      * @param uri the item's URI
      * @param name the item's display name; if empty, the path of the URI will be used
+     * @return true, if item was added
      */
-    private void storeItem(URI uri, String name) {
+    private boolean storeItem(URI uri, String name) {
         if (name.isEmpty()) {
             name = uri.getPath();
         }
-
+        
+        if (name==null || name.isBlank()) {
+            return false;
+        }
+        
         // remove before put to force update the entry's poisition in the list.
         items.remove(uri);
         items.put(uri, name);
+        
+        return true;
     }
 
     /**
