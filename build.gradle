@@ -49,7 +49,7 @@ subprojects {
 
     ext {
         java_version = '11'
-        javafx_version = '13.0.2'
+        javafx_version = '14'
         junit_version = '5.5.1'
 
         dua3_utility_version = '5.3.3'
