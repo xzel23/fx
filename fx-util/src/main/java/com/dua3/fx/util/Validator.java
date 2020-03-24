@@ -10,8 +10,6 @@ import javafx.scene.control.TextInputControl;
 import javafx.scene.control.Tooltip;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import org.controlsfx.control.decoration.Decorator;
-import org.controlsfx.control.decoration.GraphicDecoration;
 
 import java.util.*;
 import java.util.function.BooleanSupplier;
@@ -19,6 +17,8 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static javafx.geometry.Pos.CENTER_RIGHT;
 
 public class Validator {
     private static final Logger LOG = Logger.getLogger(Validator.class.getName());
@@ -108,7 +108,7 @@ public class Validator {
             .orElse(ValidationResult.ok());
 
         // remove decorations
-        Decorator.removeAllDecorations(c);
+        Decoration.getDecorations(c).clear();
         
         String iconId = null;
         Paint paint = null;
@@ -135,7 +135,9 @@ public class Validator {
                 Tooltip.install(icon, new Tooltip(message));
             }
 
-            Decorator.addDecoration(c, new GraphicDecoration(icon, Pos.CENTER_RIGHT));
+            Decoration.addDecoration(c, CENTER_RIGHT, icon, getClass().getName());
+        } else {
+            Decoration.removeDecoration(c, getClass().getName());
         }
         
         return vr.level;

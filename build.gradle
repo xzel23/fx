@@ -79,8 +79,6 @@ subprojects {
     
     // dependencies
     dependencies {
-        compile group: 'org.controlsfx', name: 'controlsfx', version: '11.0.1'
-        
         // JUnit
         testImplementation "org.junit.jupiter:junit-jupiter-api:${junit_version}"
         testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junit_version}"
