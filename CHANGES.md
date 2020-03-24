@@ -1,6 +1,11 @@
 Changelog
 =========
 
+#### Version 0.13
+
+ - update to JavaFX 14
+ - remove dependency on ControlsFX
+
 #### Version 0.12
 
  - new class Fxsettings
