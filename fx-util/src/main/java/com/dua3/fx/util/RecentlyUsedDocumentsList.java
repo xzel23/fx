@@ -51,7 +51,7 @@ public class RecentlyUsedDocumentsList {
 
     /**
      * Remove update listener.
-     * @param listener
+     * @param listener the listener to remove
      */
     public void removeUpdateListener(UpdateListener listener) {
         listeners.remove(listener);
