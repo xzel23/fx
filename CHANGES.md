@@ -5,12 +5,14 @@ Changelog
 
  - update to JavaFX 14
  - remove dependency on ControlsFX
+ - update gradle to 6.3 (for JDK 14 support)
+ - update SpotBugs and SpotBugs gradle plugin
 
 #### Version 0.12
 
  - new class Fxsettings
  - FxUtil: added methods to list availbale fonts
- - FxController.getCurrentDocumentLocation()
+ - FxControllergetCurrentDocumentLocation()
  - FxController.onDocumentUriChanged() (protected)
  - FxUtil: new class RecentlyUsedDocumentsList
  
