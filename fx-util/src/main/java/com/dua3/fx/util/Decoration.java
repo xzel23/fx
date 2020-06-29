@@ -18,6 +18,7 @@ public class Decoration {
     private static final String DECORATION_LIST = Decoration.class.getName()+".decoration_list";
     
     public static ObservableList<Decoration> getDecorations(Node node) {
+        @SuppressWarnings("unchecked")
         ObservableList<Decoration> decorations = (ObservableList<Decoration>) node.getProperties().get(DECORATION_LIST);
         if (decorations==null) {
             decorations = FXCollections.observableArrayList();

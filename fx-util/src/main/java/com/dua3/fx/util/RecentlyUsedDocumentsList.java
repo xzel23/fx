@@ -43,7 +43,7 @@ public class RecentlyUsedDocumentsList {
 
     /**
      * Add update listener.
-     * @param listener
+     * @param listener the update listener
      */
     public void addUpdateListener(UpdateListener listener) {
         listeners.add(Objects.requireNonNull(listener));
