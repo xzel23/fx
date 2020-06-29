@@ -4,9 +4,11 @@ Changelog
 #### Version 0.13
 
  - update to JavaFX 14
+ - update to ikonli 11.5.0
  - remove dependency on ControlsFX
  - update gradle to 6.3 (for JDK 14 support)
  - update SpotBugs and SpotBugs gradle plugin
+ - update utility
 
 #### Version 0.12
 
