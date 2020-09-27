@@ -14,9 +14,9 @@
 
 plugins {
     id 'com.dua3.gradle.jpms' version '1.0' apply false
-    id 'com.adarshr.test-logger' version '1.7.0' apply false
-    id 'com.github.spotbugs' version '4.2.4' apply false
-    id 'com.jfrog.bintray' version '1.8.4' apply false
+    id 'com.adarshr.test-logger' version '2.1.0' apply false
+    id 'com.github.spotbugs' version '4.5.0' apply false
+    id 'com.jfrog.bintray' version '1.8.5' apply false
     id "org.openjfx.javafxplugin" version '0.0.8' apply false
 }
 
@@ -35,7 +35,7 @@ subprojects {
 
     /////////////////////////////////////////////////////////////////////////////
     group = 'com.dua3.fx'
-    version = '0.13'
+    version = '0.14-SNAPSHOT'
 
     ext.moduleName = project.group
     ext.scm = 'https://gitlab.com/com.dua3/lib/fx.git'
@@ -49,10 +49,10 @@ subprojects {
 
     ext {
         java_version = '11'
-        javafx_version = '14'
+        javafx_version = '15'
         junit_version = '5.5.1'
 
-        dua3_utility_version = '6.4.2'
+        dua3_utility_version = '6.6.3.1'
 
         ikonli_version = '11.5.0'
     }
