@@ -17,7 +17,7 @@ plugins {
     id 'com.adarshr.test-logger' version '2.1.0' apply false
     id 'com.github.spotbugs' version '4.5.0' apply false
     id 'com.jfrog.bintray' version '1.8.5' apply false
-    id "org.openjfx.javafxplugin" version '0.0.8' apply false
+    id "org.openjfx.javafxplugin" version '0.0.9' apply false
 }
 
 subprojects {
