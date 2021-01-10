@@ -3,7 +3,6 @@ package com.dua3.fx.util;
 import com.dua3.fx.icons.IconView;
 import com.dua3.utility.lang.LangUtil;
 import javafx.event.ActionEvent;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.TextInputControl;
@@ -13,7 +12,6 @@ import javafx.scene.paint.Paint;
 
 import java.util.*;
 import java.util.function.BooleanSupplier;
-import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -166,7 +164,7 @@ public class Validator {
      */
     public ValidationResult.Level validate() {
         return controls.keySet().stream()
-                .map(c -> validate(c))
+                .map(this::validate)
                 .max(ValidationResult.Level::compareTo)
                 .orElse(ValidationResult.Level.OK);
     }

@@ -45,7 +45,7 @@ import javafx.util.Callback;
 public final class FxDbUtil {
 
     /** Logger */
-    protected static final Logger LOG = Logger.getLogger(FxDbUtil.class.getName());
+    private static final Logger LOG = Logger.getLogger(FxDbUtil.class.getName());
 	private static final String ERROR_TEXT = "###";
 
     // utility - no instances

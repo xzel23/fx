@@ -35,7 +35,7 @@ subprojects {
 
     /////////////////////////////////////////////////////////////////////////////
     group = 'com.dua3.fx'
-    version = '0.14-BETA1'
+    version = '0.14-BETA2'
 
     ext.moduleName = project.group
     ext.scm = 'https://gitlab.com/com.dua3/lib/fx.git'
@@ -119,7 +119,7 @@ subprojects {
 
         dryRun = false //[Default: false] Whether to run this as dry-run, without deploying
         publish = true //[Default: false] Whether version should be auto published after an upload
-        override = true //[Default: false] Whether to override version artifacts already published
+        override = false //[Default: false] Whether to override version artifacts already published
 
         publications = ['projectPublication']
 

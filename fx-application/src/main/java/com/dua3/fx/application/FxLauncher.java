@@ -1,15 +1,9 @@
 package com.dua3.fx.application;
 
-import com.dua3.utility.lang.LangUtil;
 import com.dua3.utility.lang.Platform;
 import javafx.application.Application;
 
-import java.awt.*;
-import java.awt.desktop.*;
-import java.net.URI;
 import java.util.*;
-import java.util.List;
-import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.CountDownLatch;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -122,18 +116,18 @@ public final class FxLauncher {
         for (String s:args) {
             // split if s contains spaces, starts with a double dash, or a windows path
             if (s.indexOf(' ')>=0 || s.matches("^(--|[a-zA-Z]:[/\\\\]).*")) {
-                if (arg.length()>0) {
+                if (!arg.isEmpty()) {
                     argL.add(arg.toString());
                 }
                 arg.setLength(0);
             }
 
-            if (arg.length()>0) {
+            if (!arg.isEmpty()) {
                 arg.append(' ');
             }
             arg.append(s);
         }
-        if (arg.length()>0) {
+        if (!arg.isEmpty()) {
             argL.add(arg.toString());
         }
 

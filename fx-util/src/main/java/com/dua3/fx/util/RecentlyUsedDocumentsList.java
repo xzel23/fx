@@ -25,6 +25,7 @@ public class RecentlyUsedDocumentsList {
     private final Preferences prefs;
     private final List<UpdateListener> listeners = new ArrayList<>();
     
+    @FunctionalInterface
     public interface UpdateListener {
         void onUpdate(RecentlyUsedDocumentsList source);
     }
@@ -136,7 +137,7 @@ public class RecentlyUsedDocumentsList {
         try {
             Arrays.stream(prefs.keys())
                     // ... sortieren
-                    .sorted((a, b) -> Integer.valueOf(a).compareTo(Integer.valueOf(b)))
+                    .sorted(Comparator.comparing(Integer::valueOf))
                     // ... Werte holen
                     .map(key -> prefs.get(key, ""))
                     // ... leere Einträge ignorieren

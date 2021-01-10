@@ -3,14 +3,12 @@ package com.dua3.fx.util;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Bounds;
-import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 
-import javax.swing.text.Position;
 import java.util.Objects;
 
 public class Decoration {
