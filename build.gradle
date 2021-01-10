@@ -52,7 +52,7 @@ subprojects {
         javafx_version = '15'
         junit_version = '5.5.1'
 
-        dua3_utility_version = '6.6.3.1'
+        dua3_utility_version = '7.0.7'
 
         ikonli_version = '11.5.0'
     }

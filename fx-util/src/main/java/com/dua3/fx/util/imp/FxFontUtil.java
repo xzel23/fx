@@ -27,18 +27,18 @@ public class FxFontUtil implements FontUtil<Font> {
     }
 
     @Override
-    public com.dua3.utility.text.FontUtil.Bounds getTextBounds(String s, com.dua3.utility.text.Font f) {
+    public com.dua3.utility.text.FontUtil.Bounds getTextBounds(CharSequence s, com.dua3.utility.text.Font f) {
          var bounds = FxUtil.getTextBounds(s, f);
          return new com.dua3.utility.text.FontUtil.Bounds(bounds.getWidth(), bounds.getHeight());
     }
 
     @Override
-    public double getTextWidth(String s, com.dua3.utility.text.Font f) {
+    public double getTextWidth(CharSequence s, com.dua3.utility.text.Font f) {
         return FxUtil.getTextWidth(s, f);
     }
 
     @Override
-    public double getTextHeight(String s, com.dua3.utility.text.Font f) {
+    public double getTextHeight(CharSequence s, com.dua3.utility.text.Font f) {
         return FxUtil.getTextHeight(s, f);
     }
 

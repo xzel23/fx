@@ -68,21 +68,21 @@ public final class FxUtil {
         return new Font(font.getFamily(), font.getSizeInPoints());
     }
 
-    private static javafx.geometry.Bounds boundsInLocal(String s, com.dua3.utility.text.Font f) {
-        Text text = new Text(s);
+    private static javafx.geometry.Bounds boundsInLocal(CharSequence s, com.dua3.utility.text.Font f) {
+        Text text = new Text(s.toString());
         text.setFont(convert(f));
         return text.getBoundsInLocal();
     }
 
-    public static Bounds getTextBounds(String s, com.dua3.utility.text.Font f) {
+    public static Bounds getTextBounds(CharSequence s, com.dua3.utility.text.Font f) {
         return boundsInLocal(s,f);
     }
 
-    public static double getTextWidth(String s, com.dua3.utility.text.Font f) {
+    public static double getTextWidth(CharSequence s, com.dua3.utility.text.Font f) {
         return boundsInLocal(s,f).getWidth();
     }
 
-    public static double getTextHeight(String s, com.dua3.utility.text.Font f) {
+    public static double getTextHeight(CharSequence s, com.dua3.utility.text.Font f) {
         return boundsInLocal(s,f).getHeight();
     }
 
