@@ -1,7 +1,7 @@
 Changelog
 =========
 
-#### Version 0.14 (in development)
+#### Version 0.14
 
  - update to JavaFX 15
  - update plugins
