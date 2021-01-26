@@ -1,6 +1,10 @@
 Changelog
 =========
 
+#### Version 0.14.1
+
+ - fix exception after setting invalid initial directory in FileChooserBuilder 
+
 #### Version 0.14
 
  - update to JavaFX 15

@@ -15,6 +15,7 @@
 package com.dua3.fx.util;
 
 import java.io.File;
+import java.nio.file.Files;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -80,12 +81,15 @@ public class FileChooserBuilder {
 		FileChooser chooser = new FileChooser();
 
 		try {
-			File dir = initialDir == null || initialDir.isDirectory() ? initialDir : initialDir.getParentFile();
+			File dir = null;
+			if (initialDir != null && initialDir.exists()) {
+				dir = initialDir.isDirectory() ? initialDir : initialDir.getParentFile();
+			}
 			chooser.setInitialDirectory(dir);
 		} catch (IllegalArgumentException e) {
 			LOG.warning("could not set initial directory: "+initialDir);
-
 		}
+		
 		chooser.setInitialFileName(initialFileName);
 		chooser.getExtensionFilters().setAll(filters);
 		if (selectedFilter!=null) {
