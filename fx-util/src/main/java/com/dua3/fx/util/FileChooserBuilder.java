@@ -77,24 +77,23 @@ public class FileChooserBuilder {
 	}
 
 	private FileChooser build() {
-		
 		FileChooser chooser = new FileChooser();
 
-		try {
-			File dir = null;
-			if (initialDir != null && initialDir.exists()) {
-				dir = initialDir.isDirectory() ? initialDir : initialDir.getParentFile();
+		if (initialDir!=null && initialDir.isDirectory()) {
+			try {
+				chooser.setInitialDirectory(initialDir);
+			} catch (IllegalArgumentException|SecurityException e) {
+				LOG.warning("could not set initial directory: "+initialDir);
 			}
-			chooser.setInitialDirectory(dir);
-		} catch (IllegalArgumentException e) {
-			LOG.warning("could not set initial directory: "+initialDir);
 		}
 		
 		chooser.setInitialFileName(initialFileName);
+		
 		chooser.getExtensionFilters().setAll(filters);
 		if (selectedFilter!=null) {
 			chooser.setSelectedExtensionFilter(selectedFilter);
 		}
+		
 		return chooser;
 	}
 
@@ -112,7 +111,9 @@ public class FileChooserBuilder {
 	}
 
 	/**
-	 * Set initial directory.
+	 * Set initial directory. If the initial directory is inaccessible or non-existent, it will be ignored when
+	 * creating the dialog. If it exists, but is a regular file, the dialog will be created with the file's parent
+	 * directory set as its initial directory.
 	 * @param initialDir
 	 *  the initial directory
 	 * @return

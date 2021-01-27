@@ -1,6 +1,10 @@
 Changelog
 =========
 
+#### Version 0.14.2 (to be released)
+
+ - Catch SecurityException when setting initial directory in FileChooserBuilder to an inaccessible path
+
 #### Version 0.14.1
 
  - fix exception after setting invalid initial directory in FileChooserBuilder 
