@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * JavaFX utility class.
+ */
 public final class FxUtil {
 
     private static class FontHelper {

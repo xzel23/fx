@@ -18,6 +18,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
+/**
+ * A JavaFX control to display icons.
+ */
 public class IconView extends Control {
     private static final Logger LOG = Logger.getLogger(IconView.class.getName());
     
