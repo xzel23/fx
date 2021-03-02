@@ -68,7 +68,11 @@ public final class FxUtil {
     }
 
     public static Font convert(com.dua3.utility.text.Font font) {
-        return new Font(font.getFamily(), font.getSizeInPoints());
+        return Font.font(
+                font.getFamily(), 
+                font.isBold() ? FontWeight.BOLD : FontWeight.NORMAL, 
+                font.isItalic() ? FontPosture.ITALIC : FontPosture.REGULAR, 
+                font.getSizeInPoints());
     }
 
     private static javafx.geometry.Bounds boundsInLocal(CharSequence s, com.dua3.utility.text.Font f) {

@@ -21,4 +21,5 @@ module dua3_fx.samples {
 
 	requires javafx.controls;
 	requires dua3_fx.icons;
+    requires dua3_fx.editor;
 }

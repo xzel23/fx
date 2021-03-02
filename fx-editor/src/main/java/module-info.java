@@ -12,25 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-plugins {
-    id 'application'
+module dua3_fx.editor {
+	exports com.dua3.fx.editor;
+	opens com.dua3.fx.editor;
+
+	requires dua3_fx.util;
+
+	requires java.logging;
+	
+	requires javafx.controls;
+	requires javafx.fxml;
+	requires javafx.graphics;
+	requires dua3_utility;
 }
-
-javafx {
-    configuration = 'compile'
-    modules = [ 'javafx.base', 'javafx.fxml', 'javafx.controls' ]
-}
-
-dependencies {
-    implementation project(':fx-util')
-    implementation project(':fx-controls')
-    implementation project(':fx-icons')
-    implementation project(':fx-editor')
-    runtimeOnly project(':fx-icons:fx-icons-ikonli')
-    runtimeOnly "org.kordamp.ikonli:ikonli-fontawesome-pack:${ikonli_version}"
-
-    implementation "com.dua3.utility:utility:${dua3_utility_version}"
-}
-
-// set main
-mainClassName = 'com.dua3.fx.samples.Main'
