@@ -2,6 +2,7 @@ package com.dua3.fx.util;
 
 import javafx.geometry.Bounds;
 import javafx.geometry.Dimension2D;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
@@ -73,6 +74,20 @@ public final class FxUtil {
                 font.isBold() ? FontWeight.BOLD : FontWeight.NORMAL, 
                 font.isItalic() ? FontPosture.ITALIC : FontPosture.REGULAR, 
                 font.getSizeInPoints());
+    }
+
+    /**
+     * Convert {@link com.dua3.utility.data.Color} to {@link Color}.
+     * @param color the color
+     * @return the JavaFX color
+     */
+    public static Color convert(com.dua3.utility.data.Color color) {
+        return Color.color(
+                color.rf(),
+                color.gf(),
+                color.bf(),
+                color.af()
+        );
     }
 
     private static javafx.geometry.Bounds boundsInLocal(CharSequence s, com.dua3.utility.text.Font f) {

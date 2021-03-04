@@ -26,9 +26,17 @@ public class RichTextSample extends Application {
         RichTextBuilder rtb = new RichTextBuilder();
         rtb.append("Hello, ");
         rtb.push(Style.BOLD);
+        rtb.push(Style.RED);
         rtb.append("world");
+        rtb.pop(Style.RED);
         rtb.pop(Style.BOLD);
         rtb.append("!");
+        rtb.append("\n");
+        rtb.append("(This is ");
+        rtb.push(Style.LINE_THROUGH);
+        rtb.append("just");
+        rtb.pop(Style.LINE_THROUGH);
+        rtb.append(" a test.)");
         
         rta.setText(rtb.toRichText());
         
