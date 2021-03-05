@@ -1,8 +1,10 @@
 Changelog
 =========
 
-#### Version 0.14.2 (to be released)
-
+#### Version 0.15 (to be released)
+ - stop publishing to bintray
+ - publish builds to GitLab packages
+ - TODO: publish releases to Maven Central Repository 
  - Catch SecurityException when setting initial directory in FileChooserBuilder to an inaccessible path
 
 #### Version 0.14.1
