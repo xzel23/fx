@@ -35,7 +35,7 @@ subprojects {
 
     /////////////////////////////////////////////////////////////////////////////
     group = 'com.dua3.fx'
-    version = '0.14.2'
+    version = '0.15-SNAPSHOT'
 
     ext.moduleName = project.group
     ext.scm = 'https://gitlab.com/com.dua3/lib/fx.git'
@@ -49,7 +49,7 @@ subprojects {
 
     ext {
         java_version = '11'
-        javafx_version = '15'
+        javafx_version = '15.0.1'
         junit_version = '5.5.1'
 
         dua3_utility_version = '8.2.1'

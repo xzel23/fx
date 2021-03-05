@@ -1,5 +1,6 @@
 package com.dua3.fx.util;
 
+import com.dua3.utility.text.FontDef;
 import javafx.geometry.Bounds;
 import javafx.geometry.Dimension2D;
 import javafx.scene.paint.Color;
@@ -76,6 +77,13 @@ public final class FxUtil {
                 font.getSizeInPoints());
     }
 
+    public static com.dua3.utility.text.FontDef toFontDef(Font font) {
+        FontDef fd = new com.dua3.utility.text.FontDef();
+        fd.setFamily(font.getFamily());
+        fd.setSize((float) font.getSize());
+        return fd;
+    }
+
     /**
      * Convert {@link com.dua3.utility.data.Color} to {@link Color}.
      * @param color the color
@@ -87,6 +95,15 @@ public final class FxUtil {
                 color.gf(),
                 color.bf(),
                 color.af()
+        );
+    }
+
+    public static com.dua3.utility.data.Color convert(Color color) {
+        return new com.dua3.utility.data.Color(
+                (int) Math.round(color.getRed()/255.0),
+                (int) Math.round(color.getGreen()/255.0),
+                (int) Math.round(color.getBlue()/255.0),
+                (int) Math.round(color.getOpacity()/255.0)
         );
     }
 

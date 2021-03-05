@@ -21,7 +21,7 @@ public class RichTextSample extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        RichTextArea rta = new RichTextArea(new Font("Arial-18.0"));
+        RichTextArea rta = new RichTextArea();
 
         RichTextBuilder rtb = new RichTextBuilder();
         rtb.append("Hello, ");

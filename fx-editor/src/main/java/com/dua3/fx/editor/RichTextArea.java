@@ -17,8 +17,12 @@ public class RichTextArea extends StyledTextArea {
     private final Font baseFont;
     private final Map<FontDef, Pair<Font,javafx.scene.text.Font>> fontMap = new HashMap<>();
     
+    public RichTextArea() {
+        this(new Font().deriveFont(FxUtil.toFontDef(javafx.scene.text.Font.getDefault())));
+    }
+    
     public RichTextArea(Font baseFont) {
-        this.baseFont = Objects.requireNonNull(baseFont);
+        this.baseFont = baseFont;
     }
     
     public void setText(RichText text) {
