@@ -37,6 +37,13 @@ public class RichTextSample extends Application {
         rtb.append("just");
         rtb.pop(Style.LINE_THROUGH);
         rtb.append(" a test.)");
+        rtb.append("\n");
+        rtb.push(Style.BLUE);
+        rtb.append("I'm a blue boy in a blue world.\n");
+        rtb.pop(Style.BLUE);
+        rtb.push(Style.GREEN);
+        rtb.append("Go green!\n");
+        rtb.pop(Style.GREEN);
         
         rta.setText(rtb.toRichText());
         
