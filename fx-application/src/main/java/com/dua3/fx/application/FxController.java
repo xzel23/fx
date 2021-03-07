@@ -46,7 +46,7 @@ import java.util.logging.Logger;
 
 import static com.dua3.fx.application.FxDocument.VOID_URI;
 
-public abstract class FxController<A extends FxApplication<A, C>, C extends FxController<A, C>>  {
+public abstract class FxController<A extends FxApplication<A, C>, C extends FxController<A, C, D>, D extends FxDocument>  {
 
 	// - static -
 
@@ -69,7 +69,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	protected static final String PREF_DOCUMENT = "document_uri";
 	
 	/** The URI of the currently opened document. */
-	protected ObjectProperty<FxDocument> currentDocumentProperty = new SimpleObjectProperty<>();
+	protected ObjectProperty<D> currentDocumentProperty = new SimpleObjectProperty<>();
 	
 	/** The URI of the currently opened document. */
 	protected BooleanProperty dirtyProperty = new SimpleBooleanProperty(false);
@@ -113,7 +113,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		return app;
 	}
 	
-	public abstract List<? extends FxDocument> dirtyDocuments();
+	public abstract List<? extends D> dirtyDocuments();
 	
 	/**
 	 * Request application close as if the close-window-button was clicked.
@@ -145,7 +145,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	 */
 	protected boolean handleDirtyState() {
 		boolean rc = true;
-		List<? extends FxDocument> dirtyList = dirtyDocuments();
+		List<? extends D> dirtyList = dirtyDocuments();
 
 		AtomicBoolean goOn = new AtomicBoolean(false);
 		switch (dirtyList.size()) {
@@ -154,7 +154,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 				break;
 				
 			case 1:	{
-				FxDocument doc = dirtyList.get(0);
+				D doc = dirtyList.get(0);
 
 				String header;
 				if (!doc.hasLocation()) {
@@ -215,7 +215,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	 * @return
 	 *  the current document or {@code null}
 	 */
-	public FxDocument getCurrentDocument() {
+	public D getCurrentDocument() {
 		return currentDocumentProperty.get();
 	}
 
@@ -226,7 +226,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	 *  URI of the current document or {@link FxDocument#VOID_URI}
 	 */
 	public URI getCurrentDocumentLocation() {
-		FxDocument doc = getCurrentDocument();
+		D doc = getCurrentDocument();
 		return doc != null ? doc.getLocation() : VOID_URI;
 	}
 
@@ -236,7 +236,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	 * @param document
 	 *  the document
 	 */
-	protected void setCurrentDocument(FxDocument document) {		
+	protected void setCurrentDocument(D document) {		
 		currentDocumentProperty.set(document);
 		onDocumentUriChanged(document.getLocation());
 	}
@@ -297,7 +297,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 			return false;			
 		}
 
-		FxDocument document = getCurrentDocument();
+		D document = getCurrentDocument();
 		File initialDir = initialDir(document);
 		
 		if (initialDir == null || !initialDir.isDirectory()) {
@@ -358,7 +358,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		return saveDocumentAndHandleErrors(getCurrentDocument());
 	}
 
-	private boolean saveDocumentAndHandleErrors(FxDocument document) {
+	private boolean saveDocumentAndHandleErrors(D document) {
 		return saveDocumentAndHandleErrors(document, document.getLocation());
 	}
 
@@ -381,7 +381,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 			return false;
 		}
 		
-		FxDocument document = getCurrentDocument();
+		D document = getCurrentDocument();
 		File initialDir = initialDir(document);
 
 		Optional<File> file = Dialogs
@@ -412,7 +412,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	 * @param document the current document
 	 * @return the initial folder to set
 	 */
-	private File initialDir(FxDocument document) {
+	private File initialDir(D document) {
 		if (document==null) {
 			return getApp().getUserHome();
 		}
@@ -452,7 +452,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		return initialDir;
 	}
 
-	private boolean saveDocumentAndHandleErrors(FxDocument document, URI uri) {
+	private boolean saveDocumentAndHandleErrors(D document, URI uri) {
 		try {
 			document.saveAs(uri);
 			return true;
@@ -476,7 +476,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	}
 
 	@SuppressWarnings({ "static-method", "unused" })
-	protected FxDocument loadDocument(URI uri) throws IOException {
+	protected D loadDocument(URI uri) throws IOException {
 		throw new UnsupportedOperationException("not implemented");
 	}
 	

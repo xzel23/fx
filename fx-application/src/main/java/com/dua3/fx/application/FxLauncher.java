@@ -60,7 +60,7 @@ public final class FxLauncher {
      *  the comand line arguments
      */
     public static
-    <A extends FxApplication<A, C>, C extends FxController<A, C>>
+    <A extends FxApplication<A, C>, C extends FxController<A, C, ?>>
     void launch(Class<A> cls, String... args) {
         LOG.fine(() -> "arguments: "+Arrays.toString(args));
 

@@ -44,7 +44,7 @@ import java.util.prefs.Preferences;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxController<A, C>> 
+public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxController<A, C, ?>> 
         extends Application  {
 
     /**
