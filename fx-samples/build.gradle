@@ -17,7 +17,7 @@ plugins {
 }
 
 javafx {
-    configuration = 'compile'
+    configuration = 'compileOnly'
     modules = [ 'javafx.base', 'javafx.fxml', 'javafx.controls' ]
 }
 
