@@ -1,5 +1,6 @@
 package com.dua3.fx.util;
 
+import com.dua3.utility.io.IOUtil;
 import com.dua3.utility.text.FontDef;
 import javafx.geometry.Bounds;
 import javafx.geometry.Dimension2D;
@@ -8,13 +9,15 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.io.File;
 import java.net.URI;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.nio.file.Path;
+import java.util.*;
 
 /**
  * JavaFX utility class.
@@ -134,6 +137,49 @@ public final class FxUtil {
 
     public static Dimension2D growToFit(Dimension2D a, Bounds b) {
         return new Dimension2D(Math.max(a.getWidth(), b.getWidth()), Math.max(a.getHeight(), b.getHeight()));
+    }
+
+    /**
+     * Test if filename matches filter.
+     * @param filter the filter
+     * @param filename the filename
+     * @return true if filename matches filter
+     */
+    public static boolean matches(FileChooser.ExtensionFilter filter, String filename) {
+        String fext = IOUtil.getExtension(filename).toLowerCase(Locale.ROOT);
+        return filter.getExtensions().stream()
+                .map(ext -> ext.replaceFirst("^\\*\\.", "").toLowerCase(Locale.ROOT))    
+                .anyMatch(ext -> Objects.equals(ext, fext));
+    }
+
+    /**
+     * Test if file matches filter.
+     * @param filter the filter
+     * @param file the file
+     * @return true if filename matches filter
+     */
+    public static boolean matches(FileChooser.ExtensionFilter filter, Path file) {
+        return matches(filter, file.toString());
+    }
+
+    /**
+     * Test if filename matches filter.
+     * @param filter the filter
+     * @param file the file
+     * @return true if file matches filter
+     */
+    public static boolean matches(FileChooser.ExtensionFilter filter, File file) {
+        return matches(filter, file.getName());
+    }
+
+    /**
+     * Test if URI matches filter.
+     * @param filter the filter
+     * @param uri the URI
+     * @return true if file matches filter
+     */
+    public static boolean matches(FileChooser.ExtensionFilter filter, URI uri) {
+        return matches(filter, uri.getPath());
     }
 
     private FxUtil() {}
