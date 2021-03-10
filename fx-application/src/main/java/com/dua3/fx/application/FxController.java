@@ -16,9 +16,9 @@ package com.dua3.fx.application;
 
 import com.dua3.fx.util.Dialogs;
 import com.dua3.fx.util.FxTask;
+import com.dua3.fx.util.FxUtil;
 import com.dua3.utility.data.Pair;
 import com.dua3.utility.lang.LangUtil;
-import com.dua3.utility.text.TextUtil;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -35,8 +35,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
@@ -328,7 +326,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		} catch (Exception e) {
 			LOG.log(Level.WARNING, "error opening document", e);
 			getApp().showErrorDialog(
-					String.format("%s '%s'", resources.getString("fx.application.dialog.error.open_document"), getDisplayName(uri)),
+					String.format("%s '%s'", resources.getString("fx.application.dialog.error.open_document"), FxUtil.asText(uri)),
 					Objects.toString(e.getLocalizedMessage())
 			);
 			return false;
@@ -459,17 +457,13 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		} catch (Exception e) {
 			LOG.log(Level.WARNING, "error saving document", e);
 			getApp().showErrorDialog(
-				String.format("%s '%s'" , resources.getString("fx.application.dialog.error.save_document"), getDisplayName(uri)),
+				String.format("%s '%s'" , resources.getString("fx.application.dialog.error.save_document"), FxUtil.asText(uri)),
 				String.format("%s: %s", e.getClass().getSimpleName(), e.getLocalizedMessage())
 			);
 			return false;
 		}		
 	}
 
-	protected String getDisplayName(URI uri) {
-		return URLDecoder.decode(uri.toString(), StandardCharsets.UTF_8);
-	}
-	
 	@SuppressWarnings("static-method")
 	protected void createDocument() {
 		throw new UnsupportedOperationException("not implemented");

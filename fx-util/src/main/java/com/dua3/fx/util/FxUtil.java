@@ -9,6 +9,9 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
+import java.net.URI;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -17,6 +20,10 @@ import java.util.List;
  * JavaFX utility class.
  */
 public final class FxUtil {
+
+    public static String asText(URI uri) {
+        return uri==null ? "" : URLDecoder.decode(uri.toString(), StandardCharsets.UTF_8);
+    }
 
     private static class FontHelper {
         private static final List<String> FONTS_ALL;
