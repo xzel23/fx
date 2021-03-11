@@ -23,11 +23,21 @@ public class ButtonBuilder {
         return this;
     }
 
+    /**
+     * Set graphic for the button.
+     * @param name the name identifying the icon to use
+     * @return this ButtonBuilder instance
+     */
     public ButtonBuilder graphic(String name) {
         this.graphic = IconUtil.iconFromName(name).orElseThrow(() -> new IllegalStateException("unknown icon: "+name)).node();
         return this;
     }
 
+    /**
+     * Set tooltip for the button.
+     * @param tooltip the toolzip text
+     * @return this ButtonBuilder instance
+     */
     public ButtonBuilder tooltip(String tooltip) {
         this.tooltip = tooltip;
         return this;
