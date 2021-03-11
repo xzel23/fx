@@ -1,6 +1,5 @@
 package com.dua3.fx.util.controls;
 
-import com.dua3.fx.icons.IconUtil;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -18,18 +17,13 @@ public class ButtonBuilder {
         return this;
     }
 
-    public ButtonBuilder graphic(Node graphic) {
-        this.graphic = graphic;
-        return this;
-    }
-
     /**
      * Set graphic for the button.
-     * @param name the name identifying the icon to use
+     * @param graphic the graphic to use
      * @return this ButtonBuilder instance
      */
-    public ButtonBuilder graphic(String name) {
-        this.graphic = IconUtil.iconFromName(name).orElseThrow(() -> new IllegalStateException("unknown icon: "+name)).node();
+    public ButtonBuilder graphic(Node graphic) {
+        this.graphic = graphic;
         return this;
     }
 
