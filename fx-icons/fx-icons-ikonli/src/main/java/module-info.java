@@ -4,7 +4,7 @@ module dua3_fx.icons.ikonli {
 
     requires java.logging;
 
-    requires org.kordamp.iconli.core;
+    requires org.kordamp.ikonli.core;
     requires org.kordamp.ikonli.javafx;
 
     requires dua3_fx.icons;

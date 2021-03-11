@@ -14,7 +14,7 @@
 
 plugins {
     id 'com.adarshr.test-logger' version '2.1.0' apply false
-    id 'com.github.spotbugs' version '4.6.1' apply false
+    id 'com.github.spotbugs' version '4.7.0' apply false
     id "org.openjfx.javafxplugin" version '0.0.9' apply false
 }
 
@@ -50,7 +50,7 @@ subprojects {
 
         dua3_utility_version = '9-SNAPSHOT'
 
-        ikonli_version = '11.5.0'
+        ikonli_version = '12.2.0'
     }
 
     sourceCompatibility = java_version
@@ -58,8 +58,6 @@ subprojects {
 
     // repositories
     repositories {
-        mavenCentral()
-
         // GitLab Packages
         maven {
             url "https://gitlab.com/api/v4/projects/24900343/packages/maven"
@@ -72,6 +70,8 @@ subprojects {
                 header(HttpHeaderAuthentication)
             }
         }
+
+        mavenCentral()
     }
 
     javafx {
@@ -191,8 +191,6 @@ subprojects {
     // === SPOTBUGS === >
     if (run_spotbugs) {
         apply plugin: 'com.github.spotbugs'
-
-        spotbugs.excludeFilter = rootProject.file('spotbugs-exclude.xml')
 
         tasks.withType(com.github.spotbugs.snom.SpotBugsTask) {
             reports {
