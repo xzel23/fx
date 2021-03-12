@@ -15,6 +15,7 @@
 package com.dua3.fx.application;
 
 import com.dua3.fx.util.Dialogs;
+import com.dua3.fx.util.FxUtil;
 import com.dua3.utility.data.Pair;
 import com.dua3.utility.lang.LangUtil;
 import com.dua3.utility.text.TextUtil;
@@ -326,8 +327,8 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
         FxDocument document = controller.getCurrentDocument();
 
         if (document != null) {
-            String locStr = document.hasLocation() ? 
-                    document.getLocation().toString() : 
+            String locStr = document.hasLocation() ?
+                    FxUtil.asText(document.getLocation()) : 
                     resources.getString("fx.application.text.untitiled");
             boolean dirty = document.isDirty();
 
