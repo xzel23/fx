@@ -32,6 +32,7 @@ public class SliderWithButtons extends Region {
 
         if (btnDecrement!=null) {
             btnDecrement.setOnAction(evt -> slider.decrement());
+            btnDecrement.setFocusTraversable(false);
             children.add(btnDecrement);
         }
 
@@ -39,6 +40,7 @@ public class SliderWithButtons extends Region {
 
         if (btnIncrement!=null) {
             btnIncrement.setOnAction(evt -> slider.increment());
+            btnIncrement.setFocusTraversable(false);
             children.add(btnIncrement);
         }
 
