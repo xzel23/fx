@@ -1,6 +1,9 @@
 package com.dua3.fx.util.controls;
 
 import com.dua3.fx.icons.IconUtil;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.value.ObservableDoubleValue;
+import javafx.beans.value.ObservableNumberValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Orientation;
@@ -76,7 +79,17 @@ public class SliderBuilder {
         slider.valueProperty().addListener((v,o,n) -> onChange.accept(n.doubleValue()));
         return this;
     }
-    
+
+    public SliderBuilder bindMin(ObservableNumberValue value) {
+        slider.minProperty().bind(value);
+        return this;
+    }
+
+    public SliderBuilder bindMax(ObservableNumberValue value) {
+        slider.maxProperty().bind(value);
+        return this;
+    }
+
     public SliderWithButtons build() {
         return slider;
     }
