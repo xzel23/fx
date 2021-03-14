@@ -58,6 +58,9 @@ subprojects {
 
     // repositories
     repositories {
+        // local Maven repository
+        mavenLocal()
+        
         // GitLab Packages
         maven {
             url "https://gitlab.com/api/v4/projects/24900343/packages/maven"
