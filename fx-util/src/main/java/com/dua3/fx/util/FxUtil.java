@@ -65,7 +65,12 @@ public final class FxUtil {
         MONOSPACE,
         ANY
     }
-    
+
+    /**
+     * List available fonts for a given {@link FontType}.
+     * @param t the font type
+     * @return list of fonts
+     */
     public static List<String> getFonts(FontType t) {
         switch (t) {
             case ANY:
@@ -79,6 +84,11 @@ public final class FxUtil {
         }
     }
 
+    /**
+     * Convert {@link com.dua3.utility.text.Font} to JavaFX {@link Font}.
+     * @param font the font
+     * @return the JavaFX Font
+     */
     public static Font convert(com.dua3.utility.text.Font font) {
         return Font.font(
                 font.getFamily(), 
@@ -87,6 +97,11 @@ public final class FxUtil {
                 font.getSizeInPoints());
     }
 
+    /**
+     * Convert JavaFX {@link Font} to {@link FontDef}.
+     * @param font the font
+     * @return the FontDef
+     */
     public static com.dua3.utility.text.FontDef toFontDef(Font font) {
         FontDef fd = new com.dua3.utility.text.FontDef();
         fd.setFamily(font.getFamily());
@@ -108,6 +123,11 @@ public final class FxUtil {
         );
     }
 
+    /**
+     * Convert {@link Color to }{@link com.dua3.utility.data.Color}.
+     * @param color the JavaFX color
+     * @return the color
+     */
     public static com.dua3.utility.data.Color convert(Color color) {
         return new com.dua3.utility.data.Color(
                 (int) Math.round(color.getRed()/255.0),
