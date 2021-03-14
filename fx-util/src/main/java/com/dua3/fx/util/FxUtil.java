@@ -1,6 +1,7 @@
 package com.dua3.fx.util;
 
 import com.dua3.utility.io.IOUtil;
+import com.dua3.utility.math.AffineTransformation;
 import com.dua3.utility.text.FontDef;
 import javafx.geometry.Bounds;
 import javafx.geometry.Dimension2D;
@@ -9,6 +10,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.scene.transform.Affine;
 import javafx.stage.FileChooser;
 
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -137,6 +139,24 @@ public final class FxUtil {
         );
     }
 
+    /**
+     * Convert {@link AffineTransformation} to JavaFX {@link Affine}.
+     * @param at the affine transformation
+     * @return the JavaFX affine transformation
+     */
+    public static Affine convert(AffineTransformation at) {
+        return new Affine(at.a(), at.c(), at.e(), at.b(), at.d(), at.f());
+    }
+
+    /**
+     * Convert JavaFX {@link Affine} to {@link AffineTransformation}.
+     * @param a the JavaFX affine transformation
+     * @return the affine transformation
+     */
+    public static AffineTransformation convert(Affine a) {
+        return new AffineTransformation(a.getMxx(), a.getMxy(), a.getMyx(), a.getMyy(), a.getTx(), a.getTy());
+    }
+    
     private static javafx.geometry.Bounds boundsInLocal(CharSequence s, com.dua3.utility.text.Font f) {
         Text text = new Text(s.toString());
         text.setFont(convert(f));
