@@ -15,13 +15,13 @@
 plugins {
     id 'com.adarshr.test-logger' version '2.1.0' apply false
     id 'com.github.spotbugs' version '4.7.0' apply false
-    id "org.openjfx.javafxplugin" version '0.0.9' apply false
+    id "com.dua3.javafxgradle7plugin" version "0.0.9" apply false
 }
 
 subprojects {
 
     apply plugin: 'java-library'
-    apply plugin: 'org.openjfx.javafxplugin'
+    apply plugin: 'com.dua3.javafxgradle7plugin'
     apply plugin: 'maven-publish'
     apply plugin: 'idea'
     apply plugin: 'com.github.spotbugs'
