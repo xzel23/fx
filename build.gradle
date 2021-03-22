@@ -19,19 +19,17 @@ plugins {
 }
 
 subprojects {
-    ext.fast_build   = project.findProperty("fast_build")!=null
-    ext.run_spotbugs = !fast_build
 
-    apply plugin: 'java'
     apply plugin: 'java-library'
     apply plugin: 'org.openjfx.javafxplugin'
     apply plugin: 'maven-publish'
     apply plugin: 'idea'
+    apply plugin: 'com.github.spotbugs'
     apply plugin: 'com.adarshr.test-logger'
 
     /////////////////////////////////////////////////////////////////////////////
     group = 'com.dua3.fx'
-    version = '0.15-beta2-SNAPSHOT'
+    version = '0.15-beta2'
 
     ext.moduleName = project.group
     ext.scm = 'https://gitlab.com/com.dua3/lib/fx.git'
@@ -41,14 +39,14 @@ subprojects {
     ext.developerId = 'axh'
     ext.developerName = 'Axel Howind'
     ext.developerEmail = 'axel@dua3.com'
-    ////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////
 
     ext {
         java_version = '11'
         javafx_version = '16'
         junit_version = '5.5.1'
 
-        dua3_utility_version = '9-beta2-SNAPSHOT'
+        dua3_utility_version = '9-beta2'
 
         ikonli_version = '12.2.0'
     }
@@ -56,19 +54,18 @@ subprojects {
     sourceCompatibility = java_version
     targetCompatibility = java_version
 
-    // repositories
     repositories {
         // Maven local Repository
         mavenLocal()
-
+        
         // GitLab Packages
-        if (properties.containsKey('gitLabPrivateToken')) {
+        if (properties.containsKey('gitlabPrivateToken')) {
             maven {
                 url "https://gitlab.com/api/v4/projects/24900343/packages/maven"
-                name "GitLab"
+                name "GitlabPrivate"
                 credentials(HttpHeaderCredentials) {
                     name = 'Private-Token'
-                    value = gitLabPrivateToken
+                    value = gitlabPrivateToken
                 }
                 authentication {
                     header(HttpHeaderAuthentication)
@@ -77,7 +74,7 @@ subprojects {
         } else if (System.getenv("CI_JOB_TOKEN")!=null) {
             maven {
                 url "https://gitlab.com/api/v4/projects/24900343/packages/maven"
-                name "GitLab"
+                name "GitlabPrivate"
                 credentials(HttpHeaderCredentials) {
                     name = 'Job-Token'
                     value = System.getenv("CI_JOB_TOKEN")
@@ -120,16 +117,17 @@ subprojects {
         theme 'standard-parallel'
     }
 
-    javadoc {
-        options.encoding = 'UTF-8'
-    }
-
     compileJava {
         options.encoding = 'UTF-8'
         options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
     }
 
+    javadoc {
+        options.encoding = 'UTF-8'
+    }
+
     // === ARTIFACTS === >
+
     task sourcesJar(type: Jar, dependsOn: classes) {
         classifier = 'sources'
         from sourceSets.main.allSource
@@ -142,11 +140,8 @@ subprojects {
 
     artifacts {
         archives jar
-
-        if (!fast_build) {
-            archives sourcesJar
-            archives javadocJar
-        }
+        archives sourcesJar
+        archives javadocJar
     }
 
     // === MAVEN publication === >
@@ -175,7 +170,7 @@ subprojects {
     // Create the publication with the pom configuration:
     publishing {
         publications {
-            projectPublication(MavenPublication) {
+            projectJars(MavenPublication) {
                 from components.java
                 artifact sourcesJar
                 artifact javadocJar
@@ -193,19 +188,37 @@ subprojects {
         }
 
         repositories {
-            if (properties.containsKey('gitLabPrivateToken')) {
+            if (gitlabPrivateToken!=null) {
+                System.out.println("!!using private token!!")
+                // Gitlab public packages
+                if (!version.contains("SNAPSHOT")) {
+                    maven {
+                        url "https://gitlab.com/api/v4/projects/25276458/packages/maven"
+                        name "GitlabPublic"
+                        credentials(HttpHeaderCredentials) {
+                            name = 'Private-Token'
+                            value = gitlabPrivateToken
+                        }
+                        authentication {
+                            header(HttpHeaderAuthentication)
+                        }
+                    }
+                }
+                
+                // Gitlab private packages
                 maven {
                     url "https://gitlab.com/api/v4/projects/24900343/packages/maven"
-                    name "GitLab"
+                    name "GitlabPrivate"
                     credentials(HttpHeaderCredentials) {
                         name = 'Private-Token'
-                        value = gitLabPrivateToken
+                        value = gitlabPrivateToken
                     }
                     authentication {
                         header(HttpHeaderAuthentication)
                     }
                 }
             } else if (System.getenv("CI_JOB_TOKEN")!=null) {
+                System.out.println("!!using CI_JOB_TOKEN!!")
                 maven {
                     url "https://gitlab.com/api/v4/projects/24900343/packages/maven"
                     name "GitLab"
@@ -217,27 +230,27 @@ subprojects {
                         header(HttpHeaderAuthentication)
                     }
                 }
+            } else {
+                System.out.println("!!neither gitlabPrivateToken nor CI_JOB_TOKEN is set -- cannot publish build!!")
             }
         }
     }
 
     // === SPOTBUGS === >
-    if (run_spotbugs) {
-        apply plugin: 'com.github.spotbugs'
+    spotbugs.toolVersion = '4.2.2'
 
-        tasks.withType(com.github.spotbugs.snom.SpotBugsTask) {
-            reports {
-                xml.enabled false
-                html.enabled true
-            }
+    tasks.withType(com.github.spotbugs.snom.SpotBugsTask) {
+        reports {
+            xml.enabled false
+            html.enabled true
         }
     }
-    
+
 }
 
+// === DEFAULT TASKS === >
 tasks.withType(PublishToMavenRepository) {
     dependsOn publishToMavenLocal
 }
 
-// === DEFAULT TASKS === >
 defaultTasks 'build', 'publishToMavenLocal'

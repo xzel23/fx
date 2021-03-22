@@ -6,6 +6,7 @@ Changelog
  - publish builds to GitLab packages
  - TODO: publish releases to Maven Central Repository 
  - Catch SecurityException when setting initial directory in FileChooserBuilder to an inaccessible path
+ - update dependencies
 
 #### Version 0.14.1
 
