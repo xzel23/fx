@@ -59,13 +59,13 @@ subprojects {
         mavenLocal()
         
         // GitLab Packages
-        if (properties.containsKey('gitlabPrivateToken')) {
+        if (System.properties.containsKey('gitlabPrivateToken')) {
             maven {
                 url "https://gitlab.com/api/v4/projects/24900343/packages/maven"
                 name "GitlabPrivate"
                 credentials(HttpHeaderCredentials) {
                     name = 'Private-Token'
-                    value = gitlabPrivateToken
+                    value = System.properties.get('gitlabPrivateToken')
                 }
                 authentication {
                     header(HttpHeaderAuthentication)
@@ -188,7 +188,7 @@ subprojects {
         }
 
         repositories {
-            if (gitlabPrivateToken!=null) {
+            if (System.properties.containsKey('gitlabPrivateToken')) {
                 System.out.println("!!using private token!!")
                 // Gitlab public packages
                 if (!version.contains("SNAPSHOT")) {
@@ -197,7 +197,7 @@ subprojects {
                         name "GitlabPublic"
                         credentials(HttpHeaderCredentials) {
                             name = 'Private-Token'
-                            value = gitlabPrivateToken
+                            value = System.properties.get('gitlabPrivateToken')
                         }
                         authentication {
                             header(HttpHeaderAuthentication)
@@ -211,7 +211,7 @@ subprojects {
                     name "GitlabPrivate"
                     credentials(HttpHeaderCredentials) {
                         name = 'Private-Token'
-                        value = gitlabPrivateToken
+                        value = System.properties.get('gitlabPrivateToken')
                     }
                     authentication {
                         header(HttpHeaderAuthentication)
