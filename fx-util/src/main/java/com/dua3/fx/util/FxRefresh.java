@@ -1,7 +1,10 @@
 package com.dua3.fx.util;
 
 import com.dua3.utility.lang.LangUtil;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.stage.Stage;
 
 import java.util.Objects;
@@ -64,31 +67,45 @@ public class FxRefresh {
         FxRefresh refresher = new FxRefresh(name, task);
 
         // prevent redraw of hidden component
-        node.visibleProperty().addListener( (v,o,n) -> refresher.setActive(n) );
+        node.visibleProperty().addListener((v_, o_, n_) -> refresher.setActive(n_));
 
         // stop update thread when node is removed from scenegraph
-        node.parentProperty().addListener( (v,o,n) -> {
-                    if (n!=null) {
-                        refresher.start();
+        ChangeListener<Parent> parentChangeListener = new ChangeListener<Parent>() {
+            @Override
+            public void changed(ObservableValue<? extends Parent> v, Parent o, Parent n) {
+                if (n != null) {
+                    refresher.setActive(true);
+                } else {
+                    refresher.stop();
+                }
+            }
+        };
+        node.parentProperty().addListener(parentChangeListener);
+
+        // avoid updates when control is not visble
+        ChangeListener<Boolean> changeListener = new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> _v, Boolean o_, Boolean n_) {
+                if (n_) {
+                    refresher.setActive(n_);
+                } else {
+                    refresher.stop();
+                }
+            }
+        };
+
+        node.sceneProperty().addListener( (v,o,n) -> {
+            if (n==null) {
+                refresher.stop();
+            } else {
+                n.windowProperty().addListener((v_,o_,n_) -> {
+                    if (n_!=null) {
+                        n_.showingProperty().addListener(changeListener);
+                        refresher.setActive(n_.isShowing());
                     } else {
                         refresher.stop();
                     }
-                }
-        );
-
-        // stop the update thread when the window closes
-        node.sceneProperty().addListener( (v,o,n) -> {
-            if (n!=null) {
-                Stage stage = (Stage) n.getWindow();
-                if (stage!=null) {
-                    stage.showingProperty().addListener((v_,o_,n_) -> {
-                        if (n_) {
-                            refresher.start();
-                        } else {
-                            refresher.stop();
-                        }
-                    });
-                }
+                });
             }
         });
 
@@ -166,20 +183,6 @@ public class FxRefresh {
     }
 
     /**
-     * Start the refresher.
-     */
-    public synchronized void start() {
-        if (this.updateThread!=null) {
-            LOG.warning(() -> "["+name+"] start() called on running instance, ignoring");
-            return;
-        }
-
-        LOG.fine(() -> "["+name+"] starting");
-        this. updateThread = new Thread(this::refreshLoop);
-        this.updateThread.start();
-    }
-
-    /**
      * Stop the refresher.
      */
     public synchronized void stop() {
@@ -190,15 +193,22 @@ public class FxRefresh {
 
         LOG.fine(() -> "["+name+"] stopping");
         this. updateThread = null;
-        signal();
+        setActive(false);
     }
 
     /**
      * Set active state.
      * @param flag whether to activate or deactivate the refresher
      */
-    public void setActive(boolean flag) {
+    public synchronized void setActive(boolean flag) {
+        if (flag && this.updateThread==null) {
+            LOG.fine(() -> "[" + name + "] starting");
+            this.updateThread = new Thread(this::refreshLoop);
+            this.updateThread.start();
+        }
+
         this.active.set(flag);
+        signal();
     }
 
     /**
