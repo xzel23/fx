@@ -15,9 +15,17 @@
 package com.dua3.fx.util.imp;
 
 import com.dua3.fx.util.FxUtil;
+import com.dua3.utility.data.Color;
+import com.dua3.utility.lang.LangUtil;
 import com.dua3.utility.text.FontUtil;
 
 import javafx.scene.text.Font;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Locale;
+import java.util.Optional;
+import java.util.WeakHashMap;
 
 public class FxFontUtil implements FontUtil<Font> {
 
@@ -40,6 +48,33 @@ public class FxFontUtil implements FontUtil<Font> {
     @Override
     public double getTextHeight(CharSequence s, com.dua3.utility.text.Font f) {
         return FxUtil.getTextHeight(s, f);
+    }
+
+    private final WeakHashMap<com.dua3.utility.text.Font, Font> fontMap = new WeakHashMap<>();
+
+    @Override
+    public Optional<com.dua3.utility.text.Font> loadFont(String type, InputStream in) throws IOException {
+        LangUtil.check(FONT_TYPE_TRUETYPE.equals(type), () -> new IllegalArgumentException("unsupported font type: " + type));
+        try (in) {
+            Font fxFont = Font.loadFont(in, 0);
+            if (fxFont==null) {
+                return Optional.empty();
+            }
+            
+            String style = fxFont.getStyle().toLowerCase(Locale.ROOT);
+            com.dua3.utility.text.Font font = new com.dua3.utility.text.Font(
+                    fxFont.getFamily(),
+                    (float) fxFont.getSize(), 
+                    Color.BLACK, 
+                    style.contains("bold"), 
+                    style.contains("italic") || style.contains("oblique"), 
+                    style.contains("line-through"), 
+                    style.contains("line-under") 
+            );
+            fontMap.putIfAbsent(font, fxFont);
+            
+            return Optional.of(font);
+        }
     }
 
     public FxFontUtil() {
