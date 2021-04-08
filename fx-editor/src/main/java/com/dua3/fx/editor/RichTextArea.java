@@ -3,14 +3,11 @@ package com.dua3.fx.editor;
 import com.dua3.fx.util.FxUtil;
 import com.dua3.utility.data.Pair;
 import com.dua3.utility.text.*;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class RichTextArea extends StyledTextArea<RichTextArea.Paragraph> {
 

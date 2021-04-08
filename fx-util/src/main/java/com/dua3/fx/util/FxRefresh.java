@@ -68,27 +68,21 @@ public class FxRefresh {
         node.visibleProperty().addListener((v_, o_, n_) -> refresher.setActive(n_));
 
         // stop update thread when node is removed from scenegraph
-        ChangeListener<Parent> parentChangeListener = new ChangeListener<Parent>() {
-            @Override
-            public void changed(ObservableValue<? extends Parent> v, Parent o, Parent n) {
-                if (n != null) {
-                    refresher.setActive(true);
-                } else {
-                    refresher.stop();
-                }
+        ChangeListener<Parent> parentChangeListener = (v, o, n) -> {
+            if (n != null) {
+                refresher.setActive(true);
+            } else {
+                refresher.stop();
             }
         };
         node.parentProperty().addListener(parentChangeListener);
 
         // avoid updates when control is not visble
-        ChangeListener<Boolean> changeListener = new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> _v, Boolean o_, Boolean n_) {
-                if (n_) {
-                    refresher.setActive(n_);
-                } else {
-                    refresher.stop();
-                }
+        ChangeListener<Boolean> changeListener = (_v, o_, n_) -> {
+            if (n_) {
+                refresher.setActive(n_);
+            } else {
+                refresher.stop();
             }
         };
 

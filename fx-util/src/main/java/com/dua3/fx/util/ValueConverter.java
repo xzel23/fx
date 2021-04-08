@@ -9,7 +9,7 @@ public class ValueConverter<T> {
         return Option.value(t);
     }
 
-    public T fromValue(Value<T>v) {
+    public T fromValue(Value<? extends T> v) {
         return v.get();
     }
 

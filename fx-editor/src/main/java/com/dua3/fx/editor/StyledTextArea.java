@@ -3,14 +3,8 @@ package com.dua3.fx.editor;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.layout.Region;
-import com.dua3.utility.text.RichText;
-import javafx.scene.text.TextFlow;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public abstract class StyledTextArea<P extends Node> extends Region {
     

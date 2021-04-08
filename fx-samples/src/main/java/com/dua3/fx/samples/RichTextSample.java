@@ -1,16 +1,10 @@
 package com.dua3.fx.samples;
 
 import com.dua3.fx.editor.RichTextArea;
-import com.dua3.fx.icons.IconUtil;
-import com.dua3.fx.icons.IconView;
-import com.dua3.utility.text.Font;
-import com.dua3.utility.text.RichText;
 import com.dua3.utility.text.RichTextBuilder;
 import com.dua3.utility.text.Style;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
 public class RichTextSample extends Application {
