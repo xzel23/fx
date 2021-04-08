@@ -12,9 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.dua3.fx.util.imp;
+package com.dua3.fx.util;
 
-import com.dua3.fx.util.FxUtil;
 import com.dua3.utility.data.Color;
 import com.dua3.utility.lang.LangUtil;
 import com.dua3.utility.text.FontUtil;

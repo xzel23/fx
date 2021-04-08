@@ -13,7 +13,6 @@ import javafx.scene.text.Text;
 import javafx.scene.transform.Affine;
 import javafx.stage.FileChooser;
 
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.File;
 import java.net.URI;
 import java.net.URLDecoder;

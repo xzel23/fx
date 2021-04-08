@@ -12,14 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import com.dua3.fx.util.FxFontUtil;
+import com.dua3.fx.util.FxImageUtil;
+
 module dua3_fx.util {
 	exports com.dua3.fx.util;
 	opens com.dua3.fx.util;
+	
 	exports com.dua3.fx.util.controls;
 	opens com.dua3.fx.util.controls;
 
 	provides com.dua3.utility.text.FontUtil
-	with com.dua3.fx.util.imp.FxFontUtil;
+	with FxFontUtil;
+
+	provides com.dua3.utility.data.ImageUtil
+	with FxImageUtil;
 
 	requires java.logging;
     requires dua3_utility;

@@ -21,8 +21,8 @@ import java.util.List;
 public class SliderWithButtons extends Region {
     private Pane pane;
     private final Slider slider;
-    private Button btnIncrement;
-    private Button btnDecrement;
+    private final Button btnIncrement;
+    private final Button btnDecrement;
     private final List<Node> children = new ArrayList<>();
     
     SliderWithButtons() {

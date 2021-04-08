@@ -1,11 +1,9 @@
 package com.dua3.fx.util;
 
-import com.dua3.utility.lang.LangUtil;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.stage.Stage;
 
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
