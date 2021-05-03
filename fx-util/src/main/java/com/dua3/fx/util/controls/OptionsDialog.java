@@ -15,19 +15,21 @@
 package com.dua3.fx.util.controls;
 
 import com.dua3.utility.lang.LangUtil;
-import com.dua3.utility.options.OptionSet;
-import com.dua3.utility.options.OptionValues;
+import com.dua3.utility.options.Option;
+import com.dua3.utility.options.Arguments;
 
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
+
+import java.util.Collection;
 
 /**
  * A Dialog for inputting values.
  *
  * The dialog consists of labels and input controls laid out in a grid.
  */
-public class OptionsDialog extends Dialog<OptionValues> {
+public class OptionsDialog extends Dialog<Arguments> {
 
 	private OptionsPane optionPane;
 	
@@ -50,11 +52,11 @@ public class OptionsDialog extends Dialog<OptionValues> {
 	/**
 	 * Set options.
 	 * @param optionSet 
-	 *  the optionSet to set
+	 *  the options to set
 	 * @param currentValues
 	 *  the current values
 	 */
-	public void setOptions(OptionSet optionSet, OptionValues currentValues) {
+	public void setOptions(Collection<Option<?>> optionSet, Arguments currentValues) {
 		LangUtil.check(optionPane==null, "setOptions() already called!");
 		this.optionPane = new OptionsPane(optionSet, currentValues);
 		optionPane.init();

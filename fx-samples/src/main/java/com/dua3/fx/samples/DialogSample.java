@@ -92,7 +92,7 @@ public class DialogSample extends Application {
         // Options
         container.getChildren().add(createButton("Options", () -> {
             var rc = Dialogs.options(primaryStage)
-                    .options(CsvIo.getCommonOptions())
+                    .options(CsvIo.getOptions())
                     .title("Options")
                     .header("This is an options dialog.")
                     .showAndWait();

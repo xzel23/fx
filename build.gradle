@@ -11,11 +11,18 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+buildscript {
+    repositories {
+        mavenLocal()
+    }
+    dependencies {
+        classpath group: 'com.dua3.gradle', name: 'javafx-gradle7-plugin', version: "0.0.10-SNAPSHOT"
+    }
+}
 
 plugins {
     id 'com.adarshr.test-logger' version '2.1.0' apply false
     id 'com.github.spotbugs' version '4.7.0' apply false
-    id "com.dua3.javafxgradle7plugin" version "0.0.9" apply false
 }
 
 subprojects {
@@ -29,7 +36,7 @@ subprojects {
 
     /////////////////////////////////////////////////////////////////////////////
     group = 'com.dua3.fx'
-    version = '0.15-beta4-SNAPSHOT'
+    version = '0.15-beta4'
 
     ext.moduleName = project.group
     ext.scm = 'https://gitlab.com/com.dua3/lib/fx.git'
@@ -44,9 +51,9 @@ subprojects {
     ext {
         java_version = '11'
         javafx_version = '16'
-        junit_version = '5.5.1'
+        junit_version = '5.7.1'
 
-        dua3_utility_version = '9-beta4'
+        dua3_utility_version = '9-beta7'
 
         ikonli_version = '12.2.0'
     }

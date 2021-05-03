@@ -15,8 +15,8 @@
 package com.dua3.fx.util.controls;
 
 import com.dua3.utility.data.Pair;
-import com.dua3.utility.options.OptionSet;
-import com.dua3.utility.options.OptionValues;
+import com.dua3.utility.options.Option;
+import com.dua3.utility.options.Arguments;
 import javafx.scene.Node;
 import javafx.scene.control.ButtonType;
 import javafx.stage.FileChooser;
@@ -112,13 +112,13 @@ implements InputBuilder<InputPaneBuilder> {
 	}
 
 	@Override
-	public InputPaneBuilder options(String id, String label, Supplier<OptionValues> dflt, Supplier<OptionSet> options) {
+	public InputPaneBuilder options(String id, String label, Supplier<Arguments> dflt, Supplier<Collection<Option<?>>> options) {
 		pb.options(id, label, dflt, options);
 		return this;
 	}
 
 	@Override
-	public InputPaneBuilder options(String id, Supplier<OptionValues> dflt, Supplier<OptionSet> options) {
+	public InputPaneBuilder options(String id, Supplier<Arguments> dflt, Supplier<Collection<Option<?>>> options) {
 		pb.options(id, dflt, options);
 		return this;
 	}

@@ -14,8 +14,8 @@
 
 package com.dua3.fx.util.controls;
 
-import com.dua3.utility.options.OptionSet;
-import com.dua3.utility.options.OptionValues;
+import com.dua3.utility.options.Option;
+import com.dua3.utility.options.Arguments;
 import javafx.beans.binding.Bindings;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -126,13 +126,13 @@ implements InputBuilder<InputDialogBuilder> {
 	}
 
 	@Override
-	public InputDialogBuilder options(String id, String label, Supplier<OptionValues> dflt, Supplier<OptionSet> options) {
+	public InputDialogBuilder options(String id, String label, Supplier<Arguments> dflt, Supplier<Collection<Option<?>>> options) {
 		pb.options(id, label, dflt, options);
 		return this;
 	}
 
 	@Override
-	public InputDialogBuilder options(String id, Supplier<OptionValues> dflt, Supplier<OptionSet> options) {
+	public InputDialogBuilder options(String id, Supplier<Arguments> dflt, Supplier<Collection<Option<?>>> options) {
 		pb.options(id, dflt, options);
 		return this;
 	}

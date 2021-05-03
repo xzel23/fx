@@ -1,7 +1,7 @@
 package com.dua3.fx.util.controls;
 
-import com.dua3.utility.options.OptionSet;
-import com.dua3.utility.options.OptionValues;
+import com.dua3.utility.options.Arguments;
+import com.dua3.utility.options.Option;
 import javafx.scene.Node;
 import javafx.stage.FileChooser;
 
@@ -252,7 +252,7 @@ public interface InputBuilder<B extends InputBuilder<B>> {
      * @return
      *  {@code this}
      */
-    B options(String id, String label, Supplier<OptionValues> dflt, Supplier<OptionSet> options);
+    B options(String id, String label, Supplier<Arguments> dflt, Supplier<Collection<Option<?>>> options);
 
     /**
      * Add unlabeled pane with options.
@@ -269,7 +269,7 @@ public interface InputBuilder<B extends InputBuilder<B>> {
      * @return
      *  {@code this}
      */
-    B options(String id, Supplier<OptionValues> dflt, Supplier<OptionSet> options);
+    B options(String id, Supplier<Arguments> dflt, Supplier<Collection<Option<?>>> options);
 
     enum FileDialogMode {
         OPEN,

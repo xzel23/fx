@@ -14,10 +14,12 @@
 
 package com.dua3.fx.util.controls;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Objects;
 
-import com.dua3.utility.options.OptionSet;
-import com.dua3.utility.options.OptionValues;
+import com.dua3.utility.options.Option;
+import com.dua3.utility.options.Arguments;
 import javafx.stage.Window;
 
 /**
@@ -25,15 +27,15 @@ import javafx.stage.Window;
  *
  * Provides a fluent interface to create Alerts.
  */
-public class OptionsDialogBuilder extends AbstractDialogBuilder<OptionsDialog, OptionsDialogBuilder, OptionValues> {
+public class OptionsDialogBuilder extends AbstractDialogBuilder<OptionsDialog, OptionsDialogBuilder, Arguments> {
 
 	public OptionsDialogBuilder(Window parentWindow) {
 		super(parentWindow);
 		setDialogSupplier(OptionsDialog::new);
 	}
 
-	private OptionSet options = new OptionSet();
-	private OptionValues currentValues = OptionValues.empty();
+	private Collection<Option<?>> options = new ArrayList<>();
+	private Arguments currentValues = Arguments.empty();
 
 	@Override
 	public OptionsDialog build() {
@@ -51,7 +53,7 @@ public class OptionsDialogBuilder extends AbstractDialogBuilder<OptionsDialog, O
 	 * @return
 	 *  this builder instance
 	 */
-	public OptionsDialogBuilder options(OptionSet options) {
+	public OptionsDialogBuilder options(Collection<Option<?>> options) {
 		this.options = Objects.requireNonNull(options);
 		return this;
 	}
@@ -63,7 +65,7 @@ public class OptionsDialogBuilder extends AbstractDialogBuilder<OptionsDialog, O
 	 * @return
 	 *  this builder instance
 	 */
-	public OptionsDialogBuilder currentValues(OptionValues currentValues) {
+	public OptionsDialogBuilder currentValues(Arguments currentValues) {
 		this.currentValues = Objects.requireNonNull(currentValues);
 		return this;
 	}

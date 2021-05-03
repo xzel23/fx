@@ -16,8 +16,8 @@ package com.dua3.fx.util.controls;
 
 import com.dua3.fx.util.controls.InputGrid.Meta;
 import com.dua3.utility.lang.LangUtil;
-import com.dua3.utility.options.OptionSet;
-import com.dua3.utility.options.OptionValues;
+import com.dua3.utility.options.Option;
+import com.dua3.utility.options.Arguments;
 import javafx.beans.property.*;
 import javafx.scene.Node;
 import javafx.stage.FileChooser;
@@ -182,12 +182,12 @@ implements InputBuilder<InputGridBuilder> {
 	}
 
 	@Override
-	public InputGridBuilder options(String id, String label, Supplier<OptionValues> dflt, Supplier<OptionSet> options) {
-		return add(id, label, OptionValues.class, dflt, new OptionsPane(options, dflt));
+	public InputGridBuilder options(String id, String label, Supplier<Arguments> dflt, Supplier<Collection<Option<?>>> options) {
+		return add(id, label, Arguments.class, dflt, new OptionsPane(options, dflt));
 	}
 
-	public InputGridBuilder options(String id, Supplier<OptionValues> dflt, Supplier<OptionSet> options) {
-		return add(id, OptionValues.class, dflt, new OptionsPane(options, dflt));
+	public InputGridBuilder options(String id, Supplier<Arguments> dflt, Supplier<Collection<Option<?>>> options) {
+		return add(id, Arguments.class, dflt, new OptionsPane(options, dflt));
 	}
 
 	@Override
