@@ -11,24 +11,17 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-buildscript {
-    repositories {
-        mavenLocal()
-    }
-    dependencies {
-        classpath group: 'com.dua3.gradle', name: 'javafx-gradle7-plugin', version: "0.0.10-SNAPSHOT"
-    }
-}
 
 plugins {
     id 'com.adarshr.test-logger' version '2.1.0' apply false
     id 'com.github.spotbugs' version '4.7.0' apply false
+    id "org.openjfx.javafxplugin" version "0.0.10" apply false
 }
 
 subprojects {
 
     apply plugin: 'java-library'
-    apply plugin: 'com.dua3.javafxgradle7plugin'
+    apply plugin: 'org.openjfx.javafxplugin'
     apply plugin: 'maven-publish'
     apply plugin: 'idea'
     apply plugin: 'com.github.spotbugs'
