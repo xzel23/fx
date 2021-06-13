@@ -4,7 +4,7 @@ Changelog
 #### Version 0.15 (to be released)
  - stop publishing to bintray
  - publish builds to GitLab packages
- - TODO: publish releases to Maven Central Repository 
+ - publish releases to Sonatype OSSRH 
  - Catch SecurityException when setting initial directory in FileChooserBuilder to an inaccessible path
  - update dependencies
 
