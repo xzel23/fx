@@ -21,8 +21,9 @@ plugins {
 subprojects {
 
     apply plugin: 'java-library'
-    apply plugin: 'org.openjfx.javafxplugin'
     apply plugin: 'maven-publish'
+    apply plugin: 'signing'
+    apply plugin: 'org.openjfx.javafxplugin'
     apply plugin: 'idea'
     apply plugin: 'com.github.spotbugs'
     apply plugin: 'com.adarshr.test-logger'
@@ -38,10 +39,14 @@ subprojects {
 
     ext.developerId = 'axh'
     ext.developerName = 'Axel Howind'
-    ext.developerEmail = 'axel@dua3.com'
+    ext.developerEmail = 'axh@dua3.com'
+    ext.organization = 'dua3'
+    ext.organizationUrl = 'https://www.dua3.com'
     /////////////////////////////////////////////////////////////////////////////
 
     ext {
+        isReleaseVersion = !version.endsWith("SNAPSHOT")
+
         java_version = '11'
         javafx_version = '16'
         junit_version = '5.7.1'
@@ -51,6 +56,11 @@ subprojects {
         ikonli_version = '12.2.0'
     }
 
+    java {
+        withJavadocJar()
+        withSourcesJar()
+    }
+    
     sourceCompatibility = java_version
     targetCompatibility = java_version
 
@@ -101,6 +111,11 @@ subprojects {
         testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junit_version}"
     }
 
+    java {
+        withJavadocJar()
+        withSourcesJar()
+    }
+
     idea {
         module {
             inheritOutputDirs = false
@@ -124,24 +139,7 @@ subprojects {
 
     javadoc {
         options.encoding = 'UTF-8'
-    }
-
-    // === ARTIFACTS === >
-
-    task sourcesJar(type: Jar, dependsOn: classes) {
-        classifier = 'sources'
-        from sourceSets.main.allSource
-    }
-
-    task javadocJar(type: Jar, dependsOn: javadoc) {
-        classifier = 'javadoc'
-        from javadoc.destinationDir
-    }
-
-    artifacts {
-        archives jar
-        archives sourcesJar
-        archives javadocJar
+        options.addBooleanOption('html5', true)
     }
 
     // === MAVEN publication === >
@@ -170,13 +168,11 @@ subprojects {
     // Create the publication with the pom configuration:
     publishing {
         publications {
-            projectJars(MavenPublication) {
-                from components.java
-                artifact sourcesJar
-                artifact javadocJar
+            mavenJava(MavenPublication) {
                 groupId project.group
                 artifactId project.name
                 version version
+                from components.java
                 pom.withXml {
                     def root = asNode()
                     root.appendNode('description', project.description)
@@ -204,7 +200,7 @@ subprojects {
                         }
                     }
                 }
-                
+
                 // Gitlab private packages
                 maven {
                     url "https://gitlab.com/api/v4/projects/24900343/packages/maven"
@@ -215,6 +211,17 @@ subprojects {
                     }
                     authentication {
                         header(HttpHeaderAuthentication)
+                    }
+                }
+
+                // Sonatype OSSRH
+                maven {
+                    def releaseRepo = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+                    def snapshotRepo = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+                    url = isReleaseVersion ? releaseRepo : snapshotRepo
+                    credentials {
+                        username = System.properties.get('ossrhUsername')
+                        password = System.properties.get('ossrhPassword')
                     }
                 }
             } else if (System.getenv("CI_JOB_TOKEN")!=null) {
@@ -234,6 +241,11 @@ subprojects {
                 System.out.println("!!neither gitlabPrivateToken nor CI_JOB_TOKEN is set -- cannot publish build!!")
             }
         }
+    }
+
+    // === sign artifacts
+    signing {
+        sign publishing.publications.mavenJava
     }
 
     // === SPOTBUGS === >
