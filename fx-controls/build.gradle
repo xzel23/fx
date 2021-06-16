@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+description = 'JavaFX utilities (controls)'
+
 javafx {
     modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.graphics' ]
 }
