@@ -178,7 +178,7 @@ public class FxRefresh {
      * Stop the refresher.
      */
     public synchronized void stop() {
-        if (this.updateThread==null) {
+        if (!isActive()) {
             LOG.warning(() -> "["+name+"] stop() called on inactive running instance, ignoring");
             return;
         }
