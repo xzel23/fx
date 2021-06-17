@@ -19,7 +19,7 @@ plugins {
 description = 'JavaFX utilities (samples)'
 
 javafx {
-    configuration = 'compileOnly'
+    configuration = 'implementation'
     modules = [ 'javafx.base', 'javafx.fxml', 'javafx.controls' ]
 }
 

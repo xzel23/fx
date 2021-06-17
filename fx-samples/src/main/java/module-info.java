@@ -20,6 +20,9 @@ module dua3_fx.samples {
 	requires dua3_utility;
 
 	requires javafx.controls;
+	requires javafx.base;
+	requires javafx.fxml;
+	
 	requires dua3_fx.icons;
     requires dua3_fx.editor;
 }
