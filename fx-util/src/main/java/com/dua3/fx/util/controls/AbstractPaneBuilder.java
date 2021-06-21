@@ -17,7 +17,7 @@ public class AbstractPaneBuilder<D extends DialogPane & Supplier<R>, B extends A
 		super(DialogPane::setHeaderText);
 	}
 	
-    String next = null;
+    protected String next;
 	
 	@SuppressWarnings("unchecked")
 	public B next(String s) {

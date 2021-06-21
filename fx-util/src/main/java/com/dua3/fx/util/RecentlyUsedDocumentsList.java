@@ -21,7 +21,7 @@ public class RecentlyUsedDocumentsList {
     private static final Logger LOG = Logger.getLogger(RecentlyUsedDocumentsList.class.getName());
     
     private final int capacity;
-    private final LinkedHashMap<URI, String> items = new LinkedHashMap<>();
+    private final Map<URI, String> items = new LinkedHashMap<>();
     private final Preferences prefs;
     private final List<UpdateListener> listeners = new ArrayList<>();
     

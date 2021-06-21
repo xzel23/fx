@@ -11,10 +11,13 @@ import javafx.scene.layout.AnchorPane;
 
 import java.util.Objects;
 
-public class Decoration {
+public final class Decoration {
 
     private static final String DECORATION_LIST = Decoration.class.getName()+".decoration_list";
-    
+
+    private Decoration() {
+    }
+
     public static ObservableList<Decoration> getDecorations(Node node) {
         @SuppressWarnings("unchecked")
         ObservableList<Decoration> decorations = (ObservableList<Decoration>) node.getProperties().get(DECORATION_LIST);
@@ -110,7 +113,7 @@ public class Decoration {
 
 class DecorationPane extends AnchorPane {
 
-    public static final String DECORATION_PANE = "com.dua3.decoration_pane";
+    static final String DECORATION_PANE = "com.dua3.decoration_pane";
 
     private final Parent sceneRoot;
 
@@ -120,7 +123,7 @@ class DecorationPane extends AnchorPane {
      * @param scene the Scene
      * @return the scene's DecorationPane
      */
-    public static DecorationPane getDecorationPane(Scene scene) {
+    private static DecorationPane getDecorationPane(Scene scene) {
         Parent sceneRoot = scene.getRoot();
         
         if (sceneRoot instanceof DecorationPane) {
@@ -133,13 +136,13 @@ class DecorationPane extends AnchorPane {
         return decorationPane;
     }
     
-    public DecorationPane(Parent sceneRoot) {
+    DecorationPane(Parent sceneRoot) {
         this.sceneRoot = Objects.requireNonNull(sceneRoot);
         setBackground(null);
         getChildren().setAll(sceneRoot);
     }
     
-    public static DecorationPane getDecorationPane(Node node) {
+    static DecorationPane getDecorationPane(Node node) {
         DecorationPane decorationPane = (DecorationPane) node.getProperties().get(DECORATION_PANE);
         if (decorationPane==null) {
             decorationPane = getDecorationPane(node.getScene());
@@ -152,7 +155,7 @@ class DecorationPane extends AnchorPane {
         getChildren().forEach(Decoration::updateDecorationPosition);
     }
 
-    public void removeDecoration(Object oldDecoration) {
+    void removeDecoration(Object oldDecoration) {
         this.getChildren().remove(oldDecoration);
     }
 }

@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  * the application becomes sluggish or burns CPU cycles for drawing outdated data. the FxRefresher automatically
  * skips intermediate frames if redraw requests come in too fast for the drawing to come up with.
  */
-public class FxRefresh {
+public final class FxRefresh {
     private static final Logger LOG = Logger.getLogger(FxRefresh.class.getName());
     
     /** The instance name (used in logging. */
@@ -112,13 +112,15 @@ public class FxRefresh {
     private FxRefresh(String name, Runnable task) {
         this.name = Objects.requireNonNull(name);
         this.task = Objects.requireNonNull(task);
+        this.updateThread = new Thread(this::refreshLoop);
+        this.updateThread.start();
     }
 
     /**
      * Loop of the update thread. Waits for incoming requests and calls the update task. 
      */
     private void refreshLoop() {
-        while (true) {
+        do {
             try {
                 lock.lock();
                 // stay in loop as long as stop is not requested (updateThread!=null) and
@@ -135,11 +137,6 @@ public class FxRefresh {
                 lock.unlock();
             }
 
-            if (updateThread==null) {
-                LOG.info(() -> "["+name+"] stopped");
-                return;
-            }
-            
             // run task and update revision
             if (active.get()) {
                 int myRevision = requestedRevision.get();
@@ -148,7 +145,7 @@ public class FxRefresh {
                 currentRevision.set(myRevision);
                 LOG.fine(() -> "[" + name + "] refreshed to revision: " + myRevision);
             }
-        }
+        } while (updateThread!= null);
     }
 
     /**
@@ -178,13 +175,8 @@ public class FxRefresh {
      * Stop the refresher.
      */
     public synchronized void stop() {
-        if (!isActive()) {
-            LOG.warning(() -> "["+name+"] stop() called on inactive running instance, ignoring");
-            return;
-        }
-
         LOG.fine(() -> "["+name+"] stopping");
-        this. updateThread = null;
+        this.updateThread = null;
         setActive(false);
     }
 
@@ -193,12 +185,6 @@ public class FxRefresh {
      * @param flag whether to activate or deactivate the refresher
      */
     public synchronized void setActive(boolean flag) {
-        if (flag && this.updateThread==null) {
-            LOG.fine(() -> "[" + name + "] starting");
-            this.updateThread = new Thread(this::refreshLoop);
-            this.updateThread.start();
-        }
-
         this.active.set(flag);
         signal();
     }
