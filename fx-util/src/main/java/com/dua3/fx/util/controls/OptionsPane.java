@@ -1,6 +1,5 @@
 package com.dua3.fx.util.controls;
 
-import com.dua3.utility.io.OpenMode;
 import com.dua3.utility.options.*;
 import javafx.beans.property.Property;
 import javafx.beans.property.ReadOnlyBooleanProperty;
@@ -11,10 +10,8 @@ import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
-import javafx.stage.FileChooser;
 import javafx.util.StringConverter;
 
-import java.io.File;
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;

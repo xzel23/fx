@@ -100,10 +100,9 @@ public class Validator {
      */
     public ValidationResult.Level validate(Control c) {
         var vr = rules(c).stream()
-            .map(Supplier::get)
-            .sorted( (a,b) -> b.level.compareTo(a.level) ) // sort in reverse order
-            .findFirst()
-            .orElse(ValidationResult.ok());
+                .map(Supplier::get)
+                .min((a, b) -> b.level.compareTo(a.level))
+                .orElse(ValidationResult.ok());
 
         // remove decorations
         Decoration.getDecorations(c).clear();

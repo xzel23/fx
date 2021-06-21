@@ -1,7 +1,6 @@
 package com.dua3.fx.util;
 
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 

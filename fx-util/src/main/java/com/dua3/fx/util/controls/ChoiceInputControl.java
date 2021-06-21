@@ -1,10 +1,7 @@
 package com.dua3.fx.util.controls;
 
 import com.dua3.utility.options.ChoiceOption;
-import com.dua3.utility.options.Option;
-import javafx.beans.Observable;
 import javafx.beans.property.*;
-import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 
@@ -26,18 +23,14 @@ public class ChoiceInputControl<T> implements InputControl<T> {
 	public ChoiceInputControl(ChoiceOption<T> option, Supplier<T> dfltValue) {
 		this.option = Objects.requireNonNull(option);
 		this.dfltValue = Objects.requireNonNull(dfltValue);
-		this.control = new ComboBox<ChoiceOption.Choice<T>> ();
+		this.control = new ComboBox<>();
 		control.getItems().setAll(option.choices());
 		control.getSelectionModel().select(option.choice(dfltValue.get()));
 		
 		this.valueProperty = new SimpleObjectProperty<>();
 		
-		control.valueProperty().addListener((v,o,n) -> {
-			valueProperty.setValue(n == null ? null : n.value());
-		});
-		valueProperty.addListener((v,o,n) -> {
-			control.getSelectionModel().select(n == null ? null : option.choice(n));
-		});
+		control.valueProperty().addListener((v,o,n) -> valueProperty.setValue(n == null ? null : n.value()));
+		valueProperty.addListener((v,o,n) -> control.getSelectionModel().select(n == null ? null : option.choice(n)));
 	}
 	
 	@Override

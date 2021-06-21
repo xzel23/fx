@@ -17,6 +17,7 @@ import java.util.Optional;
 /**
  * Sample Application.
  */
+@SuppressWarnings("UseOfSystemOutOrSystemErr")
 public class DialogSample extends Application {
 
     public static void main(String[] args) {
