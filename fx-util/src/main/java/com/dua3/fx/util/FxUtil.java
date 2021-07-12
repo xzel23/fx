@@ -61,6 +61,9 @@ public final class FxUtil {
         }
     }
 
+    /**
+     * Font type enumeration.
+     */
     public enum FontType {
         PROPORTIONAL,
         MONOSPACE,
@@ -144,7 +147,7 @@ public final class FxUtil {
      * @return the JavaFX affine transformation
      */
     public static Affine convert(AffineTransformation at) {
-        return new Affine(at.a(), at.c(), at.e(), at.b(), at.d(), at.f());
+        return new Affine(at.a(), at.b(), at.c(), at.d(), at.e(), at.f());
     }
 
     /**
@@ -153,7 +156,7 @@ public final class FxUtil {
      * @return the affine transformation
      */
     public static AffineTransformation convert(Affine a) {
-        return new AffineTransformation(a.getMxx(), a.getMxy(), a.getMyx(), a.getMyy(), a.getTx(), a.getTy());
+        return new AffineTransformation(a.getMxx(), a.getMyx(), a.getTx(), a.getMyx(), a.getMyy(), a.getTy());
     }
     
     private static javafx.geometry.Bounds boundsInLocal(CharSequence s, com.dua3.utility.text.Font f) {
