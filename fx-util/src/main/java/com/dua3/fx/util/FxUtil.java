@@ -147,7 +147,10 @@ public final class FxUtil {
      * @return the JavaFX affine transformation
      */
     public static Affine convert(AffineTransformation at) {
-        return new Affine(at.a(), at.b(), at.c(), at.d(), at.e(), at.f());
+        return new Affine(
+                at.getScaleX(), at.getShearX(), at.getTranslateX(), 
+                at.getShearY(), at.getScaleY(), at.getTranslateY()
+        );
     }
 
     /**
