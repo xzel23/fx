@@ -49,31 +49,9 @@ public class FxFontUtil implements FontUtil<Font> {
         return FxUtil.getTextHeight(s, f);
     }
 
-    private final WeakHashMap<com.dua3.utility.text.Font, Font> fontMap = new WeakHashMap<>();
-
     @Override
     public Optional<com.dua3.utility.text.Font> loadFont(String type, InputStream in) throws IOException {
-        LangUtil.check(FONT_TYPE_TRUETYPE.equals(type), () -> new IllegalArgumentException("unsupported font type: " + type));
-        try (in) {
-            Font fxFont = Font.loadFont(in, 0);
-            if (fxFont==null) {
-                return Optional.empty();
-            }
-            
-            String style = fxFont.getStyle().toLowerCase(Locale.ROOT);
-            com.dua3.utility.text.Font font = new com.dua3.utility.text.Font(
-                    fxFont.getFamily(),
-                    (float) fxFont.getSize(), 
-                    Color.BLACK, 
-                    style.contains("bold"), 
-                    style.contains("italic") || style.contains("oblique"), 
-                    style.contains("line-through"), 
-                    style.contains("line-under") 
-            );
-            fontMap.putIfAbsent(font, fxFont);
-            
-            return Optional.of(font);
-        }
+        return FxUtil.loadFont(type, in);
     }
 
     public FxFontUtil() {

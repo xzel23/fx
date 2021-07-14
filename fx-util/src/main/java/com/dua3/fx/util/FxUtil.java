@@ -1,6 +1,7 @@
 package com.dua3.fx.util;
 
 import com.dua3.utility.io.IOUtil;
+import com.dua3.utility.lang.LangUtil;
 import com.dua3.utility.math.AffineTransformation;
 import com.dua3.utility.text.FontDef;
 import javafx.geometry.Bounds;
@@ -14,11 +15,15 @@ import javafx.scene.transform.Affine;
 import javafx.stage.FileChooser;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.*;
+
+import static com.dua3.utility.text.FontUtil.FONT_TYPE_TRUETYPE;
 
 /**
  * JavaFX utility class.
@@ -27,6 +32,10 @@ public final class FxUtil {
 
     public static String asText(URI uri) {
         return uri==null ? "" : URLDecoder.decode(uri.toString(), StandardCharsets.UTF_8);
+    }
+
+    public static Optional<com.dua3.utility.text.Font> loadFont(String type, InputStream in) throws IOException {
+        return FontHelper.loadFont(type, in);
     }
 
     private static class FontHelper {
@@ -58,6 +67,38 @@ public final class FxUtil {
             FONTS_ALL = Collections.unmodifiableList(all);
             FONTS_PROPORTIONAL = Collections.unmodifiableList(proportional);
             FONTS_MONOSPACED = Collections.unmodifiableList(monospaced);
+        }
+
+        public static Optional<com.dua3.utility.text.Font> loadFont(String type, InputStream in) throws IOException {
+            LangUtil.check(FONT_TYPE_TRUETYPE.equals(type), () -> new IllegalArgumentException("unsupported font type: " + type));
+            try (in) {
+                Font fxFont = Font.loadFont(in, 0);
+                if (fxFont==null) {
+                    return Optional.empty();
+                }
+
+                String style = fxFont.getStyle().toLowerCase(Locale.ROOT);
+                com.dua3.utility.text.Font font = new com.dua3.utility.text.Font(
+                        fxFont.getFamily(),
+                        (float) fxFont.getSize(),
+                        com.dua3.utility.data.Color.BLACK,
+                        style.contains("bold"),
+                        style.contains("italic") || style.contains("oblique"),
+                        style.contains("line-through"),
+                        style.contains("line-under")
+                );
+
+                return Optional.of(font);
+            }
+        }
+
+        public static Font convert(com.dua3.utility.text.Font font) {
+            return Font.font(
+                font.getFamily(),
+                font.isBold() ? FontWeight.BOLD : FontWeight.NORMAL,
+                font.isItalic() ? FontPosture.ITALIC : FontPosture.REGULAR,
+                font.getSizeInPoints()
+            );
         }
     }
 
@@ -94,11 +135,7 @@ public final class FxUtil {
      * @return the JavaFX Font
      */
     public static Font convert(com.dua3.utility.text.Font font) {
-        return Font.font(
-                font.getFamily(), 
-                font.isBold() ? FontWeight.BOLD : FontWeight.NORMAL, 
-                font.isItalic() ? FontPosture.ITALIC : FontPosture.REGULAR, 
-                font.getSizeInPoints());
+        return FontHelper.convert(font);
     }
 
     /**
