@@ -16,15 +16,20 @@ package com.dua3.fx.util;
 
 import com.dua3.utility.data.Color;
 import com.dua3.utility.lang.LangUtil;
+import com.dua3.utility.math.Dimension2d;
 import com.dua3.utility.text.FontUtil;
 
 import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 
+import java.awt.*;
+import java.awt.font.FontRenderContext;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Locale;
-import java.util.Optional;
-import java.util.WeakHashMap;
+import java.util.*;
+import java.util.List;
 
 public class FxFontUtil implements FontUtil<Font> {
 
@@ -34,9 +39,9 @@ public class FxFontUtil implements FontUtil<Font> {
     }
 
     @Override
-    public com.dua3.utility.text.FontUtil.Bounds getTextBounds(CharSequence s, com.dua3.utility.text.Font f) {
+    public Dimension2d getTextDimension(CharSequence s, com.dua3.utility.text.Font f) {
          var bounds = FxUtil.getTextBounds(s, f);
-         return new com.dua3.utility.text.FontUtil.Bounds(bounds.getWidth(), bounds.getHeight());
+         return Dimension2d.of(bounds.getWidth(), bounds.getHeight());
     }
 
     @Override
@@ -52,6 +57,41 @@ public class FxFontUtil implements FontUtil<Font> {
     @Override
     public Optional<com.dua3.utility.text.Font> loadFont(String type, InputStream in) throws IOException {
         return FxUtil.loadFont(type, in);
+    }
+
+    @Override
+    public List<String> getFamilies(FontTypes types) {
+        List<String> fonts = Font.getFamilies();
+
+        boolean mono;
+        switch (types) {
+            case ALL:
+                return fonts;
+            case MONOSPACED:
+                mono = true;
+                break;
+            case PROPORTIONAL:
+                mono = false;
+                break;
+            default:
+                throw new IllegalArgumentException("unknown value: "+types);
+        }
+
+        List<String> list = new ArrayList<>();
+
+        Text thin = new Text("1 l");
+        Text thick = new Text("M_W");
+        for (String family: fonts) {
+            Font font = Font.font(family, FontWeight.NORMAL, FontPosture.REGULAR, 14.0d);
+            thin.setFont(font);
+            thick.setFont(font);
+            boolean monospaced = thin.getLayoutBounds().getWidth() == thick.getLayoutBounds().getWidth();
+            if (mono == monospaced) {
+                list.add(family);
+            }
+        }
+
+        return list;
     }
 
     public FxFontUtil() {

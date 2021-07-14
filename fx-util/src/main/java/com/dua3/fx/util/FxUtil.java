@@ -14,6 +14,8 @@ import javafx.scene.text.Text;
 import javafx.scene.transform.Affine;
 import javafx.stage.FileChooser;
 
+import java.awt.*;
+import java.awt.font.FontRenderContext;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,6 +24,7 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.List;
 
 import static com.dua3.utility.text.FontUtil.FONT_TYPE_TRUETYPE;
 
@@ -39,36 +42,6 @@ public final class FxUtil {
     }
 
     private static class FontHelper {
-        private static final List<String> FONTS_ALL;
-        private static final List<String> FONTS_PROPORTIONAL;
-        private static final List<String> FONTS_MONOSPACED;
-
-        static {
-            List<String> all = Font.getFamilies();
-            all.sort(String::compareToIgnoreCase);
-
-            List<String> proportional = new ArrayList<>();
-            List<String> monospaced = new ArrayList<>();
-
-            Text thin = new Text("1 l");
-            Text thick = new Text("M_W");
-
-            for (String family : all) {
-                Font font = Font.font(family, FontWeight.NORMAL, FontPosture.REGULAR, 14.0d);
-                thin.setFont(font);
-                thick.setFont(font);
-                if (thin.getLayoutBounds().getWidth() == thick.getLayoutBounds().getWidth()) {
-                    monospaced.add(family);
-                } else {
-                    proportional.add(family);
-                }
-            }
-
-            FONTS_ALL = Collections.unmodifiableList(all);
-            FONTS_PROPORTIONAL = Collections.unmodifiableList(proportional);
-            FONTS_MONOSPACED = Collections.unmodifiableList(monospaced);
-        }
-
         public static Optional<com.dua3.utility.text.Font> loadFont(String type, InputStream in) throws IOException {
             LangUtil.check(FONT_TYPE_TRUETYPE.equals(type), () -> new IllegalArgumentException("unsupported font type: " + type));
             try (in) {
@@ -91,42 +64,6 @@ public final class FxUtil {
                 return Optional.of(font);
             }
         }
-
-        public static Font convert(com.dua3.utility.text.Font font) {
-            return Font.font(
-                font.getFamily(),
-                font.isBold() ? FontWeight.BOLD : FontWeight.NORMAL,
-                font.isItalic() ? FontPosture.ITALIC : FontPosture.REGULAR,
-                font.getSizeInPoints()
-            );
-        }
-    }
-
-    /**
-     * Font type enumeration.
-     */
-    public enum FontType {
-        PROPORTIONAL,
-        MONOSPACE,
-        ANY
-    }
-
-    /**
-     * List available fonts for a given {@link FontType}.
-     * @param t the font type
-     * @return list of fonts
-     */
-    public static List<String> getFonts(FontType t) {
-        switch (t) {
-            case ANY:
-                return FontHelper.FONTS_ALL;
-            case PROPORTIONAL:
-                return FontHelper.FONTS_PROPORTIONAL;
-            case MONOSPACE:
-                return FontHelper.FONTS_MONOSPACED;
-            default:
-                throw new IllegalArgumentException(String.valueOf(t));
-        }
     }
 
     /**
@@ -135,7 +72,12 @@ public final class FxUtil {
      * @return the JavaFX Font
      */
     public static Font convert(com.dua3.utility.text.Font font) {
-        return FontHelper.convert(font);
+        return Font.font(
+                font.getFamily(),
+                font.isBold() ? FontWeight.BOLD : FontWeight.NORMAL,
+                font.isItalic() ? FontPosture.ITALIC : FontPosture.REGULAR,
+                font.getSizeInPoints()
+        );
     }
 
     /**
