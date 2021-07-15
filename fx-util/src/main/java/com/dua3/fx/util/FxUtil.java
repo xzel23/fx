@@ -14,8 +14,6 @@ import javafx.scene.text.Text;
 import javafx.scene.transform.Affine;
 import javafx.stage.FileChooser;
 
-import java.awt.*;
-import java.awt.font.FontRenderContext;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,8 +24,6 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.List;
 
-import static com.dua3.utility.text.FontUtil.FONT_TYPE_TRUETYPE;
-
 /**
  * JavaFX utility class.
  */
@@ -37,31 +33,34 @@ public final class FxUtil {
         return uri==null ? "" : URLDecoder.decode(uri.toString(), StandardCharsets.UTF_8);
     }
 
-    public static Optional<com.dua3.utility.text.Font> loadFont(String type, InputStream in) throws IOException {
-        return FontHelper.loadFont(type, in);
+    public static List<com.dua3.utility.text.Font> loadFonts(InputStream in) throws IOException {
+        return FontHelper.loadFonts(in);
     }
 
     private static class FontHelper {
-        public static Optional<com.dua3.utility.text.Font> loadFont(String type, InputStream in) throws IOException {
-            LangUtil.check(FONT_TYPE_TRUETYPE.equals(type), () -> new IllegalArgumentException("unsupported font type: " + type));
+        public static List<com.dua3.utility.text.Font> loadFonts(InputStream in) throws IOException {
             try (in) {
-                Font fxFont = Font.loadFont(in, 0);
-                if (fxFont==null) {
-                    return Optional.empty();
+                Font[] fxFonts = Font.loadFonts(in, 0);
+                if (fxFonts==null) {
+                    return Collections.emptyList();
                 }
 
-                String style = fxFont.getStyle().toLowerCase(Locale.ROOT);
-                com.dua3.utility.text.Font font = new com.dua3.utility.text.Font(
-                        fxFont.getFamily(),
-                        (float) fxFont.getSize(),
-                        com.dua3.utility.data.Color.BLACK,
-                        style.contains("bold"),
-                        style.contains("italic") || style.contains("oblique"),
-                        style.contains("line-through"),
-                        style.contains("line-under")
-                );
-
-                return Optional.of(font);
+                List<com.dua3.utility.text.Font> fonts = new ArrayList<>(fxFonts.length);
+                for (Font fxFont: fxFonts) {
+                    String style = fxFont.getStyle().toLowerCase(Locale.ROOT);
+                    com.dua3.utility.text.Font font = new com.dua3.utility.text.Font(
+                            fxFont.getFamily(),
+                            (float) fxFont.getSize(),
+                            com.dua3.utility.data.Color.BLACK,
+                            style.contains("bold"),
+                            style.contains("italic") || style.contains("oblique"),
+                            style.contains("line-through"),
+                            style.contains("line-under")
+                    );
+                    fonts.add(font);
+                }
+                
+                return fonts;
             }
         }
     }
