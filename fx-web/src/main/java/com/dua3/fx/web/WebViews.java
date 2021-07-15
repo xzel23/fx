@@ -130,6 +130,7 @@ public final class WebViews {
         }
     }
 
+    @SuppressWarnings("ThrowInsideCatchBlockWhichIgnoresCaughtException")
     public static Object callMethod(JSObject object, String methodName, Object[] args) {
         try {
             return object.call(methodName, args);

@@ -14,8 +14,6 @@
 
 package com.dua3.fx.util;
 
-import com.dua3.utility.data.Color;
-import com.dua3.utility.lang.LangUtil;
 import com.dua3.utility.math.Dimension2d;
 import com.dua3.utility.text.FontUtil;
 
@@ -24,8 +22,6 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
-import java.awt.*;
-import java.awt.font.FontRenderContext;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;

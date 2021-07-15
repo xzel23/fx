@@ -3,7 +3,7 @@ package com.dua3.fx.util;
 public class ValidationResult {
     public enum Level {
         OK,
-        ERROR;
+        ERROR
     }
     
     public final Level level;

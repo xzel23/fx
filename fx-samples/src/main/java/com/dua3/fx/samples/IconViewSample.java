@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 
 public class IconViewSample extends Application {
 
+    @SuppressWarnings("UseOfSystemOutOrSystemErr")
     public static void main(String[] args) {
         System.out.println("available icon providers: "+ IconUtil.iconProviders());
         launch(args);
