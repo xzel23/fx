@@ -123,6 +123,7 @@ public class OptionsPane extends GridPane implements InputControl<Arguments>{
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
     public Arguments get() {
 		Deque<Arguments.Entry<?>> entries = new LinkedList<>();
