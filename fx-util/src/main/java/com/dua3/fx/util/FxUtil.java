@@ -2,6 +2,7 @@ package com.dua3.fx.util;
 
 import com.dua3.utility.io.IOUtil;
 import com.dua3.utility.math.geometry.AffineTransformation2d;
+import com.dua3.utility.math.geometry.FillRule;
 import com.dua3.utility.text.FontDef;
 import javafx.geometry.Bounds;
 import javafx.geometry.Dimension2D;
@@ -115,6 +116,24 @@ public final class FxUtil {
                 (int) Math.round(color.getBlue()/255.0),
                 (int) Math.round(color.getOpacity()/255.0)
         );
+    }
+
+    /**
+     * Convert {@link FillRule} to JavaFX {@link javafx.scene.shape.FillRule}.
+     * @param rule the fill rule
+     * @return the JavaFX fill rule
+     */
+    public static javafx.scene.shape.FillRule convert(FillRule rule) {
+        return rule==FillRule.EVEN_ODD ? javafx.scene.shape.FillRule.EVEN_ODD : javafx.scene.shape.FillRule.NON_ZERO;
+    }
+
+    /**
+     * Convert {@link javafx.scene.shape.FillRule} to JavaFX {@link FillRule}.
+     * @param rule JavaFX the fill rule
+     * @return the fill rule
+     */
+    public static FillRule convert(javafx.scene.shape.FillRule rule) {
+        return rule==javafx.scene.shape.FillRule.EVEN_ODD ? FillRule.EVEN_ODD : FillRule.NON_ZERO;
     }
 
     /**
