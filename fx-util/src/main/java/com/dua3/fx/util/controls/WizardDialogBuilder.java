@@ -17,7 +17,7 @@ public class WizardDialogBuilder {
 		return this;
 	}
 
-	LinkedHashMap<String, Page<?,?>> pages = new LinkedHashMap<>();
+	final LinkedHashMap<String, Page<?,?>> pages = new LinkedHashMap<>();
 	
 	public <D extends InputDialogPane<R>,B extends AbstractPaneBuilder<D,B,R>,R> WizardDialogBuilder page(String name, B builder) {
 		Page<D,R> page = new Page<>();

@@ -23,7 +23,7 @@ public abstract class InputDialogPane<R> extends DialogPane implements Supplier<
 
 	protected final BooleanProperty valid = new SimpleBooleanProperty(true);
 
-	protected List<Pair<ButtonType, Consumer<InputDialogPane<R>>>> buttons = new ArrayList<>();
+	protected final List<Pair<ButtonType, Consumer<InputDialogPane<R>>>> buttons = new ArrayList<>();
 
 	public abstract void init();
 

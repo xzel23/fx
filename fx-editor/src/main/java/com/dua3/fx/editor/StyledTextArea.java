@@ -8,7 +8,7 @@ import java.util.Objects;
 
 public abstract class StyledTextArea<P extends Node> extends Region {
     
-    public StyledTextArea() {
+    protected StyledTextArea() {
     }
 
     protected void add(P paragraph) {

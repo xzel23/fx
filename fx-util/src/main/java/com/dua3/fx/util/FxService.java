@@ -8,7 +8,7 @@ import javafx.concurrent.Service;
 
 public abstract class FxService<T> extends Service<T> {
 
-	public FxService() {
+	protected FxService() {
 	}
 
 	@Override

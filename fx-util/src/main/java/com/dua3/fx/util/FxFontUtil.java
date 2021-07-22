@@ -25,7 +25,6 @@ import javafx.scene.text.Text;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
-import java.util.List;
 
 public class FxFontUtil implements FontUtil<Font> {
 

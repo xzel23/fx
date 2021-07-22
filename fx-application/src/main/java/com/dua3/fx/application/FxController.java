@@ -67,7 +67,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	protected static final String PREF_DOCUMENT = "document_uri";
 	
 	/** The URI of the currently opened document. */
-	protected ObjectProperty<D> currentDocumentProperty = new SimpleObjectProperty<>();
+	protected final ObjectProperty<D> currentDocumentProperty = new SimpleObjectProperty<>();
 	
 	/** The URI of the currently opened document. */
 	protected BooleanProperty dirtyProperty = new SimpleBooleanProperty(false);
@@ -469,7 +469,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		throw new UnsupportedOperationException("not implemented");
 	}
 
-	@SuppressWarnings({ "static-method", "unused" })
+	@SuppressWarnings({"static-method", "unused", "RedundantThrows"})
 	protected D loadDocument(URI uri) throws IOException {
 		throw new UnsupportedOperationException("not implemented");
 	}

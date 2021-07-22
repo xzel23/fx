@@ -49,8 +49,8 @@ public class InputGrid extends GridPane {
 		final Class<T> cls;
 		final Supplier<T> dflt;
 		final InputControl<T> control;
-		Label label = new Label();
-		Label marker = new Label();
+		final Label label = new Label();
+		final Label marker = new Label();
 
 		Meta(String id, String label, Class<T> cls, Supplier<T> dflt, InputControl<T> control) {
 			this.id = id;

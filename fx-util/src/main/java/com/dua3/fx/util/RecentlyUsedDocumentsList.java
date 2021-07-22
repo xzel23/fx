@@ -78,6 +78,7 @@ public class RecentlyUsedDocumentsList {
      */
     private boolean storeItem(URI uri, String name) {
         if (name.isEmpty()) {
+            //noinspection AssignmentToMethodParameter
             name = uri.getPath();
         }
         
