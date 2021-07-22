@@ -27,7 +27,6 @@ extends AbstractPaneBuilder<InputDialogPane<Void>, AlertPaneBuilder, Void> {
 	private String text = null;
 
 	public AlertPaneBuilder(AlertType type) {
-		super();
 		setDialogSupplier(() -> createPane(type));
 	}
 
