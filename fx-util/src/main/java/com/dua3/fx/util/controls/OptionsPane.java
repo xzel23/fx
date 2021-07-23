@@ -89,7 +89,7 @@ public class OptionsPane extends GridPane implements InputControl<Arguments>{
 	private <T> InputControl<T> createControl(Arguments values, Option<T> option) {
 		if (option instanceof ChoiceOption<?>) {
 			ChoiceOption<T> co = (ChoiceOption<T>) option;
-			return new ChoiceInputControl<>(co, () -> dflt.get().get(co));
+			return new ChoiceInputControl<>(co, () -> dflt.get().getOrThrow(co));
 		} else if (option instanceof Flag) {
 			Flag f = (Flag) option;
 			Supplier<Boolean> dfltValue = () -> (dflt.get().isSet(f));
