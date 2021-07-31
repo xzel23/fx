@@ -1,7 +1,7 @@
 Changelog
 =========
 
-#### Version 0.15 (to be released)
+#### Version 0.15
  - stop publishing to bintray
  - publish builds to GitLab packages
  - publish releases to Sonatype OSSRH 
