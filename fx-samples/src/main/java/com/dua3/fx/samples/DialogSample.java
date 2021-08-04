@@ -35,6 +35,16 @@ public class DialogSample extends Application {
     public void start(Stage primaryStage) {
         VBox container = new VBox();
 
+        // About
+        container.getChildren().add(createButton("About", () ->
+                Dialogs.about(primaryStage)
+                        .title("About ...")
+                        .name("Dialog Sample")
+                        .version("v 0.1")
+                        .copyright("(c) 2021 Axel Howind")
+                        .mail("info@example.com")
+                        .showAndWait()));
+
         // Confirmation
         container.getChildren().add(createButton("Confirmation", () ->
                 Dialogs.confirmation(primaryStage)

@@ -81,7 +81,7 @@ public class AboutDialog extends Dialog<Void> {
     	}
     	
         if (!Desktop.isDesktopSupported()) {
-            LOG.warning("Dekstop API is not supported");
+            LOG.warning("Desktop API is not supported");
             return;
         }
 
