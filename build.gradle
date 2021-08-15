@@ -14,7 +14,7 @@
 
 plugins {
     id 'com.adarshr.test-logger' version '2.1.0' apply false
-    id 'com.github.spotbugs' version '4.7.0' apply false
+    id 'com.github.spotbugs' version '4.7.2' apply false
     id "org.openjfx.javafxplugin" version "0.0.10" apply false
 }
 
@@ -45,11 +45,11 @@ subprojects {
     ext {
         isReleaseVersion = !version.endsWith("SNAPSHOT")
 
-        java_version = '11'
+        java_version = '17'
         javafx_version = '16'
         junit_version = '5.7.1'
 
-        dua3_utility_version = '9.0'
+        dua3_utility_version = '9.0.1'
 
         ikonli_version = '12.2.0'
     }

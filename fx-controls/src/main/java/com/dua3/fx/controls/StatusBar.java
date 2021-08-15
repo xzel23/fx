@@ -76,30 +76,27 @@ public class StatusBar extends HBox implements FxTaskTracker {
 	public void updateTaskState(FxTask<?> task, State state) {
 		PlatformHelper.runLater(() -> {
 			switch (state) {
-			case RUNNING:
-				progress.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
-				progress.setVisible(true);
-				break;
-			case SUCCEEDED:
-				progress.setProgress(1.0);
-				progress.setVisible(false);
-				break;
-			case READY:
-				progress.setProgress(0.0);
-				progress.setVisible(false);
-				break;
-			case SCHEDULED:
-				progress.setProgress(0.0);
-				progress.setVisible(true);
-				break;
-			case CANCELLED:
-			case FAILED:
-				progress.setProgress(0.0);
-				progress.setVisible(false);
-				break;
-			default:
-				LOG.warning("StatusBar.updateTaskState() - unexpected state: "+state);
-				break;
+				case RUNNING -> {
+					progress.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
+					progress.setVisible(true);
+				}
+				case SUCCEEDED -> {
+					progress.setProgress(1.0);
+					progress.setVisible(false);
+				}
+				case READY -> {
+					progress.setProgress(0.0);
+					progress.setVisible(false);
+				}
+				case SCHEDULED -> {
+					progress.setProgress(0.0);
+					progress.setVisible(true);
+				}
+				case CANCELLED, FAILED -> {
+					progress.setProgress(0.0);
+					progress.setVisible(false);
+				}
+				default -> LOG.warning("StatusBar.updateTaskState() - unexpected state: " + state);
 			}
 		});
 	}

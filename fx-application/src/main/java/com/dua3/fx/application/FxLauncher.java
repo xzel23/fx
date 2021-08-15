@@ -52,15 +52,13 @@ public final class FxLauncher {
      *
      * @param <A>
      *  the application class
-     * @param <C>
-     *  the controller class
      * @param cls
      *  the application class
      * @param args
      *  the comand line arguments
      */
     public static
-    <A extends FxApplication<A, C>, C extends FxController<A, C, ?>>
+    <A extends Application>
     void launch(Class<A> cls, String... args) {
         LOG.fine(() -> "arguments: "+Arrays.toString(args));
 

@@ -56,15 +56,16 @@ public final class WebViews {
     public static boolean setLogger(WebEngine engine, Logger logger) {
         JSObject win = (JSObject) engine.executeScript("window");
         win.setMember("javaLogger", new JSLogger(logger));
-        String script = "(function () {\n"
-                + "  console.error = function() { javaLogger.error(arguments) };\n"
-                + "  console.warn = function() { javaLogger.warn(arguments) };\n"
-                + "  console.info = function() { javaLogger.info(arguments) };\n"
-                + "  console.log = function() { javaLogger.log(arguments) };\n"
-                + "  console.debug = function() { javaLogger.debug(arguments) };\n"
-                + "  console.log('logging initialised %s', 'success')\n"
-                + "  return true\n"
-                + "}) ();";
+        String script = """
+                (function () {
+                  console.error = function() { javaLogger.error(arguments) };
+                  console.warn = function() { javaLogger.warn(arguments) };
+                  console.info = function() { javaLogger.info(arguments) };
+                  console.log = function() { javaLogger.log(arguments) };
+                  console.debug = function() { javaLogger.debug(arguments) };
+                  console.log('logging initialised %s', 'success')
+                  return true
+                }) ();""";
         Object ret = engine.executeScript(script);
 
         boolean success = Boolean.TRUE.equals(ret);
@@ -175,14 +176,12 @@ public final class WebViews {
 
         @Override
         public Event dispatchEvent(Event event, EventDispatchChain tail) {
-            if (event instanceof KeyEvent) {
-                KeyEvent keyEvent = (KeyEvent) event;
+            if (event instanceof KeyEvent keyEvent) {
                 if (filterKey.test(keyEvent)) {
                     keyEvent.consume();
                 }
             }
-            if (event instanceof MouseEvent) {
-                MouseEvent mouseEvent = (MouseEvent) event;
+            if (event instanceof MouseEvent mouseEvent) {
                 if (filterMouse.test(mouseEvent)) {
                     event.consume();
                 }

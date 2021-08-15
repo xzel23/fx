@@ -72,38 +72,20 @@ public final class Decoration {
         Bounds bounds = node.getLayoutBounds();
         Bounds decorationbounds = decoration.getLayoutBounds();
         
-        double x;
-        switch (position.getHpos()) {
-            case LEFT:
-                x = bounds.getMinX()-decorationbounds.getWidth()/2.0;
-                break;
-            case CENTER:
-                x = bounds.getCenterX()-decorationbounds.getWidth()/2.0;
-                break;
-            case RIGHT:
-                x = bounds.getMaxX()-decorationbounds.getWidth()/2.0;
-                break;
-            default:
-                throw new IllegalArgumentException("position: "+position);
-        }
-        
-        double y;
-        switch (position.getVpos()) {
-            case TOP:
-                y = bounds.getMinY()-decorationbounds.getHeight()/2.0;
-                break;
-            case CENTER:
-                y = bounds.getCenterY()-decorationbounds.getHeight()/2.0;
-                break;
-            case BOTTOM:
-                y = bounds.getMaxY()-decorationbounds.getHeight()/2.0;
-                break;
-            case BASELINE:
-                y = bounds.getMaxY()-decorationbounds.getHeight()/2.0;
-                break;
-            default:
-                throw new IllegalArgumentException("position: "+position);
-        }
+        double x = switch (position.getHpos()) {
+            case LEFT -> bounds.getMinX() - decorationbounds.getWidth() / 2.0;
+            case CENTER -> bounds.getCenterX() - decorationbounds.getWidth() / 2.0;
+            case RIGHT -> bounds.getMaxX() - decorationbounds.getWidth() / 2.0;
+            default -> throw new IllegalArgumentException("position: " + position);
+        };
+
+        double y = switch (position.getVpos()) {
+            case TOP -> bounds.getMinY() - decorationbounds.getHeight() / 2.0;
+            case CENTER -> bounds.getCenterY() - decorationbounds.getHeight() / 2.0;
+            case BOTTOM -> bounds.getMaxY() - decorationbounds.getHeight() / 2.0;
+            case BASELINE -> bounds.getMaxY() - decorationbounds.getHeight() / 2.0;
+            default -> throw new IllegalArgumentException("position: " + position);
+        };
 
         decoration.setLayoutX(x+node.getLayoutX());
         decoration.setLayoutY(y+node.getLayoutY());
