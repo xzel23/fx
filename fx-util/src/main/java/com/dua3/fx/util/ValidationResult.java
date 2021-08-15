@@ -1,17 +1,9 @@
 package com.dua3.fx.util;
 
-public class ValidationResult {
+public record ValidationResult(Level level, String message) {
     public enum Level {
         OK,
         ERROR
-    }
-    
-    public final Level level;
-    public final String message;
-    
-    public ValidationResult(Level level, String message) {
-        this.level = level;
-        this.message = message;
     }
     
     public static ValidationResult ok() {

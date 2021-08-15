@@ -10,7 +10,6 @@ import javafx.scene.text.Text;
 
 import java.util.*;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 public final class IconUtil {
     private static final Logger LOG = Logger.getLogger(IconUtil.class.getName());
@@ -32,8 +31,7 @@ public final class IconUtil {
         Class<IconProvider> iconProviderClass = IconProvider.class;
         return ServiceLoader.load(iconProviderClass)
                 .stream()
-                .map(p -> p.type().getName())
-                .collect(Collectors.toUnmodifiableList());
+                .map(p -> p.type().getName()).toList();
     }
 
     public static Icon emptyIcon() {

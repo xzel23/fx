@@ -101,7 +101,7 @@ public class Validator {
     public ValidationResult.Level validate(Control c) {
         var vr = rules(c).stream()
                 .map(Supplier::get)
-                .min((a, b) -> b.level.compareTo(a.level))
+                .min((a, b) -> b.level().compareTo(a.level()))
                 .orElse(ValidationResult.ok());
 
         // remove decorations
@@ -109,7 +109,7 @@ public class Validator {
         
         String iconId = null;
         Paint paint = null;
-        switch (vr.level) {
+        switch (vr.level()) {
             case OK:
                 break;
             case ERROR:
@@ -127,7 +127,7 @@ public class Validator {
             icon.setStyle(String.format("-fx-translate-x: -%d;", (int) (1.25*iconSize/2.0+.5)));
             icon.setFocusTraversable(false);
 
-            String message = getMessage(vr.message);
+            String message = getMessage(vr.message());
             if (!message.isEmpty()) {
                 Tooltip.install(icon, new Tooltip(message));
             }
@@ -137,7 +137,7 @@ public class Validator {
             Decoration.removeDecoration(c, getClass().getName());
         }
         
-        return vr.level;
+        return vr.level();
     }
 
     private String getMessage(String m) {
