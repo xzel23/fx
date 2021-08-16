@@ -49,9 +49,9 @@ public abstract class InputDialogPane<R> extends DialogPane implements Supplier<
 		ObservableList<ButtonType> bt = getButtonTypes();
 		bt.clear();
 		for (var b: buttons) {
-			bt.add(b.first);
-			Button btn = (Button) lookupButton(b.first);
-			btn.setOnAction(evt -> b.second.accept(this));
+			bt.add(b.first());
+			Button btn = (Button) lookupButton(b.first());
+			btn.setOnAction(evt -> b.second().accept(this));
 		}
 	}
 

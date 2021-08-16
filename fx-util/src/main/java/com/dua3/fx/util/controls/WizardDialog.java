@@ -37,7 +37,7 @@ public class WizardDialog extends Dialog<Map<String,Object>> {
 			pageStack.add(current);
 
 			LinkedHashMap<String, Object> result = new LinkedHashMap<>();
-			pageStack.forEach(p -> result.put(p.first, p.second.result) );
+			pageStack.forEach(p -> result.put(p.first(), p.second().result) );
 
 			return result;
 		});
@@ -148,7 +148,7 @@ public class WizardDialog extends Dialog<Map<String,Object>> {
 				addButtonToDialogPane(
 						page,
 						ButtonType.PREVIOUS,
-						p -> setPage(pageStack.remove(pageStack.size()-1).first),
+						p -> setPage(pageStack.remove(pageStack.size()-1).first()),
 						Bindings.isNotEmpty(pageStack)
 				);
 			}
@@ -158,7 +158,7 @@ public class WizardDialog extends Dialog<Map<String,Object>> {
 	private void setPage(String pageName) {
 		this.current = Pair.of(pageName, pages.get(pageName));
 
-		InputDialogPane<?> pane = current.second.pane;
+		InputDialogPane<?> pane = current.second().pane;
 		setDialogPane(pane);
 
 		pane.init();
@@ -169,7 +169,7 @@ public class WizardDialog extends Dialog<Map<String,Object>> {
 	}
 
 	public Page<?,?> getCurrentPage() {
-		return current.second;
+		return current.second();
 	}
 
 	private void addButtonToDialogPane(

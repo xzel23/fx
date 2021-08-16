@@ -161,13 +161,6 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
         return null;
     }
 
-    @Override
-    public void init() throws Exception {
-        super.init();
-        
-        FxLauncher.launchFinished(this);
-    }
-
     /**
      * Get named parameter value.
      * <p>

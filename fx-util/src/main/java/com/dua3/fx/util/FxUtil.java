@@ -1,7 +1,7 @@
 package com.dua3.fx.util;
 
 import com.dua3.utility.io.IOUtil;
-import com.dua3.utility.math.geometry.AffineTransformation2d;
+import com.dua3.utility.math.geometry.AffineTransformation2f;
 import com.dua3.utility.math.geometry.FillRule;
 import com.dua3.utility.text.FontDef;
 import javafx.geometry.Bounds;
@@ -137,11 +137,11 @@ public final class FxUtil {
     }
 
     /**
-     * Convert {@link AffineTransformation2d} to JavaFX {@link Affine}.
+     * Convert {@link AffineTransformation2f} to JavaFX {@link Affine}.
      * @param at the affine transformation
      * @return the JavaFX affine transformation
      */
-    public static Affine convert(AffineTransformation2d at) {
+    public static Affine convert(AffineTransformation2f at) {
         return new Affine(
                 at.getScaleX(), at.getShearX(), at.getTranslateX(), 
                 at.getShearY(), at.getScaleY(), at.getTranslateY()
@@ -149,12 +149,12 @@ public final class FxUtil {
     }
 
     /**
-     * Convert JavaFX {@link Affine} to {@link AffineTransformation2d}.
+     * Convert JavaFX {@link Affine} to {@link AffineTransformation2f}.
      * @param a the JavaFX affine transformation
      * @return the affine transformation
      */
-    public static AffineTransformation2d convert(Affine a) {
-        return new AffineTransformation2d(
+    public static AffineTransformation2f convert(Affine a) {
+        return new AffineTransformation2f(
                 (float) a.getMxx(), (float) a.getMyx(), (float) a.getTx(),
                 (float) a.getMyx(), (float) a.getMyy(), (float) a.getTy()
         );

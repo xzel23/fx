@@ -16,10 +16,10 @@ public class RichTextArea extends StyledTextArea<RichTextArea.Paragraph> {
             for (Run run: text) {
                 Text t = new Text(run.toString());
                 Pair<Font, javafx.scene.text.Font> f = getFont(run.getFontDef());
-                t.setFont(f.second);
-                t.setFill(FxUtil.convert(f.first.getColor()));
-                t.setUnderline(f.first.isUnderline());
-                t.setStrikethrough(f.first.isStrikeThrough());
+                t.setFont(f.second());
+                t.setFill(FxUtil.convert(f.first().getColor()));
+                t.setUnderline(f.first().isUnderline());
+                t.setStrikethrough(f.first().isStrikeThrough());
                 getChildren().add(t);
             }
         }

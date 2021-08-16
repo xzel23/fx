@@ -35,14 +35,6 @@ public final class FxLauncher {
     }
     
     /**
-     * Mark launch as finished, and return the URIs collected during startup.
-     * @param app the FxApplication instance that was launched
-     */
-    static void launchFinished(FxApplication<?,?> app) {
-        Objects.requireNonNull(app);
-    }
-
-    /**
      * Start application.
      * This method is a drop-in replacement for `Application.launch(cls, args)`.
      * <ul>

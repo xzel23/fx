@@ -49,7 +49,7 @@ subprojects {
         javafx_version = '16'
         junit_version = '5.7.1'
 
-        dua3_utility_version = '9.0.1'
+        dua3_utility_version = '10-SNAPSHOT'
 
         ikonli_version = '12.2.0'
     }
@@ -244,7 +244,9 @@ subprojects {
     }
 
     // === SPOTBUGS === >
-    spotbugs.toolVersion = '4.2.2'
+    spotbugs.toolVersion = '4.3.0'
+
+    spotbugs.excludeFilter = rootProject.file('spotbugs-exclude.xml')
 
     tasks.withType(com.github.spotbugs.snom.SpotBugsTask) {
         reports {

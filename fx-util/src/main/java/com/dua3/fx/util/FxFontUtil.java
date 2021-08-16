@@ -14,7 +14,7 @@
 
 package com.dua3.fx.util;
 
-import com.dua3.utility.math.geometry.Dimension2d;
+import com.dua3.utility.math.geometry.Dimension2f;
 import com.dua3.utility.text.FontUtil;
 
 import javafx.scene.text.Font;
@@ -34,9 +34,9 @@ public class FxFontUtil implements FontUtil<Font> {
     }
 
     @Override
-    public Dimension2d getTextDimension(CharSequence s, com.dua3.utility.text.Font f) {
+    public Dimension2f getTextDimension(CharSequence s, com.dua3.utility.text.Font f) {
          var bounds = FxUtil.getTextBounds(s, f);
-         return Dimension2d.of((float) bounds.getWidth(), (float) bounds.getHeight());
+         return Dimension2f.of((float) bounds.getWidth(), (float) bounds.getHeight());
     }
 
     @Override
