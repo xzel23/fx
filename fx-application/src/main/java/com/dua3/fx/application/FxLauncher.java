@@ -106,18 +106,18 @@ public final class FxLauncher {
         for (String s:args) {
             // split if s contains spaces, starts with a double dash, or a windows path
             if (s.indexOf(' ')>=0 || s.matches("^(--|[a-zA-Z]:[/\\\\]).*")) {
-                if (arg.length()!=0) {
+                if (!arg.isEmpty()) {
                     argL.add(arg.toString());
                 }
                 arg.setLength(0);
             }
 
-            if (arg.length()!=0) {
+            if (!arg.isEmpty()) {
                 arg.append(' ');
             }
             arg.append(s);
         }
-        if (arg.length()!=0) {
+        if (!arg.isEmpty()) {
             argL.add(arg.toString());
         }
 
