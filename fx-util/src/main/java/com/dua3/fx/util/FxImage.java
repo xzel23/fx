@@ -5,12 +5,10 @@ import javafx.scene.image.PixelFormat;
 
 import java.util.Objects;
 
-public class FxImage implements Image {
+public record FxImage(javafx.scene.image.Image fxImage) implements Image {
     
-    private final javafx.scene.image.Image fxImage;
-    
-    public FxImage(javafx.scene.image.Image fxImage) {
-        this.fxImage = Objects.requireNonNull(fxImage);
+    public FxImage {
+        Objects.requireNonNull(fxImage);
     }
     
     @Override
@@ -32,7 +30,4 @@ public class FxImage implements Image {
         return data;
     }
 
-    public javafx.scene.image.Image fxImage() {
-        return fxImage;
-    }
 }
