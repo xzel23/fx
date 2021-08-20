@@ -14,7 +14,9 @@
 
 package com.dua3.fx.util;
 
+import com.dua3.utility.lang.LangUtil;
 import com.dua3.utility.math.geometry.Dimension2f;
+import com.dua3.utility.text.FontDef;
 import com.dua3.utility.text.FontUtil;
 
 import javafx.scene.text.Font;
@@ -51,9 +53,41 @@ public class FxFontUtil implements FontUtil<Font> {
 
     @Override
     public List<com.dua3.utility.text.Font> loadFonts(InputStream in) throws IOException {
-        return FxUtil.loadFonts(in);
-    }
+        try (in) {
+            Font[] fxFonts = Font.loadFonts(in, 0);
+            if (fxFonts==null) {
+                return Collections.emptyList();
+            }
 
+            List<com.dua3.utility.text.Font> fonts = new ArrayList<>(fxFonts.length);
+            for (Font fxFont: fxFonts) {
+                String style = fxFont.getStyle().toLowerCase(Locale.ROOT);
+                com.dua3.utility.text.Font font = new com.dua3.utility.text.Font(
+                        fxFont.getFamily(),
+                        (float) fxFont.getSize(),
+                        com.dua3.utility.data.Color.BLACK,
+                        style.contains("bold"),
+                        style.contains("italic") || style.contains("oblique"),
+                        style.contains("line-through"),
+                        style.contains("line-under")
+                );
+                fonts.add(font);
+            }
+
+            return fonts;
+        }
+    }
+    
+    @Override
+    public com.dua3.utility.text.Font loadFontAs(InputStream in, com.dua3.utility.text.Font font) throws IOException {
+        try (in) {
+            Font fxFont = Font.loadFont(in, font.getSizeInPoints());
+            LangUtil.check(fxFont!=null, () -> new IOException("no font loaded"));
+            com.dua3.utility.text.Font loadedFont = new FxFontEmbedded(fxFont, font.getFamily(), font.getSizeInPoints(), font.getColor(), font.isBold(), font.isItalic(),  font.isUnderline(), font.isStrikeThrough());
+            return loadedFont;
+        }
+    }
+    
     @Override
     public List<String> getFamilies(FontTypes types) {
         List<String> fonts = Font.getFamilies();
