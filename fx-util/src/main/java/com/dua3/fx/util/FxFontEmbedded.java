@@ -5,9 +5,6 @@ import com.dua3.utility.text.Font;
 import com.dua3.utility.text.FontDef;
 
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
-import java.util.function.DoubleFunction;
 
 public class FxFontEmbedded extends Font {
     

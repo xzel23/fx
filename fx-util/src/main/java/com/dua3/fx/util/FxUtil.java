@@ -15,8 +15,6 @@ import javafx.scene.transform.Affine;
 import javafx.stage.FileChooser;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;

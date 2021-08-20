@@ -16,7 +16,6 @@ package com.dua3.fx.util;
 
 import com.dua3.utility.lang.LangUtil;
 import com.dua3.utility.math.geometry.Dimension2f;
-import com.dua3.utility.text.FontDef;
 import com.dua3.utility.text.FontUtil;
 
 import javafx.scene.text.Font;

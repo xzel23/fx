@@ -1,6 +1,13 @@
 Changelog
 =========
 
+#### Version 0.17
+ - requires Java 17!
+ - JavaFX 17
+
+#### Version 0.16
+(unreleased)
+
 #### Version 0.15
  - stop publishing to bintray
  - publish builds to GitLab packages
