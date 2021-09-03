@@ -82,8 +82,7 @@ public class FxFontUtil implements FontUtil<Font> {
         try (in) {
             Font fxFont = Font.loadFont(in, font.getSizeInPoints());
             LangUtil.check(fxFont!=null, () -> new IOException("no font loaded"));
-            com.dua3.utility.text.Font loadedFont = new FxFontEmbedded(fxFont, font.getFamily(), font.getSizeInPoints(), font.getColor(), font.isBold(), font.isItalic(),  font.isUnderline(), font.isStrikeThrough());
-            return loadedFont;
+            return new FxFontEmbedded(fxFont, font.getFamily(), font.getSizeInPoints(), font.getColor(), font.isBold(), font.isItalic(),  font.isUnderline(), font.isStrikeThrough());
         }
     }
     

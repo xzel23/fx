@@ -204,6 +204,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		if (!dirtyList.isEmpty()) {
 			rc = goOn.get();
 		}
+		
 		return rc;
 	}
 

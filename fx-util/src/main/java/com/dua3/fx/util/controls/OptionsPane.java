@@ -90,15 +90,13 @@ public class OptionsPane extends GridPane implements InputControl<Arguments>{
 		if (option instanceof ChoiceOption<?>) {
 			ChoiceOption<T> co = (ChoiceOption<T>) option;
 			return new ChoiceInputControl<>(co, () -> dflt.get().getOrThrow(co));
-		} else if (option instanceof Flag) {
-			Flag f = (Flag) option;
+		} else if (option instanceof Flag f) {
 			Supplier<Boolean> dfltValue = () -> (dflt.get().isSet(f));
 			CheckBox checkBox = new CheckBox(f.displayName());
 			return (InputControl<T>) new SimpleInputControl<>(checkBox, checkBox.selectedProperty(), dfltValue, x -> Optional.empty());
-		} else if (option instanceof SimpleOption) {
-			SimpleOption<T> so = (SimpleOption<T>) option;
+		} else if (option instanceof SimpleOption<T> so) {
 			Supplier<T> df = () -> dflt.get().get(so).or(so::getDefault).orElse(null);
-			StringConverter<T> converter = new StringConverter<T>() {
+			StringConverter<T> converter = new StringConverter<>() {
 				@Override
 				public String toString(T v) {
 					return option.format(v);
@@ -123,7 +121,7 @@ public class OptionsPane extends GridPane implements InputControl<Arguments>{
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	@Override
     public Arguments get() {
 		Deque<Arguments.Entry<?>> entries = new LinkedList<>();
