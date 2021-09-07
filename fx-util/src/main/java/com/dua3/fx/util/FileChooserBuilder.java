@@ -29,8 +29,10 @@ import javafx.stage.Window;
  */
 public class FileChooserBuilder {
 	private static final Logger LOG = Logger.getLogger(FileChooserBuilder.class.getName());
-	
-	private File initialDir = new File(System.getProperty("user.home"));
+
+	public static final File USER_HOME = new File(System.getProperty("user.home"));
+
+	private File initialDir = USER_HOME;
 	private String initialFileName = "";
 	private List<FileChooser.ExtensionFilter> filters = new LinkedList<>();
 	private ExtensionFilter selectedFilter = null;
@@ -78,6 +80,11 @@ public class FileChooserBuilder {
 	private FileChooser build() {
 		FileChooser chooser = new FileChooser();
 
+		chooser.getExtensionFilters().setAll(filters);
+		if (selectedFilter!=null) {
+			chooser.setSelectedExtensionFilter(selectedFilter);
+		}
+
 		if (initialDir!=null && initialDir.isDirectory()) {
 			try {
 				chooser.setInitialDirectory(initialDir);
@@ -87,11 +94,6 @@ public class FileChooserBuilder {
 		}
 		
 		chooser.setInitialFileName(initialFileName);
-		
-		chooser.getExtensionFilters().setAll(filters);
-		if (selectedFilter!=null) {
-			chooser.setSelectedExtensionFilter(selectedFilter);
-		}
 		
 		return chooser;
 	}
@@ -119,7 +121,7 @@ public class FileChooserBuilder {
 	 *  this instance
 	 */
 	public FileChooserBuilder initialDir(File initialDir) {
-		this.initialDir = Objects.requireNonNull(initialDir);
+		this.initialDir = initialDir != null ? initialDir : USER_HOME;
 		return this;
 	}
 
@@ -131,7 +133,7 @@ public class FileChooserBuilder {
 	 *  this instance
 	 */
 	public FileChooserBuilder initialFileName(String initialFileName) {
-		this.initialFileName = Objects.requireNonNull(initialFileName);
+		this.initialFileName = initialFileName != null ? initialFileName : "";
 		return this;
 	}
 

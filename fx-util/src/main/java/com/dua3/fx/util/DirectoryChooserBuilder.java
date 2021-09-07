@@ -17,6 +17,7 @@ package com.dua3.fx.util;
 import java.io.File;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Window;
@@ -27,7 +28,11 @@ import javafx.stage.Window;
  * Provides a fluent interface to create file dialogs. 
  */
 public class DirectoryChooserBuilder {
-	private File initialDir = new File(System.getProperty("user.home"));
+	private final Logger LOG = Logger.getLogger(DirectoryChooserBuilder.class.getName());
+
+	public static final File USER_HOME = new File(System.getProperty("user.home"));
+
+	private File initialDir = USER_HOME;
 
 	DirectoryChooserBuilder() {
 	}
@@ -46,7 +51,12 @@ public class DirectoryChooserBuilder {
 
 	private DirectoryChooser build() {
 		DirectoryChooser chooser = new DirectoryChooser();
-		chooser.setInitialDirectory(initialDir);
+		if (initialDir.isDirectory()) {
+			LOG.fine("initial directory: "+initialDir);
+			chooser.setInitialDirectory(initialDir);
+		} else {
+			LOG.warning("ignoring invalid value for initial directory: "+initialDir);
+		}
 		return chooser;
 	}
 
@@ -58,7 +68,7 @@ public class DirectoryChooserBuilder {
 	 *  this instance
 	 */
 	public DirectoryChooserBuilder initialDir(File initialDir) {
-		this.initialDir = Objects.requireNonNull(initialDir);
+		this.initialDir = initialDir != null ? initialDir : USER_HOME;
 		return this;
 	}
 
