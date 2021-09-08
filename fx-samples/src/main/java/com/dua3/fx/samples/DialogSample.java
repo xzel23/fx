@@ -117,12 +117,13 @@ public class DialogSample extends Application {
                     .page("start",
                             Dialogs.informationPane()
                                     .header("Create new database connection")
-                                    .text(
-                                            "This wizard helps you to define a new database conection.%n" +
-                                                    "%n" +
-                                                    "You will need the following information:%n" +
-                                                    "- the vendor or manufacturer name of your database system%n" +
-                                                    "- the server name and port"))
+                                    .text("""
+                                            This wizard helps you to define a new database conection.
+                                            
+                                            You will need the following information:
+                                            - the vendor or manufacturer name of your database system
+                                            - the server name and port
+                                            """))
                     .page("dbms",
                             Dialogs.inputPane()
                                     .header("Choose your Database from the list below.")
