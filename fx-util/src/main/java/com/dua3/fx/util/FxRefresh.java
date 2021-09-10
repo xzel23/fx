@@ -9,6 +9,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -140,9 +141,14 @@ public final class FxRefresh {
             if (active.get()) {
                 int myRevision = requestedRevision.get();
                 LOG.fine(() -> "[" + name + "] starting refresh with revision: " + myRevision);
-                task.run();
-                currentRevision.set(myRevision);
-                LOG.fine(() -> "[" + name + "] refreshed to revision: " + myRevision);
+                try {
+                    task.run();
+                    LOG.fine(() -> "[" + name + "] refreshed to revision: " + myRevision);
+                } catch (Exception e) {
+                    LOG.log(Level.WARNING, "task aborted, exception swallowed, current revision %s might have inconsistent state".formatted(myRevision), e);
+                } finally {
+                    currentRevision.set(myRevision);
+                }
             }
         } while (updateThread!= null);
     }
