@@ -15,7 +15,6 @@
 package com.dua3.fx.util;
 
 import java.io.File;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Logger;
 
