@@ -27,7 +27,7 @@ import javafx.stage.Window;
  * Provides a fluent interface to create file dialogs. 
  */
 public class DirectoryChooserBuilder {
-	private final Logger LOG = Logger.getLogger(DirectoryChooserBuilder.class.getName());
+	private static final Logger LOG = Logger.getLogger(DirectoryChooserBuilder.class.getName());
 
 	public static final File USER_HOME = new File(System.getProperty("user.home"));
 
