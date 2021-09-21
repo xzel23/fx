@@ -6,6 +6,8 @@ Changelog
  - JavaFX 16 (update to 17 when it is released)
  - remove FxSettings
  - code cleanups
+ - move all classes from fx.util.controls to fx.controls (also implies moving from module fx_util to fx_controls)
+ - Controls.makeResizable()
 
 #### Version 0.16
 (unreleased)

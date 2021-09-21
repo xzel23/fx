@@ -19,7 +19,5 @@ javafx {
 }
 
 dependencies {
-    implementation project(':fx-icons')
-
     implementation "com.dua3.utility:utility:${dua3_utility_version}"
 }

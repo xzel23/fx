@@ -14,7 +14,7 @@
 
 package com.dua3.fx.web;
 
-import com.dua3.fx.util.Dialogs;
+import com.dua3.fx.controls.Dialogs;
 import javafx.event.Event;
 import javafx.event.EventDispatchChain;
 import javafx.event.EventDispatcher;

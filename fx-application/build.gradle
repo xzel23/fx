@@ -20,6 +20,7 @@ javafx {
 
 dependencies {
     api project(':fx-util')
+    api project(':fx-controls')
 
     implementation "com.dua3.utility:utility:${dua3_utility_version}"
 }

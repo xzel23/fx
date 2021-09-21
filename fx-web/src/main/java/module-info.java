@@ -16,7 +16,7 @@ module dua3_fx.web {
 	exports com.dua3.fx.web;
 	opens com.dua3.fx.web;
 
-	requires dua3_fx.util;
+	requires dua3_fx.controls;
 	requires javafx.web;
     requires jdk.jsobject;
     requires java.logging;

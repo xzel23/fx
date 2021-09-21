@@ -48,7 +48,7 @@ public class StatusBar extends HBox implements FxTaskTracker {
 	 */
 	public StatusBar() {
 		// load FXML
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("intern/status_bar.fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("status_bar.fxml"));
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);
 

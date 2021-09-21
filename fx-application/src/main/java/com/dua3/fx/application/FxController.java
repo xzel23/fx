@@ -14,7 +14,7 @@
 
 package com.dua3.fx.application;
 
-import com.dua3.fx.util.Dialogs;
+import com.dua3.fx.controls.Dialogs;
 import com.dua3.fx.util.FxTask;
 import com.dua3.fx.util.FxUtil;
 import com.dua3.utility.data.Pair;

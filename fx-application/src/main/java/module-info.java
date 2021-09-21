@@ -17,6 +17,7 @@ module dua3_fx.application {
 	opens com.dua3.fx.application;
 
     requires transitive dua3_fx.util;
+    requires transitive dua3_fx.controls;
 
     requires dua3_utility;
 

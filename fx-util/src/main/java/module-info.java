@@ -19,9 +19,6 @@ module dua3_fx.util {
 	exports com.dua3.fx.util;
 	opens com.dua3.fx.util;
 	
-	exports com.dua3.fx.util.controls;
-	opens com.dua3.fx.util.controls;
-
 	provides com.dua3.utility.text.FontUtil
 	with FxFontUtil;
 
@@ -32,7 +29,6 @@ module dua3_fx.util {
     requires dua3_utility;
 
 	requires java.desktop;
-    requires dua3_fx.icons;
     
 	requires javafx.controls;
 	requires javafx.fxml;

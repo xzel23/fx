@@ -19,5 +19,5 @@ javafx {
 }
 
 dependencies {
-    implementation project(':fx-util')
+    implementation project(':fx-controls')
 }

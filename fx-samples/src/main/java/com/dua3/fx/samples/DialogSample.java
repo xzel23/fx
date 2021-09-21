@@ -1,7 +1,7 @@
 package com.dua3.fx.samples;
 
-import com.dua3.fx.util.Dialogs;
-import com.dua3.fx.util.controls.InputBuilder;
+import com.dua3.fx.controls.Dialogs;
+import com.dua3.fx.controls.InputBuilder;
 import com.dua3.utility.io.CsvIo;
 import javafx.application.Application;
 import javafx.scene.Scene;

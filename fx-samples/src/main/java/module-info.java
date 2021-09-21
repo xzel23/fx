@@ -25,4 +25,5 @@ module dua3_fx.samples {
 	
 	requires dua3_fx.icons;
     requires dua3_fx.editor;
+    requires dua3_fx.controls;
 }
