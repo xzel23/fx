@@ -13,7 +13,7 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Adapted from
+ * Code based on
  *   https://github.com/grubbcc/anagrams/blob/browser/client/java/client/DragResizer.java
  * and
  *   https://gist.github.com/andytill/4369729
@@ -29,14 +29,10 @@ class DragResizer {
     private final Set<Border> borders;
     private final int resizeMargin;
 
-    private boolean initMinHeight;
-
     private boolean draggingTop;
     private boolean draggingRight;
     private boolean draggingBottom;
     private boolean draggingLeft;
-
-    private final ObjectProperty<Point2D> mouseLocation = new SimpleObjectProperty<>();
 
     /**
      *
@@ -99,22 +95,10 @@ class DragResizer {
     private void mousePressed(MouseEvent event) {
         event.consume();
 
-        //should bring clicked gameWindow to front if multiple gameWindows are open
-
         draggingTop = isInDraggableZoneTop(event);
         draggingRight = isInDraggableZoneRight(event);
         draggingBottom = isInDraggableZoneBottom(event);
         draggingLeft = isInDraggableZoneLeft(event);
-
-        mouseLocation.set(new Point2D((float)event.getScreenX(), (float)event.getScreenY()));
-
-        // Make sure that the minimum height is set to the current height once;
-        // setting a min height that is smaller than the current height will have no effect.
-        if (!initMinHeight) {
-            region.setMinHeight(region.getHeight());
-            region.setMinWidth(region.getWidth());
-            initMinHeight = true;
-        }
     }
 
     /**
@@ -167,18 +151,6 @@ class DragResizer {
         }
         if (draggingLeft) {
             resizeLeft(event);
-        }
-
-        if(draggingBottom || draggingRight || draggingTop || draggingLeft) {
-            return;
-        } else if(mouseLocation.get() != null) {
-            double x = event.getScreenX();
-            double y = event.getScreenY();
-
-            region.setTranslateX(region.getTranslateX() + x - mouseLocation.get().getX());
-            region.setTranslateY(region.getTranslateY() + y - mouseLocation.get().getY());
-          
-            mouseLocation.set(new javafx.geometry.Point2D(x, y));
         }
     }
 
@@ -241,9 +213,7 @@ class DragResizer {
      */
 
     protected void mouseReleased(MouseEvent event) {
-        initMinHeight = false; //Reset each time
         draggingTop = draggingRight = draggingBottom = draggingLeft = false;
         region.setCursor(Cursor.DEFAULT);
-        mouseLocation.set(null);
     }
 }
