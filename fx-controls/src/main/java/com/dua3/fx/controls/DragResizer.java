@@ -1,8 +1,5 @@
 package com.dua3.fx.controls;
 
-import javafx.geometry.Point2D;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Cursor;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
@@ -18,13 +15,11 @@ import java.util.Set;
  * and
  *   https://gist.github.com/andytill/4369729
  */
-
-class DragResizer {
+final class DragResizer {
 
     /**
      * The margin (in pixels) around the control that a user can click to resize the region.
      */
-
     private final Region region;
     private final Set<Border> borders;
     private final int resizeMargin;
@@ -34,10 +29,6 @@ class DragResizer {
     private boolean draggingBottom;
     private boolean draggingLeft;
 
-    /**
-     *
-     */
-
     private DragResizer(Region region, int resizeMargin, Border... borders) {
         this.region = Objects.requireNonNull(region);
         this.resizeMargin = resizeMargin;
@@ -46,7 +37,10 @@ class DragResizer {
     }
 
     /**
-     *
+     * Make region resizable.
+     * @param region the region to make resizable
+     * @param resizeMargin the margin in pixels
+     * @param borders the borders where dragging should be possible
      */
     public static void makeResizable(Region region, int resizeMargin, Border... borders) {
         final DragResizer resizer = new DragResizer(region, resizeMargin, borders);
@@ -58,9 +52,8 @@ class DragResizer {
     }
 
     /**
-     * Sets the cursor to the appropriate type.
+     * Set the cursor to the appropriate type.
      */
-
     private void mouseOver(MouseEvent event) {
         if (isInDraggableZoneTop(event) || draggingTop) {
             if(isInDraggableZoneRight(event) || draggingRight) {
@@ -88,10 +81,6 @@ class DragResizer {
         }
     }
 
-    /**
-     *
-     */
-
     private void mousePressed(MouseEvent event) {
         event.consume();
 
@@ -101,41 +90,21 @@ class DragResizer {
         draggingLeft = isInDraggableZoneLeft(event);
     }
 
-    /**
-     *
-     */
-
     private boolean isInDraggableZoneTop(MouseEvent event) {
         return borders.contains(Border.TOP) && event.getY() < resizeMargin;
     }
-
-    /**
-     *
-     */
 
     private boolean isInDraggableZoneLeft(MouseEvent event) {
         return borders.contains(Border.LEFT) && event.getX() < resizeMargin;
     }
 
-    /**
-     *
-     */
-
     private boolean isInDraggableZoneBottom(MouseEvent event) {
         return borders.contains(Border.BOTTOM) && event.getY() > (region.getHeight() - resizeMargin);
     }
 
-    /**
-     *
-     */
-
     private boolean isInDraggableZoneRight(MouseEvent event) {
         return borders.contains(Border.RIGHT) && event.getX() > (region.getWidth() - resizeMargin);
     }
-
-    /**
-     *
-     */
 
     private void mouseDragged(MouseEvent event) {
         event.consume();
@@ -154,10 +123,6 @@ class DragResizer {
         }
     }
 
-    /**
-     *
-     */
-
     private void resizeTop(MouseEvent event) {
         double prevMin = region.getMinHeight();
         region.setMinHeight(region.getMinHeight() - event.getY());
@@ -173,25 +138,13 @@ class DragResizer {
         }
     }
 
-    /**
-     *
-     */
-
     private void resizeRight(MouseEvent event) {
         region.setMinWidth(event.getX());
     }
 
-    /**
-     *
-     */
-
     private void resizeBottom(MouseEvent event) {
         region.setMinHeight(event.getY());
     }
-
-    /**
-     *
-     */
 
     private void resizeLeft(MouseEvent event) {
         double prevMin = region.getMinWidth();
@@ -207,10 +160,6 @@ class DragResizer {
             region.setTranslateX(region.getTranslateX() + event.getX());
         }
     }
-
-    /**
-     *
-     */
 
     protected void mouseReleased(MouseEvent event) {
         draggingTop = draggingRight = draggingBottom = draggingLeft = false;

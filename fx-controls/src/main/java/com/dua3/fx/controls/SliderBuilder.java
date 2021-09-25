@@ -1,5 +1,6 @@
 package com.dua3.fx.controls;
 
+import javafx.beans.property.Property;
 import javafx.beans.value.ObservableNumberValue;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
@@ -70,6 +71,16 @@ public class SliderBuilder {
     
     public SliderBuilder onChange(DoubleConsumer onChange) {
         slider.valueProperty().addListener((v,o,n) -> onChange.accept(n.doubleValue()));
+        return this;
+    }
+
+    public SliderBuilder bind(ObservableNumberValue value) {
+        slider.valueProperty().bind(value);
+        return this;
+    }
+
+    public SliderBuilder bindBidirectional(Property<Number> value) {
+        slider.valueProperty().bindBidirectional(value);
         return this;
     }
 
