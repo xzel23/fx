@@ -161,7 +161,7 @@ final class DragResizer {
         }
     }
 
-    protected void mouseReleased(MouseEvent event) {
+    private void mouseReleased(MouseEvent event) {
         draggingTop = draggingRight = draggingBottom = draggingLeft = false;
         region.setCursor(Cursor.DEFAULT);
     }

@@ -15,15 +15,12 @@
 module dua3_fx.samples {
 	exports com.dua3.fx.samples;
 	opens com.dua3.fx.samples;
-
-	requires dua3_fx.util;
-	requires dua3_utility;
-
-	requires javafx.controls;
-	requires javafx.base;
-	requires javafx.fxml;
 	
+	requires javafx.controls;
+
+	requires dua3_utility;
 	requires dua3_fx.icons;
     requires dua3_fx.editor;
     requires dua3_fx.controls;
+	requires dua3_fx.util;
 }

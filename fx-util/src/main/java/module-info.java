@@ -25,13 +25,9 @@ module dua3_fx.util {
 	provides com.dua3.utility.data.ImageUtil
 	with FxImageUtil;
 
+	requires dua3_utility;
 	requires java.logging;
-    requires dua3_utility;
-
-	requires java.desktop;
-    
+	requires java.prefs;
 	requires javafx.controls;
-	requires javafx.fxml;
 
-    requires java.prefs;
 }
