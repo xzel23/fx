@@ -58,6 +58,7 @@ public class RadioPane<T> extends VBox implements InputControl<T> {
 		});
 		
 		this.state = new State<>(property);
+		//noinspection VariableNotUsedInsideIf
 		this.state.setValidate( v -> v==null?Optional.of("Nothing selected.") : Optional.empty());
 		
 		// update toggle, when state changes

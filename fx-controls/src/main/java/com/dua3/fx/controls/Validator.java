@@ -125,7 +125,7 @@ public class Validator {
             icon.setIconIdentifier(iconId);
             icon.setIconColor(paint);
             icon.setIconSize(iconSize);
-            icon.setStyle(String.format("-fx-translate-x: -%d;", (int) (1.25*iconSize/2.0+.5)));
+            icon.setStyle(String.format("-fx-translate-x: -%d;", (int) (1.25*iconSize/2.0 + 0.5)));
             icon.setFocusTraversable(false);
 
             String message = getMessage(vr.message());

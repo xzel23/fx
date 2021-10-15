@@ -109,6 +109,7 @@ public final class FxDbUtil {
             case DECIMAL:
             case NUMERIC:
                 if (scale > 0) {
+                    //noinspection StringConcatenationInFormatCall
                     format = item -> String.format(
                                 locale,
                                 "%.0"+scale+"f",
@@ -194,7 +195,7 @@ public final class FxDbUtil {
 
 	private static String toString(Clob clob) {
 		try {
-			return clob.getSubString(1L, (int) Math.min((long) Integer.MAX_VALUE, clob.length()));
+			return clob.getSubString(1L, (int) Math.min(Integer.MAX_VALUE, clob.length()));
 		} catch (SQLException e) {
 			LOG.log(Level.WARNING, "could no convert Clob to String", e);
 			return ERROR_TEXT;

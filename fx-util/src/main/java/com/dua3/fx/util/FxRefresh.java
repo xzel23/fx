@@ -121,8 +121,8 @@ public final class FxRefresh {
      */
     private void refreshLoop() {
         do {
+            lock.lock();
             try {
-                lock.lock();
                 // stay in loop as long as stop is not requested (updateThread!=null) and
                 // refresher is inactive or no redraw request has been issued  
                 while(updateThread!=null
@@ -158,8 +158,8 @@ public final class FxRefresh {
      */
     private void signal() {
         LOG.fine(() -> "["+name+"] refresh requested");
+        lock.lock();
         try {
-            lock.lock();
             trigger.signalAll();
         } finally {
             lock.unlock();
@@ -213,8 +213,8 @@ public final class FxRefresh {
      */
     public void refresh() {
         LOG.fine(() -> "["+name+"] refresh requested");
+        lock.lock();
         try {
-            lock.lock();
             requestedRevision.incrementAndGet();
             trigger.signalAll();
         } finally {
