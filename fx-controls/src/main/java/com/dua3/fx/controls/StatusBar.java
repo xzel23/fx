@@ -20,15 +20,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.dua3.fx.util.PlatformHelper;
-import com.dua3.fx.util.FxTask;
 import com.dua3.fx.util.FxTaskTracker;
 
+import javafx.concurrent.Task;
 import javafx.concurrent.Worker.State;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 
 /**
@@ -73,7 +74,7 @@ public class StatusBar extends HBox implements FxTaskTracker {
 	}
 
 	@Override
-	public void updateTaskState(FxTask<?> task, State state) {
+	public void updateTaskState(Task<?> task, State state) {
 		PlatformHelper.runLater(() -> {
 			switch (state) {
 				case RUNNING -> {
@@ -102,14 +103,19 @@ public class StatusBar extends HBox implements FxTaskTracker {
 	}
 
 	@Override
-	public void updateTaskProgress(FxTask<?> task, double p) {
+	public void updateTaskProgress(Task<?> task, double p) {
 		progress.setProgress(p);
 		
 	}
 
 	@Override
-	public void updateTaskText(FxTask<?> task, String s) {
+	public void updateTaskTitle(Task<?> task, String s) {
 		text.setText(s);
+	}
+
+	@Override
+	public void updateTaskMessage(Task<?> task, String s) {
+		progress.setTooltip(new Tooltip(s));
 	}
 
 }

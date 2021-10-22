@@ -1,9 +1,11 @@
 package com.dua3.fx.util;
 
+import javafx.concurrent.Task;
 import javafx.concurrent.Worker.State;
 
 public interface FxTaskTracker {
-    void updateTaskState(FxTask<?> task, State state);
-    void updateTaskProgress(FxTask<?> task, double progress);
-    void updateTaskText(FxTask<?> task, String text);
+    void updateTaskState(Task<?> task, State state);
+    void updateTaskProgress(Task<?> task, double progress);
+    void updateTaskTitle(Task<?> task, String title);
+    void updateTaskMessage(Task<?> task, String message);
 }

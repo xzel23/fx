@@ -15,7 +15,6 @@
 package com.dua3.fx.application;
 
 import com.dua3.fx.controls.Dialogs;
-import com.dua3.fx.util.FxTask;
 import com.dua3.fx.util.FxUtil;
 import com.dua3.utility.data.Pair;
 import com.dua3.utility.lang.LangUtil;
@@ -25,6 +24,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
@@ -61,7 +61,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	protected ResourceBundle resources;
 	
 	/** The list of current tasks. */
-	protected final ObservableList<FxTask<?>> tasks = FXCollections.observableArrayList();
+	protected final ObservableList<Task<?>> tasks = FXCollections.observableArrayList();
 
 	/** Preferece: last document. */
 	protected static final String PREF_DOCUMENT = "document_uri";

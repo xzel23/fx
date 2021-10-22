@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 
 public abstract class FxService<T> extends Service<T> {
 
@@ -12,27 +13,31 @@ public abstract class FxService<T> extends Service<T> {
 	}
 
 	@Override
-	protected final FxTask<T> createTask() {
-		FxTask<T> task = doCreateTask();
+	protected final Task<T> createTask() {
+		Task<T> task = doCreateTask();
 		task.progressProperty().addListener((v,o,n) -> updateTaskProgress(task, n.doubleValue()));
 		task.stateProperty().addListener((v,o,n) -> updateTaskState(task, n));
-		task.textProperty().addListener((v,o,n) -> updateTaskText(task, n));
+		task.titleProperty().addListener((v,o,n) -> updateTaskTitle(task, n));
 		return task;
 	}
 
-	private void updateTaskText(FxTask<T> task, String arg) {
-		taskTrackers.forEach(t -> t.updateTaskText(task, arg));
+	private void updateTaskTitle(Task<T> task, String arg) {
+		taskTrackers.forEach(t -> t.updateTaskTitle(task, arg));
 	}
 
-	private void updateTaskState(FxTask<T> task, State arg) {
+	private void updateTaskMessage(Task<T> task, String arg) {
+		taskTrackers.forEach(t -> t.updateTaskMessage(task, arg));
+	}
+
+	private void updateTaskState(Task<T> task, State arg) {
 		taskTrackers.forEach(t -> t.updateTaskState(task, arg));
 	}
 
-	private void updateTaskProgress(FxTask<T> task, double arg) {
+	private void updateTaskProgress(Task<T> task, double arg) {
 		taskTrackers.forEach(t -> t.updateTaskProgress(task, arg));
 	}
 
-	protected abstract FxTask<T> doCreateTask();
+	protected abstract Task<T> doCreateTask();
 
 	private final List<FxTaskTracker> taskTrackers = new LinkedList<>();
 
