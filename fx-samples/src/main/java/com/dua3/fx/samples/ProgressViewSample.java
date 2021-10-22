@@ -2,17 +2,14 @@ package com.dua3.fx.samples;
 
 import com.dua3.fx.controls.ProgressView;
 import com.dua3.fx.icons.IconUtil;
-import com.dua3.fx.icons.IconView;
 import com.dua3.utility.concurrent.ProgressTracker;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
 
 public class ProgressViewSample extends Application {
 
@@ -22,7 +19,7 @@ public class ProgressViewSample extends Application {
         launch(args);
     }
     
-    record Task(String name, boolean indeterminate, int max) {
+    record SampleTask(String name, boolean indeterminate, int max) {
         @Override
         public String toString() {
             return name;
@@ -31,7 +28,7 @@ public class ProgressViewSample extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        ProgressView<Task> pv = new ProgressView<>();
+        ProgressView<SampleTask> pv = new ProgressView<>();
         pv.setMaxWidth(Double.POSITIVE_INFINITY);
         pv.setPrefWidth(5000);
         pv.setMaxHeight(Double.POSITIVE_INFINITY);
@@ -44,18 +41,18 @@ public class ProgressViewSample extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
         
-        addTask(pv, "Task 1", 100, ProgressTracker.State.COMPLETED_SUCCESS);
-        addTask(pv, "Task 2", 50, ProgressTracker.State.COMPLETED_SUCCESS);
-        addTask(pv, "Task 3", -75, ProgressTracker.State.COMPLETED_SUCCESS);
+        addTask(pv, "SampleTask 1", 100, ProgressTracker.State.COMPLETED_SUCCESS);
+        addTask(pv, "SampleTask 2", 50, ProgressTracker.State.COMPLETED_SUCCESS);
+        addTask(pv, "SampleTask 3", -75, ProgressTracker.State.COMPLETED_SUCCESS);
     }
     
     ExecutorService pool = Executors.newFixedThreadPool(3);
     
-    private void addTask(ProgressView<Task> pv, String name, int steps, ProgressTracker.State s) {
+    private void addTask(ProgressView<SampleTask> pv, String name, int steps, ProgressTracker.State s) {
         boolean indeterminate = steps < 0;
         int max = steps >= 0 ? steps : -steps;
         
-        Task task = new Task(name, indeterminate, max);
+        SampleTask task = new SampleTask(name, indeterminate, max);
         
         pv.schedule(task);
         
