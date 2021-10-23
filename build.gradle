@@ -49,7 +49,7 @@ subprojects {
         javafx_version = '17.0.0.1'
         junit_version = '5.7.1'
 
-        dua3_utility_version = '10-BETA11'
+        dua3_utility_version = '10-BETA12-SNAPSHOT'
 
         ikonli_version = '12.2.0'
     }
@@ -58,38 +58,20 @@ subprojects {
     targetCompatibility = java_version
 
     repositories {
-        // Maven local Repository
-        mavenLocal()
-        
-        // GitLab Packages
-        if (System.properties.containsKey('gitlabPrivateToken')) {
-            maven {
-                url "https://gitlab.com/api/v4/projects/24900343/packages/maven"
-                name "GitlabPrivate"
-                credentials(HttpHeaderCredentials) {
-                    name = 'Private-Token'
-                    value = System.properties.get('gitlabPrivateToken')
-                }
-                authentication {
-                    header(HttpHeaderAuthentication)
-                }
-            }
-        } else if (System.getenv("CI_JOB_TOKEN")!=null) {
-            maven {
-                url "https://gitlab.com/api/v4/projects/24900343/packages/maven"
-                name "GitlabPrivate"
-                credentials(HttpHeaderCredentials) {
-                    name = 'Job-Token'
-                    value = System.getenv("CI_JOB_TOKEN")
-                }
-                authentication {
-                    header(HttpHeaderAuthentication)
-                }
+        // Maven Central Repository
+        mavenCentral()
+
+        // Sonatype Snapshots
+        maven {
+            name "oss.sonatype.org-snapshot"
+            url "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+            mavenContent {
+                snapshotsOnly()
             }
         }
 
-        // Maven Central Repository
-        mavenCentral()
+        // Maven local Repository
+        mavenLocal()
     }
 
     javafx {
