@@ -13,7 +13,7 @@
 // limitations under the License.
 
 plugins {
-    id 'com.adarshr.test-logger' version '2.1.0' apply false
+    id 'com.adarshr.test-logger' version '3.0.0' apply false
     id 'com.github.spotbugs' version '4.7.2' apply false
     id "org.openjfx.javafxplugin" version "0.0.10" apply false
 }
@@ -30,7 +30,7 @@ subprojects {
 
     /////////////////////////////////////////////////////////////////////////////
     group = 'com.dua3.fx'
-    version = '0.17-BETA12-SNAPSHOT'
+    version = '0.17-BETA13-SNAPSHOT'
 
     ext.scm = 'https://gitlab.com/com.dua3/lib/fx.git'
     ext.repo = 'public'
@@ -49,7 +49,7 @@ subprojects {
         javafx_version = '17.0.0.1'
         junit_version = '5.7.1'
 
-        dua3_utility_version = '10-BETA12'
+        dua3_utility_version = '10-BETA13.1'
 
         ikonli_version = '12.2.0'
     }
