@@ -5,13 +5,14 @@ import javafx.beans.value.ObservableNumberValue;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
 
+import java.util.function.BiFunction;
 import java.util.function.DoubleConsumer;
 
 public class SliderBuilder {
     private final SliderWithButtons slider;
 
-    public SliderBuilder() {
-        slider = new SliderWithButtons();
+    public SliderBuilder(SliderWithButtons.Mode mode, BiFunction<Double, Double, String> formatter) {
+        slider = new SliderWithButtons(mode, formatter);
     }
     
     public SliderBuilder orientation(Orientation value) {

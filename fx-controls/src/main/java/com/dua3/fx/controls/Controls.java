@@ -10,6 +10,8 @@ import javafx.scene.control.Separator;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Paint;
 
+import java.util.function.BiFunction;
+
 public final class Controls {
 
     private Controls() {
@@ -30,7 +32,18 @@ public final class Controls {
      * @return new SliderBuilder
      */
     public static SliderBuilder slider() {
-        return new SliderBuilder();
+        return new SliderBuilder(SliderWithButtons.Mode.SLIDER_ONLY, (v,t) -> "");
+    }
+
+    /**
+     * Create {@link SliderBuilder} instance.
+     *
+     * @param mode the {@link SliderWithButtons.Mode}
+     * @param formatter
+     * @return new SliderBuilder
+     */
+    public static SliderBuilder slider(SliderWithButtons.Mode mode, BiFunction<Double, Double, String> formatter) {
+        return new SliderBuilder(mode, formatter);
     }
 
     /**
