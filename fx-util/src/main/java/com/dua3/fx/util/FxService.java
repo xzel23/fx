@@ -1,6 +1,6 @@
 package com.dua3.fx.util;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -25,10 +25,6 @@ public abstract class FxService<T> extends Service<T> {
 		taskTrackers.forEach(t -> t.updateTaskTitle(task, arg));
 	}
 
-	private void updateTaskMessage(Task<T> task, String arg) {
-		taskTrackers.forEach(t -> t.updateTaskMessage(task, arg));
-	}
-
 	private void updateTaskState(Task<T> task, State arg) {
 		taskTrackers.forEach(t -> t.updateTaskState(task, arg));
 	}
@@ -39,7 +35,7 @@ public abstract class FxService<T> extends Service<T> {
 
 	protected abstract Task<T> doCreateTask();
 
-	private final List<FxTaskTracker> taskTrackers = new LinkedList<>();
+	private final List<FxTaskTracker> taskTrackers = new ArrayList<>();
 
 	public void addTaskTracker(FxTaskTracker t) {
 		taskTrackers.add(Objects.requireNonNull(t));

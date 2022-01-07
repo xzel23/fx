@@ -59,7 +59,7 @@ public class Validator {
     private List<Supplier<ValidationResult>> createRuleList(Control control) {
         control.setFocusTraversable(true);
         control.focusedProperty().addListener( (v,o,n) -> this.validate(control));
-        return new LinkedList<>();
+        return new ArrayList<>();
     }
 
     /**

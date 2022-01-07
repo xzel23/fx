@@ -21,7 +21,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.Function;
@@ -72,8 +72,8 @@ public final class FxDbUtil {
         LOG.finer("clearing tableview contents ...");
         Platform.runLater(items::clear);
 
-        List<TableColumn<ObservableList<Object>, ?>> newColumns = new LinkedList<>();
-        List<ObservableList<Object>> newItems = new LinkedList<>();
+        List<TableColumn<ObservableList<Object>, ?>> newColumns = new ArrayList<>();
+        List<ObservableList<Object>> newItems = new ArrayList<>();
 
         Locale locale = Locale.getDefault();
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM);

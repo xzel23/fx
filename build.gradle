@@ -16,6 +16,7 @@ plugins {
     id 'com.adarshr.test-logger' version '3.0.0' apply false
     id 'com.github.spotbugs' version '4.7.2' apply false
     id "org.openjfx.javafxplugin" version "0.0.10" apply false
+    id 'org.kordamp.gradle.errorprone' version '0.47.0'
 }
 
 subprojects {
@@ -27,6 +28,7 @@ subprojects {
     apply plugin: 'idea'
     apply plugin: 'com.github.spotbugs'
     apply plugin: 'com.adarshr.test-logger'
+    apply plugin: 'org.kordamp.gradle.errorprone'
 
     /////////////////////////////////////////////////////////////////////////////
     group = 'com.dua3.fx'
@@ -188,6 +190,13 @@ subprojects {
         reports {
             xml.enabled false
             html.enabled true
+        }
+    }
+
+    config {
+        quality {
+            errorprone.setEnabled(true)
+            errorprone.setErrorProneVersion('2.10.0')
         }
     }
 

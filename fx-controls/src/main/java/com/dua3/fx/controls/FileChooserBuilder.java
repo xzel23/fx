@@ -34,7 +34,7 @@ public class FileChooserBuilder {
 
 	private File initialDir = USER_HOME;
 	private String initialFileName = "";
-	private List<FileChooser.ExtensionFilter> filters = new LinkedList<>();
+	private List<FileChooser.ExtensionFilter> filters = new ArrayList<>();
 	private ExtensionFilter selectedFilter = null;
 
 	FileChooserBuilder() {
@@ -164,7 +164,7 @@ public class FileChooserBuilder {
 	 *  this instance
 	 */
 	public FileChooserBuilder filter(List<ExtensionFilter> filters) {
-		this.filters = new LinkedList<>(filters);
+		this.filters = new ArrayList<>(filters);
 		return this;
 	}
 
@@ -179,7 +179,7 @@ public class FileChooserBuilder {
 	 *  this instance
 	 */
 	public FileChooserBuilder filter(ExtensionFilter... filters) {
-		this.filters = new LinkedList<>(Arrays.asList(filters));
+		this.filters = new ArrayList<>(Arrays.asList(filters));
 		return this;
 	}
 

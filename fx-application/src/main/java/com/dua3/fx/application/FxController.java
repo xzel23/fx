@@ -362,13 +362,13 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	}
 
 	protected List<FileChooser.ExtensionFilter> openFilters() {
-		List<FileChooser.ExtensionFilter> filters = new LinkedList<>();
+		List<FileChooser.ExtensionFilter> filters = new ArrayList<>();
 		filters.add(getApp().getExtensionfilterAllFiles());
 		return filters;
 	}
 	
 	protected List<FileChooser.ExtensionFilter> saveFilters() {
-		List<FileChooser.ExtensionFilter> filters = new LinkedList<>();
+		List<FileChooser.ExtensionFilter> filters = new ArrayList<>();
 		filters.add(getApp().getExtensionfilterAllFiles());
 		return filters;
 	}

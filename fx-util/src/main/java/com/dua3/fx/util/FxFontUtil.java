@@ -73,7 +73,7 @@ public class FxFontUtil implements FontUtil<Font> {
                 fonts.add(font);
             }
 
-            return fonts;
+            return Collections.unmodifiableList(fonts);
         }
     }
     

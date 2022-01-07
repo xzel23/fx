@@ -186,6 +186,7 @@ implements InputBuilder<InputGridBuilder> {
 		return add(id, label, Arguments.class, dflt, new OptionsPane(options, dflt));
 	}
 
+	@Override
 	public InputGridBuilder options(String id, Supplier<Arguments> dflt, Supplier<Collection<Option<?>>> options) {
 		return add(id, Arguments.class, dflt, new OptionsPane(options, dflt));
 	}

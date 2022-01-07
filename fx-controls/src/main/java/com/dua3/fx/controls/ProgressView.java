@@ -38,11 +38,6 @@ public class ProgressView<T> extends GridPane implements ProgressTracker<T> {
             });
         }
 
-        /**
-         * The integer value that corresponds to 100% in percentage mode. 
-         */
-        private static final int MAX = 10000;
-
         @Override
         public void update(double percentDone) {
             Platform.runLater(() -> pb.setProgress(percentDone));

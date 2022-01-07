@@ -24,6 +24,7 @@ class SimpleInputControl<C extends Control,R> implements  InputControl<R> {
 		reset();
 	}
 
+	@Override
 	public void reset() {
 		state.valueProperty().setValue(dflt.get());
 	}

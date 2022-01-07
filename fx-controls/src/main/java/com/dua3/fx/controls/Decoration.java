@@ -97,8 +97,6 @@ class DecorationPane extends AnchorPane {
 
     static final String DECORATION_PANE = "com.dua3.decoration_pane";
 
-    private final Parent sceneRoot;
-
     /**
      * Get DecorationPane scene. If no DecorationPane has been set up, inject a new DecorationPane
      * between the scene and its root.
@@ -119,7 +117,6 @@ class DecorationPane extends AnchorPane {
     }
     
     DecorationPane(Parent sceneRoot) {
-        this.sceneRoot = Objects.requireNonNull(sceneRoot);
         setBackground(null);
         getChildren().setAll(sceneRoot);
     }

@@ -109,6 +109,7 @@ public class IconView extends Control {
         return STYLEABLES;
     }
 
+    @Override
     public List<CssMetaData<? extends Styleable, ?>> getControlCssMetaData() {
         return STYLEABLES;
     }

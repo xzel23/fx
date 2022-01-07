@@ -124,7 +124,7 @@ public class OptionsPane extends GridPane implements InputControl<Arguments>{
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	@Override
     public Arguments get() {
-		Deque<Arguments.Entry<?>> entries = new LinkedList<>();
+		Deque<Arguments.Entry<?>> entries = new ArrayDeque<>();
 	    for (var entry: items.entrySet()) {
 	        Option option = entry.getKey();
 	        Object value = entry.getValue().valueProperty().getValue();
