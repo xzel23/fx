@@ -431,7 +431,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 						Path path = Paths.get(URI.create(lastDocument));
 						parent = path.getParent();
 						LOG.fine("initialDir() - using last document location as parent: " + parent);
-					} catch (IllegalArgumentException|NullPointerException e) {
+					} catch (IllegalArgumentException e) {
 						LOG.log(Level.WARNING, "could not retrieve last document location", e);
 						parent = app.getUserHome().toPath();
 					}
