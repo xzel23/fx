@@ -197,12 +197,12 @@ subprojects {
             errorprone.setErrorProneVersion('2.10.0')
         }
     }
+    
+    // === DEFAULT TASKS === >
+    tasks.withType(PublishToMavenRepository) {
+        dependsOn publishToMavenLocal
+    }
 
-}
-
-// === DEFAULT TASKS === >
-tasks.withType(PublishToMavenRepository) {
-    dependsOn publishToMavenLocal
 }
 
 defaultTasks 'build', 'test', 'publishToMavenLocal'
