@@ -1,6 +1,6 @@
 package com.dua3.fx.application;
 
-import com.dua3.utility.io.IOUtil;
+import com.dua3.utility.io.IoUtil;
 import com.dua3.utility.lang.LangUtil;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
@@ -41,7 +41,7 @@ public abstract class FxDocument {
 			return "";
 		}
 
-		return IOUtil.getFilename(getLocation().getPath());
+		return IoUtil.getFilename(getLocation().getPath());
 	}
 
 	public Path getPath() {

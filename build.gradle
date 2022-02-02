@@ -32,7 +32,7 @@ subprojects {
 
     /////////////////////////////////////////////////////////////////////////////
     group = 'com.dua3.fx'
-    version = '0.17-BETA17'
+    version = '0.17-BETA18-SNAPSHOT'
 
     ext.scm = 'https://gitlab.com/com.dua3/lib/fx.git'
     ext.repo = 'public'
@@ -48,12 +48,12 @@ subprojects {
         isReleaseVersion = !version.endsWith("SNAPSHOT")
 
         java_version = '17'
-        javafx_version = '17.0.0.1'
+        javafx_version = '17.0.2'
         junit_version = '5.8.2'
 
-        dua3_utility_version = '10-BETA17'
+        dua3_utility_version = '10-BETA18'
 
-        ikonli_version = '12.2.0'
+        ikonli_version = '12.3.0'
     }
 
     sourceCompatibility = java_version

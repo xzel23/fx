@@ -1,7 +1,7 @@
 package com.dua3.fx.util;
 
 import com.dua3.utility.data.Pair;
-import com.dua3.utility.io.IOUtil;
+import com.dua3.utility.io.IoUtil;
 
 import java.net.URI;
 import java.util.*;
@@ -99,7 +99,7 @@ public class RecentlyUsedDocumentsList {
      * @param name the item's display name
      */
     private void storeItem(String uriStr, String name) {
-        URI uri = IOUtil.toURI(uriStr);
+        URI uri = IoUtil.toURI(uriStr);
         storeItem(uri, name);
     }
     

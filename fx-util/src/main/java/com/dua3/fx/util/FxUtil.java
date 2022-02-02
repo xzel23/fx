@@ -1,6 +1,6 @@
 package com.dua3.fx.util;
 
-import com.dua3.utility.io.IOUtil;
+import com.dua3.utility.io.IoUtil;
 import com.dua3.utility.math.geometry.AffineTransformation2f;
 import com.dua3.utility.math.geometry.FillRule;
 import com.dua3.utility.text.FontDef;
@@ -159,7 +159,7 @@ public final class FxUtil {
      * @return true if filename matches filter
      */
     public static boolean matches(FileChooser.ExtensionFilter filter, String filename) {
-        String fext = IOUtil.getExtension(filename).toLowerCase(Locale.ROOT);
+        String fext = IoUtil.getExtension(filename).toLowerCase(Locale.ROOT);
         return filter.getExtensions().stream()
                 .map(ext -> ext.replaceFirst("^\\*\\.", "").toLowerCase(Locale.ROOT))    
                 .anyMatch(ext -> Objects.equals(ext, fext));
