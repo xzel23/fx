@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-module dua3_fx.editor {
+module  com.dua3.fx.editor {
 	exports com.dua3.fx.editor;
 	opens com.dua3.fx.editor;
 
-	requires dua3_fx.util;
+	requires  com.dua3.fx.util;
 
 	requires java.logging;
 	
 	requires javafx.controls;
 	requires javafx.fxml;
 	requires javafx.graphics;
-	requires dua3_utility;
+	requires com.dua3.utility;
 }

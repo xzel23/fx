@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-module dua3_fx.controls {
+module  com.dua3.fx.controls {
 	exports com.dua3.fx.controls;
 	opens com.dua3.fx.controls;
 
-	requires dua3_fx.util;
-	requires dua3_fx.icons;
+	requires  com.dua3.fx.util;
+	requires  com.dua3.fx.icons;
 
 	requires java.logging;
 	
 	requires javafx.controls;
 	requires javafx.fxml;
 	requires javafx.graphics;
-    requires dua3_utility;
+    requires com.dua3.utility;
     requires java.desktop;
 }

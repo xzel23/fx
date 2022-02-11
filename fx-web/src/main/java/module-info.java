@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-module dua3_fx.web {
+module  com.dua3.fx.web {
 	exports com.dua3.fx.web;
 	opens com.dua3.fx.web;
 
-	requires dua3_fx.controls;
+	requires  com.dua3.fx.controls;
 	requires javafx.web;
     requires jdk.jsobject;
     requires java.logging;

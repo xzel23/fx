@@ -15,7 +15,7 @@
 import com.dua3.fx.util.FxFontUtil;
 import com.dua3.fx.util.FxImageUtil;
 
-module dua3_fx.util {
+module  com.dua3.fx.util {
 	exports com.dua3.fx.util;
 	opens com.dua3.fx.util;
 	
@@ -25,7 +25,7 @@ module dua3_fx.util {
 	provides com.dua3.utility.data.ImageUtil
 	with FxImageUtil;
 
-	requires dua3_utility;
+	requires com.dua3.utility;
 	requires java.logging;
 	requires java.prefs;
 	requires javafx.controls;

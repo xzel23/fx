@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-module dua3_fx.util.db {
+module  com.dua3.fx.util.db {
 	exports com.dua3.fx.util.db;
 	opens com.dua3.fx.util.db;
 
-    requires transitive dua3_fx.util;
+    requires transitive  com.dua3.fx.util;
     
-    requires dua3_utility.db;
+    requires com.dua3.utility.db;
 	requires java.logging;
 	requires javafx.controls;
 	requires javafx.graphics;

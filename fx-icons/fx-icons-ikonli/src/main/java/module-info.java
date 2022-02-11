@@ -1,4 +1,4 @@
-module dua3_fx.icons.ikonli {
+module  com.dua3.fx.icons.ikonli {
     exports com.dua3.fx.icons.ikonli;
     opens com.dua3.fx.icons.ikonli;
 
@@ -7,7 +7,7 @@ module dua3_fx.icons.ikonli {
     requires org.kordamp.ikonli.core;
     requires org.kordamp.ikonli.javafx;
 
-    requires dua3_fx.icons;
+    requires  com.dua3.fx.icons;
     requires javafx.graphics;
 
     uses org.kordamp.ikonli.IkonHandler;
