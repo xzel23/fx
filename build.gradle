@@ -17,6 +17,7 @@ plugins {
     id 'com.github.spotbugs' version '5.0.5' apply false
     id "org.openjfx.javafxplugin" version "0.0.11" apply false
     id 'org.kordamp.gradle.errorprone' version '0.47.0'
+    id 'com.github.ben-manes.versions' version '0.42.0'
 }
 
 subprojects {
@@ -51,7 +52,7 @@ subprojects {
         javafx_version = '17.0.2'
         junit_version = '5.8.2'
 
-        dua3_utility_version = '10-BETA18'
+        dua3_utility_version = '10-BETA19-SNAPSHOT'
 
         ikonli_version = '12.3.0'
     }
@@ -194,7 +195,7 @@ subprojects {
     config {
         quality {
             errorprone.setEnabled(true)
-            errorprone.setErrorProneVersion('2.10.0')
+            errorprone.setErrorProneVersion('2.11.0')
         }
     }
     
@@ -205,4 +206,4 @@ subprojects {
 
 }
 
-defaultTasks 'build', 'test', 'publishToMavenLocal'
+defaultTasks 'build', 'test', 'publishToMavenLocal', 'dependencyUpdates'
