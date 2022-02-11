@@ -27,7 +27,7 @@ public final class IconUtil {
                 .findFirst();
     }
 
-    public static Collection<String> iconProviders() {
+    public static Collection<String> iconProviderNames() {
         Class<IconProvider> iconProviderClass = IconProvider.class;
         return ServiceLoader.load(iconProviderClass)
                 .stream()
