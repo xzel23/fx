@@ -4,6 +4,7 @@ import com.dua3.fx.icons.IconView;
 import com.dua3.fx.util.ValidationResult;
 import com.dua3.utility.lang.LangUtil;
 import javafx.event.ActionEvent;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.TextInputControl;
@@ -11,13 +12,15 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import static javafx.geometry.Pos.CENTER_RIGHT;
 
 public class Validator {
     private static final Logger LOG = Logger.getLogger(Validator.class.getName());
@@ -103,7 +106,7 @@ public class Validator {
         var vr = rules(c).stream()
                 .map(Supplier::get)
                 .min((a, b) -> b.level().compareTo(a.level()))
-                .orElse(ValidationResult.ok());
+                .orElseGet(ValidationResult::ok);
 
         // remove decorations
         Decoration.getDecorations(c).clear();
@@ -116,7 +119,6 @@ public class Validator {
             case ERROR:
                 iconId = "fth-circle-cross";
                 paint = Color.RED;
-                new IconView();
                 break;
         }
         
@@ -133,7 +135,7 @@ public class Validator {
                 Tooltip.install(icon, new Tooltip(message));
             }
 
-            Decoration.addDecoration(c, CENTER_RIGHT, icon, getClass().getName());
+            Decoration.addDecoration(c, Pos.CENTER_RIGHT, icon, getClass().getName());
         } else {
             Decoration.removeDecoration(c, getClass().getName());
         }

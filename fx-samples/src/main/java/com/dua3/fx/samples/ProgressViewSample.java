@@ -1,7 +1,6 @@
 package com.dua3.fx.samples;
 
 import com.dua3.fx.controls.ProgressView;
-import com.dua3.fx.icons.IconUtil;
 import com.dua3.utility.concurrent.ProgressTracker;
 import javafx.application.Application;
 import javafx.scene.Scene;

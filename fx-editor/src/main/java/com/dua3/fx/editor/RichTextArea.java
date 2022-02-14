@@ -2,7 +2,10 @@ package com.dua3.fx.editor;
 
 import com.dua3.fx.util.FxUtil;
 import com.dua3.utility.data.Pair;
-import com.dua3.utility.text.*;
+import com.dua3.utility.text.Font;
+import com.dua3.utility.text.FontDef;
+import com.dua3.utility.text.RichText;
+import com.dua3.utility.text.Run;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 

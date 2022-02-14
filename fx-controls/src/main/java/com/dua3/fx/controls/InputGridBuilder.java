@@ -18,7 +18,13 @@ import com.dua3.fx.controls.InputGrid.Meta;
 import com.dua3.utility.lang.LangUtil;
 import com.dua3.utility.options.Option;
 import com.dua3.utility.options.Arguments;
-import javafx.beans.property.*;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.Property;
+import javafx.beans.property.ReadOnlyBooleanProperty;
+import javafx.beans.property.ReadOnlyStringProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.Node;
 import javafx.stage.FileChooser;
 

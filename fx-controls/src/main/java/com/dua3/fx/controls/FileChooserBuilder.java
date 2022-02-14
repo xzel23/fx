@@ -15,7 +15,11 @@
 package com.dua3.fx.controls;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 import javafx.stage.FileChooser;
@@ -34,7 +38,7 @@ public class FileChooserBuilder {
 
 	private File initialDir = USER_HOME;
 	private String initialFileName = "";
-	private List<FileChooser.ExtensionFilter> filters = new ArrayList<>();
+	private List<ExtensionFilter> filters = new ArrayList<>();
 	private ExtensionFilter selectedFilter = null;
 
 	FileChooserBuilder() {

@@ -4,14 +4,19 @@ import com.dua3.utility.data.Pair;
 import com.dua3.utility.io.IoUtil;
 
 import java.net.URI;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 import java.util.stream.Collectors;
-
-import static java.util.function.Predicate.not;
 
 /**
  * An implementation of an LRU list for documents with automatic storage/ retrieval via preferences API.
@@ -142,7 +147,7 @@ public class RecentlyUsedDocumentsList {
                     // ... Werte holen
                     .map(key -> prefs.get(key, ""))
                     // ... leere Einträge ignorieren
-                    .filter(not(String::isEmpty))
+                    .filter(Predicate.not(String::isEmpty))
                     // ... in URI und Name aufteilen
                     .map(s -> s.split("\n", 2))
                     // ... eintragen

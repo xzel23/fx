@@ -22,7 +22,11 @@ import javafx.scene.control.ButtonType;
 import javafx.stage.FileChooser;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -76,7 +80,7 @@ implements InputBuilder<InputPaneBuilder> {
 	}
 
 	@Override
-	public InputPaneBuilder string(String id, String label, Supplier<String> dflt, Function<String,Optional<String>> validate) {
+	public InputPaneBuilder string(String id, String label, Supplier<String> dflt, Function<String, Optional<String>> validate) {
 		pb.string(id, label, dflt, validate);
 		return this;
 	}

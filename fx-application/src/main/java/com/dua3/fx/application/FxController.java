@@ -37,12 +37,14 @@ import java.net.URI;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import static com.dua3.fx.application.FxDocument.VOID_URI;
 
 public abstract class FxController<A extends FxApplication<A, C>, C extends FxController<A, C, D>, D extends FxDocument>  {
 
@@ -226,7 +228,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	 */
 	public URI getCurrentDocumentLocation() {
 		D doc = getCurrentDocument();
-		return doc != null ? doc.getLocation() : VOID_URI;
+		return doc != null ? doc.getLocation() : FxDocument.VOID_URI;
 	}
 
 	/**
@@ -246,7 +248,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	 * @param uri the document's URI
 	 */
 	protected void onDocumentUriChanged(URI uri) {
-		if (VOID_URI.equals(uri)) {
+		if (FxDocument.VOID_URI.equals(uri)) {
 			return;
 		}
 		

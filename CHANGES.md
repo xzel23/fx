@@ -85,7 +85,7 @@ Changelog
 
  - lots of i18n changes
  - i18n of dialogs
- - FxApplicationconstructor takes a resource bundle
+ - FxApplication constructor takes a resource bundle
  - BREAKING CHANGE: fx-editors subproject has been removed 
  - possible to set graphic and details for about dialog
  - support resource bundles in FxApplication
@@ -109,7 +109,7 @@ Changelog
  
 #### Version 0.8.1
 
- - fix scroll to first line in markdowneditor if first line is not labeled (i.e. when using `${toc}`).
+ - fix scroll to first line in markdown editor if first line is not labeled (i.e. when using `${toc}`).
  - set graphics in AboutDialogBuilder
  - set expandableContent in AboutDialogBuilder
  

@@ -1,6 +1,11 @@
 package com.dua3.fx.icons;
 
-import javafx.css.*;
+import javafx.css.CssMetaData;
+import javafx.css.Styleable;
+import javafx.css.StyleableIntegerProperty;
+import javafx.css.StyleableObjectProperty;
+import javafx.css.StyleableProperty;
+import javafx.css.StyleableStringProperty;
 import javafx.css.converter.PaintConverter;
 import javafx.css.converter.SizeConverter;
 import javafx.css.converter.StringConverter;

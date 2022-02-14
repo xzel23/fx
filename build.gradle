@@ -11,7 +11,17 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
+/*
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'com.dua3.cabe', name: 'cabe-gradle-plugin', version: '0.4.1'
+    }
+}
+*/
 plugins {
     id 'com.adarshr.test-logger' version '3.1.0' apply false
     id 'com.github.spotbugs' version '5.0.5' apply false
@@ -30,6 +40,7 @@ subprojects {
     apply plugin: 'com.github.spotbugs'
     apply plugin: 'com.adarshr.test-logger'
     apply plugin: 'org.kordamp.gradle.errorprone'
+//    apply plugin: 'com.dua3.cabe.cabe-gradle-plugin'
 
     /////////////////////////////////////////////////////////////////////////////
     group = 'com.dua3.fx'
@@ -182,7 +193,7 @@ subprojects {
         sign publishing.publications.mavenJava
     }
 
-    // === SPOTBUGS === >
+    // === SPOTBUGS ===
     spotbugs.excludeFilter = rootProject.file('spotbugs-exclude.xml')
 
     tasks.withType(com.github.spotbugs.snom.SpotBugsTask) {
@@ -192,18 +203,28 @@ subprojects {
         }
     }
 
+    // === ERRORPRONE ===
     config {
         quality {
             errorprone.setEnabled(true)
             errorprone.setErrorProneVersion('2.11.0')
         }
     }
-    
-    // === DEFAULT TASKS === >
+
+    tasks.withType(JavaCompile).configureEach {
+        options.errorprone {
+            disable("UnnecessaryParentheses")
+            disable("EqualsGetClass")
+            disable("StringSplitter")
+        }
+    }
+
+    // === PUBLISHING ===
     tasks.withType(PublishToMavenRepository) {
         dependsOn publishToMavenLocal
     }
 
 }
 
+// === DEFAULT TASKS === >
 defaultTasks 'build', 'test', 'publishToMavenLocal', 'dependencyUpdates'

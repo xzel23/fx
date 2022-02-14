@@ -4,11 +4,9 @@ import com.dua3.utility.concurrent.ProgressTracker;
 import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.layout.*;
-import javafx.scene.layout.Border;
-import javafx.scene.paint.Color;
-
-import javax.swing.*;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 
 public class ProgressView<T> extends GridPane implements ProgressTracker<T> {
 

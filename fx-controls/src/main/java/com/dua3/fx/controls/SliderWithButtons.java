@@ -1,6 +1,5 @@
 package com.dua3.fx.controls;
 
-import com.dua3.utility.text.FontUtil;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
@@ -24,9 +23,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.BiFunction;
+import java.util.regex.Pattern;
 
 public class SliderWithButtons extends Region {
-    
+
+    private static final Pattern PATTERN_DIGIT = Pattern.compile("\\d");
+
     public enum Mode {
         SLIDER_ONLY,
         SLIDER_VALUE,
@@ -54,20 +56,16 @@ public class SliderWithButtons extends Region {
         this.btnDecrement = new Button("-");
         this.btnIncrement = new Button("+");
 
-        if (btnDecrement!=null) {
-            btnDecrement.setOnAction(evt -> slider.decrement());
-            btnDecrement.setFocusTraversable(false);
-            children.add(btnDecrement);
-        }
+        btnDecrement.setOnAction(evt -> slider.decrement());
+        btnDecrement.setFocusTraversable(false);
+        children.add(btnDecrement);
 
         children.add(slider);
 
-        if (btnIncrement!=null) {
-            btnIncrement.setOnAction(evt -> slider.increment());
-            btnIncrement.setFocusTraversable(false);
-            children.add(btnIncrement);
-        }
-        
+        btnIncrement.setOnAction(evt -> slider.increment());
+        btnIncrement.setFocusTraversable(false);
+        children.add(btnIncrement);
+
         switch (mode) {
             case SLIDER_ONLY -> {
                 tfValue = null;
@@ -111,7 +109,7 @@ public class SliderWithButtons extends Region {
         getChildren().setAll(pane);
     }
 
-    private Pane box(Orientation orientation) {
+    private static Pane box(Orientation orientation) {
         if (orientation==Orientation.HORIZONTAL) {
             HBox box = new HBox();
             box.setAlignment(Pos.CENTER);
@@ -155,7 +153,7 @@ public class SliderWithButtons extends Region {
         double v = getValue();
         double m = getMax();
 
-        String proto = formatter.apply(m, m).replaceAll("\\d", "0");
+        String proto = PATTERN_DIGIT.matcher(formatter.apply(m, m)).replaceAll("0");
         Text text = new Text(proto);
         text.setFont(label.getFont());
         double w = text.getBoundsInLocal().getWidth();

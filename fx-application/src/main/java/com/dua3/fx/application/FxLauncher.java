@@ -3,7 +3,9 @@ package com.dua3.fx.application;
 import com.dua3.utility.lang.Platform;
 import javafx.application.Application;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -52,7 +54,7 @@ public final class FxLauncher {
     public static
     <A extends Application>
     void launch(Class<A> cls, String... args) {
-        LOG.fine(() -> "arguments: "+Arrays.toString(args));
+        LOG.fine(() -> "arguments: " + Arrays.toString(args));
 
         // prepare arguments
         var reparsedArgs = reparseCommandLine(args);

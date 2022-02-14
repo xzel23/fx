@@ -8,7 +8,10 @@ import javafx.scene.Node;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.ServiceLoader;
 import java.util.logging.Logger;
 
 public final class IconUtil {

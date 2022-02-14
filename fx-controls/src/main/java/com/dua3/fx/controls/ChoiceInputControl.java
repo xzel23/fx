@@ -1,7 +1,12 @@
 package com.dua3.fx.controls;
 
 import com.dua3.utility.options.ChoiceOption;
-import javafx.beans.property.*;
+import javafx.beans.property.Property;
+import javafx.beans.property.ReadOnlyBooleanProperty;
+import javafx.beans.property.ReadOnlyStringProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 

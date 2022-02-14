@@ -28,7 +28,10 @@ import javafx.scene.Scene;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.awt.desktop.*;
+import java.awt.desktop.AboutEvent;
+import java.awt.desktop.OpenFilesEvent;
+import java.awt.desktop.OpenURIEvent;
+import java.awt.desktop.PreferencesEvent;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -39,7 +42,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.*;
+import java.util.logging.Filter;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 import java.util.regex.Matcher;
@@ -207,7 +214,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
         // set controller
         LOG.log(Level.FINER, () -> "setting FXML controller ...");
         this.controller = Objects.requireNonNull(loader.getController(),
-                "controller is null; set fx:controller in root element of FXML (" + fxml + ")");
+                () -> "controller is null; set fx:controller in root element of FXML (" + fxml + ")");
         this.controller.setApp((A) this);
 
         // create scene
@@ -322,7 +329,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
         if (document != null) {
             String locStr = document.hasLocation() ?
                     FxUtil.asText(document.getLocation()) : 
-                    resources.getString("fx.application.text.untitiled");
+                    resources.getString("fx.application.text.untitled");
             boolean dirty = document.isDirty();
 
             if (!locStr.isEmpty() || document.isDirty()) {

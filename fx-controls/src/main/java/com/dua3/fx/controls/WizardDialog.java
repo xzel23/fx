@@ -172,8 +172,8 @@ public class WizardDialog extends Dialog<Map<String,Object>> {
 		return current.second();
 	}
 
-	private void addButtonToDialogPane(
-			Page<?,?> page,
+	private static void addButtonToDialogPane(
+			Page<?, ?> page,
 			ButtonType bt,
 			Consumer<InputDialogPane<?>> action,
 			BooleanExpression enabled) {

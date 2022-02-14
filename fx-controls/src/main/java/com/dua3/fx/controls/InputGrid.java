@@ -14,7 +14,12 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.function.Supplier;
 import java.util.logging.Logger;
@@ -74,8 +79,9 @@ public class InputGrid extends GridPane {
 	private int columns = 1;
 
 	public Map<String, Object> get() {
-		// Collecors.toMap() does not support null values!
 		Map<String,Object> result = new HashMap<>();
+		// Collecors.toMap() does not support null values!
+		//noinspection SimplifyForEach
 		data.forEach(e -> result.put(e.id, e.control.get()));
 		return result;
 	}

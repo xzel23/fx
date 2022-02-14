@@ -14,8 +14,6 @@
 
 package com.dua3.fx.util;
 
-import java.util.logging.Logger;
-
 import javafx.application.Platform;
 import javafx.scene.control.TableView;
 

@@ -39,7 +39,7 @@ public final class Controls {
      * Create {@link SliderBuilder} instance.
      *
      * @param mode the {@link SliderWithButtons.Mode}
-     * @param formatter
+     * @param formatter the formatter that generates the label text; first argument is current value and second is max value
      * @return new SliderBuilder
      */
     public static SliderBuilder slider(SliderWithButtons.Mode mode, BiFunction<Double, Double, String> formatter) {

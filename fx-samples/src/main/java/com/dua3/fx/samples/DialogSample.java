@@ -24,7 +24,7 @@ public class DialogSample extends Application {
         launch(args);
     }
 
-    private Button createButton(String text, Runnable action) {
+    private static Button createButton(String text, Runnable action) {
         Button btn = new Button(text);
         btn.setOnAction(e -> action.run());
         btn.setPrefWidth(120.0);

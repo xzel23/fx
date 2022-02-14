@@ -9,8 +9,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 
-import java.util.Objects;
-
 public final class Decoration {
 
     private static final String DECORATION_LIST = Decoration.class.getName()+".decoration_list";

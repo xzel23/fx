@@ -1,6 +1,10 @@
 package com.dua3.fx.controls;
 
-import com.dua3.utility.options.*;
+import com.dua3.utility.options.Arguments;
+import com.dua3.utility.options.ChoiceOption;
+import com.dua3.utility.options.Flag;
+import com.dua3.utility.options.Option;
+import com.dua3.utility.options.SimpleOption;
 import javafx.beans.property.Property;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.ReadOnlyStringProperty;
@@ -12,7 +16,14 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.util.StringConverter;
 
-import java.util.*;
+import java.util.function.Function;
+import java.util.ArrayDeque;
+import java.util.Collection;
+import java.util.Deque;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.logging.Logger;
@@ -72,7 +83,7 @@ public class OptionsPane extends GridPane implements InputControl<Arguments>{
 		}
 		
 		// create binding
-		/*
+		/* FIXME
 	    Arguments values = new Arguments();
 	    for (var entry: items.entrySet()) {
 	        Option<?> option = entry.getKey();

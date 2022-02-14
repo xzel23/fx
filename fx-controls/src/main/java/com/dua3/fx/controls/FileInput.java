@@ -1,6 +1,10 @@
 package com.dua3.fx.controls;
 
-import javafx.beans.binding.*;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
+import javafx.beans.binding.BooleanExpression;
+import javafx.beans.binding.StringBinding;
+import javafx.beans.binding.StringExpression;
 import javafx.beans.property.*;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -86,7 +90,7 @@ public class FileInput extends HBox implements InputControl<File> {
         // valid property
         BooleanExpression isNotNull = value.isNotNull();
         if (mode== InputBuilder.FileDialogMode.OPEN) {
-            BooleanBinding exists = Bindings.createBooleanBinding(() -> getPath()!=null && Files.exists(getPath()), value);
+            BooleanBinding exists = Bindings.createBooleanBinding(() -> getPath() != null && Files.exists(getPath()), value);
             valid.bind(Bindings.and(isNotNull, exists));
         } else {
             valid.bind(value.isNotNull());

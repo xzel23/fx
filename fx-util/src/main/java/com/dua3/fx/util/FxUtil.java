@@ -19,12 +19,16 @@ import java.net.URI;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.regex.Pattern;
 
 /**
  * JavaFX utility class.
  */
 public final class FxUtil {
+
+    private static final Pattern PATTERN_FILENAME_AND_DOT = Pattern.compile("^\\*\\.");
 
     public static String asText(URI uri) {
         return uri==null ? "" : URLDecoder.decode(uri.toString(), StandardCharsets.UTF_8);
@@ -53,8 +57,8 @@ public final class FxUtil {
      * @param font the font
      * @return the FontDef
      */
-    public static com.dua3.utility.text.FontDef toFontDef(Font font) {
-        FontDef fd = new com.dua3.utility.text.FontDef();
+    public static FontDef toFontDef(Font font) {
+        FontDef fd = new FontDef();
         fd.setFamily(font.getFamily());
         fd.setSize((float) font.getSize());
         return fd;
@@ -130,7 +134,7 @@ public final class FxUtil {
         );
     }
     
-    private static javafx.geometry.Bounds boundsInLocal(CharSequence s, com.dua3.utility.text.Font f) {
+    private static Bounds boundsInLocal(CharSequence s, com.dua3.utility.text.Font f) {
         Text text = new Text(s.toString());
         text.setFont(convert(f));
         return text.getBoundsInLocal();
@@ -161,7 +165,7 @@ public final class FxUtil {
     public static boolean matches(FileChooser.ExtensionFilter filter, String filename) {
         String fext = IoUtil.getExtension(filename).toLowerCase(Locale.ROOT);
         return filter.getExtensions().stream()
-                .map(ext -> ext.replaceFirst("^\\*\\.", "").toLowerCase(Locale.ROOT))    
+                .map(ext -> PATTERN_FILENAME_AND_DOT.matcher(ext).replaceFirst("").toLowerCase(Locale.ROOT))    
                 .anyMatch(ext -> Objects.equals(ext, fext));
     }
 
