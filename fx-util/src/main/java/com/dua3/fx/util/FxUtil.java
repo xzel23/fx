@@ -70,12 +70,14 @@ public final class FxUtil {
      * @return the JavaFX color
      */
     public static Color convert(com.dua3.utility.data.Color color) {
-        return Color.color(
-                color.rf(),
-                color.gf(),
-                color.bf(),
-                color.af()
-        );
+        int argb = color.argb();
+        
+        int a = (argb >> 24) & 0xff;
+        int r = (argb >> 16) & 0xff;
+        int g = (argb >>  8) & 0xff;
+        int b = (argb >>  0) & 0xff;
+
+        return Color.color(r, g, b, a);
     }
 
     /**
@@ -84,7 +86,7 @@ public final class FxUtil {
      * @return the color
      */
     public static com.dua3.utility.data.Color convert(Color color) {
-        return new com.dua3.utility.data.Color(
+        return com.dua3.utility.data.Color.rgb(
                 (int) Math.round(color.getRed()/255.0),
                 (int) Math.round(color.getGreen()/255.0),
                 (int) Math.round(color.getBlue()/255.0),

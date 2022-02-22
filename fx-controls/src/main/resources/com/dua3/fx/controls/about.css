@@ -5,6 +5,8 @@
 }
 
 #title {
+    -fx-alignment: "CENTER";
+    -fx-content-display: "CENTER";
     -fx-font-family: "System Font";
     -fx-font-size: 64px;
 }

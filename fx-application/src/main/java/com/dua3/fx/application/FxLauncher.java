@@ -71,7 +71,7 @@ public final class FxLauncher {
      * when the application start is the result of double-clicking on a registered file type.
      * The command line args are split on whitespace, i. e. paths containing spaces
      * will be split into multiple parts. This method tries to restore what was probably meant.
-     * It works by iterating over the given array of argumnents like this:
+     * It works by iterating over the given array of arguments like this:
      * <pre>
      * let arg = "" 
      * for each s in args:
