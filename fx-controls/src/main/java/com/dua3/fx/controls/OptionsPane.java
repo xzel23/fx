@@ -16,7 +16,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.util.StringConverter;
 
-import java.util.function.Function;
 import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Deque;

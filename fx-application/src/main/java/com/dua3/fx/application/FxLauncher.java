@@ -40,7 +40,7 @@ public final class FxLauncher {
      * Start application.
      * This method is a drop-in replacement for `Application.launch(cls, args)`.
      * <ul>
-     *     <li><strong>Comand line arguments</strong> are re-parsed on windows, for details see 
+     *     <li><strong>Command line arguments</strong> are re-parsed on windows, for details see 
      *     {@link #reparseCommandLine(String[])}.
      * </ul>
      *
@@ -49,7 +49,7 @@ public final class FxLauncher {
      * @param cls
      *  the application class
      * @param args
-     *  the comand line arguments
+     *  the command line arguments
      */
     public static
     <A extends Application>

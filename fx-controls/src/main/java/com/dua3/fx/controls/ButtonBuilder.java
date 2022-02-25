@@ -29,7 +29,7 @@ public class ButtonBuilder {
 
     /**
      * Set tooltip for the button.
-     * @param tooltip the toolzip text
+     * @param tooltip the tooltip text
      * @return this ButtonBuilder instance
      */
     public ButtonBuilder tooltip(String tooltip) {

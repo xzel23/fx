@@ -13,7 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * A class intended for controling possibly long running update operations. Refresh happen mutually exclusive, i. e.
+ * A class intended for controlling possibly long running update operations. Refresh happen mutually exclusive, i. e.
  * the update tasks do not have to be explicitly synchronized as long as not called directly from other code.
  * An example is updating a JavaFX node. I. e. if redraw requests come in before current drawing finishes,
  * the application becomes sluggish or burns CPU cycles for drawing outdated data. the FxRefresher automatically
@@ -58,7 +58,7 @@ public final class FxRefresh {
      * The refresher will automatically stop updating when the node is hidden or removed from the scene graph.
      * @param name the refresher name
      * @param task the task to run on refresh
-     * @param node the node associated with thid refresher
+     * @param node the node associated with this refresher
      * @return new instance
      */
     public static FxRefresh create(String name, Runnable task, Node node) {
@@ -67,7 +67,7 @@ public final class FxRefresh {
         // prevent redraw of hidden component
         node.visibleProperty().addListener((v_, o_, n_) -> refresher.setActive(n_));
 
-        // stop update thread when node is removed from scenegraph
+        // stop update thread when node is removed from scene graph
         ChangeListener<Parent> parentChangeListener = (v, o, n) -> {
             if (n != null) {
                 refresher.setActive(true);
@@ -77,7 +77,7 @@ public final class FxRefresh {
         };
         node.parentProperty().addListener(parentChangeListener);
 
-        // avoid updates when control is not visble
+        // avoid updates when control is not visible
         ChangeListener<Boolean> changeListener = (_v, o_, n_) -> {
             if (n_) {
                 refresher.setActive(n_);

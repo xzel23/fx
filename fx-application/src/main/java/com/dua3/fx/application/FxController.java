@@ -65,7 +65,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	/** The list of current tasks. */
 	protected final ObservableList<Task<?>> tasks = FXCollections.observableArrayList();
 
-	/** Preferece: last document. */
+	/** Preference: last document. */
 	protected static final String PREF_DOCUMENT = "document_uri";
 	
 	/** The URI of the currently opened document. */
@@ -149,11 +149,8 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 
 		AtomicBoolean goOn = new AtomicBoolean(false);
 		switch (dirtyList.size()) {
-			case 0:
-				goOn.set(true);
-				break;
-				
-			case 1:	{
+			case 0 -> goOn.set(true);
+			case 1 -> {
 				D doc = dirtyList.get(0);
 
 				String header;
@@ -168,7 +165,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 
 				ButtonType bttSave = new ButtonType(resources.getString("fx.application.button.save"), ButtonBar.ButtonData.YES);
 				ButtonType bttDontSave = new ButtonType(resources.getString("fx.application.button.dont_save"), ButtonBar.ButtonData.NO);
-				
+
 				Dialogs.confirmation(getApp().getStage())
 						.header(header)
 						.text(resources.getString("fx.application.message.changes_will_be_lost"))
@@ -184,8 +181,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 						});
 				break;
 			}
-
-			default: {
+			default -> {
 				String header = getApp().getMessage(
 						"fx.application.message.unsaved_changes_multiple_documents",
 						Pair.of("count", String.valueOf(dirtyList.size()))
@@ -221,7 +217,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	}
 
 	/**
-	 * Get current document locationn.
+	 * Get current document location.
 	 *
 	 * @return
 	 *  URI of the current document or {@link FxDocument#VOID_URI}
@@ -365,13 +361,13 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 
 	protected List<FileChooser.ExtensionFilter> openFilters() {
 		List<FileChooser.ExtensionFilter> filters = new ArrayList<>();
-		filters.add(getApp().getExtensionfilterAllFiles());
+		filters.add(getApp().getExtensionFilterAllFiles());
 		return filters;
 	}
 	
 	protected List<FileChooser.ExtensionFilter> saveFilters() {
 		List<FileChooser.ExtensionFilter> filters = new ArrayList<>();
-		filters.add(getApp().getExtensionfilterAllFiles());
+		filters.add(getApp().getExtensionFilterAllFiles());
 		return filters;
 	}
 	
@@ -422,7 +418,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		try {
 			if (document.hasLocation()) {
 				parent = document.getPath().getParent();
-				LOG.fine("initialDir() - using parent fokder of current document as parent: "+parent);
+				LOG.fine("initialDir() - using parent folder of current document as parent: "+parent);
 			} else {
 				String lastDocument = getApp().getPreference(PREF_DOCUMENT, "");
 				if (lastDocument.isBlank()) {

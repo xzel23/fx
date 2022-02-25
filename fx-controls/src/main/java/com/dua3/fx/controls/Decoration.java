@@ -68,20 +68,20 @@ public final class Decoration {
         Pos position = (Pos) decoration.getProperties().get(POSITION);
         
         Bounds bounds = node.getLayoutBounds();
-        Bounds decorationbounds = decoration.getLayoutBounds();
+        Bounds decorationBounds = decoration.getLayoutBounds();
         
         double x = switch (position.getHpos()) {
-            case LEFT -> bounds.getMinX() - decorationbounds.getWidth() / 2.0;
-            case CENTER -> bounds.getCenterX() - decorationbounds.getWidth() / 2.0;
-            case RIGHT -> bounds.getMaxX() - decorationbounds.getWidth() / 2.0;
+            case LEFT -> bounds.getMinX() - decorationBounds.getWidth() / 2.0;
+            case CENTER -> bounds.getCenterX() - decorationBounds.getWidth() / 2.0;
+            case RIGHT -> bounds.getMaxX() - decorationBounds.getWidth() / 2.0;
             default -> throw new IllegalArgumentException("position: " + position);
         };
 
         double y = switch (position.getVpos()) {
-            case TOP -> bounds.getMinY() - decorationbounds.getHeight() / 2.0;
-            case CENTER -> bounds.getCenterY() - decorationbounds.getHeight() / 2.0;
-            case BOTTOM -> bounds.getMaxY() - decorationbounds.getHeight() / 2.0;
-            case BASELINE -> bounds.getMaxY() - decorationbounds.getHeight() / 2.0;
+            case TOP -> bounds.getMinY() - decorationBounds.getHeight() / 2.0;
+            case CENTER -> bounds.getCenterY() - decorationBounds.getHeight() / 2.0;
+            case BOTTOM -> bounds.getMaxY() - decorationBounds.getHeight() / 2.0;
+            case BASELINE -> bounds.getMaxY() - decorationBounds.getHeight() / 2.0;
             default -> throw new IllegalArgumentException("position: " + position);
         };
 

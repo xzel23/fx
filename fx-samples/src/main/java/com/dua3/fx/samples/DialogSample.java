@@ -118,7 +118,7 @@ public class DialogSample extends Application {
                             Dialogs.informationPane()
                                     .header("Create new database connection")
                                     .text("""
-                                            This wizard helps you to define a new database conection.
+                                            This wizard helps you to define a new database connection.
                                             
                                             You will need the following information:
                                             - the vendor or manufacturer name of your database system
@@ -127,7 +127,7 @@ public class DialogSample extends Application {
                     .page("dbms",
                             Dialogs.inputPane()
                                     .header("Choose your Database from the list below.")
-                                    .radioList("rdmbs", "Database", () -> null, String.class, List.of("H2", "PostgreSQL", "MySQL"))
+                                    .radioList("rdbms", "Database", () -> null, String.class, List.of("H2", "PostgreSQL", "MySQL"))
                     )
                     .showAndWait();
             System.out.format("Dialog result:%n%s%n", rc);

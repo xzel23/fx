@@ -40,7 +40,11 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Filter;
 import java.util.logging.Handler;
@@ -270,7 +274,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
     private Level globalLogLevel = Level.INFO;
     
     private void setLogLevel(String logStr) {
-        // determine the global and minumum log levels and store mapping package -> level
+        // determine the global and minimum log levels and store mapping package -> level
         Matcher matcher = patternLogCfg.matcher(logStr);
         Level minLevel = Level.OFF;
         while (matcher.find()) {
@@ -461,7 +465,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
     }
 
     /**
-     * If this application uses preferences, set the velue. Otherwise, do nothing.
+     * If this application uses preferences, set the value. Otherwise, do nothing.
      * @param key   the key
      * @param value the value
      * @return  true if the key was set in the preferences, otherwise false
@@ -545,7 +549,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      * Get file extension filter for all files ('*.*').
      * @return file extension filter accepting all files
      */
-    public FileChooser.ExtensionFilter getExtensionfilterAllFiles() {
+    public FileChooser.ExtensionFilter getExtensionFilterAllFiles() {
         return new FileChooser.ExtensionFilter(resources.getString("fx.application.filter.all_files"), "*.*");
     }
 

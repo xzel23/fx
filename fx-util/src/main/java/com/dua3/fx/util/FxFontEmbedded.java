@@ -21,7 +21,7 @@ public class FxFontEmbedded extends Font {
 
     @Override
     public Font deriveFont(final FontDef fd) {
-        // use the same base font if only attributes that are not part of JavaFX Font attrobutes
+        // use the same base font if only attributes that are not part of JavaFX Font attributes
         if (   isNullOrEquals(fd.getSize(), getSizeInPoints())
             && isNullOrEquals(fd.getFamily(), getFamily())
             && isNullOrEquals(fd.getBold(), isBold())

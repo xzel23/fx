@@ -41,7 +41,7 @@ Changelog
 #### Version 0.12
 
  - new class Fxsettings
- - FxUtil: added methods to list availbale fonts
+ - FxUtil: added methods to list available fonts
  - FxControllergetCurrentDocumentLocation()
  - FxController.onDocumentUriChanged() (protected)
  - FxUtil: new class RecentlyUsedDocumentsList
@@ -56,7 +56,7 @@ Changelog
  - code cleanup
  - update utility to 5.3
  - Controller.getCurrentDir() gets the current (document) directory
- - fix IAE in open diualog
+ - fix IAE in open dialog
  
 #### Version 0.9.5
 
@@ -74,7 +74,7 @@ Changelog
 
  - new static method `FxApplication.launchApplication()` as replacement for `Application.launch()`. When using this method, the commandline is automatically re-parsed (see next item).
  
- - new static method `FxApplication.reparseCommandLine(String[])` to fix messing up comand line arguments on windows.
+ - new static method `FxApplication.reparseCommandLine(String[])` to fix messing up command line arguments on windows.
  
 #### Version 0.9.1
 

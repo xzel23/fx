@@ -82,7 +82,7 @@ public abstract class AbstractDialogBuilder<D extends Dialog<R>, B extends Abstr
 	 * This is equivalent to calling build().showAndWait().
 	 * 
 	 * @return
-	 *  Optinal containing the result as defined by the dialog
+	 *  Optional containing the result as defined by the dialog
 	 */
 	public Optional<R> showAndWait() {
 		return build().showAndWait();
