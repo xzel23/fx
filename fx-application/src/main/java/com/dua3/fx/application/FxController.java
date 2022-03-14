@@ -82,7 +82,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 
 	/**
 	 * Set application instance.
-	 * 
+	 * <p> 
 	 * This method must be called exactly once!
 	 * 
 	 * @param app

@@ -11,9 +11,9 @@ import java.util.Set;
 
 /**
  * Code based on
- *   https://github.com/grubbcc/anagrams/blob/browser/client/java/client/DragResizer.java
+ *   <a href="https://github.com/grubbcc/anagrams/blob/browser/client/java/client/DragResizer.java">https://github.com/grubbcc/../DragResizer.java</a>
  * and
- *   https://gist.github.com/andytill/4369729
+ *   <a href="https://gist.github.com/andytill/4369729">https://gist.github.com/andytill/4369729</a>
  */
 final class DragResizer {
 
@@ -24,10 +24,10 @@ final class DragResizer {
     private final Set<Border> borders;
     private final int resizeMargin;
 
-    private boolean draggingTop;
-    private boolean draggingRight;
-    private boolean draggingBottom;
-    private boolean draggingLeft;
+    private boolean draggingTop = false;
+    private boolean draggingRight = false;
+    private boolean draggingBottom = false;
+    private boolean draggingLeft = false;
 
     private DragResizer(Region region, int resizeMargin, Border... borders) {
         this.region = Objects.requireNonNull(region);

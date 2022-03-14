@@ -23,7 +23,7 @@ import javafx.scene.control.ButtonType;
 
 /** 
  * Abstract base class for DialogPane builders.
- * 
+ * <p> 
  * Provides a fluent interface to create Dialog panes. 
  * 
  * @param <D> the type of the dialog or pane to build

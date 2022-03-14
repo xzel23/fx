@@ -28,7 +28,7 @@ import javafx.stage.Window;
 
 /** 
  * Builder for file open/save dialogs.
- * 
+ * <p> 
  * Provides a fluent interface to create file dialogs. 
  */
 public class FileChooserBuilder {

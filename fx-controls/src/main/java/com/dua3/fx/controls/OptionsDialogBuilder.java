@@ -24,7 +24,7 @@ import javafx.stage.Window;
 
 /**
  * Builder for Alert Dialogs.
- *
+ * <p>
  * Provides a fluent interface to create Alerts.
  */
 public class OptionsDialogBuilder extends AbstractDialogBuilder<OptionsDialog, OptionsDialogBuilder, Arguments> {

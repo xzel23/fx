@@ -38,7 +38,7 @@ import java.util.function.Supplier;
 
 /**
  * Builder for Alert Dialogs.
- *
+ * <p>
  * Provides a fluent interface to create Alerts.
  */
 public class InputGridBuilder

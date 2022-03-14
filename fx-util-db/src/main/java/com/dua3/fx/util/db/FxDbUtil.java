@@ -53,7 +53,7 @@ public final class FxDbUtil {
 
     /**
      * Fill TableView instance with data from {@link ResultSet}.
-     *
+     * <p>
      * All columns will be removed and recreated based on the ResultSet's metadata.
      * @param tv
      *  the TableView

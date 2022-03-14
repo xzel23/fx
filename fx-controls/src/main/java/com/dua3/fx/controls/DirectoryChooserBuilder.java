@@ -23,7 +23,7 @@ import javafx.stage.Window;
 
 /** 
  * Builder for directory chooser dialogs.
- * 
+ * <p> 
  * Provides a fluent interface to create file dialogs. 
  */
 public class DirectoryChooserBuilder {

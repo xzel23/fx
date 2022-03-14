@@ -29,7 +29,7 @@ import java.util.logging.Logger;
 
 /** 
  * Builder for Alert Dialogs.
- * 
+ * <p> 
  * Provides a fluent interface to create Alerts. 
  */
 public class AboutDialogBuilder {

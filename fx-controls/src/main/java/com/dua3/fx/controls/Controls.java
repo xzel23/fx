@@ -56,16 +56,40 @@ public final class Controls {
         return new Separator(orientation);
     }
 
+    /**
+     * Get graphic for an icon by icon name.
+     * @param name the icon name
+     * @return a node for the graphic
+     * @throws IllegalStateException if no icon with a matching name is found
+     * @see IconUtil#iconFromName(String) 
+     */
     public static Node graphic(String name) {
         return IconUtil.iconFromName(name).orElseThrow(() -> new IllegalStateException("unknown icon: " + name)).node();
     }
 
+    /**
+     * Get graphic for an icon by icon name.
+     * @param name the icon name
+     * @param size the requested size
+     * @return a node for the graphic
+     * @throws IllegalStateException if no icon with a matching name is found
+     * @see IconUtil#iconFromName(String) 
+     */
     public static Node graphic(String name, int size) {
         Icon icon = IconUtil.iconFromName(name).orElseThrow(() -> new IllegalStateException("unknown icon: " + name));
         icon.setIconSize(size);
         return icon.node();
     }
 
+    /**
+     * Get graphic for an icon by icon name.
+     * @param name the icon name
+     * @param size the requested size
+     * @param paint the {@link Paint} to use
+     * @return a node for the graphic
+     * @throws IllegalStateException if no icon with a matching name is found
+     * @see IconUtil#iconFromName(String)
+     */
     public static Node graphic(String name, int size, Paint paint) {
         Icon icon = IconUtil.iconFromName(name).orElseThrow(() -> new IllegalStateException("unknown icon: " + name));
         icon.setIconSize(size);
@@ -73,6 +97,15 @@ public final class Controls {
         return icon.node();
     }
 
+    /**
+     * Get graphic for an icon by icon name.
+     * @param name the icon name
+     * @param size the requested size
+     * @param color the {@link Color} to use
+     * @return a node for the graphic
+     * @throws IllegalStateException if no icon with a matching name is found
+     * @see IconUtil#iconFromName(String)
+     */
     public static Node graphic(String name, int size, Color color) {
         Icon icon = IconUtil.iconFromName(name).orElseThrow(() -> new IllegalStateException("unknown icon: " + name));
         icon.setIconSize(size);
@@ -80,10 +113,21 @@ public final class Controls {
         return icon.node();
     }
 
+    /**
+     * Make a region resizable by dragging its edge.
+     * @param region the region
+     * @param borders the borders to make draggable               
+     */
     public static void makeResizable(Region region, Border... borders) {
         DragResizer.makeResizable(region, 6, borders);
     }
 
+    /**
+     * Make a region resizable by dragging its edge.
+     * @param region the region
+     * @param resizeMargin size of the draggable margin
+     * @param borders the borders to make draggable               
+     */
     public static void makeResizable(Region region, int resizeMargin, Border... borders) {
         DragResizer.makeResizable(region, resizeMargin, borders);
     }

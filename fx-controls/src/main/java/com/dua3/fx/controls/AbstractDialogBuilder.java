@@ -78,7 +78,7 @@ public abstract class AbstractDialogBuilder<D extends Dialog<R>, B extends Abstr
 
 	/**
 	 * Build and show the dialog.
-	 * 
+	 * <p> 
 	 * This is equivalent to calling build().showAndWait().
 	 * 
 	 * @return

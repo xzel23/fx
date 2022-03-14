@@ -26,7 +26,7 @@ import java.util.Collection;
 
 /**
  * A Dialog for inputting values.
- *
+ * <p>
  * The dialog consists of labels and input controls laid out in a grid.
  */
 public class OptionsDialog extends Dialog<Arguments> {

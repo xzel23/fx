@@ -24,7 +24,7 @@ public final class TableViews {
     
     /**
      * Clear TableView.
-     * 
+     * <p> 
      * Clears both items and columns of the TableView instance.
      * 
      * @param tv

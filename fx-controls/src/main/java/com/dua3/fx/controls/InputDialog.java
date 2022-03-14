@@ -21,7 +21,7 @@ import javafx.scene.control.Dialog;
 
 /**
  * A Dialog for inputting values.
- *
+ * <p>
  * The dialog consists of labels and input controls laid out in a grid.
  */
 public class InputDialog extends Dialog<Map<String, Object>> {

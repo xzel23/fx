@@ -19,7 +19,7 @@ import javafx.scene.control.DialogPane;
 
 /**
  * Builder for Alert Dialogs.
- *
+ * <p>
  * Provides a fluent interface to create Alerts.
  */
 public class AlertPaneBuilder

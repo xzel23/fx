@@ -16,7 +16,7 @@ package com.dua3.fx.controls;
 
 /**
  * Builder for Prompt Panes.
- * 
+ * <p> 
  * Provides a fluent interface to create Prompts.
  */
 public class PromptPaneBuilder extends AbstractPaneBuilder<PromptPane, PromptPaneBuilder, String> {
