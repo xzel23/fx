@@ -10,6 +10,8 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
+ * A Helper class to make any JavaFX {@link Region} resizable by dragging its borders with the mouse.
+ * 
  * Code based on
  *   <a href="https://github.com/grubbcc/anagrams/blob/browser/client/java/client/DragResizer.java">https://github.com/grubbcc/../DragResizer.java</a>
  * and
