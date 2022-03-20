@@ -42,6 +42,7 @@ public class WizardDialogBuilder {
 		return startPage;
 	}
 
+	@SuppressWarnings("OptionalContainsCollection")
 	public Optional<Map<String,Object>> showAndWait() {
 		return build().showAndWait();
 	}

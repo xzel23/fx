@@ -75,7 +75,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
     /**
      * List of Resource cleanup tasks to run on application stop.
      */
-    private List<Runnable> cleanupActions = new ArrayList<>();
+    private final List<Runnable> cleanupActions = new ArrayList<>();
     
     // - constants -
 

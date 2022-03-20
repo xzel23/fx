@@ -35,7 +35,7 @@ public class AboutDialog extends Dialog<Void> {
     /** Logger instance */
     private static final Logger LOG = Logger.getLogger(AboutDialog.class.getName());
 
-    /** The email URI, i.e. "mailto:info@domain.com". */
+    /** The email URI, i.e. {@code "mailto:info@domain.com"}. */
     private String mailAddress = "";
 
     @FXML

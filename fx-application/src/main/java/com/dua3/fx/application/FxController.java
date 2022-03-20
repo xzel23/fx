@@ -179,7 +179,6 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 								goOn.set(true);   // don't save, just go on
 							}
 						});
-				break;
 			}
 			default -> {
 				String header = getApp().getMessage(
