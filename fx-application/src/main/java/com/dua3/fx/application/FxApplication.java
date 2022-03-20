@@ -35,11 +35,14 @@ import java.awt.desktop.PreferencesEvent;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.lang.ref.Cleaner;
 import java.net.URI;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -63,6 +66,16 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      * Logger
      */
     private static final Logger LOG = Logger.getLogger(FxApplication.class.getName());
+
+    /**
+     * Cleaner
+     */
+    private static Cleaner CLEANER = null;
+
+    /**
+     * List of Resource cleanup tasks to run on application stop.
+     */
+    private List<Runnable> cleanupActions = new ArrayList<>();
     
     // - constants -
 
@@ -132,6 +145,17 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
         return resources;
     }
 
+    /**
+     * Get default Cleaner.
+     * @return the {@link Cleaner} instance
+     */
+    public static synchronized Cleaner getCleaner() {
+        if (CLEANER == null) {
+            CLEANER = Cleaner.create();
+        }
+        return CLEANER;
+    }
+    
     /**
      * Constructor.
      */
@@ -362,13 +386,15 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
             }
         }
 
-        mainStage.hide();
+        mainStage.close();
+        
+        mainStage = null; // make it garbage collectable
     }
 
     /**
      * Get the stage.
      *
-     * @return the application's primary stage
+     * @return the application's primary stage, or null if the application has been closed
      */
     public Stage getStage() {
         return mainStage;
@@ -592,4 +618,31 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
         Platform.runLater(this::showPreferencesDialog);
     }
 
+    /**
+     * Add a resource cleanup action to run when the application stops.
+     * @param task the action to perform
+     */
+    public void addCleanupAction(Runnable task) {
+        cleanupActions.add(task);
+    }
+
+    /**
+     * Remove a resource cleanup action.
+     * @param task the action to remove
+     */
+    public void removeCleanupAction(Runnable task) {
+        cleanupActions.remove(task);
+    }
+    
+    @Override
+    public void stop() throws Exception {
+        super.stop();
+        cleanupActions.forEach(task -> {
+            try {
+                task.run();
+            } catch (Exception e) {
+                LOG.log(Level.WARNING, "error in cleanup task", e);
+            }
+        });
+    }
 }
