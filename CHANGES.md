@@ -3,11 +3,13 @@ Changelog
 
 #### Version 0.17 (not released yet)
  - requires Java 17!
- - JavaFX 16 (update to 17 when it is released)
+ - JavaFX 18
  - remove FxSettings
  - code cleanups
  - move all classes from fx.util.controls to fx.controls (also implies moving from module fx_util to fx_controls)
  - Controls.makeResizable()
+ - FxApplication provides a Cleaner to use by applications
+ - register cleanup actions in FxApplication to execute when application stops
 
 #### Version 0.16
 (unreleased)
