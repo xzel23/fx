@@ -42,11 +42,16 @@ public class PinBoard extends Control {
     }
 
     public void refresh() {
-        ((PinBoardSkin) getSkin()).refresh();
+        if (getSkin() instanceof PinBoardSkin skin) {
+            skin.refresh();
+        }
     }
 
     public void dispose() {
-        getSkin().dispose();    
+        Skin skin = getSkin();
+        if (skin != null) {
+            skin.dispose();
+        }
     }
     
     record Item(Rectangle2D area, Supplier<Node> nodeBuilder) {}
@@ -72,6 +77,24 @@ public class PinBoard extends Control {
         return areaProperty.get();
     }
     
+    public Pair<Double,Double> getScrollPosition() {
+        if (getSkin() instanceof PinBoardSkin skin) {
+            return skin.getScrollPosition();
+        } else {
+            return Pair.of(0.0,0.0);
+        }
+    }
+    
+    public void setScrollPosition(double hValue, double vValue) {
+        if (getSkin() instanceof PinBoardSkin skin) {
+            skin.setScrollPosition(hValue, vValue);
+        }
+    }
+
+    public void setScrollPosition(Pair<Double,Double> scrollPosition) {
+        setScrollPosition(scrollPosition.first(), scrollPosition.second());
+    }
+
     public void pin(Item... itemsToPin) {
         if (itemsToPin.length==0) {
             return;
@@ -220,5 +243,14 @@ class PinBoardSkin extends SkinBase<PinBoard>  {
     public void dispose() {
         refresher.stop();
         super.dispose();
+    }
+
+    public Pair<Double,Double> getScrollPosition() {
+        return Pair.of(scrollPane.getHvalue(), scrollPane.getVvalue());
+    }
+
+    public void setScrollPosition(double hValue, double vValue) {
+        scrollPane.setHvalue(hValue);
+        scrollPane.setVvalue(vValue);
     }
 }
