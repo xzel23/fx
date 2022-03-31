@@ -80,7 +80,7 @@ public interface InputBuilder<B extends InputBuilder<B>> {
     /**
      * Set number of columns for layout (default is 1).
      * @param columns
-     *  the number of colums for laying out the input controls
+     *  the number of columns for laying out the input controls
      * @return
      *  {@code this}
      */
@@ -248,7 +248,7 @@ public interface InputBuilder<B extends InputBuilder<B>> {
      * @param dflt
      *  supplier of default values
      * @param options
-     *  suppliuer of options
+     *  supplier of options
      * @return
      *  {@code this}
      */
@@ -265,7 +265,7 @@ public interface InputBuilder<B extends InputBuilder<B>> {
      * @param dflt
      *  supplier of default values
      * @param options
-     *  suppliuer of options
+     *  supplier of options
      * @return
      *  {@code this}
      */

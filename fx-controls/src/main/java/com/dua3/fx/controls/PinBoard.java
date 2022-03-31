@@ -49,8 +49,7 @@ public class PinBoard extends Control {
     }
 
     public void dispose() {
-        Skin skin = getSkin();
-        if (skin != null) {
+        if (getSkin() instanceof PinBoardSkin skin) {
             skin.dispose();
         }
     }
@@ -173,7 +172,7 @@ class PinBoardSkin extends SkinBase<PinBoard>  {
     private final AnchorPane pane = new AnchorPane();
     private final ScrollPane scrollPane = new ScrollPane(pane);
 
-    public PinBoardSkin(PinBoard pinBoard) {
+    PinBoardSkin(PinBoard pinBoard) {
         super(pinBoard);
         
         this.refresher = FxRefresh.create(PinBoardSkin.class.getSimpleName(), this::updateNodes, pinBoard);

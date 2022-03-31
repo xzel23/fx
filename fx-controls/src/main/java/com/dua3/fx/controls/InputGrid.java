@@ -80,7 +80,7 @@ public class InputGrid extends GridPane {
 
 	public Map<String, Object> get() {
 		Map<String,Object> result = new HashMap<>();
-		// Collecors.toMap() does not support null values!
+		// Collectors.toMap() does not support null values!
 		//noinspection SimplifyForEach
 		data.forEach(e -> result.put(e.id, e.control.get()));
 		return result;

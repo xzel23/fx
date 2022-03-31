@@ -30,7 +30,7 @@ public class Validator {
     private int iconSize = 20;
     
     /**
-     * Creates a Validator instance without assigning a fresourcde bundle.
+     * Creates a Validator instance without assigning a resource bundle.
      */
     public Validator() {
         this(null);
@@ -55,8 +55,8 @@ public class Validator {
     }
 
     /**
-     * Crestes a new rule list and sets the contreol to be validated on focus change.
-     * @param control the contrrol to cresate a rule list for
+     * Creates a new rule list and sets the control to be validated on focus change.
+     * @param control the control to create a rule list for
      * @return new rule list for the control
      */
     private List<Supplier<ValidationResult>> createRuleList(Control control) {

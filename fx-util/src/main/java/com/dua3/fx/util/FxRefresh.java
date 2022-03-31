@@ -206,7 +206,7 @@ public final class FxRefresh {
      * Request refresh. The refresh will be performed ass soon as all of the following are met:
      * <ul>
      *     <li>the refresher is running
-     *     <li>the refreshser's state is "active"
+     *     <li>the refresher's state is "active"
      *     <li>no other request running
      *     <li>no no newer request was queued (in that case, the older request will be skipped)
      * </ul>

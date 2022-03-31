@@ -75,8 +75,8 @@ public class FileInput extends HBox implements InputControl<File> {
 
         this.getChildren().setAll(tfFilename, button);
 
-        StringBinding fname = Bindings.createStringBinding(() -> Objects.toString(value.get(), ""), value);
-        tfFilename.textProperty().bind(fname);
+        StringBinding fileName = Bindings.createStringBinding(() -> Objects.toString(value.get(), ""), value);
+        tfFilename.textProperty().bind(fileName);
 
         // error property
         StringExpression errorText = Bindings.createStringBinding(
