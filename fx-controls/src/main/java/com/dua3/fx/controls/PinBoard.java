@@ -24,6 +24,7 @@ import javafx.scene.control.Skin;
 import javafx.scene.control.SkinBase;
 import javafx.scene.layout.AnchorPane;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
@@ -221,7 +222,8 @@ class PinBoardSkin extends SkinBase<PinBoard>  {
         pane.setMinHeight(boardArea.getHeight());
 
         // populate pane with nodes of visible items
-        List<Node> nodes = board.items.parallelStream()
+        List<Node> nodes = new ArrayList<>(board.items) // copy list to avoid concurrent modification
+                .stream()
                 .filter(item -> item.area().intersects(viewPort))
                 .map(item -> {
                     Rectangle2D itemArea = item.area();
@@ -231,6 +233,7 @@ class PinBoardSkin extends SkinBase<PinBoard>  {
                     return node;
                 })
                 .toList();
+        
         PlatformHelper.runAndWait(() -> pane.getChildren().setAll(nodes));
         
         // immediately start next refresh if viewport changed during updated
