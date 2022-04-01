@@ -120,6 +120,7 @@ public final class FxRefresh {
      * Loop of the update thread. Waits for incoming requests and calls the update task. 
      */
     private void refreshLoop() {
+        LOG.fine(() -> "["+name+"] entering refresh loop");
         do {
             lock.lock();
             try {
@@ -140,24 +141,29 @@ public final class FxRefresh {
             // run task and update revision
             if (active.get()) {
                 int myRevision = requestedRevision.get();
-                LOG.fine(() -> "[" + name + "] starting refresh with revision: " + myRevision);
-                try {
-                    task.run();
-                    LOG.fine(() -> "[" + name + "] refreshed to revision: " + myRevision);
-                } catch (Exception e) {
-                    LOG.log(Level.WARNING, "task aborted, exception swallowed, current revision %s might have inconsistent state".formatted(myRevision), e);
-                } finally {
-                    currentRevision.set(myRevision);
+                if (myRevision != currentRevision.getAndSet(myRevision)) {
+                    try {
+                        LOG.fine(() -> "[" + name + "] starting refresh with revision: " + myRevision);
+                        task.run();
+                        LOG.fine(() -> "[" + name + "] refreshed to revision: " + myRevision);
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, "task aborted, exception swallowed, current revision %s might have inconsistent state".formatted(myRevision), e);
+                    } finally {
+                        currentRevision.set(myRevision);
+                    }
+                } else {
+                    LOG.fine(() -> "[" + name + "] already at revision: " + myRevision);
                 }
             }
         } while (updateThread!= null);
+        LOG.fine(() -> "["+name+"] exiting refresh loop");
     }
 
     /**
      * Wake up the update thread.
      */
     private void signal() {
-        LOG.fine(() -> "["+name+"] refresh requested");
+        LOG.fine(() -> "["+name+"] raise signal");
         lock.lock();
         try {
             trigger.signalAll();
@@ -190,6 +196,7 @@ public final class FxRefresh {
      * @param flag whether to activate or deactivate the refresher
      */
     public synchronized void setActive(boolean flag) {
+        LOG.fine(() -> "["+name+"] setActive("+flag+")");
         this.active.set(flag);
         signal();
     }
@@ -215,7 +222,8 @@ public final class FxRefresh {
         LOG.fine(() -> "["+name+"] refresh requested");
         lock.lock();
         try {
-            requestedRevision.incrementAndGet();
+            int revision = requestedRevision.incrementAndGet();
+            LOG.fine(() -> "["+name+"] requested revision "+revision);
             trigger.signalAll();
         } finally {
             lock.unlock();
