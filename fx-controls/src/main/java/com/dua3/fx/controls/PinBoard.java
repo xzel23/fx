@@ -8,6 +8,7 @@ package com.dua3.fx.controls;
 import com.dua3.fx.util.FxRefresh;
 import com.dua3.fx.util.PlatformHelper;
 import com.dua3.utility.data.Pair;
+import com.dua3.utility.lang.LangUtil;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -175,7 +176,7 @@ class PinBoardSkin extends SkinBase<PinBoard>  {
     PinBoardSkin(PinBoard pinBoard) {
         super(pinBoard);
         
-        this.refresher = FxRefresh.create(PinBoardSkin.class.getSimpleName(), this::updateNodes, pinBoard);
+        this.refresher = FxRefresh.create(LangUtil.defaultToString(this), this::updateNodes, pinBoard);
         
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
