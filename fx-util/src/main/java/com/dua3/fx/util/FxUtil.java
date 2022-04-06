@@ -1,11 +1,14 @@
 package com.dua3.fx.util;
 
+import com.dua3.utility.data.Image;
 import com.dua3.utility.io.IoUtil;
 import com.dua3.utility.math.geometry.AffineTransformation2f;
 import com.dua3.utility.math.geometry.FillRule;
 import com.dua3.utility.text.FontDef;
 import javafx.geometry.Bounds;
 import javafx.geometry.Dimension2D;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
@@ -199,6 +202,36 @@ public final class FxUtil {
      */
     public static boolean matches(FileChooser.ExtensionFilter filter, URI uri) {
         return matches(filter, uri.getPath());
+    }
+
+    /**
+     * Copy text to clipboard.
+     * @param s the text
+     */
+    public static void copyToClipboard(String s) {
+        final Clipboard clipboard = Clipboard.getSystemClipboard();
+        final ClipboardContent content = new ClipboardContent();
+        content.putString(s);
+        clipboard.setContent(content);
+    }
+
+    /**
+     * Copy image to clipboard.
+     * @param img the image
+     */
+    public static void copyToClipboard(javafx.scene.image.Image img) {
+        final Clipboard clipboard = Clipboard.getSystemClipboard();
+        final ClipboardContent content = new ClipboardContent();
+        content.putImage(img);
+        clipboard.setContent(content);
+    }
+    
+    /**
+     * Copy image to clipboard.
+     * @param img the image
+     */
+    public static void copyToClipboard(Image img) {
+        copyToClipboard(FxImageUtil.instance().convert(img));
     }
 
     private FxUtil() {}
