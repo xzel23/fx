@@ -11,6 +11,12 @@ import java.io.InputStream;
 
 public final class FxImageUtil implements ImageUtil<Image> {
     
+    private static final FxImageUtil INSTANCE = new FxImageUtil();
+    
+    public static FxImageUtil instance() {
+        return INSTANCE;
+    }
+    
     @Override
     public FxImage load(InputStream inputStream) throws IOException {
         return new FxImage(new Image(inputStream));
