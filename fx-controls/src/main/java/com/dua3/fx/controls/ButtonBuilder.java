@@ -4,15 +4,38 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBase;
 import javafx.scene.control.Tooltip;
 
-public class ButtonBuilder {
+import java.util.function.Supplier;
+
+public abstract class ButtonBuilder<B extends ButtonBase> {
     private String text = null;
     private Node graphic = null;
     private String tooltip = null;
     private EventHandler<ActionEvent> action = null;
 
-    public ButtonBuilder text(String text) {
+    /**
+     * Factory method for {@link ButtonBuilder} instances. 
+     * @param factory the factory method for Button instances
+     * @return ButtonBuilder instance
+     * @param <B> the button type
+     */
+    public static <B extends ButtonBase> ButtonBuilder<B> builder(Supplier<B> factory) {
+        return new ButtonBuilder<B>() {
+            @Override
+            protected B newButton() {
+                return factory.get();
+            }
+        };
+    }
+    
+    /**
+     * Set text for the button.
+     * @param text the text
+     * @return this ButtonBuilder instance
+     */
+    public ButtonBuilder<B> text(String text) {
         this.text = text;
         return this;
     }
@@ -22,7 +45,7 @@ public class ButtonBuilder {
      * @param graphic the graphic to use
      * @return this ButtonBuilder instance
      */
-    public ButtonBuilder graphic(Node graphic) {
+    public ButtonBuilder<B> graphic(Node graphic) {
         this.graphic = graphic;
         return this;
     }
@@ -32,23 +55,37 @@ public class ButtonBuilder {
      * @param tooltip the tooltip text
      * @return this ButtonBuilder instance
      */
-    public ButtonBuilder tooltip(String tooltip) {
+    public ButtonBuilder<B> tooltip(String tooltip) {
         this.tooltip = tooltip;
         return this;
     }
 
-    public ButtonBuilder action(EventHandler<ActionEvent> action) {
+    /**
+     * Set event handler for the button.
+     * @param action the {@link EventHandler}
+     * @return this ButtonBuilder instance
+     */
+    public ButtonBuilder<B> action(EventHandler<ActionEvent> action) {
         this.action = action;
         return this;
     }
 
-    public ButtonBuilder action(Runnable action) {
+    /**
+     * Set action for the button.
+     * @param action the action to perform when pressed
+     * @return this ButtonBuilder instance
+     */
+    public ButtonBuilder<B> action(Runnable action) {
         this.action = evt -> action.run();
         return this;
     }
 
-    public Button build() {
-        Button button = new Button();
+    /**
+     * Build the button.
+     * @return new button instance
+     */
+    public B build() {
+        B button = newButton();
 
         if (text != null) {
             button.setText(text);
@@ -65,4 +102,7 @@ public class ButtonBuilder {
 
         return button;
     }
+
+    protected abstract B newButton();
+    
 }

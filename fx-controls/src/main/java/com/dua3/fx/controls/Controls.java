@@ -6,7 +6,9 @@ import com.dua3.fx.util.FxUtil;
 import com.dua3.utility.data.Color;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Separator;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Paint;
 
@@ -18,12 +20,35 @@ public final class Controls {
     }
 
     /**
-     * Create {@link ButtonBuilder} instance.
+     * Create {@link ButtonBuilder} instance for standard buttons.
      *
      * @return new ButtonBuilder
      */
-    public static ButtonBuilder button() {
-        return new ButtonBuilder();
+    public static ButtonBuilder<Button> button() {
+        return ButtonBuilder.builder(Button::new);
+    }
+
+    /**
+     * Create {@link ButtonBuilder} instance for toggle buttons.
+     *
+     * @return new ButtonBuilder
+     */
+    public static ButtonBuilder<ToggleButton> toggleButton() {
+        return ButtonBuilder.builder(ToggleButton::new);
+    }
+
+    /**
+     * Create {@link ButtonBuilder} instance for toggle buttons.
+     *
+     * @param selected the initial selection state of the button
+     * @return new ButtonBuilder
+     */
+    public static ButtonBuilder<ToggleButton> toggleButton(boolean selected) {
+        return ButtonBuilder.builder(() -> {
+            ToggleButton b = new ToggleButton();
+            b.setSelected(selected);
+            return b;
+        });
     }
 
     /**
