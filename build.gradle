@@ -44,7 +44,7 @@ subprojects {
 
     /////////////////////////////////////////////////////////////////////////////
     group = 'com.dua3.fx'
-    version = '0.17-BETA26'
+    version = '0.17-BETA27-SNAPSHOT'
 
     ext.scm = 'https://gitlab.com/com.dua3/lib/fx.git'
     ext.repo = 'public'
