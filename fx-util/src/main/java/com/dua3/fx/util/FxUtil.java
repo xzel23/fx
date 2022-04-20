@@ -22,6 +22,8 @@ import java.net.URI;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.util.Collection;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.regex.Pattern;
@@ -232,6 +234,26 @@ public final class FxUtil {
      */
     public static void copyToClipboard(Image img) {
         copyToClipboard(FxImageUtil.instance().convert(img));
+    }
+
+    /**
+     * Copy files/folders to clipboard.
+     * @param paths the list of paths to copy to the clipboard
+     */
+    public static void copyToClipboard(Collection<Path> paths) {
+        final Clipboard clipboard = Clipboard.getSystemClipboard();
+        final ClipboardContent content = new ClipboardContent();
+        List<File> files = paths.stream().map(Path::toAbsolutePath).map(Path::toFile).toList();
+        content.putFiles(files);
+        clipboard.setContent(content);
+    }
+
+    /**
+     * Copy file/folder to clipboard.
+     * @param path the path to the file/folder to copy to the clipboard
+     */
+    public static void copyToClipboard(Path path) {
+        copyToClipboard(List.of(path));
     }
 
     private FxUtil() {}

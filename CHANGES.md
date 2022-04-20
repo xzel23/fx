@@ -10,7 +10,8 @@ Changelog
  - Controls.makeResizable()
  - FxApplication provides a Cleaner to use by applications
  - register cleanup actions in FxApplication to execute when application stops
- - FxUtil.copyToClipboard()
+ - FxUtil.copyToClipboard() (supports texts, images, files)
+ - Controls.toggleButton()
 
 #### Version 0.16
 (unreleased)
