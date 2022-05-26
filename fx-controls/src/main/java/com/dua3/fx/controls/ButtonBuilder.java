@@ -3,7 +3,6 @@ package com.dua3.fx.controls;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBase;
 import javafx.scene.control.Tooltip;
 
@@ -22,7 +21,7 @@ public abstract class ButtonBuilder<B extends ButtonBase> {
      * @param <B> the button type
      */
     public static <B extends ButtonBase> ButtonBuilder<B> builder(Supplier<B> factory) {
-        return new ButtonBuilder<B>() {
+        return new ButtonBuilder<>() {
             @Override
             protected B newButton() {
                 return factory.get();
