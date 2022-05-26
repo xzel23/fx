@@ -54,7 +54,7 @@ public class ProgressView<T> extends GridPane implements ProgressTracker<T> {
         this.imp = new com.dua3.utility.concurrent.ProgressView<>(this::createProgressIndicator);
     }
 
-    private <T> com.dua3.utility.concurrent.ProgressView.ProgressIndicator createProgressIndicator(T t) {
+    private com.dua3.utility.concurrent.ProgressView.ProgressIndicator createProgressIndicator(T t) {
         FxProgressBarIndicator pi = new FxProgressBarIndicator();
         
         int row = getChildren().size();
