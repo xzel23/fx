@@ -270,7 +270,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	public boolean newDocument() {
 		// handle dirty state
 		if (!handleDirtyState()) {
-			LOG.fine("open aborted because of dirty state");
+			LOG.fine("new aborted because of dirty state");
 			return false;			
 		}
 		

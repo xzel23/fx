@@ -89,7 +89,18 @@ public final class Controls {
      * @see IconUtil#iconFromName(String) 
      */
     public static Node graphic(String name) {
-        return IconUtil.iconFromName(name).orElseThrow(() -> new IllegalStateException("unknown icon: " + name)).node();
+        return icon(name).node();
+    }
+
+    /**
+     * Get icon by name.
+     * @param name the icon name
+     * @return icon
+     * @throws IllegalStateException if no icon with a matching name is found
+     * @see IconUtil#iconFromName(String)
+     */
+    public static Icon icon(String name) {
+        return IconUtil.iconFromName(name).orElseThrow(() -> new IllegalStateException("unknown icon: " + name));
     }
 
     /**
@@ -101,7 +112,7 @@ public final class Controls {
      * @see IconUtil#iconFromName(String) 
      */
     public static Node graphic(String name, int size) {
-        Icon icon = IconUtil.iconFromName(name).orElseThrow(() -> new IllegalStateException("unknown icon: " + name));
+        Icon icon = icon(name);
         icon.setIconSize(size);
         return icon.node();
     }
@@ -116,7 +127,7 @@ public final class Controls {
      * @see IconUtil#iconFromName(String)
      */
     public static Node graphic(String name, int size, Paint paint) {
-        Icon icon = IconUtil.iconFromName(name).orElseThrow(() -> new IllegalStateException("unknown icon: " + name));
+        Icon icon = icon(name);
         icon.setIconSize(size);
         icon.setIconColor(paint);
         return icon.node();
@@ -132,7 +143,7 @@ public final class Controls {
      * @see IconUtil#iconFromName(String)
      */
     public static Node graphic(String name, int size, Color color) {
-        Icon icon = IconUtil.iconFromName(name).orElseThrow(() -> new IllegalStateException("unknown icon: " + name));
+        Icon icon = icon(name);
         icon.setIconSize(size);
         icon.setIconColor(FxUtil.convert(color));
         return icon.node();

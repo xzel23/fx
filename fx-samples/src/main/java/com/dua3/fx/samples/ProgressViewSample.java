@@ -12,7 +12,6 @@ import java.util.concurrent.Executors;
 
 public class ProgressViewSample extends Application {
 
-    @SuppressWarnings("UseOfSystemOutOrSystemErr")
     public static void main(String[] args) {
         launch(args);
     }
@@ -47,7 +46,7 @@ public class ProgressViewSample extends Application {
     ExecutorService pool = Executors.newFixedThreadPool(3);
 
     @SuppressWarnings("FutureReturnValueIgnored")
-    private void addTask(ProgressView<SampleTask> pv, String name, int steps, ProgressTracker.State s) {
+    private void addTask(ProgressTracker<SampleTask> pv, String name, int steps, ProgressTracker.State s) {
         boolean indeterminate = steps < 0;
         int max = steps >= 0 ? steps : -steps;
         

@@ -452,7 +452,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
             }
 
             // as last resort, use a dot file in user's home directory
-            Path dir = home.resolve(dirName.replaceAll(" ", "_").toLowerCase(Locale.ROOT));
+            Path dir = home.resolve(dirName.replace(' ', '_').toLowerCase(Locale.ROOT));
             Files.createDirectories(dir);
             return dir.toFile();
         } catch (IOException e) {

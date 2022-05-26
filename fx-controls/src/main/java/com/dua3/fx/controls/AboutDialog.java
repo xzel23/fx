@@ -68,7 +68,8 @@ public class AboutDialog extends Dialog<Void> {
 	        loader.setController(this);
 	        DialogPane dialogPane = loader.load();
 	        URL dialogCss = css != null ? css : AboutDialog.class.getResource("about.css");
-	        dialogPane.getStylesheets().add(dialogCss.toExternalForm());
+            assert dialogCss != null;
+            dialogPane.getStylesheets().add(dialogCss.toExternalForm());
 	        setDialogPane(dialogPane);
 	        dialogPane.getButtonTypes().addAll(ButtonType.OK);
     	} catch (IOException e) {
