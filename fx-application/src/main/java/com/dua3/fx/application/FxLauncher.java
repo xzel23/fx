@@ -94,7 +94,7 @@ public final class FxLauncher {
      * @param args
      *   the command line arguments
      * @return
-     *   the re-parsed argument array
+     *   the reparsed argument array
      * @deprecated this method is a workaround that will be removed once the underlying issue is fixed in the JDK.
      */
     @Deprecated

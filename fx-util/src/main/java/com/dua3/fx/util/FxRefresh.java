@@ -13,16 +13,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * A class intended for controlling possibly long running update operations. Refresh happen mutually exclusive, i. e.
+ * A class intended for controlling possibly long-running update operations. Refresh happen mutually exclusive, i.e.
  * the update tasks do not have to be explicitly synchronized as long as not called directly from other code.
- * An example is updating a JavaFX node. I. e. if redraw requests come in before current drawing finishes,
+ * An example is updating a JavaFX node. I.e. if redraw requests come in before current drawing finishes,
  * the application becomes sluggish or burns CPU cycles for drawing outdated data. the FxRefresher automatically
  * skips intermediate frames if redraw requests come in too fast for the drawing to come up with.
  */
 public final class FxRefresh {
     private static final Logger LOG = Logger.getLogger(FxRefresh.class.getName());
     
-    /** The instance name (used in logging. */
+    /** The instance name (used in logging). */
     private final String name;
 
     /** The revision number of the last completed update operation. */
@@ -174,7 +174,7 @@ public final class FxRefresh {
 
     /**
      * Check if the refresher has been started. Note that it's possible that the refresher is running,
-     * but inactive, i. e. if the window is hidden.
+     * but inactive, i.e. if the window is hidden.
      * 
      * @return true, if the refresher is running
      */
@@ -210,7 +210,7 @@ public final class FxRefresh {
     }
 
     /**
-     * Request refresh. The refresh will be performed ass soon as all of the following are met:
+     * Request refresh. The refresh will be performed ass soon as all the following are met:
      * <ul>
      *     <li>the refresher is running
      *     <li>the refresher's state is "active"

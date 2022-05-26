@@ -140,7 +140,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	 * If the user selects "save", the current document is saved before the method returns.
 	 * 
 	 * @return 
-	 * 	true, if either "save" (in which case the document is automatically save) or "don't save are selected
+	 * 	true, if either "save" (in which case the document is automatically saved) or "don't save are selected
 	 * 	false, if the dialog was cancelled
 	 */
 	protected boolean handleDirtyState() {

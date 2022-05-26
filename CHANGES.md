@@ -46,7 +46,7 @@ Changelog
 
  - new class Fxsettings
  - FxUtil: added methods to list available fonts
- - FxControllergetCurrentDocumentLocation()
+ - FxController.getCurrentDocumentLocation()
  - FxController.onDocumentUriChanged() (protected)
  - FxUtil: new class RecentlyUsedDocumentsList
  
@@ -76,9 +76,9 @@ Changelog
  
 #### Version 0.9.2
 
- - new static method `FxApplication.launchApplication()` as replacement for `Application.launch()`. When using this method, the commandline is automatically re-parsed (see next item).
+ - new static method `FxApplication.launchApplication()` as replacement for `Application.launch()`. When using this method, the commandline is automatically reparsed (see next item).
  
- - new static method `FxApplication.reparseCommandLine(String[])` to fix messing up command line arguments on windows.
+ - new static method `FxApplication.reparseCommandLine(String[])` to fix messing up command line arguments on Windows.
  
 #### Version 0.9.1
 
@@ -159,7 +159,7 @@ Changelog
 
 #### Version 0.5.0
 
-- removed the fx-editor sub project which contained two sample applications
+- removed the fx-editor subproject which contained two sample applications
 - module descriptors changed from com.dua3.fx to dua3_fx
 - fx-icons: IconView class, many fixes
 - fx-web: redirecting javaScript console to Java

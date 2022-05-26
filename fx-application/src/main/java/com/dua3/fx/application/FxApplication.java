@@ -100,7 +100,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
     private static final File USER_HOME = new File(System.getProperty("user.home"));
 
     /**
-     * The name of the default bundle that is used if the application does not provide it's own bundle.
+     * The name of the default bundle that is used if the application does not provide its own bundle.
      */
     private static final String DEFAULT_BUNDLE = "fxapp";
 
@@ -442,7 +442,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
                 return dir.toFile();
             }
 
-            // then check for macos
+            // then check for macOS
             Path home = Paths.get(System.getProperty("user.home"));
             Path macosBase = home.resolve(Paths.get("Library", "Application Support"));
             if (Files.isDirectory(macosBase) && Files.isWritable(macosBase)) {

@@ -7,7 +7,7 @@ Table of contents
 
 ${toc}
 
-Github Flavored Markdown
+GitHub Flavored Markdown
 ------------------------
 
 The `MarkdownEditor` supports Github-Flavored-Markdown ([GFM](https://github.github.com/gfm/)) with some extensions.

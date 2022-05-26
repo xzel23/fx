@@ -182,7 +182,7 @@ public class Validator {
 
     /**
      * Add validation for a button. If validation is added to a button, the validation will be performed when
-     * the buttons is pressed, and if validation fails, the button clicked event will be consumed.
+     * the button is pressed, and if validation fails, the button clicked event will be consumed.
      * @param button the button to add validation to
      */
     public void addValidation(Button button) {

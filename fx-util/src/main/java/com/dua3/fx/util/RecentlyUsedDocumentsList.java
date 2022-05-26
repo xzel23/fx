@@ -64,7 +64,7 @@ public class RecentlyUsedDocumentsList {
     }
     
     /**
-     * Put document into list (if not present) or update it's position in the list (if present).
+     * Put document into list (if not present) or update its position in the list (if present).
      * @param uri the document's URI
      * @param name the document's display name
      */
@@ -142,15 +142,15 @@ public class RecentlyUsedDocumentsList {
     private void load() {
         try {
             Arrays.stream(prefs.keys())
-                    // ... sortieren
+                    // ... sort
                     .sorted(Comparator.comparing(Integer::valueOf))
-                    // ... Werte holen
+                    // ... get values
                     .map(key -> prefs.get(key, ""))
-                    // ... leere Einträge ignorieren
+                    // ... ignore empty values
                     .filter(Predicate.not(String::isEmpty))
-                    // ... in URI und Name aufteilen
+                    // ... split into URI and name
                     .map(s -> s.split("\n", 2))
-                    // ... eintragen
+                    // ... store
                     .forEach(item -> storeItem(item[0], item.length > 1 ? item[1] : ""));
 
             shrinkToFit();
