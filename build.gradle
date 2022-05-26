@@ -11,21 +11,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-/*
-buildscript {
-    repositories {
-        mavenLocal()
-        mavenCentral()
-    }
-    dependencies {
-        classpath group: 'com.dua3.cabe', name: 'cabe-gradle-plugin', version: '0.4.1'
-    }
-}
-*/
+
 plugins {
     id 'com.adarshr.test-logger' version '3.2.0' apply false
-    id 'com.github.spotbugs' version '5.0.6' apply false
-    id "org.openjfx.javafxplugin" version "0.0.12" apply false
+    id 'com.github.spotbugs' version '5.0.7' apply false
+    id "org.openjfx.javafxplugin" version "0.0.13" apply false
+    id 'com.dua3.cabe' version '1.0.0-RC3' apply false
     id 'org.kordamp.gradle.errorprone' version '0.47.0'
     id 'com.github.ben-manes.versions' version '0.42.0'
 }
@@ -40,11 +31,11 @@ subprojects {
     apply plugin: 'com.github.spotbugs'
     apply plugin: 'com.adarshr.test-logger'
     apply plugin: 'org.kordamp.gradle.errorprone'
-//    apply plugin: 'com.dua3.cabe.cabe-gradle-plugin'
+//    apply plugin: 'com.dua3.cabe'
 
     /////////////////////////////////////////////////////////////////////////////
     group = 'com.dua3.fx'
-    version = '0.17-BETA27'
+    version = '0.17-BETA28-SNAPSHOT'
 
     ext.scm = 'https://gitlab.com/com.dua3/lib/fx.git'
     ext.repo = 'public'
@@ -63,7 +54,7 @@ subprojects {
         javafx_version = '18'
         junit_version = '5.8.2'
 
-        dua3_utility_version = '10-BETA26'
+        dua3_utility_version = '10.0.0-BETA27'
 
         ikonli_version = '12.3.1'
     }
@@ -207,7 +198,7 @@ subprojects {
     config {
         quality {
             errorprone.setEnabled(true)
-            errorprone.setErrorProneVersion('2.11.0')
+            errorprone.setErrorProneVersion('2.14.0')
         }
     }
 
