@@ -23,7 +23,7 @@ import javafx.scene.control.ButtonType;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
@@ -138,7 +138,7 @@ implements InputBuilder<InputDialogBuilder> {
 	}
 
 	@Override
-	public InputDialogBuilder chooseFile(String id, String label, Supplier<File> dflt, FileDialogMode mode, FileChooser.ExtensionFilter filter) {
+	public InputDialogBuilder chooseFile(String id, String label, Supplier<Path> dflt, FileDialogMode mode, FileChooser.ExtensionFilter filter) {
 		pb.chooseFile(id, label, dflt, mode, filter);
 		return this;
 	}

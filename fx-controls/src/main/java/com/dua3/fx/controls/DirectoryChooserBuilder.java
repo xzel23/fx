@@ -15,6 +15,9 @@
 package com.dua3.fx.controls;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -29,9 +32,9 @@ import javafx.stage.Window;
 public class DirectoryChooserBuilder {
 	private static final Logger LOG = Logger.getLogger(DirectoryChooserBuilder.class.getName());
 
-	public static final File USER_HOME = new File(System.getProperty("user.home"));
+	public static final Path USER_HOME = Paths.get(System.getProperty("user.home"));
 
-	private File initialDir = USER_HOME;
+	private Path initialDir = USER_HOME;
 
 	DirectoryChooserBuilder() {
 	}
@@ -43,16 +46,16 @@ public class DirectoryChooserBuilder {
 	 * @return
 	 *  an Optional containing the selected file.
 	 */
-	public Optional<File> showDialog(Window parent) {
+	public Optional<Path> showDialog(Window parent) {
 		DirectoryChooser chooser = build();
-		return Optional.ofNullable(chooser.showDialog(parent));
+		return Optional.ofNullable(chooser.showDialog(parent)).map(File::toPath);
 	}
 
 	private DirectoryChooser build() {
 		DirectoryChooser chooser = new DirectoryChooser();
-		if (initialDir.isDirectory()) {
+		if (Files.isDirectory(initialDir)) {
 			LOG.fine("initial directory: "+initialDir);
-			chooser.setInitialDirectory(initialDir);
+			chooser.setInitialDirectory(initialDir.toFile());
 		} else {
 			LOG.warning("ignoring invalid value for initial directory: "+initialDir);
 		}
@@ -66,7 +69,7 @@ public class DirectoryChooserBuilder {
 	 * @return
 	 *  this instance
 	 */
-	public DirectoryChooserBuilder initialDir(File initialDir) {
+	public DirectoryChooserBuilder initialDir(Path initialDir) {
 		this.initialDir = initialDir != null ? initialDir : USER_HOME;
 		return this;
 	}

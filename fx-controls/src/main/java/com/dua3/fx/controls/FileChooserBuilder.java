@@ -15,6 +15,9 @@
 package com.dua3.fx.controls;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -34,9 +37,9 @@ import javafx.stage.Window;
 public class FileChooserBuilder {
 	private static final Logger LOG = Logger.getLogger(FileChooserBuilder.class.getName());
 
-	public static final File USER_HOME = new File(System.getProperty("user.home"));
+	public static final Path USER_HOME = Paths.get(System.getProperty("user.home"));
 
-	private File initialDir = USER_HOME;
+	private Path initialDir = USER_HOME;
 	private String initialFileName = "";
 	private List<ExtensionFilter> filters = new ArrayList<>();
 	private ExtensionFilter selectedFilter = null;
@@ -51,9 +54,9 @@ public class FileChooserBuilder {
 	 * @return
 	 *  an Optional containing the selected file.
 	 */
-	public Optional<File> showOpenDialog(Window parent) {
+	public Optional<Path> showOpenDialog(Window parent) {
 		FileChooser chooser = build();
-		return Optional.ofNullable(chooser.showOpenDialog(parent));
+		return Optional.ofNullable(chooser.showOpenDialog(parent)).map(File::toPath);
 	}
 
 	/**
@@ -63,10 +66,10 @@ public class FileChooserBuilder {
 	 * @return
 	 *  a List containing the selected files, or an empty list if no files were selected
 	 */
-	public List<File> showOpenMultipleDialog(Window parent) {
+	public List<Path> showOpenMultipleDialog(Window parent) {
 		FileChooser chooser = build();
 		List<File> files = chooser.showOpenMultipleDialog(parent);
-		return files == null ? Collections.emptyList() : files;
+		return files == null ? Collections.emptyList() : files.stream().map(File::toPath).toList();
 	}
 
 	/**
@@ -76,9 +79,9 @@ public class FileChooserBuilder {
 	 * @return
 	 *  an Optional containing the selected file.
 	 */
-	public Optional<File> showSaveDialog(Window parent) {
+	public Optional<Path> showSaveDialog(Window parent) {
 		FileChooser chooser = build();
-		return Optional.ofNullable(chooser.showSaveDialog(parent));
+		return Optional.ofNullable(chooser.showSaveDialog(parent)).map(File::toPath);
 	}
 
 	private FileChooser build() {
@@ -89,9 +92,9 @@ public class FileChooserBuilder {
 			chooser.setSelectedExtensionFilter(selectedFilter);
 		}
 
-		if (initialDir!=null && initialDir.isDirectory()) {
+		if (initialDir!=null && Files.isDirectory(initialDir)) {
 			try {
-				chooser.setInitialDirectory(initialDir);
+				chooser.setInitialDirectory(initialDir.toFile());
 			} catch (IllegalArgumentException|SecurityException e) {
 				LOG.warning("could not set initial directory: "+initialDir);
 			}
@@ -109,9 +112,10 @@ public class FileChooserBuilder {
 	 * @return
 	 *  this instance
 	 */
-	public FileChooserBuilder initialFile(File file) {
-		initialFileName(file.getName());
-		initialDir(file.getParentFile());
+	public FileChooserBuilder initialFile(Path file) {
+		Path fileName = file.getFileName();
+		initialFileName(fileName == null ? null : fileName.toString());
+		initialDir(file.getParent());
 		return this;
 	}
 
@@ -124,7 +128,7 @@ public class FileChooserBuilder {
 	 * @return
 	 *  this instance
 	 */
-	public FileChooserBuilder initialDir(File initialDir) {
+	public FileChooserBuilder initialDir(Path initialDir) {
 		this.initialDir = initialDir != null ? initialDir : USER_HOME;
 		return this;
 	}

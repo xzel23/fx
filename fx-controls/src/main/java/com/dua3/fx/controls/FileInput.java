@@ -20,20 +20,20 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-public class FileInput extends HBox implements InputControl<File> {
+public class FileInput extends HBox implements InputControl<Path> {
 
-    private final ObjectProperty<File> value = new SimpleObjectProperty<>();
+    private final ObjectProperty<Path> value = new SimpleObjectProperty<>();
 
     private final InputBuilder.FileDialogMode mode;
     private final FileChooser.ExtensionFilter[] filters;
-    private final Supplier<File> dflt;
+    private final Supplier<Path> dflt;
 
     private final TextField tfFilename;
     private final Button button;
@@ -41,7 +41,7 @@ public class FileInput extends HBox implements InputControl<File> {
     private final StringProperty error = new SimpleStringProperty("");
     private final BooleanProperty valid = new SimpleBooleanProperty(true);
 
-    public FileInput(InputBuilder.FileDialogMode mode, Supplier<File> dflt, FileChooser.ExtensionFilter... filters) {
+    public FileInput(InputBuilder.FileDialogMode mode, Supplier<Path> dflt, FileChooser.ExtensionFilter... filters) {
         this.mode = Objects.requireNonNull(mode);
         this.filters = Arrays.copyOf(Objects.requireNonNull(filters),filters.length);
         this.dflt = Objects.requireNonNull(dflt);
@@ -50,12 +50,12 @@ public class FileInput extends HBox implements InputControl<File> {
         this.button = new Button("...");
         button.setOnAction(evt -> {
 
-            File initialDir = value.get();
-            if (initialDir!=null && !initialDir.isDirectory()) {
-                initialDir = initialDir.getParentFile();
+            Path initialDir = value.get();
+            if (initialDir!=null && !Files.isDirectory(initialDir)) {
+                initialDir = initialDir.getParent();
             }
             if (initialDir==null) {
-                initialDir=new File(".");
+                initialDir= Paths.get(".");
             }
 
             if (this.mode==InputBuilder.FileDialogMode.OPEN) {
@@ -81,11 +81,11 @@ public class FileInput extends HBox implements InputControl<File> {
         // error property
         StringExpression errorText = Bindings.createStringBinding(
                 () -> {
-                    File file = value.get();
+                    Path file = value.get();
                     if (file == null ) {
                         return "No file selected.";
                     }
-                    if (mode==InputBuilder.FileDialogMode.OPEN && !Files.exists(file.toPath())) {
+                    if (mode==InputBuilder.FileDialogMode.OPEN && !Files.exists(file)) {
                         return "File does not exist: "+file;
                     }
                     return "";
@@ -116,13 +116,12 @@ public class FileInput extends HBox implements InputControl<File> {
     }
 
     @Override
-    public Property<File> valueProperty() {
+    public Property<Path> valueProperty() {
         return value;
     }
 
     private Path getPath() {
-        File file = value.get();
-        return file == null ? null : file.toPath();
+        return value.get();
     }
 
     @Override

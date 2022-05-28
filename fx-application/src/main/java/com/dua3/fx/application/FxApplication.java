@@ -32,7 +32,6 @@ import java.awt.desktop.AboutEvent;
 import java.awt.desktop.OpenFilesEvent;
 import java.awt.desktop.OpenURIEvent;
 import java.awt.desktop.PreferencesEvent;
-import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.lang.ref.Cleaner;
@@ -70,7 +69,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
     /**
      * Cleaner
      */
-    private static Cleaner CLEANER = null;
+    private static Cleaner cleaner = null;
 
     /**
      * List of Resource cleanup tasks to run on application stop.
@@ -97,7 +96,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
     /**
      * The user's home folder.
      */
-    private static final File USER_HOME = new File(System.getProperty("user.home"));
+    private static final Path USER_HOME = Paths.get(System.getProperty("user.home"));
 
     /**
      * The name of the default bundle that is used if the application does not provide its own bundle.
@@ -150,10 +149,10 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      * @return the {@link Cleaner} instance
      */
     public static synchronized Cleaner getCleaner() {
-        if (CLEANER == null) {
-            CLEANER = Cleaner.create();
+        if (cleaner == null) {
+            cleaner = Cleaner.create();
         }
-        return CLEANER;
+        return cleaner;
     }
     
     /**
@@ -425,9 +424,9 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
         return preferences != null;
     }
 
-    private final File APPLICATION_DATA_DIR = initApplicationDataDir();
+    private final Path applicationDataDir = initApplicationDataDir();
 
-    private File initApplicationDataDir() {
+    private Path initApplicationDataDir() {
         try {
             String dirName = getClass().getName();
 
@@ -439,7 +438,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
             if (appData != null) {
                 Path dir = Paths.get(appData).resolve(dirName);
                 Files.createDirectories(dir);
-                return dir.toFile();
+                return dir;
             }
 
             // then check for macOS
@@ -448,13 +447,13 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
             if (Files.isDirectory(macosBase) && Files.isWritable(macosBase)) {
                 Path dir = macosBase.resolve(dirName);
                 Files.createDirectories(dir);
-                return dir.toFile();
+                return dir;
             }
 
             // as last resort, use a dot file in user's home directory
             Path dir = home.resolve(dirName.replace(' ', '_').toLowerCase(Locale.ROOT));
             Files.createDirectories(dir);
-            return dir.toFile();
+            return dir;
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -464,8 +463,8 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      * Get this applications data folder.
      * @return  the data folder for this application
      */
-    public File getDataDir() {
-        return APPLICATION_DATA_DIR;
+    public Path getDataDir() {
+        return applicationDataDir;
     }
 
     /**
@@ -583,7 +582,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      * Get the user's home directory. 
      * @return the user's home directory
      */
-    public File getUserHome() {
+    public Path getUserHome() {
         return USER_HOME;
     }
     

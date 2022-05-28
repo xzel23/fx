@@ -23,7 +23,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.util.StringConverter;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.text.NumberFormat;
 import java.util.Collection;
 import java.util.Locale;
@@ -184,7 +184,7 @@ public interface InputControl<R> {
 		return new SimpleInputControl<>(control, value, dflt, r -> Optional.empty());
 	}
 
-	static InputControl<File> chooseFile(Supplier<File> dflt, InputBuilder.FileDialogMode mode, FileChooser.ExtensionFilter... filters) {
+	static InputControl<Path> chooseFile(Supplier<Path> dflt, InputBuilder.FileDialogMode mode, FileChooser.ExtensionFilter... filters) {
 		return new FileInput(mode, dflt, filters);
 	}
 }

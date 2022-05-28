@@ -31,10 +31,10 @@ import javafx.scene.control.ButtonType;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -294,13 +294,13 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		}
 
 		D document = getCurrentDocument();
-		File initialDir = initialDir(document);
+		Path initialDir = initialDir(document);
 		
-		if (initialDir == null || !initialDir.isDirectory()) {
+		if (initialDir == null || !Files.isDirectory(initialDir)) {
 			initialDir = getApp().getUserHome();
 		}
 		
-		Optional<File> file = Dialogs
+		Optional<Path> file = Dialogs
 				.chooseFile()
 				.initialDir(initialDir)
 				.initialFileName("")
@@ -314,7 +314,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		}
 
 		// open the document and handle errors
-		return open(file.get().toURI());
+		return open(file.get().toUri());
 	}
 
 	protected boolean open(URI uri) {
@@ -378,9 +378,9 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		}
 		
 		D document = getCurrentDocument();
-		File initialDir = initialDir(document);
+		Path initialDir = initialDir(document);
 
-		Optional<File> file = Dialogs
+		Optional<Path> file = Dialogs
 				.chooseFile()
 				.initialDir(initialDir)
 				.initialFileName("")
@@ -394,7 +394,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		}
 		
 		// save document content
-		boolean rc = saveDocumentAndHandleErrors(document, file.get().toURI());
+		boolean rc = saveDocumentAndHandleErrors(document, file.get().toUri());
 		
 		if (rc) {
 			setCurrentDocument(document);
@@ -408,7 +408,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	 * @param document the current document
 	 * @return the initial folder to set
 	 */
-	private File initialDir(D document) {
+	private Path initialDir(D document) {
 		if (document==null) {
 			return getApp().getUserHome();
 		}
@@ -421,7 +421,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 			} else {
 				String lastDocument = getApp().getPreference(PREF_DOCUMENT, "");
 				if (lastDocument.isBlank()) {
-					parent = getApp().getUserHome().toPath();
+					parent = getApp().getUserHome();
 					LOG.fine("initialDir() - last document location not set, using user home as parent: "+parent);
 				} else {
 					try {
@@ -430,7 +430,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 						LOG.fine("initialDir() - using last document location as parent: " + parent);
 					} catch (IllegalArgumentException e) {
 						LOG.log(Level.WARNING, "could not retrieve last document location", e);
-						parent = app.getUserHome().toPath();
+						parent = app.getUserHome();
 					}
 				}
 			}
@@ -439,9 +439,9 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 			LOG.log(Level.WARNING, "initialDir() - could not determine initial folder", e);
 		}
 
-		File  initialDir = parent!=null ? parent.toFile() :  null;
+		Path  initialDir = parent!=null ? parent :  null;
 
-		if (initialDir == null || !initialDir.isDirectory()) {
+		if (initialDir == null || !Files.isDirectory(initialDir)) {
 			LOG.log(Level.WARNING, "initialDir() - initial directory invalid, using user home instead: "+initialDir);
 			initialDir = getApp().getUserHome();
 		}
@@ -476,12 +476,12 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		LOG.fine(() -> "status: "+s);
 	}
 
-	public File getCurrentDir() {
+	public Path getCurrentDir() {
 		if (hasCurrentDocument() && getCurrentDocument().hasLocation()) {
 			Path parent = getCurrentDocument().getPath().getParent();
 			if (parent != null) {
 				try {
-					return parent.toFile();
+					return parent;
 				} catch (UnsupportedOperationException e) {
 					LOG.log(Level.WARNING, "cannot get current directory, using home");
 				}

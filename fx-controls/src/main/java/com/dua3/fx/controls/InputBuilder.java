@@ -5,7 +5,7 @@ import com.dua3.utility.options.Option;
 import javafx.scene.Node;
 import javafx.stage.FileChooser;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.function.Function;
@@ -291,6 +291,6 @@ public interface InputBuilder<B extends InputBuilder<B>> {
      * @return
      *  {@code this}
      */
-    B chooseFile(String id, String label, Supplier<File> dflt, FileDialogMode mode, FileChooser.ExtensionFilter filter);
+    B chooseFile(String id, String label, Supplier<Path> dflt, FileDialogMode mode, FileChooser.ExtensionFilter filter);
 
 }

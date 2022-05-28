@@ -28,7 +28,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.Node;
 import javafx.stage.FileChooser;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Objects;
@@ -198,8 +198,8 @@ implements InputBuilder<InputGridBuilder> {
 	}
 
 	@Override
-	public InputGridBuilder chooseFile(String id, String label, Supplier<File> dflt, FileDialogMode mode, FileChooser.ExtensionFilter filter) {
-		return add(id, label, File.class, dflt, new FileInput(mode, dflt, filter));
+	public InputGridBuilder chooseFile(String id, String label, Supplier<Path> dflt, FileDialogMode mode, FileChooser.ExtensionFilter filter) {
+		return add(id, label, Path.class, dflt, new FileInput(mode, dflt, filter));
 	}
 
 	/* (non-Javadoc)
