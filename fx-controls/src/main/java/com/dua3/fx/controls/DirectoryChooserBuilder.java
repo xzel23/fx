@@ -14,15 +14,15 @@
 
 package com.dua3.fx.controls;
 
+import javafx.stage.DirectoryChooser;
+import javafx.stage.Window;
+
 import java.io.File;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
+import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javafx.stage.DirectoryChooser;
-import javafx.stage.Window;
 
 /** 
  * Builder for directory chooser dialogs.
@@ -53,11 +53,18 @@ public class DirectoryChooserBuilder {
 
 	private DirectoryChooser build() {
 		DirectoryChooser chooser = new DirectoryChooser();
-		if (Files.isDirectory(initialDir)) {
-			LOG.fine("initial directory: "+initialDir);
-			chooser.setInitialDirectory(initialDir.toFile());
-		} else {
-			LOG.warning("ignoring invalid value for initial directory: "+initialDir);
+		if (initialDir!=null) {
+			// NOTE there's an inconsistency between Paths.get("").toFile() and new File(""), so convert Path to File
+			// before testing for directory and do not use Files.isDirectory(Path)
+			try {
+				File initialFile = initialDir.toFile();
+				if (initialFile.isDirectory()) {
+					LOG.fine("initial directory: " + initialFile);
+					chooser.setInitialDirectory(initialFile);
+				}
+			} catch (UnsupportedOperationException e) {
+				LOG.log(Level.WARNING, "could not set initial directory", e);
+			}
 		}
 		return chooser;
 	}

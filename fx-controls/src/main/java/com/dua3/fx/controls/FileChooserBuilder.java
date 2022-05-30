@@ -14,6 +14,10 @@
 
 package com.dua3.fx.controls;
 
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Window;
+
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -23,11 +27,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javafx.stage.FileChooser;
-import javafx.stage.FileChooser.ExtensionFilter;
-import javafx.stage.Window;
 
 /** 
  * Builder for file open/save dialogs.
@@ -92,14 +93,20 @@ public class FileChooserBuilder {
 			chooser.setSelectedExtensionFilter(selectedFilter);
 		}
 
-		if (initialDir!=null && Files.isDirectory(initialDir)) {
+		if (initialDir!=null) {
+			// NOTE there's an inconsistency between Paths.get("").toFile() and new File(""), so convert Path to File
+			// before testing for directory and do not use Files.isDirectory(Path)
 			try {
-				chooser.setInitialDirectory(initialDir.toFile());
-			} catch (IllegalArgumentException|SecurityException e) {
-				LOG.warning("could not set initial directory: "+initialDir);
+				File initialFile = initialDir.toFile();
+				if (initialFile.isDirectory()) {
+					LOG.fine("initial directory: " + initialFile);
+					chooser.setInitialDirectory(initialFile);
+				}
+			} catch (UnsupportedOperationException e) {
+				LOG.log(Level.WARNING, "could not set initial directory", e);
 			}
 		}
-		
+
 		chooser.setInitialFileName(initialFileName);
 		
 		return chooser;
