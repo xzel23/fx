@@ -39,6 +39,7 @@ public class PinBoard extends Control {
     }
     
     public void clear() {
+        PlatformHelper.checkApplicationThread();
         items.clear();
         areaProperty.set(new Rectangle2D(0,0,0,0));
     }
@@ -97,6 +98,8 @@ public class PinBoard extends Control {
     }
 
     public void pin(Item... itemsToPin) {
+        PlatformHelper.checkApplicationThread();
+
         if (itemsToPin.length==0) {
             return;
         }
@@ -210,36 +213,38 @@ class PinBoardSkin extends SkinBase<PinBoard>  {
     }
     
     private void updateNodes() {
-        PinBoard board = getSkinnable();
+        PlatformHelper.runAndWait( () -> {
+                    PinBoard board = getSkinnable();
 
-        Rectangle2D viewPort = getViewPort();
-        Rectangle2D boardArea = board.getArea();
-        
-        double dx = Math.max(0, viewPort.getWidth()-boardArea.getWidth())/2.0;
-        double dy = Math.max(0, viewPort.getHeight()-boardArea.getHeight())/2.0;
-        
-        pane.setMinWidth(boardArea.getWidth());
-        pane.setMinHeight(boardArea.getHeight());
+                    Rectangle2D viewPort = getViewPort();
+                    Rectangle2D boardArea = board.getArea();
 
-        // populate pane with nodes of visible items
-        List<Node> nodes = new ArrayList<>(board.items) // copy list to avoid concurrent modification
-                .stream()
-                .filter(item -> item.area().intersects(viewPort))
-                .map(item -> {
-                    Rectangle2D itemArea = item.area();
-                    Node node = item.nodeBuilder().get();
-                    node.setTranslateX(dx);
-                    node.setTranslateY(dy+itemArea.getMinY());
-                    return node;
-                })
-                .toList();
-        
-        PlatformHelper.runAndWait(() -> pane.getChildren().setAll(nodes));
-        
-        // immediately start next refresh if viewport changed during updated
-        if (!getViewPort().equals(viewPort)) {
-            refresh();
-        }
+                    double dx = Math.max(0, viewPort.getWidth() - boardArea.getWidth()) / 2.0;
+                    double dy = Math.max(0, viewPort.getHeight() - boardArea.getHeight()) / 2.0;
+
+                    pane.setMinWidth(boardArea.getWidth());
+                    pane.setMinHeight(boardArea.getHeight());
+
+                    // populate pane with nodes of visible items
+                    List<Node> nodes = new ArrayList<>(board.items) // copy list to avoid concurrent modification
+                            .stream()
+                            .filter(item -> item.area().intersects(viewPort))
+                            .map(item -> {
+                                Rectangle2D itemArea = item.area();
+                                Node node = item.nodeBuilder().get();
+                                node.setTranslateX(dx);
+                                node.setTranslateY(dy + itemArea.getMinY());
+                                return node;
+                            })
+                            .toList();
+
+                    pane.getChildren().setAll(nodes);
+
+                    // immediately start next refresh if viewport changed during updated
+                    if (!getViewPort().equals(viewPort)) {
+                        refresh();
+                    }
+        });
     }
 
     @Override

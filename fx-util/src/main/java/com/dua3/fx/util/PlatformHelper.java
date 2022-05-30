@@ -92,7 +92,7 @@ public final class PlatformHelper {
         }
     }
 
-    public static void checkThread() {
+    public static void checkApplicationThread() {
         LangUtil.check(Platform.isFxApplicationThread(), "not on FX Application Thread");
     }
 
