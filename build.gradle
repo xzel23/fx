@@ -35,7 +35,7 @@ subprojects {
 
     /////////////////////////////////////////////////////////////////////////////
     group = 'com.dua3.fx'
-    version = '0.17-BETA28-SNAPSHOT'
+    version = '0.17.0-RC2'
 
     ext.scm = 'https://gitlab.com/com.dua3/lib/fx.git'
     ext.repo = 'public'
@@ -172,8 +172,8 @@ subprojects {
                 def snapshotRepo = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
                 url = isReleaseVersion ? releaseRepo : snapshotRepo
                 credentials {
-                    username = System.properties.get('ossrhUsername')
-                    password = System.properties.get('ossrhPassword')
+                    username = "${ossrhUsername}"
+                    password = "${ossrhPassword}"
                 }
             }
         }
