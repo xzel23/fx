@@ -12,6 +12,7 @@ Changelog
  - register cleanup actions in FxApplication to execute when application stops
  - FxUtil.copyToClipboard() (supports texts, images, files)
  - Controls.toggleButton()
+ - FxUtil.createMenuItem()
 
 #### Version 0.16
 (unreleased)

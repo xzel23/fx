@@ -7,6 +7,8 @@ import com.dua3.utility.math.geometry.FillRule;
 import com.dua3.utility.text.FontDef;
 import javafx.geometry.Bounds;
 import javafx.geometry.Dimension2D;
+import javafx.scene.Node;
+import javafx.scene.control.MenuItem;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.paint.Color;
@@ -254,6 +256,56 @@ public final class FxUtil {
      */
     public static void copyToClipboard(Path path) {
         copyToClipboard(List.of(path));
+    }
+
+    /**
+     * Create new {@link MenuItem}.
+     * @param text the text to show
+     * @param graphic the graphic to show before the text
+     * @param enabled the enabled state
+     * @param action the action to perform when the menu item is invoked
+     * @return new menu item
+     */
+    public static MenuItem createMenuItem(String text, Node graphic, Runnable action, boolean enabled) {
+        MenuItem mi = new MenuItem(text, graphic);
+        mi.setDisable(!enabled);
+        mi.setOnAction(evt -> action.run());
+        return mi;
+    }
+
+    /**
+     * Create new {@link MenuItem}.
+     * @param text the text to show
+     * @param enabled the enabled state
+     * @param action the action to perform when the menu item is invoked
+     * @return new menu item
+     */
+    public static MenuItem createMenuItem(String text, Runnable action, boolean enabled) {
+        MenuItem mi = new MenuItem(text);
+        mi.setDisable(!enabled);
+        mi.setOnAction(evt -> action.run());
+        return mi;
+    }
+
+    /**
+     * Create new {@link MenuItem}.
+     * @param text the text to show
+     * @param graphic the graphic to show before the text
+     * @param action the action to perform when the menu item is invoked
+     * @return new menu item
+     */
+    public static MenuItem createMenuItem(String text, Node graphic, Runnable action) {
+        return createMenuItem(text, graphic, action, true);
+    }
+
+    /**
+     * Create new {@link MenuItem}.
+     * @param text the text to show
+     * @param action the action to perform when the menu item is invoked
+     * @return new menu item
+     */
+    public static MenuItem createMenuItem(String text, Runnable action) {
+        return createMenuItem(text, action, true);
     }
 
     private FxUtil() {}
