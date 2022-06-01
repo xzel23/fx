@@ -1,16 +1,21 @@
 package com.dua3.fx.util;
 
+import com.dua3.utility.data.DataUtil;
 import com.dua3.utility.data.Image;
 import com.dua3.utility.io.IoUtil;
 import com.dua3.utility.math.geometry.AffineTransformation2f;
 import com.dua3.utility.math.geometry.FillRule;
 import com.dua3.utility.text.FontDef;
+import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.geometry.Dimension2D;
 import javafx.scene.Node;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
@@ -28,6 +33,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
 /**
@@ -306,6 +314,52 @@ public final class FxUtil {
      */
     public static MenuItem createMenuItem(String text, Runnable action) {
         return createMenuItem(text, action, true);
+    }
+
+    /**
+     * Create an {@link EventHandler<DragEvent>} that accepts dragging files.
+     * @param modeGetter Function that determines the supported {@link TransferMode}s.
+     *                   Should return an empty list if the drag is not accepted.
+     * @return event handler
+     */
+    public static EventHandler<DragEvent> dragEventHandler(Function<? super List<Path>, ? extends Collection<TransferMode>> modeGetter) {
+        return event -> {
+            Dragboard db = event.getDragboard();
+            List<Path> files = DataUtil.convert(db.getFiles(), File::toPath);
+            TransferMode[] modes = modeGetter.apply(files).toArray(TransferMode[]::new);
+            event.acceptTransferModes(modes);
+            event.consume();
+        };
+    }
+
+    /**
+     * Create an {@link EventHandler<DragEvent>} that accepts paths.
+     * @param processor predicate that should process the drop event and return true on success.
+     * @return event handler
+     */
+    public static EventHandler<DragEvent> dropEventHandler(Predicate<? super List<Path>> processor) {
+        return event -> {
+            Dragboard db = event.getDragboard();
+            List<Path> paths = DataUtil.convert(db.getFiles(), File::toPath);
+            boolean success = processor.test(paths);
+            event.setDropCompleted(success);
+            event.consume();
+        };
+    }
+
+    /**
+     * Create an {@link EventHandler<DragEvent>} that accepts paths.
+     * @param processor consumer that processes the drop event
+     * @return event handler
+     */
+    public static EventHandler<DragEvent> dropEventHandler(Consumer<? super List<Path>> processor) {
+        return event -> {
+            Dragboard db = event.getDragboard();
+            List<Path> paths = DataUtil.convert(db.getFiles(), File::toPath);
+            processor.accept(paths);
+            event.setDropCompleted(true);
+            event.consume();
+        };
     }
 
     private FxUtil() {}
