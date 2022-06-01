@@ -334,21 +334,6 @@ public final class FxUtil {
 
     /**
      * Create an {@link EventHandler<DragEvent>} that accepts paths.
-     * @param processor predicate that should process the drop event and return true on success.
-     * @return event handler
-     */
-    public static EventHandler<DragEvent> dropEventHandler(Predicate<? super List<Path>> processor) {
-        return event -> {
-            Dragboard db = event.getDragboard();
-            List<Path> paths = DataUtil.convert(db.getFiles(), File::toPath);
-            boolean success = processor.test(paths);
-            event.setDropCompleted(success);
-            event.consume();
-        };
-    }
-
-    /**
-     * Create an {@link EventHandler<DragEvent>} that accepts paths.
      * @param processor consumer that processes the drop event
      * @return event handler
      */
