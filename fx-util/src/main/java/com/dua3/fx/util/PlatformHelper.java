@@ -85,11 +85,7 @@ public final class PlatformHelper {
     public static void runLater(Runnable action) {
         Objects.requireNonNull(action);
 
-        if (Platform.isFxApplicationThread()) {
-            action.run();
-        } else {
-            Platform.runLater(action);
-        }
+        Platform.runLater(action);
     }
 
     public static void checkApplicationThread() {
