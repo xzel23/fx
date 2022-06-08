@@ -56,7 +56,7 @@ public class PinBoard extends Control {
         }
     }
     
-    record Item(Rectangle2D area, Supplier<Node> nodeBuilder) {}
+    public record Item(Rectangle2D area, Supplier<Node> nodeBuilder) {}
     
     private final ObjectProperty<Rectangle2D> areaProperty = new SimpleObjectProperty<>(new Rectangle2D(0,0,0,0));
     
@@ -213,7 +213,7 @@ class PinBoardSkin extends SkinBase<PinBoard>  {
     }
     
     private void updateNodes() {
-        PlatformHelper.runAndWait( () -> {
+        PlatformHelper.runLater( () -> {
                     PinBoard board = getSkinnable();
 
                     Rectangle2D viewPort = getViewPort();
