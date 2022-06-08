@@ -175,7 +175,7 @@ public final class FxDbUtil {
         LOG.finer(() -> "read "+newItems.size()+" rows of data");
 
         LOG.finer("setting rows ...");
-        PlatformHelper.runAndWait(() -> {
+        PlatformHelper.runLater(() -> {
         	columns.setAll(newColumns);
         	items.setAll(newItems);
         });

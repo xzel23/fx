@@ -61,6 +61,7 @@ public final class PlatformHelper {
 
     /**
      * Run task on the JavaFX application thread and wait for completion.
+     * Consider using {@link #runLater(Runnable)} to avoid executing tasks out of order.
      *
      * @param  action
      *                              the task to run
