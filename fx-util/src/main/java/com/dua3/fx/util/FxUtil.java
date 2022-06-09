@@ -9,6 +9,7 @@ import com.dua3.utility.text.FontDef;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.geometry.Dimension2D;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.Clipboard;
@@ -345,6 +346,21 @@ public final class FxUtil {
             event.setDropCompleted(true);
             event.consume();
         };
+    }
+
+    /**
+     * Create union of two rectangles. The union here is defined as the rectangle r of minimum size that contains
+     * both rectangles r1 and r2.
+     * @param r1 first rectangle
+     * @param r2 second rectangle
+     * @return minimal rectangle containing both r1 and r2
+     */
+    public static Rectangle2D union(Rectangle2D r1, Rectangle2D r2) {
+        var xMin = Math.min(r1.getMinX(), r2.getMinX());
+        var yMin = Math.min(r1.getMinY(), r2.getMinY());
+        var xMax = Math.max(r1.getMaxX(), r2.getMaxX());
+        var yMax = Math.max(r1.getMaxY(), r2.getMaxY());
+        return new Rectangle2D(xMin, yMin, xMax-xMin, yMax-yMin);
     }
 
     private FxUtil() {}

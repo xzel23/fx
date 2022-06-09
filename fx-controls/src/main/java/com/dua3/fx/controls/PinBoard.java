@@ -6,6 +6,7 @@
 package com.dua3.fx.controls;
 
 import com.dua3.fx.util.FxRefresh;
+import com.dua3.fx.util.FxUtil;
 import com.dua3.fx.util.PlatformHelper;
 import com.dua3.utility.data.Pair;
 import com.dua3.utility.lang.LangUtil;
@@ -25,10 +26,15 @@ import javafx.scene.control.Skin;
 import javafx.scene.control.SkinBase;
 import javafx.scene.layout.AnchorPane;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Supplier;
+import java.util.logging.Logger;
 
 /**
  * A JavaFX component where items can be pinned at a position.
@@ -56,10 +62,10 @@ public class PinBoard extends Control {
         }
     }
     
-    public record Item(Rectangle2D area, Supplier<Node> nodeBuilder) {}
+    public record Item(String name, Rectangle2D area, Supplier<Node> nodeBuilder) {}
     
     private final ObjectProperty<Rectangle2D> areaProperty = new SimpleObjectProperty<>(new Rectangle2D(0,0,0,0));
-    
+
     final ObservableList<Item> items = FXCollections.observableArrayList();
     
     @Override
@@ -70,7 +76,7 @@ public class PinBoard extends Control {
     public ReadOnlyObjectProperty<Rectangle2D> areaProperty() {
         return areaProperty;
     }
-    
+
     public ObservableList<Item> getItems() {
         return FXCollections.unmodifiableObservableList(items);
     }
@@ -97,68 +103,39 @@ public class PinBoard extends Control {
         setScrollPosition(scrollPosition.first(), scrollPosition.second());
     }
 
-    public void pin(Item... itemsToPin) {
+    public void pin(Item item) {
+        pin(Collections.singleton(item));
+    }
+
+    public void pin(Collection<Item> itemsToPin) {
         PlatformHelper.checkApplicationThread();
 
-        if (itemsToPin.length==0) {
-            return;
-        }
-
-        Rectangle2D boardArea = getArea();
-        
-        Rectangle2D area = items.isEmpty() ? itemsToPin[0].area() : boardArea;
-        double minX = area.getMinX();
-        double maxX = area.getMaxX();
-        double minY = area.getMinY();
-        double maxY = area.getMaxY();
-
-        for (var item: itemsToPin) {
-            Rectangle2D itemArea = item.area();
-            minX = Math.min(minX, itemArea.getMinX());    
-            maxX = Math.max(maxX, itemArea.getMaxX());    
-            minY = Math.min(minY, itemArea.getMinY());    
-            maxY = Math.max(maxY, itemArea.getMaxY());    
-        }
-        
-        Rectangle2D newArea = new Rectangle2D(minX, minY, maxX-minX, maxY-minY);
-
-        if (!newArea.equals(boardArea)) {
-            areaProperty.set(newArea);
-            setWidth(newArea.getWidth());
-            setHeight(newArea.getHeight());
-        }
-
-        items.addAll(Arrays.asList(itemsToPin));
-    }
-    
-    /**
-     * Add items at the bottom, centered horizontally.
-     */
-    @SafeVarargs
-    public final void pinBottom(Pair<Supplier<Node>, Dimension2D>... itemsToPin) {
-        pinBottom(Arrays.asList(itemsToPin));
-    }
-    
-    public void pinBottom(List<Pair<Supplier<Node>, Dimension2D>> itemsToPin) {
         if (itemsToPin.isEmpty()) {
             return;
         }
 
+        this.items.addAll(itemsToPin);
+
+        itemsToPin.stream()
+                .map(Item::area)
+                .reduce(FxUtil::union)
+                .map(r -> FxUtil.union(this.getArea(), r))
+                .ifPresent( r -> {
+                    if (!r.equals(getArea())) {
+                        areaProperty.set(r);
+                    }
+                });
+    }
+
+    /**
+     * Add item at the bottom, centered horizontally.
+     */
+    public void pinBottom(String name, Supplier<Node> nodeSupplier, Dimension2D dimension) {
         Rectangle2D boardArea = getArea();
         double xCenter = (boardArea.getMaxX()+boardArea.getMinX())/2.0;
         double y = boardArea.getMaxY();
-        
-        Item[] items = new Item[itemsToPin.size()];
-        for (int i = 0; i < itemsToPin.size(); i++) {
-            Pair<Supplier<Node>, Dimension2D> iter = itemsToPin.get(i);
-            Supplier<Node> nodeBuilder = iter.first();
-            Dimension2D size = iter.second();
-            Rectangle2D area = new Rectangle2D(xCenter - size.getWidth() / 2, y, size.getWidth(), size.getHeight());
-            items[i] = new Item(area, nodeBuilder);
-            y += size.getHeight();
-        }
-        
-        pin(items);
+        Rectangle2D area = new Rectangle2D(xCenter - dimension.getWidth() / 2, y, dimension.getWidth(), dimension.getHeight());
+        pin(new Item(name, area, nodeSupplier));
     }
     
     @Override
@@ -172,6 +149,7 @@ public class PinBoard extends Control {
 
 class PinBoardSkin extends SkinBase<PinBoard>  {
 
+    private static final Logger LOG = Logger.getLogger(PinBoardSkin.class.getName());
     private final FxRefresh refresher;
     private final AnchorPane pane = new AnchorPane();
     private final ScrollPane scrollPane = new ScrollPane(pane);
@@ -179,7 +157,11 @@ class PinBoardSkin extends SkinBase<PinBoard>  {
     PinBoardSkin(PinBoard pinBoard) {
         super(pinBoard);
         
-        this.refresher = FxRefresh.create(LangUtil.defaultToString(this), this::updateNodes, pinBoard);
+        this.refresher = FxRefresh.create(
+                LangUtil.defaultToString(this),
+                () -> PlatformHelper.runLater(this::updateNodes),
+                pinBoard
+        );
         
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
@@ -198,6 +180,7 @@ class PinBoardSkin extends SkinBase<PinBoard>  {
         scrollPane.vvalueProperty().addListener((v) -> refresh());
         scrollPane.widthProperty().addListener((e) -> refresh());
         scrollPane.heightProperty().addListener((e) -> refresh());
+        scrollPane.viewportBoundsProperty().addListener((v,o,n) -> refresh());
         
         // enable/disable refresher
         refresher.setActive(true);
@@ -213,38 +196,35 @@ class PinBoardSkin extends SkinBase<PinBoard>  {
     }
     
     private void updateNodes() {
-        PlatformHelper.runLater( () -> {
-                    PinBoard board = getSkinnable();
+        LOG.fine("updatreNodes()");
 
-                    Rectangle2D viewPort = getViewPort();
-                    Rectangle2D boardArea = board.getArea();
+        PlatformHelper.checkApplicationThread();
 
-                    double dx = Math.max(0, viewPort.getWidth() - boardArea.getWidth()) / 2.0;
-                    double dy = Math.max(0, viewPort.getHeight() - boardArea.getHeight()) / 2.0;
+        PinBoard board = getSkinnable();
 
-                    pane.setMinWidth(boardArea.getWidth());
-                    pane.setMinHeight(boardArea.getHeight());
+        Rectangle2D viewPort = getViewPort();
+        Rectangle2D boardArea = board.getArea();
 
-                    // populate pane with nodes of visible items
-                    List<Node> nodes = new ArrayList<>(board.items) // copy list to avoid concurrent modification
-                            .stream()
-                            .filter(item -> item.area().intersects(viewPort))
-                            .map(item -> {
-                                Rectangle2D itemArea = item.area();
-                                Node node = item.nodeBuilder().get();
-                                node.setTranslateX(dx);
-                                node.setTranslateY(dy + itemArea.getMinY());
-                                return node;
-                            })
-                            .toList();
+        double dx = Math.max(0, viewPort.getWidth() - boardArea.getWidth()) / 2.0;
+        double dy = Math.max(0, viewPort.getHeight() - boardArea.getHeight()) / 2.0;
 
-                    pane.getChildren().setAll(nodes);
+        // populate pane with nodes of visible items
+        List<Node> nodes = new ArrayList<>(board.items) // copy list to avoid concurrent modification
+                .stream()
+                .filter(item -> item.area().intersects(viewPort))
+                .map(item -> {
+                    LOG.finer(() -> "item is visible: "+item.name());
+                    Rectangle2D itemArea = item.area();
+                    Node node = item.nodeBuilder().get();
+                    node.setTranslateX(dx);
+                    node.setTranslateY(dy + itemArea.getMinY());
+                    return node;
+                })
+                .toList();
 
-                    // immediately start next refresh if viewport changed during updated
-                    if (!getViewPort().equals(viewPort)) {
-                        refresh();
-                    }
-        });
+        pane.setMinWidth(boardArea.getWidth());
+        pane.setMinHeight(boardArea.getHeight());
+        pane.getChildren().setAll(nodes);
     }
 
     @Override
