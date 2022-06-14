@@ -439,12 +439,13 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 			LOG.log(Level.WARNING, "initialDir() - could not determine initial folder", e);
 		}
 
-		Path  initialDir = parent!=null ? parent :  null;
+		Path  initialDir = parent;
 
 		if (initialDir == null || !Files.isDirectory(initialDir)) {
 			LOG.log(Level.WARNING, "initialDir() - initial directory invalid, using user home instead: "+initialDir);
 			initialDir = getApp().getUserHome();
 		}
+
 		return initialDir;
 	}
 
