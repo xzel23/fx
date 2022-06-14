@@ -127,8 +127,37 @@ public class PinBoard extends Control {
                 });
     }
 
+    public record PositionInItem(Item item, double x, double y) {}
+
+    /**
+     * Get Item at point and coordinates trransformed to item coordinates.
+     * @param x x-coordinate (relative to viewport)
+     * @param y y-coordinate (relative to viewport)
+     * @return Optional containing the item and the transformed coordinates
+     */
+    public Optional<PositionInItem> getPositionInItem(double x, double y) {
+        if (getSkin() instanceof PinBoardSkin skin) {
+            return skin.getPositionInItem(x,y);
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    /**
+     * Get Item at point.
+     * @param x x-coordinate (relative to viewport)
+     * @param y y-coordinate (relative to viewport)
+     * @return Optional containing the item at (x,y)
+     */
+    public Optional<Item> getItemAt(double x, double y) {
+        return getPositionInItem(x, y).map(PositionInItem::item);
+    }
+
     /**
      * Add item at the bottom, centered horizontally.
+     * @param name item name
+     * @param nodeSupplier supplier (factory) for item node
+     * @param dimension item dimensiuon
      */
     public void pinBottom(String name, Supplier<Node> nodeSupplier, Dimension2D dimension) {
         Rectangle2D boardArea = getArea();
@@ -240,5 +269,26 @@ class PinBoardSkin extends SkinBase<PinBoard>  {
     public void setScrollPosition(double hValue, double vValue) {
         scrollPane.setHvalue(hValue);
         scrollPane.setVvalue(vValue);
+    }
+
+    /**
+     * Get Item at point and coordinates relative to item.
+     * @param xViewport x-coordinate (relative to board)
+     * @param yViewport y-coordinate (relative to board)
+     * @return Optional containing the item at (x,y) and the coordinates relative to the item area
+     */
+    public Optional<PinBoard.PositionInItem> getPositionInItem(double xViewport, double yViewport) {
+        Rectangle2D vp = getViewPort();
+        double x = xViewport + vp.getMinX();
+        double y = yViewport + vp.getMinY();
+        Rectangle2D b = getSkinnable().getArea();
+        List<PinBoard.Item> items = new ArrayList<>(getSkinnable().getItems());
+        for (PinBoard.Item item: items) {
+            Rectangle2D a = item.area();
+            if (a.contains(x, y)) {
+                return Optional.of(new PinBoard.PositionInItem(item, x+b.getMinX()-a.getMinX(), y+b.getMinY()-a.getMinY()));
+            }
+        }
+        return Optional.empty();
     }
 }
