@@ -28,7 +28,6 @@ dependencies {
     implementation project(':fx-util')
     implementation project(':fx-controls')
     implementation project(':fx-icons')
-    implementation project(':fx-editor')
     runtimeOnly project(':fx-icons:fx-icons-ikonli')
     runtimeOnly "org.kordamp.ikonli:ikonli-fontawesome-pack:${ikonli_version}"
 }

@@ -6,6 +6,5 @@ include 'fx-util',
         'fx-controls',
         'fx-icons', 'fx-icons:fx-icons-ikonli',
         'fx-web',
-        'fx-editor',
         // samples and apps
         'fx-samples'
