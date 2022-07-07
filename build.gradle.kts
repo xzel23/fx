@@ -30,9 +30,11 @@ plugins {
 /////////////////////////////////////////////////////////////////////////////
 object meta {
     val group           = "com.dua3.fx"
-    val version         = "0.17.0-RC5-SNAPSHOT"
+    val version         = "0.17.0-RC5"
     val scm             = "https://gitlab.com/com.dua3/lib/fx.git"
     val repo            = "public"
+    val licenseName     = "The Apache Software License, Version 2.0"
+    val licenseUrl      = "https://www.apache.org/licenses/LICENSE-2.0.txt"
     val developerId     = "axh"
     val developerName   = "Axel Howind"
     val developerEmail  = "axh@dua3.com"
@@ -149,8 +151,8 @@ subprojects {
 
                     licenses {
                         license {
-                            name.set("The Apache Software License, Version 2.0")
-                            url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
+                            name.set(meta.licenseName)
+                            url.set(meta.licenseUrl)
                         }
                     }
                     developers {
