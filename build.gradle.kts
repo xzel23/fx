@@ -22,7 +22,7 @@ plugins {
     id("idea")
     id("com.github.ben-manes.versions") version "0.42.0"
     id("com.adarshr.test-logger") version "3.2.0"
-    id("com.github.spotbugs") version "5.0.8"
+    id("com.github.spotbugs") version "5.0.9"
     id("com.dua3.cabe") version "1.0.0-RC4"
     id("org.openjfx.javafxplugin") version "0.0.13"
 }
@@ -44,7 +44,7 @@ object meta {
 val isReleaseVersion = !meta.version.endsWith("SNAPSHOT")
 
 val javafxVersion       by extra { "18" }
-val dua3UtilityVersion  by extra { "10.0.0-RC3" }
+val dua3UtilityVersion  by extra { "10.0.0-RC4" }
 val ikonliVersion       by extra { "12.3.1" }
 
 subprojects {
