@@ -12,8 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-description = 'JavaFX utilities (icons)'
+description = "JavaFX utilities (application)"
+
+val dua3UtilityVersion: String by rootProject
 
 javafx {
-    modules = [ 'javafx.controls', 'javafx.graphics' ]
+    modules = listOf( "javafx.base", "javafx.controls", "javafx.fxml" )
+}
+
+dependencies {
+    api(project(":fx-util"))
+    api(project(":fx-controls"))
+
+    implementation(group = "com.dua3.utility", name = "utility", version = dua3UtilityVersion)
 }

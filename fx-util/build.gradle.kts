@@ -1,4 +1,4 @@
-// Copyright 2019 Axel Howind
+// Copyright 2019, 2022 Axel Howind
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-description = 'JavaFX utilities (web)'
+description = "JavaFX utilities (core)"
 
 javafx {
-    modules = [ 'javafx.web' ]
+    modules = listOf( "javafx.controls", "javafx.fxml" )
 }
 
 dependencies {
-    implementation project(':fx-controls')
+    implementation(group = "com.dua3.utility", name = "utility", version = rootProject.extra["dua3UtilityVersion"] as String)
 }

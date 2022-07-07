@@ -12,15 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-description = 'JavaFX utilities (application)'
+description = "JavaFX utilities (icons-ikonli)"
 
 javafx {
-    modules = [ 'javafx.base', 'javafx.controls', 'javafx.fxml' ]
+    modules = listOf( "javafx.graphics" )
 }
 
 dependencies {
-    api project(':fx-util')
-    api project(':fx-controls')
+    api(project(":fx-icons"))
 
-    implementation "com.dua3.utility:utility:${dua3_utility_version}"
+    implementation(group = "org.kordamp.ikonli", name = "ikonli-javafx", version = rootProject.extra["ikonliVersion"] as String)
 }
