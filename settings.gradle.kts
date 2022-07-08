@@ -1,4 +1,4 @@
-rootProject.name = "fx"
+rootProject.name = "dua3-fx"
 
 include("fx-util")
 include("fx-util-db")
