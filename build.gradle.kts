@@ -16,7 +16,7 @@ import java.net.URI;
 import com.adarshr.gradle.testlogger.theme.ThemeType;
 
 plugins {
-    id("java")
+    id("java-library")
     id("maven-publish")
     id("signing")
     id("idea")
