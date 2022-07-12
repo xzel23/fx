@@ -7,7 +7,7 @@ module  com.dua3.fx.icons.ikonli {
     requires org.kordamp.ikonli.core;
     requires org.kordamp.ikonli.javafx;
 
-    requires  com.dua3.fx.icons;
+    requires transitive com.dua3.fx.icons;
     requires javafx.graphics;
 
     uses org.kordamp.ikonli.IkonHandler;
