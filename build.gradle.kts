@@ -51,6 +51,8 @@ val ikonliVersion       by extra { "12.3.1" }
 
 subprojects {
 
+    project.setVersion(meta.version)
+
     apply(plugin = "java-library")
     apply(plugin = "maven-publish")
     apply(plugin = "signing")
@@ -119,6 +121,7 @@ subprojects {
 
     tasks.compileJava {
         options.encoding = "UTF-8"
+        options.javaModuleVersion.set(provider { project.version as String })
     }
 
     tasks.compileTestJava {
