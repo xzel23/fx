@@ -45,8 +45,8 @@ object meta {
 
 val isReleaseVersion = !meta.version.endsWith("SNAPSHOT")
 
-val javafxVersion       by extra { "18" }
-val dua3UtilityVersion  by extra { "10.0.0-RC5" }
+val javafxVersion       by extra { "18.0.2" }
+val dua3UtilityVersion  by extra { "10.0.0-RC6" }
 val ikonliVersion       by extra { "12.3.1" }
 
 subprojects {
