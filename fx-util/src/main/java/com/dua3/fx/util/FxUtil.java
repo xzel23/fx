@@ -92,7 +92,7 @@ public final class FxUtil {
         int g = (argb >>  8) & 0xff;
         int b = (argb      ) & 0xff;
 
-        return Color.color(r, g, b, a);
+        return Color.rgb(r, g, b, a/255.0);
     }
 
     /**
@@ -102,10 +102,10 @@ public final class FxUtil {
      */
     public static com.dua3.utility.data.Color convert(Color color) {
         return com.dua3.utility.data.Color.rgb(
-                (int) Math.round(color.getRed()/255.0),
-                (int) Math.round(color.getGreen()/255.0),
-                (int) Math.round(color.getBlue()/255.0),
-                (int) Math.round(color.getOpacity()/255.0)
+                (int) Math.round(color.getRed()*255.0),
+                (int) Math.round(color.getGreen()*255.0),
+                (int) Math.round(color.getBlue()*255.0),
+                (int) Math.round(color.getOpacity()*255.0)
         );
     }
 
