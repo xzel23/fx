@@ -23,14 +23,14 @@ plugins {
     id("com.github.ben-manes.versions") version "0.42.0"
     id("com.adarshr.test-logger") version "3.2.0"
     id("com.github.spotbugs") version "5.0.9"
-    id("com.dua3.cabe") version "1.0.0-RC4"
+    id("com.dua3.cabe") version "1.0.0"
     id("org.openjfx.javafxplugin") version "0.0.13"
 }
 
 /////////////////////////////////////////////////////////////////////////////
 object meta {
     val group           = "com.dua3.fx"
-    val version         = "0.17.0-RC6.1"
+    val version         = "0.17.0-RC8"
     val scm             = "https://gitlab.com/com.dua3/lib/fx.git"
     val repo            = "public"
     val licenseName     = "The Apache Software License, Version 2.0"
@@ -46,7 +46,7 @@ object meta {
 val isReleaseVersion = !meta.version.endsWith("SNAPSHOT")
 
 val javafxVersion       by extra { "18.0.2" }
-val dua3UtilityVersion  by extra { "10.0.0-RC6" }
+val dua3UtilityVersion  by extra { "10.0.0-RC8" }
 val ikonliVersion       by extra { "12.3.1" }
 
 subprojects {
@@ -64,9 +64,9 @@ subprojects {
     apply(plugin = "org.openjfx.javafxplugin")
 
     java {
-        toolchain {
-            languageVersion.set(JavaLanguageVersion.of(17))
-        }
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+
         withJavadocJar()
         withSourcesJar()
     }
@@ -96,11 +96,11 @@ subprojects {
     // dependencies
     dependencies {
         // Cabe (source annotations)
-        compileOnly(group = "com.dua3.cabe", name = "cabe-annotations", version = "1.0.0-RC4")
+        compileOnly(group = "com.dua3.cabe", name = "cabe-annotations", version = "1.0.0")
 
         // JUnit
-        testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
-        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
+        testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
+        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0")
     }
 
     idea {
