@@ -30,7 +30,7 @@ plugins {
 /////////////////////////////////////////////////////////////////////////////
 object meta {
     val group           = "com.dua3.fx"
-    val version         = "0.17.0-RC8"
+    val version         = "0.17.0-RC9-SNAPSHOT"
     val scm             = "https://gitlab.com/com.dua3/lib/fx.git"
     val repo            = "public"
     val licenseName     = "The Apache Software License, Version 2.0"
