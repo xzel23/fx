@@ -44,64 +44,79 @@ public final class FxRefresh {
     private final Runnable task;
 
     /**
-     * Create new instance.
+     * Create new instance. The initial state is active. 
      * @param name the name for the instance
      * @param task the task to call when refreshing
      * @return new instance
      */
     public static FxRefresh create(String name, Runnable task) {
-        return new FxRefresh(name, task);
+        return create(name, task, true);
+    }
+
+    /**
+     * Create new instance.
+     * @param name the name for the instance
+     * @param task the task to call when refreshing
+     * @param active the initial active state
+     * @return new instance
+     */
+    public static FxRefresh create(String name, Runnable task, boolean active) {
+        FxRefresh r = new FxRefresh(name, task);
+        r.setActive(active);
+        return r;
     }
 
     /**
      * Create a refresher instance for a JavaFX {@link Node}.
-     * The refresher will automatically stop updating when the node is hidden or removed from the scene graph.
+     * The refresher will prevent updates when the node is hidden. The refresher is stopped when the node is
+     * removed from the scene graph. The initial state is active.
      * @param name the refresher name
      * @param task the task to run on refresh
      * @param node the node associated with this refresher
      * @return new instance
      */
     public static FxRefresh create(String name, Runnable task, Node node) {
-        FxRefresh refresher = new FxRefresh(name, task);
-
-        // prevent redraw of hidden component
-        node.visibleProperty().addListener((v_, o_, n_) -> refresher.setActive(n_));
+        return create(name, task, node, true);    
+    }
+    
+    /**
+     * Create a refresher instance for a JavaFX {@link Node}.
+     * The refresher will prevent updates when the node is hidden. The refresher is stopped when the node is
+     * removed from the scene graph.
+     * @param name the refresher name
+     * @param task the task to run on refresh
+     * @param node the node associated with this refresher
+     * @param active the initial active state
+     * @return new instance
+     */
+    public static FxRefresh create(String name, Runnable task, Node node, boolean active) {
+        FxRefresh r = new FxRefresh(name, () -> {
+            if (!node.isVisible()) {
+                LOG.fine("node is not visible, update skipped");
+                return;
+            }
+            
+            task.run();
+        });
 
         // stop update thread when node is removed from scene graph
-        ChangeListener<Parent> parentChangeListener = (v, o, n) -> {
-            if (n != null) {
-                refresher.setActive(true);
-            } else {
-                refresher.stop();
+        node.parentProperty().addListener(  (v, o, n) -> {
+            if (n == null) {
+                LOG.fine("node was removed from parent, stopping refresher");
+                r.stop();
             }
-        };
-        node.parentProperty().addListener(parentChangeListener);
-
-        // avoid updates when control is not visible
-        ChangeListener<Boolean> changeListener = (_v, o_, n_) -> {
-            if (n_) {
-                refresher.setActive(n_);
-            } else {
-                refresher.stop();
-            }
-        };
+        } );
 
         node.sceneProperty().addListener( (v,o,n) -> {
             if (n==null) {
-                refresher.stop();
-            } else {
-                n.windowProperty().addListener((v_,o_,n_) -> {
-                    if (n_!=null) {
-                        n_.showingProperty().addListener(changeListener);
-                        refresher.setActive(n_.isShowing());
-                    } else {
-                        refresher.stop();
-                    }
-                });
+                LOG.fine("node was removed from scene graph, stopping refresher");
+                r.stop();
             }
-        });
+        } );
 
-        return refresher;
+        r.setActive(active);
+        
+        return r;
     }
 
     /**
