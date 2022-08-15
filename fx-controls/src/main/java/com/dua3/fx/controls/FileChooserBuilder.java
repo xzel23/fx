@@ -23,6 +23,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -177,7 +178,7 @@ public class FileChooserBuilder {
 	 * @return
 	 *  this instance
 	 */
-	public FileChooserBuilder filter(List<ExtensionFilter> filters) {
+	public FileChooserBuilder filter(Collection<ExtensionFilter> filters) {
 		this.filters = new ArrayList<>(filters);
 		return this;
 	}
@@ -193,7 +194,7 @@ public class FileChooserBuilder {
 	 *  this instance
 	 */
 	public FileChooserBuilder filter(ExtensionFilter... filters) {
-		this.filters = new ArrayList<>(Arrays.asList(filters));
+		this.filters = new ArrayList<>(List.of(filters)); // list must be mutable!
 		return this;
 	}
 

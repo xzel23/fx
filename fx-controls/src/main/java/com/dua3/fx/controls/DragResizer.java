@@ -4,8 +4,8 @@ import javafx.scene.Cursor;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
 
-import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -35,7 +35,7 @@ final class DragResizer {
         this.region = Objects.requireNonNull(region);
         this.resizeMargin = resizeMargin;
         this.borders = EnumSet.noneOf(Border.class);
-        this.borders.addAll(Arrays.asList(borders));
+        this.borders.addAll(List.of(borders));
     }
 
     /**
