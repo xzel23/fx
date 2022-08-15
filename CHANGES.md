@@ -1,7 +1,10 @@
 Changelog
 =========
 
-#### Version 0.17 (not released yet)
+#### Version 0.17.1 (to be released)
+ - small fixes and improvements
+
+#### Version 0.17.0
  - requires Java 17!
  - JavaFX 18
  - remove FxSettings
