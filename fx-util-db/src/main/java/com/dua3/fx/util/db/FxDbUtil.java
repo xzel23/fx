@@ -14,23 +14,8 @@
 
 package com.dua3.fx.util.db;
 
-import java.sql.Clob;
-import java.sql.JDBCType;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.function.Function;
-import java.util.logging.Level;
-
-
 import com.dua3.fx.util.PlatformHelper;
 import com.dua3.utility.db.DbUtil;
-
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
@@ -43,6 +28,18 @@ import javafx.scene.control.TableView;
 import javafx.util.Callback;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.sql.Clob;
+import java.sql.JDBCType;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.function.Function;
 
 public final class FxDbUtil {
 

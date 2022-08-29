@@ -43,7 +43,7 @@ public final class WebViews {
 
     public static void setConfirmationHandler(WebEngine engine) {
         engine.setConfirmHandler(s -> Dialogs.confirmation(null).header("%s", s).buttons(ButtonType.YES, ButtonType.NO)
-                .defaultButton(ButtonType.NO).showAndWait().filter(b -> b.equals(ButtonType.YES)).isPresent());
+                .defaultButton(ButtonType.NO).showAndWait().filter(b -> b == ButtonType.YES).isPresent());
     }
 
     public static void setAlertHandler(WebEngine engine) {

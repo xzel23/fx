@@ -45,20 +45,11 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.concurrent.ConcurrentHashMap;
-
-
-
-
-
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxController<A, C, ?>> 
         extends Application  {
