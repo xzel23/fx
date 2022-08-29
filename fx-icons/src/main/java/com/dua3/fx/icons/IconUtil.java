@@ -7,15 +7,16 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Node;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.ServiceLoader;
-import java.util.logging.Logger;
 
 public final class IconUtil {
-    private static final Logger LOG = Logger.getLogger(IconUtil.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(IconUtil.class);
 
     private IconUtil() {
     }
@@ -24,7 +25,7 @@ public final class IconUtil {
         Class<IconProvider> iconProviderClass = IconProvider.class;
         return ServiceLoader.load(iconProviderClass)
                 .stream()
-                .peek(provider -> LOG.fine(() -> "found " + iconProviderClass.getName() + " implementation: " + provider.getClass().getName()))
+                .peek(provider -> LOG.debug("found {} implementation: {}", iconProviderClass.getName(), provider.getClass().getName()))
                 .map(provider -> provider.get().forName(name))
                 .filter(Objects::nonNull)
                 .findFirst();

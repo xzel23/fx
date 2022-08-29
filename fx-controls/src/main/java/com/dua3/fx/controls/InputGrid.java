@@ -13,6 +13,8 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,12 +24,12 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.function.Supplier;
-import java.util.logging.Logger;
+
 
 public class InputGrid extends GridPane {
 
     /** Logger */
-    protected static final Logger LOG = Logger.getLogger(InputGrid.class.getName());
+    protected static final Logger LOG = LoggerFactory.getLogger(InputGrid.class);
 
 	private static final String MARKER_INITIAL = "";
 	private static final String MARKER_ERROR = "\u26A0";

@@ -2,6 +2,8 @@ package com.dua3.fx.util;
 
 import com.dua3.utility.data.Pair;
 import com.dua3.utility.io.IoUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -12,8 +14,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Predicate;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 import java.util.stream.Collectors;
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
  */
 public class RecentlyUsedDocumentsList {
     
-    private static final Logger LOG = Logger.getLogger(RecentlyUsedDocumentsList.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(RecentlyUsedDocumentsList.class);
     
     private final int capacity;
     private final Map<URI, String> items = new LinkedHashMap<>();
@@ -132,7 +132,7 @@ public class RecentlyUsedDocumentsList {
             }
             prefs.flush();
         } catch (BackingStoreException e) {
-            LOG.log(Level.WARNING, "error storing preferences", e);
+            LOG.warn("error storing preferences", e);
         }         
     }
 
@@ -155,7 +155,7 @@ public class RecentlyUsedDocumentsList {
 
             shrinkToFit();
         } catch (BackingStoreException e) {
-            LOG.log(Level.WARNING, "error loading preferences", e);
+            LOG.warn("error loading preferences", e);
         }
     }
 

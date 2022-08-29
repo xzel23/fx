@@ -17,18 +17,17 @@ package com.dua3.fx.controls;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Window;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /** 
  * Builder for file open/save dialogs.
@@ -36,7 +35,7 @@ import java.util.logging.Logger;
  * Provides a fluent interface to create file dialogs. 
  */
 public class FileChooserBuilder {
-	private static final Logger LOG = Logger.getLogger(FileChooserBuilder.class.getName());
+	private static final Logger LOG = LoggerFactory.getLogger(FileChooserBuilder.class);
 
 	public static final Path USER_HOME = Paths.get(System.getProperty("user.home"));
 
@@ -99,11 +98,11 @@ public class FileChooserBuilder {
 			try {
 				File initialFile = initialDir.toFile();
 				if (initialFile.isDirectory()) {
-					LOG.fine("initial directory: " + initialFile);
+					LOG.debug("initial directory: {}", initialFile);
 					chooser.setInitialDirectory(initialFile);
 				}
 			} catch (UnsupportedOperationException e) {
-				LOG.log(Level.WARNING, "could not set initial directory", e);
+				LOG.warn("could not set initial directory", e);
 			}
 		}
 

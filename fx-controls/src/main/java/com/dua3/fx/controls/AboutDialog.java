@@ -22,18 +22,20 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+
 
 public class AboutDialog extends Dialog<Void> {
     /** Logger instance */
-    private static final Logger LOG = Logger.getLogger(AboutDialog.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(AboutDialog.class);
 
     /** The email URI, i.e. {@code "mailto:info@domain.com"}. */
     private String mailAddress = "";
@@ -73,18 +75,18 @@ public class AboutDialog extends Dialog<Void> {
 	        setDialogPane(dialogPane);
 	        dialogPane.getButtonTypes().addAll(ButtonType.OK);
     	} catch (IOException e) {
-    		LOG.log(Level.WARNING, "could not create dialog", e);
+    		LOG.warn("could not create dialog", e);
     	}
      }
 
     public void mail() {
     	if (mailAddress.isBlank()) {
-            LOG.warning("email not configured");
+            LOG.warn("email not configured");
             return;    		
     	}
     	
         if (!Desktop.isDesktopSupported()) {
-            LOG.warning("Desktop API is not supported");
+            LOG.warn("Desktop API is not supported");
             return;
         }
 
@@ -94,7 +96,7 @@ public class AboutDialog extends Dialog<Void> {
                 LOG.info("opening mail application");
                 desktop.mail(URI.create(mailAddress));
             } catch (IOException|IllegalArgumentException e) {
-                LOG.log(Level.WARNING, "could not open mail application", e);
+                LOG.warn("could not open mail application", e);
             }
         }
     }

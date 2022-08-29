@@ -25,19 +25,21 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import netscape.javascript.JSException;
 import netscape.javascript.JSObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Predicate;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+
 
 public final class WebViews {
     private WebViews() {
         // utility class
     }
 
-    private static final Logger LOG = Logger.getLogger(WebViews.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(WebViews.class);
 
     public static void setConfirmationHandler(WebEngine engine) {
         engine.setConfirmHandler(s -> Dialogs.confirmation(null).header("%s", s).buttons(ButtonType.YES, ButtonType.NO)
@@ -71,7 +73,7 @@ public final class WebViews {
         boolean success = Boolean.TRUE.equals(ret);
 
         if (!success) {
-            LOG.warning("could not set logger for WebView instance");
+            LOG.warn("could not set logger for WebView instance");
         }
 
         return success;
@@ -111,23 +113,23 @@ public final class WebViews {
         }
 
         public void error(JSObject args) {
-            logger.log(Level.SEVERE, () -> formatMessage(args));
+            logger.atError().setMessage("%s").addArgument(() -> formatMessage(args)).log();
         }
 
         public void warn(JSObject args) {
-            logger.log(Level.WARNING, () -> formatMessage(args));
+            logger.atWarn().setMessage("%s").addArgument(() -> formatMessage(args)).log();
         }
 
         public void info(JSObject args) {
-            logger.log(Level.INFO, () -> formatMessage(args));
-        }
-
-        public void log(JSObject args) {
-            logger.log(Level.FINE, () -> formatMessage(args));
+            logger.atInfo().setMessage("%s").addArgument(() -> formatMessage(args)).log();
         }
 
         public void debug(JSObject args) {
-            logger.log(Level.FINER, () -> formatMessage(args));
+            logger.atDebug().setMessage("%s").addArgument(() -> formatMessage(args)).log();
+        }
+
+        public void trace(JSObject args) {
+            logger.atTrace().setMessage("%s").addArgument(() -> formatMessage(args)).log();
         }
     }
 
@@ -141,7 +143,7 @@ public final class WebViews {
                     object,
                     methodName,
                     Arrays.toString(args));
-            LOG.warning(msg);
+            LOG.warn(msg);
             throw new JSException(msg);
         }
     }

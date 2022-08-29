@@ -26,8 +26,7 @@ module  com.dua3.fx.util {
 	with FxImageUtil;
 
 	requires com.dua3.utility;
-	requires java.logging;
 	requires java.prefs;
 	requires javafx.controls;
-
+    requires org.slf4j;
 }

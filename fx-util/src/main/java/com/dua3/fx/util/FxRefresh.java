@@ -1,16 +1,14 @@
 package com.dua3.fx.util;
 
-import javafx.beans.value.ChangeListener;
 import javafx.scene.Node;
-import javafx.scene.Parent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * A class intended for controlling possibly long-running update operations. Refresh happen mutually exclusive, i.e.
@@ -20,7 +18,7 @@ import java.util.logging.Logger;
  * skips intermediate frames if redraw requests come in too fast for the drawing to come up with.
  */
 public final class FxRefresh {
-    private static final Logger LOG = Logger.getLogger(FxRefresh.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(FxRefresh.class);
     
     /** The instance name (used in logging). */
     private final String name;
@@ -92,7 +90,7 @@ public final class FxRefresh {
     public static FxRefresh create(String name, Runnable task, Node node, boolean active) {
         FxRefresh r = new FxRefresh(name, () -> {
             if (!node.isVisible()) {
-                LOG.fine("node is not visible, update skipped");
+                LOG.debug("node is not visible, update skipped");
                 return;
             }
             
@@ -102,14 +100,14 @@ public final class FxRefresh {
         // stop update thread when node is removed from scene graph
         node.parentProperty().addListener(  (v, o, n) -> {
             if (n == null) {
-                LOG.fine("node was removed from parent, stopping refresher");
+                LOG.debug("node was removed from parent, stopping refresher");
                 r.stop();
             }
         } );
 
         node.sceneProperty().addListener( (v,o,n) -> {
             if (n==null) {
-                LOG.fine("node was removed from scene graph, stopping refresher");
+                LOG.debug("node was removed from scene graph, stopping refresher");
                 r.stop();
             }
         } );
@@ -135,7 +133,7 @@ public final class FxRefresh {
      * Loop of the update thread. Waits for incoming requests and calls the update task. 
      */
     private void refreshLoop() {
-        LOG.fine(() -> "["+name+"] entering refresh loop");
+        LOG.debug("[{}] entering refresh loop", name);
         do {
             lock.lock();
             try {
@@ -146,7 +144,7 @@ public final class FxRefresh {
                     trigger.await();
                 }
             } catch (InterruptedException e) {
-                LOG.info(() -> "["+name+"] interrupted, shutting down");
+                LOG.debug("[{}] interrupted, shutting down", name);
                 Thread.currentThread().interrupt();
                 stop();
             } finally {
@@ -158,27 +156,27 @@ public final class FxRefresh {
                 int myRevision = requestedRevision.get();
                 if (myRevision != currentRevision.getAndSet(myRevision)) {
                     try {
-                        LOG.fine(() -> "[" + name + "] starting refresh with revision: " + myRevision);
+                        LOG.debug("[{}] starting refresh with revision: {}", name, myRevision);
                         task.run();
-                        LOG.fine(() -> "[" + name + "] refreshed to revision: " + myRevision);
+                        LOG.debug("[{}] refreshed to revision: {}", name, myRevision);
                     } catch (Exception e) {
-                        LOG.log(Level.WARNING, "task aborted, exception swallowed, current revision %s might have inconsistent state".formatted(myRevision), e);
+                        LOG.warn("task aborted, exception swallowed, current revision {} might have inconsistent state", myRevision, e);
                     } finally {
                         currentRevision.set(myRevision);
                     }
                 } else {
-                    LOG.fine(() -> "[" + name + "] already at revision: " + myRevision);
+                    LOG.debug("[{}] already at revision: {}", name, myRevision);
                 }
             }
         } while (updateThread!= null);
-        LOG.fine(() -> "["+name+"] exiting refresh loop");
+        LOG.debug("[{}] exiting refresh loop", name);
     }
 
     /**
      * Wake up the update thread.
      */
     private void signal() {
-        LOG.fine(() -> "["+name+"] raise signal");
+        LOG.debug("[{}] raise signal", name);
         lock.lock();
         try {
             trigger.signalAll();
@@ -201,7 +199,7 @@ public final class FxRefresh {
      * Stop the refresher.
      */
     public synchronized void stop() {
-        LOG.fine(() -> "["+name+"] stopping");
+        LOG.debug("[{}] stopping", name);
         this.updateThread = null;
         setActive(false);
     }
@@ -211,7 +209,7 @@ public final class FxRefresh {
      * @param flag whether to activate or deactivate the refresher
      */
     public synchronized void setActive(boolean flag) {
-        LOG.fine(() -> "["+name+"] setActive("+flag+")");
+        LOG.debug("[{}] setActive({})", name, flag);
         this.active.set(flag);
         signal();
     }
@@ -234,11 +232,11 @@ public final class FxRefresh {
      * </ul>
      */
     public void refresh() {
-        LOG.fine(() -> "["+name+"] refresh requested");
+        LOG.debug("[{}] refresh requested", name);
         lock.lock();
         try {
             int revision = requestedRevision.incrementAndGet();
-            LOG.fine(() -> "["+name+"] requested revision "+revision);
+            LOG.debug("[{}] requested revision {}", name, revision);
             trigger.signalAll();
         } finally {
             lock.unlock();

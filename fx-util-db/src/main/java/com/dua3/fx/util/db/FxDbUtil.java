@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.function.Function;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 import com.dua3.fx.util.PlatformHelper;
 import com.dua3.utility.db.DbUtil;
@@ -41,11 +41,13 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class FxDbUtil {
 
     /** Logger */
-    private static final Logger LOG = Logger.getLogger(FxDbUtil.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(FxDbUtil.class);
 	private static final String ERROR_TEXT = "###";
 
     // utility - no instances
@@ -65,11 +67,11 @@ public final class FxDbUtil {
      *  if an error occurs while reading from the ResultSet.
      */
     public static int fill(TableView<ObservableList<Object>> tv, ResultSet rs) throws SQLException {
-        LOG.fine("populating TableView with ResultSet data");
+        LOG.debug("populating TableView with ResultSet data");
         ObservableList<TableColumn<ObservableList<Object>, ?>> columns = tv.getColumns();
         var items = tv.getItems();
 
-        LOG.finer("clearing tableview contents ...");
+        LOG.trace("clearing tableview contents ...");
         Platform.runLater(items::clear);
 
         List<TableColumn<ObservableList<Object>, ?>> newColumns = new ArrayList<>();
@@ -81,7 +83,7 @@ public final class FxDbUtil {
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM);
 
         // read result metadata
-        LOG.finer("reading result meta data ...");
+        LOG.trace("reading result meta data ...");
         ResultSetMetaData meta = rs.getMetaData();
         int nColumns = meta.getColumnCount();
         for (int i = 1; i <= nColumns; i++) {
@@ -130,7 +132,7 @@ public final class FxDbUtil {
             	format = String::valueOf;
             	break;
             }
-            LOG.log(Level.FINER, () -> String.format("column name: %s label: %s type: %s scale: %d", name, label, sqlType, scale));
+            LOG.trace("column name: {} label: {} type: {} scale: {}", name, label, sqlType, scale);
 
             // CellValueFactory
             Callback<CellDataFeatures<ObservableList<Object>, Object>, ObservableValue<Object>> cellValueFactory
@@ -164,7 +166,7 @@ public final class FxDbUtil {
         }
 
         // read result
-        LOG.finer("reading result data ...");
+        LOG.trace("reading result data ...");
         while (rs.next()) {
             var list = FXCollections.observableArrayList();
             for (int i = 1; i <= nColumns; i++) {
@@ -172,9 +174,9 @@ public final class FxDbUtil {
             }
             newItems.add(list);
         }
-        LOG.finer(() -> "read "+newItems.size()+" rows of data");
+        LOG.trace("read {} rows of data", newItems.size());
 
-        LOG.finer("setting rows ...");
+        LOG.trace("setting rows");
         PlatformHelper.runLater(() -> {
         	columns.setAll(newColumns);
         	items.setAll(newItems);
@@ -197,7 +199,7 @@ public final class FxDbUtil {
 		try {
 			return clob.getSubString(1L, (int) Math.min(Integer.MAX_VALUE, clob.length()));
 		} catch (SQLException e) {
-			LOG.log(Level.WARNING, "could no convert Clob to String", e);
+			LOG.warn("could no convert Clob to String", e);
 			return ERROR_TEXT;
 		}
 	}

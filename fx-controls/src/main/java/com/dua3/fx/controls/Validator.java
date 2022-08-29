@@ -11,6 +11,8 @@ import javafx.scene.control.TextInputControl;
 import javafx.scene.control.Tooltip;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -19,11 +21,11 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+
 
 public class Validator {
-    private static final Logger LOG = Logger.getLogger(Validator.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(Validator.class);
     
     private final ResourceBundle resources;
     private final LinkedHashMap<Control, List<Supplier<ValidationResult>>> controls = new LinkedHashMap<>();
@@ -155,7 +157,7 @@ public class Validator {
         try {
             return resources.getString(m);
         } catch (MissingResourceException e) {
-            LOG.log(Level.WARNING, "resource string not found: "+m, e);   
+            LOG.warn("resource string not found: {}",m, e);   
             return "";
         }
     }
@@ -187,7 +189,7 @@ public class Validator {
      */
     public void addValidation(Button button) {
         if (button==null) {
-            LOG.warning("addValidation(): button is null");
+            LOG.warn("addValidation(): button is null");
             return;
         }
         

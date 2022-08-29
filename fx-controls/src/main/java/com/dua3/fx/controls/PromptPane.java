@@ -2,13 +2,14 @@ package com.dua3.fx.controls;
 
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.logging.Logger;
 
 public class PromptPane extends InputDialogPane<String> {
 
     /** Logger */
-    protected static final Logger LOG = Logger.getLogger(PromptPane.class.getName());
+    protected static final Logger LOG = LoggerFactory.getLogger(PromptPane.class);
 
     private final TextField text;
 

@@ -6,14 +6,16 @@ import javafx.scene.Node;
 import org.kordamp.ikonli.Ikon;
 import org.kordamp.ikonli.IkonHandler;
 import org.kordamp.ikonli.javafx.FontIcon;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 import java.util.ServiceLoader;
-import java.util.logging.Logger;
+
 
 public class IkonliIconProvider implements IconProvider {
 
-    private static final Logger LOG = Logger.getLogger(IkonliIconProvider.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(IkonliIconProvider.class);
 
     static class IkonliIcon extends FontIcon implements Icon {
         private final String name;
@@ -41,13 +43,13 @@ public class IkonliIconProvider implements IconProvider {
     public IkonliIcon forName(String name) {
         for (var handler : ServiceLoader.load(IkonHandler.class)) {
             if (handler.supports(name)) {
-                LOG.fine(() -> "using: " + handler.getClass().getCanonicalName());
+                LOG.debug("using: {}", handler.getClass().getName());
                 var ikon = handler.resolve(name);
                 return new IkonliIcon(ikon, name);
             }
         }
 
-        LOG.fine(() -> "icon not found: " + name);
+        LOG.debug("icon not found: {}", name);
         return null;
     }
 

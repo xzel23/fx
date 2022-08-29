@@ -30,6 +30,8 @@ import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URI;
@@ -43,15 +45,15 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+
 
 public abstract class FxController<A extends FxApplication<A, C>, C extends FxController<A, C, D>, D extends FxDocument>  {
 
 	// - static -
 
 	/** Logger */
-	protected static final Logger LOG = Logger.getLogger(FxController.class.getName());
+	protected static final Logger LOG = LoggerFactory.getLogger(FxController.class);
 	
 	/** The application instance. */
 	private A app;
@@ -123,7 +125,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	public void closeApplicationWindow() {
 		// handle dirty state
 		if (!handleDirtyState()) {
-			LOG.fine("close aborted because of dirty state");
+			LOG.debug("close aborted because of dirty state");
 			return;
 		}
 		app.closeApplicationWindow();
@@ -270,7 +272,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	public boolean newDocument() {
 		// handle dirty state
 		if (!handleDirtyState()) {
-			LOG.fine("new aborted because of dirty state");
+			LOG.debug("new aborted because of dirty state");
 			return false;			
 		}
 		
@@ -279,7 +281,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 			createDocument();
 			return true;
 		} catch (Exception e) {
-			LOG.log(Level.WARNING, "error creating document", e);
+			LOG.warn("error creating document", e);
 			getApp().showErrorDialog(resources.getString("fx.application.dialog.error.new_document"), e.getLocalizedMessage());
 			return false;
 		}
@@ -289,7 +291,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	protected boolean open() {
 		// handle dirty state
 		if (!handleDirtyState()) {
-			LOG.fine("open aborted because of dirty state");
+			LOG.debug("open aborted because of dirty state");
 			return false;			
 		}
 
@@ -309,7 +311,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 				.showOpenDialog(getApp().getStage());
 		
 		if (file.isEmpty()) {
-			LOG.fine("open(): no file was chosen");
+			LOG.debug("open(): no file was chosen");
 			return false;
 		}
 
@@ -322,7 +324,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 			setCurrentDocument(loadDocument(uri));
 			return true;
 		} catch (Exception e) {
-			LOG.log(Level.WARNING, "error opening document", e);
+			LOG.warn("error opening document", e);
 			getApp().showErrorDialog(
 					String.format("%s '%s'", resources.getString("fx.application.dialog.error.open_document"), FxUtil.asText(uri)),
 					Objects.toString(e.getLocalizedMessage())
@@ -347,7 +349,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		}
 
 		if (!getCurrentDocument().hasLocation()) {
-			LOG.fine("save: no URI set, delegating to saveAs()");
+			LOG.debug("save: no URI set, delegating to saveAs()");
 			return saveAs();
 		}
 		
@@ -389,7 +391,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 				.showSaveDialog(getApp().getStage());
 
 		if (file.isEmpty()) {
-			LOG.fine("saveAs(): no file was chosen");
+			LOG.debug("saveAs(): no file was chosen");
 			return false;
 		}
 		
@@ -417,32 +419,32 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 		try {
 			if (document.hasLocation()) {
 				parent = document.getPath().getParent();
-				LOG.fine("initialDir() - using parent folder of current document as parent: "+parent);
+				LOG.debug("initialDir() - using parent folder of current document as parent: "+parent);
 			} else {
 				String lastDocument = getApp().getPreference(PREF_DOCUMENT, "");
 				if (lastDocument.isBlank()) {
 					parent = getApp().getUserHome();
-					LOG.fine("initialDir() - last document location not set, using user home as parent: "+parent);
+					LOG.debug("initialDir() - last document location not set, using user home as parent: "+parent);
 				} else {
 					try {
 						Path path = Paths.get(URI.create(lastDocument));
 						parent = path.getParent();
-						LOG.fine("initialDir() - using last document location as parent: " + parent);
+						LOG.debug("initialDir() - using last document location as parent: " + parent);
 					} catch (IllegalArgumentException e) {
-						LOG.log(Level.WARNING, "could not retrieve last document location", e);
+						LOG.warn("could not retrieve last document location", e);
 						parent = app.getUserHome();
 					}
 				}
 			}
 		} catch (IllegalStateException e) {
 			// might for example be thrown by URI.create()
-			LOG.log(Level.WARNING, "initialDir() - could not determine initial folder", e);
+			LOG.warn("initialDir() - could not determine initial folder", e);
 		}
 
 		Path  initialDir = parent;
 
 		if (initialDir == null || !Files.isDirectory(initialDir)) {
-			LOG.log(Level.WARNING, "initialDir() - initial directory invalid, using user home instead: "+initialDir);
+			LOG.warn("initialDir() - initial directory invalid, using user home instead: {}", initialDir);
 			initialDir = getApp().getUserHome();
 		}
 
@@ -454,7 +456,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 			document.saveAs(uri);
 			return true;
 		} catch (Exception e) {
-			LOG.log(Level.WARNING, "error saving document", e);
+			LOG.warn("error saving document", e);
 			getApp().showErrorDialog(
 				String.format("%s '%s'" , resources.getString("fx.application.dialog.error.save_document"), FxUtil.asText(uri)),
 				String.format("%s: %s", e.getClass().getSimpleName(), e.getLocalizedMessage())
@@ -474,7 +476,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 	}
 	
 	public void setStatusText(String s) {
-		LOG.fine(() -> "status: "+s);
+		LOG.debug("status: {}", s);
 	}
 
 	public Path getCurrentDir() {
@@ -484,7 +486,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 				try {
 					return parent;
 				} catch (UnsupportedOperationException e) {
-					LOG.log(Level.WARNING, "cannot get current directory, using home");
+					LOG.warn("cannot get current directory, using home");
 				}
 			}
 		}

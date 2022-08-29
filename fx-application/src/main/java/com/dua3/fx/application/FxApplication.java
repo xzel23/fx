@@ -27,6 +27,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.desktop.AboutEvent;
 import java.awt.desktop.OpenFilesEvent;
@@ -48,11 +50,11 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Filter;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
+
+
+
+
+
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 import java.util.regex.Matcher;
@@ -64,7 +66,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
     /**
      * Logger
      */
-    private static final Logger LOG = Logger.getLogger(FxApplication.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(FxApplication.class);
 
     /**
      * Cleaner
@@ -138,9 +140,9 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
     public static ResourceBundle getDefaultBundle() {
         // load resource bundle
         Locale locale = Locale.getDefault();
-        LOG.fine(() -> "current locale is: "+locale);
+        LOG.debug("current locale is: {}", locale);
         ResourceBundle resources = ResourceBundle.getBundle(FxApplication.class.getPackageName()+"."+DEFAULT_BUNDLE, locale);
-        LOG.fine(() -> "resource bundle uses locale: "+ resources.getLocale());
+        LOG.debug("resource bundle uses locale: {}", resources.getLocale());
         return resources;
     }
 
@@ -223,23 +225,20 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
     @SuppressWarnings("unchecked")
     @Override
     public void start(Stage stage) throws IOException {
-        LOG.log(Level.INFO, () -> "starting application ...");
+        LOG.info("starting application");
 
         // store reference to stage
         this.mainStage = stage;
 
-        // handle program arguments
-        getParameterValue("log").ifPresent(this::setLogLevel);
-
         // create a loader and load FXML
         URL fxml = getFxml();
-        LOG.log(Level.FINER, () -> "FXML URL: " + fxml);
+        LOG.debug("FXML URL: {}", fxml);
         FXMLLoader loader = new FXMLLoader(fxml, resources);
 
         Parent root = loader.load();
 
         // set controller
-        LOG.log(Level.FINER, () -> "setting FXML controller ...");
+        LOG.debug("setting FXML controller");
         this.controller = Objects.requireNonNull(loader.getController(),
                 () -> "controller is null; set fx:controller in root element of FXML (" + fxml + ")");
         this.controller.setApp((A) this);
@@ -281,70 +280,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
 
         stage.show();
 
-        LOG.fine(() -> "done.");
-    }
-    
-    /**
-     * Pattern for parsing the log configuration string.
-     * Example:
-     * {@code
-     *     --log=INFO,com.dua3:FINE,com.sun:WARNING
-     * }
-     */
-    private static final Pattern patternLogCfg = Pattern.compile("(?:(?<PACKAGE>(?:\\w|\\.)+):)?(?<LEVEL>[A-Z0-9]+)(?:,|$)");
-
-    private final Map<String,Level> logLevel = new ConcurrentHashMap<>();
-    private Level globalLogLevel = Level.INFO;
-    
-    private void setLogLevel(String logStr) {
-        // determine the global and minimum log levels and store mapping package -> level
-        Matcher matcher = patternLogCfg.matcher(logStr);
-        Level minLevel = Level.OFF;
-        while (matcher.find()) {
-            String levelStr = matcher.group("LEVEL");
-            if (levelStr!=null) {
-                String p = matcher.group("PACKAGE");
-                Level l = Level.parse(levelStr);
-                if (p != null) {
-                    var old = logLevel.put(p, l);
-                    LangUtil.check(old == null, "log level for package '%s' defined twice", p);
-                } else {
-                    globalLogLevel = l;
-                }
-                if (l.intValue()<minLevel.intValue()) {
-                    minLevel = l;
-                }
-            }
-        }
-
-        globalLogLevel = logLevel.getOrDefault("", globalLogLevel);
-
-        if (globalLogLevel.intValue()<minLevel.intValue()) {
-            minLevel = globalLogLevel;
-        }
-        
-        // set root level
-        Logger rootLogger = LogManager.getLogManager().getLogger("");
-        rootLogger.setLevel(minLevel);
-
-        // set filter
-        Filter f = record -> {
-            String loggerName = record.getLoggerName();
-            Level level = globalLogLevel;
-            for (var entry: logLevel.entrySet()) {
-                if (loggerName.startsWith(entry.getKey())) {
-                    level = entry.getValue();
-                }
-            }
-            return record.getLevel().intValue()>=level.intValue();
-        };
-
-        for (Handler h : rootLogger.getHandlers()) {
-            h.setFilter(f);
-            h.setLevel(minLevel);
-        }
-
-        LOG.info(() -> "log level set to "+logLevel);
+        LOG.debug("application started");
     }
 
     protected void updateApplicationTitle() {
@@ -381,7 +317,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
             try {
                 getPreferences().flush();
             } catch (BackingStoreException e) {
-                LOG.log(Level.WARNING, "could not update preferences", e);
+                LOG.warn("could not update preferences", e);
             }
         }
 
@@ -409,7 +345,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
     public final Preferences getPreferences() {
         if (!hasPreferences()) {
             Class<?> cls = getClass();
-            LOG.fine("creating preferences for class " + cls.getName());
+            LOG.debug("creating preferences for class {}", cls.getName());
             preferences = Preferences.userRoot().node(getClass().getName());
         }
         return preferences;
@@ -497,11 +433,11 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      */
     public boolean setPreferenceOptional(String key, String value) {
         if (hasPreferences()) {
-            LOG.fine(() -> String.format("setting preference '%s'", key));
+            LOG.debug("setting preference '{}' -> '{}'", key, value);
             setPreference(key, value);
             return true;
         }
-        LOG.fine(() -> String.format("not setting preference '%s': preferences not initialised", key));
+        LOG.debug("not setting preference '{}': preferences not initialised", key);
         return false;
     }
 
@@ -597,7 +533,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
                 mainStage.show();
                 controller.open(f.toURI());
             } else {
-                LOG.warning("openFiles: ignoring non-existent file: "+f );
+                LOG.warn("openFiles: ignoring non-existent file: {}", f );
             }
         }));
     }
@@ -640,7 +576,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
             try {
                 task.run();
             } catch (Exception e) {
-                LOG.log(Level.WARNING, "error in cleanup task", e);
+                LOG.warn("error in cleanup task", e);
             }
         });
     }

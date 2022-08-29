@@ -16,18 +16,19 @@ import javafx.scene.control.SkinBase;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Logger;
 
 /**
  * A JavaFX control to display icons.
  */
 public class IconView extends Control {
-    private static final Logger LOG = Logger.getLogger(IconView.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(IconView.class);
     
     private static final String DEFAULT_ICON_IDENTIFIER = "";
     private static final int DEFAULT_ICON_SIZE = 10;
@@ -127,7 +128,7 @@ public class IconView extends Control {
         if (icon.isPresent()) {
             this.icon = icon.get();
         } else {
-            LOG.warning("icon not found: "+iconId);
+            LOG.warn("icon not found: {}", iconId);
             this.icon = IconUtil.emptyIcon();
         }
         

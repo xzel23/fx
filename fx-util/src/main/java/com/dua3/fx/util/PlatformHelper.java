@@ -4,17 +4,17 @@ import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import com.dua3.utility.lang.LangUtil;
 
 import javafx.application.Platform;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class PlatformHelper {
 
     /** Logger instance */
-    private static final Logger LOG = Logger.getLogger(PlatformHelper.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(PlatformHelper.class);
 
     /**
      * Run task on the JavaFX application thread and return result.
@@ -51,7 +51,7 @@ public final class PlatformHelper {
             try {
                 doneLatch.await();
             } catch (InterruptedException e) {
-                LOG.log(Level.FINE, "interrupted", e);
+                LOG.debug("interrupted", e);
                 Thread.currentThread().interrupt();
             }
         }

@@ -19,5 +19,6 @@ module  com.dua3.fx.web {
 	requires  com.dua3.fx.controls;
 	requires javafx.web;
     requires jdk.jsobject;
-    requires java.logging;
+    requires org.slf4j;
+
 }

@@ -16,13 +16,15 @@ package com.dua3.fx.controls;
 
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Window;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+
 
 /** 
  * Builder for directory chooser dialogs.
@@ -30,7 +32,7 @@ import java.util.logging.Logger;
  * Provides a fluent interface to create file dialogs. 
  */
 public class DirectoryChooserBuilder {
-	private static final Logger LOG = Logger.getLogger(DirectoryChooserBuilder.class.getName());
+	private static final Logger LOG = LoggerFactory.getLogger(DirectoryChooserBuilder.class);
 
 	public static final Path USER_HOME = Paths.get(System.getProperty("user.home"));
 
@@ -59,11 +61,11 @@ public class DirectoryChooserBuilder {
 			try {
 				File initialFile = initialDir.toFile();
 				if (initialFile.isDirectory()) {
-					LOG.fine("initial directory: " + initialFile);
+					LOG.debug("initial directory: {}", initialFile);
 					chooser.setInitialDirectory(initialFile);
 				}
 			} catch (UnsupportedOperationException e) {
-				LOG.log(Level.WARNING, "could not set initial directory", e);
+				LOG.warn("could not set initial directory", e);
 			}
 		}
 		return chooser;

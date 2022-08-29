@@ -25,6 +25,8 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Skin;
 import javafx.scene.control.SkinBase;
 import javafx.scene.layout.AnchorPane;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,7 +34,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
-import java.util.logging.Logger;
+
 
 /**
  * A JavaFX component where items can be pinned at a position.
@@ -176,7 +178,7 @@ public class PinBoard extends Control {
 
 class PinBoardSkin extends SkinBase<PinBoard>  {
 
-    private static final Logger LOG = Logger.getLogger(PinBoardSkin.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(PinBoardSkin.class);
     private final FxRefresh refresher;
     private final AnchorPane pane = new AnchorPane();
     private final ScrollPane scrollPane = new ScrollPane(pane);
@@ -223,7 +225,7 @@ class PinBoardSkin extends SkinBase<PinBoard>  {
     }
     
     private void updateNodes() {
-        LOG.fine("updatreNodes()");
+        LOG.trace("updateNodes()");
 
         PlatformHelper.checkApplicationThread();
 
@@ -240,7 +242,7 @@ class PinBoardSkin extends SkinBase<PinBoard>  {
                 .stream()
                 .filter(item -> item.area().intersects(viewPort))
                 .map(item -> {
-                    LOG.finer(() -> "item is visible: "+item.name());
+                    LOG.debug("item is visible: {}", item.name());
                     Rectangle2D itemArea = item.area();
                     Node node = item.nodeBuilder().get();
                     node.setTranslateX(dx);

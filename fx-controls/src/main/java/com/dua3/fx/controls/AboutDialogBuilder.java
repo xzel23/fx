@@ -20,12 +20,14 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+
 
 /** 
  * Builder for Alert Dialogs.
@@ -33,7 +35,7 @@ import java.util.logging.Logger;
  * Provides a fluent interface to create Alerts. 
  */
 public class AboutDialogBuilder {
-	private static final Logger LOG = Logger.getLogger(AboutDialogBuilder.class.getName());
+	private static final Logger LOG = LoggerFactory.getLogger(AboutDialogBuilder.class);
 	
 	private String title = "";
 	private String name = "";
@@ -103,7 +105,7 @@ public class AboutDialogBuilder {
 			Image image = new Image(in);
 			graphic(new javafx.scene.image.ImageView(image));
 		} catch (IOException e) {
-			LOG.log(Level.WARNING, "could not read image: "+url, e);
+			LOG.warn("could not read image: {}", url, e);
 			this.graphic = null;
 		}
 		return this;

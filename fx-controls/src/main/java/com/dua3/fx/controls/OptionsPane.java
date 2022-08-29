@@ -15,6 +15,8 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.util.StringConverter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayDeque;
 import java.util.Collection;
@@ -25,13 +27,13 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.logging.Logger;
+
 import java.util.stream.Stream;
 
 public class OptionsPane extends GridPane implements InputControl<Arguments>{
 
     /** Logger */
-    protected static final Logger LOG = Logger.getLogger(OptionsPane.class.getName());
+    protected static final Logger LOG = LoggerFactory.getLogger(OptionsPane.class);
 
     private final InputControl.State<Arguments> state;
     

@@ -2,13 +2,15 @@ package com.dua3.fx.application;
 
 import com.dua3.utility.lang.Platform;
 import javafx.application.Application;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+
 
 /**
  * Application launcher class.
@@ -20,7 +22,7 @@ public final class FxLauncher {
     /**
      * Logger
      */
-    private static final Logger LOG = Logger.getLogger(FxLauncher.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(FxLauncher.class);
 
     static {
         // start the runtime
@@ -31,7 +33,7 @@ public final class FxLauncher {
                 latch.await();
                 break;
             } catch (InterruptedException e) {
-                LOG.log(Level.FINE, "interrupted while waiting for platform startup", e);
+                LOG.debug("interrupted while waiting for platform startup", e);
             }
         }
     }
@@ -54,7 +56,7 @@ public final class FxLauncher {
     public static
     <A extends Application>
     void launch(Class<A> cls, String... args) {
-        LOG.fine(() -> "arguments: " + Arrays.toString(args));
+        LOG.debug("arguments: {}", (Object) args);
 
         // prepare arguments
         var reparsedArgs = reparseCommandLine(args);
@@ -123,8 +125,8 @@ public final class FxLauncher {
             argL.add(arg.toString());
         }
 
-        LOG.info(() -> "arguments have been re-parsed!");
-        LOG.fine(() -> "arguments: "+argL);
+        LOG.debug("original arguments: {}", (Object) args);
+        LOG.debug("re-parsed arguments: {}", argL);
         
         return argL;
     }

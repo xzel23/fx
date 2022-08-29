@@ -10,6 +10,8 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -17,14 +19,14 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.Consumer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+
 import java.util.stream.Collectors;
 
 public class WizardDialog extends Dialog<Map<String,Object>> {
 
 	/** Logger instance */
-    private static final Logger LOG = Logger.getLogger(WizardDialog.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(WizardDialog.class);
 
     /** Cancelable flag. */
 	private boolean cancelable = true;
@@ -163,7 +165,7 @@ public class WizardDialog extends Dialog<Map<String,Object>> {
 		pane.layout();
 		pane.getScene().getWindow().sizeToScene();
 
-		LOG.log(Level.FINE, () -> "current page: "+pageName);
+		LOG.debug("current page: {}", pageName);
 	}
 
 	public Page<?,?> getCurrentPage() {
@@ -187,7 +189,7 @@ public class WizardDialog extends Dialog<Map<String,Object>> {
 		btn.addEventFilter(ActionEvent.ACTION,  evt -> {
 			// get and translate result
 			if (!page.apply(bt)) {
-				LOG.fine(() -> String.format("Button %s: result conversion failed", bt));
+				LOG.debug("Button {}: result conversion failed", bt);
 				evt.consume();
 			}
 

@@ -19,7 +19,7 @@ module  com.dua3.fx.util.db {
     requires transitive  com.dua3.fx.util;
     
     requires com.dua3.utility.db;
-	requires java.logging;
+    requires org.slf4j;
 	requires javafx.controls;
 	requires javafx.graphics;
 }

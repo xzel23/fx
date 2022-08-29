@@ -16,8 +16,8 @@ package com.dua3.fx.controls;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+
 
 import com.dua3.fx.util.PlatformHelper;
 import com.dua3.fx.util.FxTaskTracker;
@@ -31,6 +31,8 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Dialog to configure a editor settings.
@@ -38,7 +40,7 @@ import javafx.scene.layout.HBox;
 public class StatusBar extends HBox implements FxTaskTracker {
 
 	/** Logger instance */
-    private static final Logger LOG = Logger.getLogger(StatusBar.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(StatusBar.class);
 
     // -- input controls
 	@FXML Label text;
@@ -56,7 +58,7 @@ public class StatusBar extends HBox implements FxTaskTracker {
 		try {
 			fxmlLoader.load();
 		} catch (IOException e) {
-			LOG.log(Level.WARNING, "exception while loading FXML", e);
+			LOG.warn("exception while loading FXML", e);
 			throw new UncheckedIOException(e);
 		}
 	}
@@ -97,7 +99,7 @@ public class StatusBar extends HBox implements FxTaskTracker {
 					progress.setProgress(0.0);
 					progress.setVisible(false);
 				}
-				default -> LOG.warning("StatusBar.updateTaskState() - unexpected state: " + state);
+				default -> LOG.warn("StatusBar.updateTaskState() - unexpected state: {}", state);
 			}
 		});
 	}
