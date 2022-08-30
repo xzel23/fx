@@ -60,11 +60,12 @@ public final class WebViews {
         win.setMember("javaLogger", new JSLogger(logger));
         String script = """
                 (function () {
-                  console.error = function() { javaLogger.error(arguments) };
-                  console.warn = function() { javaLogger.warn(arguments) };
-                  console.info = function() { javaLogger.info(arguments) };
-                  console.log = function() { javaLogger.log(arguments) };
-                  console.debug = function() { javaLogger.debug(arguments) };
+                  console.log   = function() { window.javaLogger.info(arguments)  };
+                  console.error = function() { window.javaLogger.error(arguments) };
+                  console.warn  = function() { window.javaLogger.warn(arguments)  };
+                  console.info  = function() { window.javaLogger.info(arguments)  };
+                  console.debug = function() { window.javaLogger.debug(arguments) };
+                  console.trace = function() { window.javaLogger.trace(arguments) };
                   console.log('logging initialised %s', 'success')
                   return true
                 }) ();""";
@@ -113,23 +114,23 @@ public final class WebViews {
         }
 
         public void error(JSObject args) {
-            logger.atError().setMessage("%s").addArgument(() -> formatMessage(args)).log();
+            logger.atError().setMessage("{}").addArgument(() -> formatMessage(args)).log();
         }
 
         public void warn(JSObject args) {
-            logger.atWarn().setMessage("%s").addArgument(() -> formatMessage(args)).log();
+            logger.atWarn().setMessage("{}").addArgument(() -> formatMessage(args)).log();
         }
 
         public void info(JSObject args) {
-            logger.atInfo().setMessage("%s").addArgument(() -> formatMessage(args)).log();
+            logger.atInfo().setMessage("{}").addArgument(() -> formatMessage(args)).log();
         }
 
         public void debug(JSObject args) {
-            logger.atDebug().setMessage("%s").addArgument(() -> formatMessage(args)).log();
+            logger.atDebug().setMessage("{}").addArgument(() -> formatMessage(args)).log();
         }
 
         public void trace(JSObject args) {
-            logger.atTrace().setMessage("%s").addArgument(() -> formatMessage(args)).log();
+            logger.atTrace().setMessage("{}").addArgument(() -> formatMessage(args)).log();
         }
     }
 
