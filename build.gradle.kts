@@ -46,7 +46,7 @@ object meta {
 val isReleaseVersion = !meta.version.endsWith("SNAPSHOT")
 
 val javafxVersion       by extra { "18.0.2" }
-val dua3UtilityVersion  by extra { "10.1.0-SNAPSHOT" }
+val dua3UtilityVersion  by extra { "10.1.0-RC1" }
 val ikonliVersion       by extra { "12.3.1" }
 
 subprojects {
@@ -100,6 +100,7 @@ subprojects {
 
         // SLF4J
         implementation("org.slf4j:slf4j-api:2.0.0")
+        implementation("org.apache.logging.log4j:log4j-to-slf4j:2.18.0")
 
         // JUnit
         testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
