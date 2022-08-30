@@ -30,7 +30,7 @@ plugins {
 /////////////////////////////////////////////////////////////////////////////
 object meta {
     val group           = "com.dua3.fx"
-    val version         = "0.18.0-RC2-SNAPSHOT"
+    val version         = "0.18.0"
     val scm             = "https://gitlab.com/com.dua3/lib/fx.git"
     val repo            = "public"
     val licenseName     = "The Apache Software License, Version 2.0"
@@ -46,7 +46,7 @@ object meta {
 val isReleaseVersion = !meta.version.endsWith("SNAPSHOT")
 
 val javafxVersion       by extra { "18.0.2" }
-val dua3UtilityVersion  by extra { "10.1.0-RC1" }
+val dua3UtilityVersion  by extra { "10.1.0" }
 val ikonliVersion       by extra { "12.3.1" }
 
 subprojects {
