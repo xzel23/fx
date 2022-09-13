@@ -22,7 +22,7 @@ plugins {
     id("idea")
     id("com.github.ben-manes.versions") version "0.42.0"
     id("com.adarshr.test-logger") version "3.2.0"
-    id("com.github.spotbugs") version "5.0.9"
+    id("com.github.spotbugs") version "5.0.12"
     id("com.dua3.cabe") version "1.0.0"
     id("org.openjfx.javafxplugin") version "0.0.13"
 }
@@ -30,7 +30,7 @@ plugins {
 /////////////////////////////////////////////////////////////////////////////
 object meta {
     val group           = "com.dua3.fx"
-    val version         = "0.18.0"
+    val version         = "0.18.1"
     val scm             = "https://gitlab.com/com.dua3/lib/fx.git"
     val repo            = "public"
     val licenseName     = "The Apache Software License, Version 2.0"
