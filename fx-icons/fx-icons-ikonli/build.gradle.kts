@@ -21,5 +21,5 @@ javafx {
 dependencies {
     api(project(":fx-icons"))
 
-    implementation(group = "org.kordamp.ikonli", name = "ikonli-javafx", version = rootProject.extra["ikonliVersion"] as String)
+    implementation(rootProject.libs.ikonli.javafx)
 }

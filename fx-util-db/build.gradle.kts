@@ -20,5 +20,5 @@ javafx {
 
 dependencies {
     implementation(project(":fx-util"))
-    api(group = "com.dua3.utility", name = "utility-db", version = rootProject.extra["dua3UtilityVersion"] as String)
+    api(rootProject.libs.dua3.utility.db)
 }

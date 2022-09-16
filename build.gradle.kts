@@ -20,11 +20,11 @@ plugins {
     id("maven-publish")
     id("signing")
     id("idea")
-    id("com.github.ben-manes.versions") version "0.42.0"
-    id("com.adarshr.test-logger") version "3.2.0"
-    id("com.github.spotbugs") version "5.0.12"
-    id("com.dua3.cabe") version "1.0.0"
-    id("org.openjfx.javafxplugin") version "0.0.13"
+    alias(libs.plugins.versions)
+    alias(libs.plugins.test.logger)
+    alias(libs.plugins.spotbugs)
+    alias(libs.plugins.cabe)
+    alias(libs.plugins.javafx)
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -44,10 +44,6 @@ object meta {
 /////////////////////////////////////////////////////////////////////////////
 
 val isReleaseVersion = !meta.version.endsWith("SNAPSHOT")
-
-val javafxVersion       by extra { "19" }
-val dua3UtilityVersion  by extra { "10.1.2" }
-val ikonliVersion       by extra { "12.3.1" }
 
 subprojects {
 
@@ -71,40 +67,23 @@ subprojects {
         withSourcesJar()
     }
 
-    repositories {
-        // Maven Central Repository
-        mavenCentral()
-
-        // Sonatype Snapshots
-        maven {
-            name = "oss.sonatype.org-snapshot"
-            url  = URI("https://s01.oss.sonatype.org/content/repositories/snapshots/")
-            mavenContent {
-                snapshotsOnly()
-            }
-        }
-
-        // Maven local Repository
-        mavenLocal()
-    }
-
     javafx {
-        version = javafxVersion
+        version = rootProject.libs.versions.javafx.get()
         configuration = "compileOnly"
     }
 
     // dependencies
     dependencies {
         // Cabe (source annotations)
-        compileOnly(group = "com.dua3.cabe", name = "cabe-annotations", version = "1.0.0")
+        compileOnly(rootProject.libs.cabe.annotations)
 
         // SLF4J
-        implementation("org.slf4j:slf4j-api:2.0.0")
-        implementation("org.apache.logging.log4j:log4j-to-slf4j:2.18.0")
+        implementation(rootProject.libs.slf4j.api)
+        implementation(rootProject.libs.log4j.to.slf4j)
 
         // JUnit
-        testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
-        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0")
+        testImplementation(rootProject.libs.junit.jupiter.api)
+        testImplementation(rootProject.libs.junit.jupiter.engine)
     }
 
     idea {

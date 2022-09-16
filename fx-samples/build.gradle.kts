@@ -24,12 +24,12 @@ javafx {
 }
 
 dependencies {
-    implementation(group = "com.dua3.utility", name = "utility", version = rootProject.extra["dua3UtilityVersion"] as String)
+    implementation(rootProject.libs.dua3.utility)
     implementation(project(":fx-util"))
     implementation(project(":fx-controls"))
     implementation(project(":fx-icons"))
     runtimeOnly(project(":fx-icons:fx-icons-ikonli"))
-    runtimeOnly(group = "org.kordamp.ikonli", name = "ikonli-fontawesome-pack", version = rootProject.extra["ikonliVersion"] as String)
+    runtimeOnly(rootProject.libs.ikonli.fontawesome)
 }
 
 // set main
