@@ -30,7 +30,6 @@ plugins {
 /////////////////////////////////////////////////////////////////////////////
 object meta {
     val group           = "com.dua3.fx"
-    val version         = "0.19.0-SNAPSHOT"
     val scm             = "https://gitlab.com/com.dua3/lib/fx.git"
     val repo            = "public"
     val licenseName     = "The Apache Software License, Version 2.0"
@@ -43,11 +42,10 @@ object meta {
 }
 /////////////////////////////////////////////////////////////////////////////
 
-val isReleaseVersion = !meta.version.endsWith("SNAPSHOT")
-
 subprojects {
 
-    project.setVersion(meta.version)
+    project.setVersion(rootProject.libs.versions.projectVersion.get())
+    val isReleaseVersion = !project.getVersion().toString().endsWith("SNAPSHOT")
 
     apply(plugin = "java-library")
     apply(plugin = "maven-publish")
@@ -123,7 +121,7 @@ subprojects {
             create<MavenPublication>("maven") {
                 groupId    = meta.group
                 artifactId = project.name
-                version    = meta.version
+                version    = project.version.toString()
 
                 from(components["java"])
 

@@ -1,4 +1,5 @@
 rootProject.name = "dua3-fx"
+val projectVersion = "0.19.0-SNAPSHOT"
 
 include("fx-util")
 include("fx-util-db")
@@ -11,9 +12,13 @@ include("fx-web")
 include("fx-samples")
 
 dependencyResolutionManagement {
-    
+
+    val isSnapshot = projectVersion.endsWith("SNAPSHOT")
+
     versionCatalogs {
         create("libs") {
+            version("projectVersion", projectVersion)
+
             plugin("versions", "com.github.ben-manes.versions").version("0.42.0")
             plugin("test-logger", "com.adarshr.test-logger").version("3.2.0")
             plugin("spotbugs", "com.github.spotbugs").version("5.0.12")
@@ -43,7 +48,7 @@ dependencyResolutionManagement {
             library("junit-jupiter-engine", "org.junit.jupiter", "junit-jupiter-engine").versionRef("junit")
         }
     }
-    
+
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
 
@@ -59,15 +64,6 @@ dependencyResolutionManagement {
             }
         }
 
-        // Sonatype Snapshots
-        maven {
-            name = "oss.sonatype.org-snapshots"
-            url  = java.net.URI("https://s01.oss.sonatype.org/content/repositories/snapshots/")
-            mavenContent {
-                snapshotsOnly()
-            }
-        }
-
         // Apache releases
         maven {
             name = "apache-releases"
@@ -77,24 +73,37 @@ dependencyResolutionManagement {
             }
         }
 
-        // Apache staging
-        maven {
-            name = "apache-staging"
-            url  = java.net.URI("https://repository.apache.org/content/repositories/staging/")
-            mavenContent {
-                releasesOnly()
+        if (isSnapshot) {
+            // local maven repository
+            mavenLocal()
+
+            // Sonatype Snapshots
+            maven {
+                name = "oss.sonatype.org-snapshots"
+                url = java.net.URI("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+                mavenContent {
+                    snapshotsOnly()
+                }
+            }
+
+            // Apache staging
+            maven {
+                name = "apache-staging"
+                url = java.net.URI("https://repository.apache.org/content/repositories/staging/")
+                mavenContent {
+                    releasesOnly()
+                }
+            }
+
+            // Apache snapshots
+            maven {
+                name = "apache-snapshots"
+                url = java.net.URI("https://repository.apache.org/content/repositories/snapshots/")
+                mavenContent {
+                    snapshotsOnly()
+                }
             }
         }
-
-        // Apache snapshots
-        maven {
-            name = "apache-snapshots"
-            url  = java.net.URI("https://repository.apache.org/content/repositories/snapshots/")
-            mavenContent {
-                snapshotsOnly()
-            }
-        }
-
     }
 
 }
