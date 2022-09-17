@@ -1,5 +1,5 @@
 rootProject.name = "dua3-fx"
-val projectVersion = "0.19.0-SNAPSHOT"
+val projectVersion = "0.19.0"
 
 include("fx-util")
 include("fx-util-db")
@@ -26,7 +26,7 @@ dependencyResolutionManagement {
             plugin("javafx", "org.openjfx.javafxplugin").version("0.0.13")
 
             version("cabe", "1.0.0")
-            version("dua3-utility", "10.2.1-SNAPSHOT")
+            version("dua3-utility", "10.2.1")
             version("javafx", "19")
             version("ikonli", "12.3.1")
             version("junit", "5.9.0")

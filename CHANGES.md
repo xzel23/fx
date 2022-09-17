@@ -1,8 +1,16 @@
 Changelog
 =========
 
-#### Version 0.17.1 (to be released)
- - small fixes and improvements
+#### Version 0.19.0
+- use version catalog for dependencies
+- update dependencies
+- JavaFX 19
+- fixes and improvements
+
+#### Version 0.18.0
+ - update dependencies
+ - log through SLF4J
+ - fixes and improvements
 
 #### Version 0.17.0
  - requires Java 17!
