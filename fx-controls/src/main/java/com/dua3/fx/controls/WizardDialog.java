@@ -20,9 +20,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.Consumer;
 
-
-import java.util.stream.Collectors;
-
 public class WizardDialog extends Dialog<Map<String,Object>> {
 
 	/** Logger instance */
@@ -39,7 +36,11 @@ public class WizardDialog extends Dialog<Map<String,Object>> {
 			// add current page to the stack, then build and return the result map
 			pageStack.add(current);
 
-			return pageStack.stream().collect(Collectors.toMap(Pair::first, p -> p.second().result, (a, b) -> b, LinkedHashMap::new));
+			// WARNING: do not use collect(Collectors.toMap(...)) because it cannot handle null
+			LinkedHashMap<String, Object> result = new LinkedHashMap<>();
+			pageStack.forEach(p -> result.put(p.first(), p.second().result) );
+
+			return result;
 		});
 	}
 
