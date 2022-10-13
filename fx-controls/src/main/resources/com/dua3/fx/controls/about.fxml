@@ -7,8 +7,8 @@
     <content>
         <StackPane id="content" maxHeight="-Infinity" maxWidth="Infinity">
             <VBox maxHeight="-Infinity" maxWidth="Infinity">
-                <Label id ="title" fx:id="lTitle" text="name" />
-                <Label id="version" fx:id="lVersion" text="version" />
+                <Label id="title" fx:id="lTitle" text="name"/>
+                <Label id="version" fx:id="lVersion" text="version"/>
                 <Label id="copyright" fx:id="lCopyright" text="copyright"/>
                 <Hyperlink id="mail" fx:id="hlMail" onAction="#mail" text="email"/>
             </VBox>

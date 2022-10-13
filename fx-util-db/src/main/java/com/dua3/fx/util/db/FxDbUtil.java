@@ -94,40 +94,26 @@ public final class FxDbUtil {
             // define the formatting
             Function<Object, String> format;
             switch (sqlType) {
-            case DATE:
-            	format = item -> DbUtil.toLocalDate(item).format(dateFormatter);
-            	break;
-            case TIMESTAMP:
-            	format = item -> DbUtil.toLocalDateTime(item).format(timestampFormatter);
-                break;
-            case TIME:
-                format = item ->  DbUtil.toLocalDateTime(item).format(timeFormatter);
-                break;
+                case DATE -> format = item -> DbUtil.toLocalDate(item).format(dateFormatter);
+                case TIMESTAMP -> format = item -> DbUtil.toLocalDateTime(item).format(timestampFormatter);
+                case TIME -> format = item -> DbUtil.toLocalDateTime(item).format(timeFormatter);
 
-            // numbers that have scale
-            case DECIMAL:
-            case NUMERIC:
-                if (scale > 0) {
-                    //noinspection StringConcatenationInFormatCall
-                    format = item -> String.format(
+                // numbers that have scale
+                case DECIMAL, NUMERIC -> {
+                    if (scale > 0) {
+                        //noinspection StringConcatenationInFormatCall
+                        format = item -> String.format(
                                 locale,
-                                "%.0"+scale+"f",
-                                ((Number)item).doubleValue());
-                } else {
-                    format = String::valueOf;
+                                "%.0" + scale + "f",
+                                ((Number) item).doubleValue());
+                    } else {
+                        format = String::valueOf;
+                    }
                 }
-                break;
 
-            // numbers that do not have scale
-            case DOUBLE:
-            case REAL:
-            case FLOAT:
-                format = String::valueOf;
-                break;
-
-            default:
-            	format = String::valueOf;
-            	break;
+                // numbers that do not have scale
+                case DOUBLE, REAL, FLOAT -> format = String::valueOf;
+                default -> format = String::valueOf;
             }
             LOG.trace("column name: {} label: {} type: {} scale: {}", name, label, sqlType, scale);
 
