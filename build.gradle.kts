@@ -15,6 +15,7 @@
 import java.net.URI
 import com.adarshr.gradle.testlogger.theme.ThemeType
 
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     id("java-library")
     id("maven-publish")
