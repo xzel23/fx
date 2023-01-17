@@ -29,7 +29,7 @@ dependencyResolutionManagement {
             version("dua3-utility", "10.2.5")
             version("javafx", "19")
             version("ikonli", "12.3.1")
-            version("junit", "5.9.1")
+            version("junit", "5.9.2")
             version("log4j", "2.19.0")
             version("slf4j", "2.0.6")
 
