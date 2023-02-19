@@ -95,16 +95,10 @@ public class FxFontUtil implements FontUtil<Font> {
 
         boolean mono;
         switch (types) {
-            case ALL:
-                return fonts;
-            case MONOSPACED:
-                mono = true;
-                break;
-            case PROPORTIONAL:
-                mono = false;
-                break;
-            default:
-                throw new IllegalArgumentException("unknown value: "+types);
+            case ALL -> { return fonts; }
+            case MONOSPACED -> mono = true;
+            case PROPORTIONAL -> mono = false;
+            default -> throw new IllegalArgumentException("unknown value: " + types);
         }
 
         List<String> list = new ArrayList<>();
