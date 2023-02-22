@@ -1,6 +1,10 @@
 Changelog
 =========
 
+#### Version 0.2x.x
+ - updates and bugfixes; 
+ - use GitHub CI
+
 #### Version 0.19.0
 - use version catalog for dependencies
 - update dependencies

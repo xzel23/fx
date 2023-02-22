@@ -99,8 +99,7 @@ public class OptionsPane extends GridPane implements InputControl<Arguments>{
 
 	@SuppressWarnings("unchecked")
 	private <T> InputControl<T> createControl(Arguments values, Option<T> option) {
-		if (option instanceof ChoiceOption<?>) {
-			ChoiceOption<T> co = (ChoiceOption<T>) option;
+		if (option instanceof ChoiceOption<T> co) {
 			return new ChoiceInputControl<>(co, () -> dflt.get().getOrThrow(co));
 		} else if (option instanceof Flag f) {
 			Supplier<Boolean> dfltValue = () -> (dflt.get().isSet(f));
