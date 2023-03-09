@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+import java.util.regex.Pattern;
 
 
 /**
@@ -19,6 +20,7 @@ public final class FxLauncher {
      * Logger
      */
     private static final Logger LOG = LoggerFactory.getLogger(FxLauncher.class);
+    private static final Pattern PATTERN_PATH_OR_STARTS_WITH_DOUBLE_DASH = Pattern.compile("^(--|[a-zA-Z]:[/\\\\]).*");
 
     static {
         // start the runtime
@@ -102,7 +104,7 @@ public final class FxLauncher {
         StringBuilder arg = new StringBuilder();
         for (String s : args) {
             // split if s contains spaces, starts with a double dash, or a windows path
-            if (s.indexOf(' ') >= 0 || s.matches("^(--|[a-zA-Z]:[/\\\\]).*")) {
+            if (s.indexOf(' ') >= 0 || PATTERN_PATH_OR_STARTS_WITH_DOUBLE_DASH.matcher(s).matches()) {
                 if (!arg.isEmpty()) {
                     argL.add(arg.toString());
                 }
