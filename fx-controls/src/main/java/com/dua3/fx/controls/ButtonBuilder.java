@@ -15,10 +15,11 @@ public abstract class ButtonBuilder<B extends ButtonBase> {
     private EventHandler<ActionEvent> action = null;
 
     /**
-     * Factory method for {@link ButtonBuilder} instances. 
+     * Factory method for {@link ButtonBuilder} instances.
+     *
      * @param factory the factory method for Button instances
+     * @param <B>     the button type
      * @return ButtonBuilder instance
-     * @param <B> the button type
      */
     public static <B extends ButtonBase> ButtonBuilder<B> builder(Supplier<B> factory) {
         return new ButtonBuilder<>() {
@@ -28,9 +29,10 @@ public abstract class ButtonBuilder<B extends ButtonBase> {
             }
         };
     }
-    
+
     /**
      * Set text for the button.
+     *
      * @param text the text
      * @return this ButtonBuilder instance
      */
@@ -41,6 +43,7 @@ public abstract class ButtonBuilder<B extends ButtonBase> {
 
     /**
      * Set graphic for the button.
+     *
      * @param graphic the graphic to use
      * @return this ButtonBuilder instance
      */
@@ -51,6 +54,7 @@ public abstract class ButtonBuilder<B extends ButtonBase> {
 
     /**
      * Set tooltip for the button.
+     *
      * @param tooltip the tooltip text
      * @return this ButtonBuilder instance
      */
@@ -61,6 +65,7 @@ public abstract class ButtonBuilder<B extends ButtonBase> {
 
     /**
      * Set event handler for the button.
+     *
      * @param action the {@link EventHandler}
      * @return this ButtonBuilder instance
      */
@@ -71,6 +76,7 @@ public abstract class ButtonBuilder<B extends ButtonBase> {
 
     /**
      * Set action for the button.
+     *
      * @param action the action to perform when pressed
      * @return this ButtonBuilder instance
      */
@@ -81,6 +87,7 @@ public abstract class ButtonBuilder<B extends ButtonBase> {
 
     /**
      * Build the button.
+     *
      * @return new button instance
      */
     public B build() {
@@ -103,5 +110,5 @@ public abstract class ButtonBuilder<B extends ButtonBase> {
     }
 
     protected abstract B newButton();
-    
+
 }

@@ -15,7 +15,7 @@
 description = "JavaFX utilities (core)"
 
 javafx {
-    modules = listOf( "javafx.controls", "javafx.fxml" )
+    modules = listOf("javafx.controls", "javafx.fxml")
 }
 
 dependencies {

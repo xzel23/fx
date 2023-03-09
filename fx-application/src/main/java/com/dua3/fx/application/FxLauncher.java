@@ -10,14 +10,11 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 
-
 /**
  * Application launcher class.
  */
 public final class FxLauncher {
 
-    private FxLauncher() {}
-    
     /**
      * Logger
      */
@@ -36,24 +33,22 @@ public final class FxLauncher {
             }
         }
     }
-    
+
+    private FxLauncher() {}
+
     /**
      * Start application.
      * This method is a drop-in replacement for `Application.launch(cls, args)`.
      * <ul>
-     *     <li><strong>Command line arguments</strong> are re-parsed on windows, for details see 
+     *     <li><strong>Command line arguments</strong> are re-parsed on windows, for details see
      *     {@link #reparseCommandLine(String[])}.
      * </ul>
      *
-     * @param <A>
-     *  the application class
-     * @param cls
-     *  the application class
-     * @param args
-     *  the command line arguments
+     * @param <A>  the application class
+     * @param cls  the application class
+     * @param args the command line arguments
      */
-    public static
-    <A extends Application>
+    public static <A extends Application>
     void launch(Class<A> cls, String... args) {
         LOG.debug("arguments: {}", (Object) args);
 
@@ -74,12 +69,12 @@ public final class FxLauncher {
      * will be split into multiple parts. This method tries to restore what was probably meant.
      * It works by iterating over the given array of arguments like this:
      * <pre>
-     * let arg = "" 
+     * let arg = ""
      * for each s in args:
      *
      *   if s starts with "--" // start of an option
-     *   or s starts with "[letter]:\" or "[letter]:/" // probable file path 
-     *   then 
+     *   or s starts with "[letter]:\" or "[letter]:/" // probable file path
+     *   then
      *     append arg to the output array
      *     arg = ""
      *
@@ -92,23 +87,22 @@ public final class FxLauncher {
      * <li><strong>Other platforms:</strong>
      * The input array is returned without any changes.
      * </ul>
-     * @param args
-     *   the command line arguments
-     * @return
-     *   the reparsed argument array
+     *
+     * @param args the command line arguments
+     * @return the reparsed argument array
      * @deprecated this method is a workaround that will be removed once the underlying issue is fixed in the JDK.
      */
     @Deprecated
     private static List<String> reparseCommandLine(String[] args) {
-        if (!Platform.isWindows() || args.length<2) {
+        if (!Platform.isWindows() || args.length < 2) {
             return List.of(args);
         }
 
         List<String> argL = new ArrayList<>();
         StringBuilder arg = new StringBuilder();
-        for (String s:args) {
+        for (String s : args) {
             // split if s contains spaces, starts with a double dash, or a windows path
-            if (s.indexOf(' ')>=0 || s.matches("^(--|[a-zA-Z]:[/\\\\]).*")) {
+            if (s.indexOf(' ') >= 0 || s.matches("^(--|[a-zA-Z]:[/\\\\]).*")) {
                 if (!arg.isEmpty()) {
                     argL.add(arg.toString());
                 }
@@ -126,7 +120,7 @@ public final class FxLauncher {
 
         LOG.debug("original arguments: {}", (Object) args);
         LOG.debug("re-parsed arguments: {}", argL);
-        
+
         return argL;
     }
 

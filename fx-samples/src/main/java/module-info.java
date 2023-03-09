@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-module  com.dua3.fx.samples {
-	exports com.dua3.fx.samples;
-	opens com.dua3.fx.samples;
-	
-	requires javafx.controls;
+module com.dua3.fx.samples {
+    exports com.dua3.fx.samples;
+    opens com.dua3.fx.samples;
 
-	requires com.dua3.utility;
-	requires  com.dua3.fx.icons;
-    requires  com.dua3.fx.controls;
-	requires  com.dua3.fx.util;
+    requires javafx.controls;
+
+    requires com.dua3.utility;
+    requires com.dua3.fx.icons;
+    requires com.dua3.fx.controls;
+    requires com.dua3.fx.util;
 }

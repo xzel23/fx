@@ -57,13 +57,13 @@ public final class Controls {
      * @return new SliderBuilder
      */
     public static SliderBuilder slider() {
-        return new SliderBuilder(SliderWithButtons.Mode.SLIDER_ONLY, (v,t) -> "");
+        return new SliderBuilder(SliderWithButtons.Mode.SLIDER_ONLY, (v, t) -> "");
     }
 
     /**
      * Create {@link SliderBuilder} instance.
      *
-     * @param mode the {@link SliderWithButtons.Mode}
+     * @param mode      the {@link SliderWithButtons.Mode}
      * @param formatter the formatter that generates the label text; first argument is current value and second is max value
      * @return new SliderBuilder
      */
@@ -83,10 +83,11 @@ public final class Controls {
 
     /**
      * Get graphic for an icon by icon name.
+     *
      * @param name the icon name
      * @return a node for the graphic
      * @throws IllegalStateException if no icon with a matching name is found
-     * @see IconUtil#iconFromName(String) 
+     * @see IconUtil#iconFromName(String)
      */
     public static Node graphic(String name) {
         return icon(name).node();
@@ -94,6 +95,7 @@ public final class Controls {
 
     /**
      * Get icon by name.
+     *
      * @param name the icon name
      * @return icon
      * @throws IllegalStateException if no icon with a matching name is found
@@ -105,11 +107,12 @@ public final class Controls {
 
     /**
      * Get graphic for an icon by icon name.
+     *
      * @param name the icon name
      * @param size the requested size
      * @return a node for the graphic
      * @throws IllegalStateException if no icon with a matching name is found
-     * @see IconUtil#iconFromName(String) 
+     * @see IconUtil#iconFromName(String)
      */
     public static Node graphic(String name, int size) {
         Icon icon = icon(name);
@@ -119,8 +122,9 @@ public final class Controls {
 
     /**
      * Get graphic for an icon by icon name.
-     * @param name the icon name
-     * @param size the requested size
+     *
+     * @param name  the icon name
+     * @param size  the requested size
      * @param paint the {@link Paint} to use
      * @return a node for the graphic
      * @throws IllegalStateException if no icon with a matching name is found
@@ -135,8 +139,9 @@ public final class Controls {
 
     /**
      * Get graphic for an icon by icon name.
-     * @param name the icon name
-     * @param size the requested size
+     *
+     * @param name  the icon name
+     * @param size  the requested size
      * @param color the {@link Color} to use
      * @return a node for the graphic
      * @throws IllegalStateException if no icon with a matching name is found
@@ -151,8 +156,9 @@ public final class Controls {
 
     /**
      * Make a region resizable by dragging its edge.
-     * @param region the region
-     * @param borders the borders to make draggable               
+     *
+     * @param region  the region
+     * @param borders the borders to make draggable
      */
     public static void makeResizable(Region region, Border... borders) {
         DragResizer.makeResizable(region, 6, borders);
@@ -160,9 +166,10 @@ public final class Controls {
 
     /**
      * Make a region resizable by dragging its edge.
-     * @param region the region
+     *
+     * @param region       the region
      * @param resizeMargin size of the draggable margin
-     * @param borders the borders to make draggable               
+     * @param borders      the borders to make draggable
      */
     public static void makeResizable(Region region, int resizeMargin, Border... borders) {
         DragResizer.makeResizable(region, resizeMargin, borders);

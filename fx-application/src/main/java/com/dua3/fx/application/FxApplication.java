@@ -51,103 +51,69 @@ import java.util.ResourceBundle;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
-public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxController<A, C, ?>> 
-        extends Application  {
+public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxController<A, C, ?>>
+        extends Application {
 
     /**
      * Logger
      */
     private static final Logger LOG = LoggerFactory.getLogger(FxApplication.class);
-
-    /**
-     * Cleaner
-     */
-    private static Cleaner cleaner = null;
-
-    /**
-     * List of Resource cleanup tasks to run on application stop.
-     */
-    private final List<Runnable> cleanupActions = new ArrayList<>();
-    
-    // - constants -
-
     /**
      * The command line argument to set the logging level (i.e. "--log=FINE").
      */
     public static final String ARG_LOG_LEVEL = "log";
-
     /**
      * Marker to indicate modified state in title.
      */
     private static final String MARKER_MODIFIED = "*";
-    
+
+    // - constants -
     /**
      * Marker to indicate unmodified state in title.
      */
     private static final String MARKER_UNMODIFIED = " ";
-
     /**
      * The user's home folder.
      */
     private static final Path USER_HOME = Paths.get(System.getProperty("user.home"));
-
     /**
      * The name of the default bundle that is used if the application does not provide its own bundle.
      */
     private static final String DEFAULT_BUNDLE = "fxapp";
-
+    /**
+     * Cleaner
+     */
+    private static Cleaner cleaner = null;
+    /**
+     * List of Resource cleanup tasks to run on application stop.
+     */
+    private final List<Runnable> cleanupActions = new ArrayList<>();
     /**
      * The resource bundle
      */
     private final ResourceBundle resources;
-    
+    private final Path applicationDataDir = initApplicationDataDir();
+
+    // - instance -
     /**
      * Preferences
      */
     private Preferences preferences = null;
-
-    // - instance -
-
     /**
      * The controller instance.
      */
     private C controller;
-
-    /**
-     * The main stage.
-     */
-    private Stage mainStage;
 
     // - UI -
 
     // - static initialization -
 
     // - Code -
-
     /**
-     * Get default resource bundle.
-     * @return the default resource bundle
+     * The main stage.
      */
-    public static ResourceBundle getDefaultBundle() {
-        // load resource bundle
-        Locale locale = Locale.getDefault();
-        LOG.debug("current locale is: {}", locale);
-        ResourceBundle resources = ResourceBundle.getBundle(FxApplication.class.getPackageName()+"."+DEFAULT_BUNDLE, locale);
-        LOG.debug("resource bundle uses locale: {}", resources.getLocale());
-        return resources;
-    }
+    private Stage mainStage;
 
-    /**
-     * Get default Cleaner.
-     * @return the {@link Cleaner} instance
-     */
-    public static synchronized Cleaner getCleaner() {
-        if (cleaner == null) {
-            cleaner = Cleaner.create();
-        }
-        return cleaner;
-    }
-    
     /**
      * Constructor.
      */
@@ -157,34 +123,45 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
 
     /**
      * Constructor.
-     * 
+     *
      * @param resourceBundle the resource bundle for retrieving resources
      */
     protected FxApplication(ResourceBundle resourceBundle) {
         this.resources = Objects.requireNonNull(resourceBundle);
     }
-    
+
     /**
-     * Get application main FXML file.
-     * @return the path to the FXML file to load, relative to the
-     *                 application class
+     * Get default resource bundle.
+     *
+     * @return the default resource bundle
      */
-    protected abstract URL getFxml();
+    public static ResourceBundle getDefaultBundle() {
+        // load resource bundle
+        Locale locale = Locale.getDefault();
+        LOG.debug("current locale is: {}", locale);
+        ResourceBundle resources = ResourceBundle.getBundle(FxApplication.class.getPackageName() + "." + DEFAULT_BUNDLE, locale);
+        LOG.debug("resource bundle uses locale: {}", resources.getLocale());
+        return resources;
+    }
+
+    /**
+     * Get default Cleaner.
+     *
+     * @return the {@link Cleaner} instance
+     */
+    public static synchronized Cleaner getCleaner() {
+        if (cleaner == null) {
+            cleaner = Cleaner.create();
+        }
+        return cleaner;
+    }
 
     /**
      * Get application main resource bundle.
+     *
      * @return the resource bundle or {@code null}
      */
     protected ResourceBundle getResourceBundle() {
-        return null;
-    }
-    
-    /**
-     * Get application main CSS file.
-     * @return the path to the CSS file to load, relative to the
-     *                 application class, or {@code null}
-     */
-    protected URL getCss() {
         return null;
     }
 
@@ -274,6 +251,24 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
         LOG.debug("application started");
     }
 
+    /**
+     * Get application main FXML file.
+     *
+     * @return the path to the FXML file to load, relative to the
+     * application class
+     */
+    protected abstract URL getFxml();
+
+    /**
+     * Get application main CSS file.
+     *
+     * @return the path to the CSS file to load, relative to the
+     * application class, or {@code null}
+     */
+    protected URL getCss() {
+        return null;
+    }
+
     protected void updateApplicationTitle() {
         StringBuilder title = new StringBuilder();
         title.append(resources.getString("fx.application.name"));
@@ -282,7 +277,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
 
         if (document != null) {
             String locStr = document.hasLocation() ?
-                    FxUtil.asText(document.getLocation()) : 
+                    FxUtil.asText(document.getLocation()) :
                     resources.getString("fx.application.text.untitled");
             boolean dirty = document.isDirty();
 
@@ -296,6 +291,18 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
         }
 
         mainStage.setTitle(title.toString());
+    }
+
+    @Override
+    public void stop() throws Exception {
+        super.stop();
+        cleanupActions.forEach(task -> {
+            try {
+                task.run();
+            } catch (Exception e) {
+                LOG.warn("error in cleanup task", e);
+            }
+        });
     }
 
     /**
@@ -313,17 +320,17 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
         }
 
         mainStage.close();
-        
+
         mainStage = null; // make it garbage collectable
     }
 
     /**
-     * Get the stage.
+     * Check whether a preferences object for this class has been created.
      *
-     * @return the application's primary stage, or null if the application has been closed
+     * @return true, if a Preferences object has been created
      */
-    public Stage getStage() {
-        return mainStage;
+    protected final boolean hasPreferences() {
+        return preferences != null;
     }
 
     /**
@@ -341,17 +348,15 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
         }
         return preferences;
     }
-    
-    /**
-     * Check whether a preferences object for this class has been created.
-     *
-     * @return true, if a Preferences object has been created
-     */
-    protected final boolean hasPreferences() {
-        return preferences != null;
-    }
 
-    private final Path applicationDataDir = initApplicationDataDir();
+    /**
+     * Get the stage.
+     *
+     * @return the application's primary stage, or null if the application has been closed
+     */
+    public Stage getStage() {
+        return mainStage;
+    }
 
     private Path initApplicationDataDir() {
         try {
@@ -388,7 +393,8 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
 
     /**
      * Get this applications data folder.
-     * @return  the data folder for this application
+     *
+     * @return the data folder for this application
      */
     public Path getDataDir() {
         return applicationDataDir;
@@ -396,6 +402,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
 
     /**
      * Get the controller instance.
+     *
      * @return the controller
      */
     protected C getController() {
@@ -404,8 +411,9 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
 
     /**
      * Show error dialog.
-     * @param header	the header
-     * @param text		the text
+     *
+     * @param header the header
+     * @param text   the text
      */
     public void showErrorDialog(String header, String text) {
         Dialogs.error(mainStage)
@@ -418,9 +426,10 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
 
     /**
      * If this application uses preferences, set the value. Otherwise, do nothing.
+     *
      * @param key   the key
      * @param value the value
-     * @return  true if the key was set in the preferences, otherwise false
+     * @return true if the key was set in the preferences, otherwise false
      */
     public boolean setPreferenceOptional(String key, String value) {
         if (hasPreferences()) {
@@ -434,6 +443,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
 
     /**
      * Set preference value
+     *
      * @param key   the key
      * @param value the value
      */
@@ -443,8 +453,9 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
 
     /**
      * Get the preference value.
-     * @param key   the preference key
-     * @param def   the default value
+     *
+     * @param key the preference key
+     * @param def the default value
      * @return the value stored in the preferences for this key if present, or the default value
      */
     public String getPreference(String key, String def) {
@@ -452,9 +463,49 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
     }
 
     /**
-     * Show this application's preferences dialog.
+     * Get file extension filter for all files ('*.*').
+     *
+     * @return file extension filter accepting all files
      */
-    public abstract void showPreferencesDialog();
+    public FileChooser.ExtensionFilter getExtensionFilterAllFiles() {
+        return new FileChooser.ExtensionFilter(resources.getString("fx.application.filter.all_files"), "*.*");
+    }
+
+    /**
+     * Get the user's home directory.
+     *
+     * @return the user's home directory
+     */
+    public Path getUserHome() {
+        return USER_HOME;
+    }
+
+    @SafeVarargs
+    public final String getMessage(String key, Pair<String, String>... substitutions) {
+        return TextUtil.transform(resources.getString(key), substitutions);
+    }
+
+    public void openFiles(OpenFilesEvent e) {
+        e.getFiles().forEach(f -> Platform.runLater(() -> {
+            if (f.exists()) {
+                mainStage.show();
+                controller.open(f.toURI());
+            } else {
+                LOG.warn("openFiles: ignoring non-existent file: {}", f);
+            }
+        }));
+    }
+
+    public void openURI(OpenURIEvent e) {
+        Platform.runLater(() -> {
+            mainStage.show();
+            controller.open(e.getURI());
+        });
+    }
+
+    public void handleAbout(AboutEvent e) {
+        Platform.runLater(this::showAboutDialog);
+    }
 
     /**
      * Show this application's about dialog.
@@ -465,8 +516,8 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
 
     /**
      * Show this application's about dialog.
-     * 
-     * @param css   URL to the CSS data
+     *
+     * @param css URL to the CSS data
      */
     protected void showAboutDialog(URL css) {
         Dialogs.about(mainStage)
@@ -493,59 +544,23 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
 
     /**
      * Get this application's version string.
+     *
      * @return version string
      */
     public abstract String getVersion();
-
-    /**
-     * Get file extension filter for all files ('*.*').
-     * @return file extension filter accepting all files
-     */
-    public FileChooser.ExtensionFilter getExtensionFilterAllFiles() {
-        return new FileChooser.ExtensionFilter(resources.getString("fx.application.filter.all_files"), "*.*");
-    }
-
-    /**
-     * Get the user's home directory. 
-     * @return the user's home directory
-     */
-    public Path getUserHome() {
-        return USER_HOME;
-    }
-    
-    @SafeVarargs
-    public final String getMessage(String key, Pair<String,String>... substitutions) {
-        return TextUtil.transform(resources.getString(key), substitutions);
-    }
-
-    public void openFiles(OpenFilesEvent e) {
-        e.getFiles().forEach(f -> Platform.runLater(() -> {
-            if (f.exists()) {
-                mainStage.show();
-                controller.open(f.toURI());
-            } else {
-                LOG.warn("openFiles: ignoring non-existent file: {}", f );
-            }
-        }));
-    }
-
-    public void openURI(OpenURIEvent e) {
-        Platform.runLater(() -> {
-            mainStage.show();
-            controller.open(e.getURI());
-        });
-    }
-
-    public void handleAbout(AboutEvent e) {
-        Platform.runLater(this::showAboutDialog);
-    }
 
     public void handlePreferences(PreferencesEvent e) {
         Platform.runLater(this::showPreferencesDialog);
     }
 
     /**
+     * Show this application's preferences dialog.
+     */
+    public abstract void showPreferencesDialog();
+
+    /**
      * Add a resource cleanup action to run when the application stops.
+     *
      * @param task the action to perform
      */
     public void addCleanupAction(Runnable task) {
@@ -554,21 +569,10 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
 
     /**
      * Remove a resource cleanup action.
+     *
      * @param task the action to remove
      */
     public void removeCleanupAction(Runnable task) {
         cleanupActions.remove(task);
-    }
-    
-    @Override
-    public void stop() throws Exception {
-        super.stop();
-        cleanupActions.forEach(task -> {
-            try {
-                task.run();
-            } catch (Exception e) {
-                LOG.warn("error in cleanup task", e);
-            }
-        });
     }
 }

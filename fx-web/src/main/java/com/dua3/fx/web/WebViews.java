@@ -33,21 +33,27 @@ import java.util.Objects;
 import java.util.function.Predicate;
 
 
-
 public final class WebViews {
+    private static final Logger LOG = LoggerFactory.getLogger(WebViews.class);
+
     private WebViews() {
         // utility class
     }
 
-    private static final Logger LOG = LoggerFactory.getLogger(WebViews.class);
-
-    public static void setConfirmationHandler(WebEngine engine) {
-        engine.setConfirmHandler(s -> Dialogs.confirmation(null).header("%s", s).buttons(ButtonType.YES, ButtonType.NO)
-                .defaultButton(ButtonType.NO).showAndWait().filter(b -> b == ButtonType.YES).isPresent());
+    public static void setupEngine(WebEngine engine, Logger logger) {
+        setAlertHandler(engine);
+        setConfirmationHandler(engine);
+        setPromptHandler(engine);
+        setLogger(engine, logger);
     }
 
     public static void setAlertHandler(WebEngine engine) {
         engine.setOnAlert(e -> Dialogs.warning(null).header("%s", e.getData()).showAndWait());
+    }
+
+    public static void setConfirmationHandler(WebEngine engine) {
+        engine.setConfirmHandler(s -> Dialogs.confirmation(null).header("%s", s).buttons(ButtonType.YES, ButtonType.NO)
+                .defaultButton(ButtonType.NO).showAndWait().filter(b -> b == ButtonType.YES).isPresent());
     }
 
     public static void setPromptHandler(WebEngine engine) {
@@ -80,60 +86,6 @@ public final class WebViews {
         return success;
     }
 
-    public static void setupEngine(WebEngine engine, Logger logger) {
-        setAlertHandler(engine);
-        setConfirmationHandler(engine);
-        setPromptHandler(engine);
-        setLogger(engine, logger);
-    }
-
-    public static class JSLogger {
-        private final Logger logger;
-
-        public JSLogger(Logger logger) {
-            this.logger = Objects.requireNonNull(logger);
-        }
-
-        private static String formatMessage(JSObject args) {
-            Object objLength = args.getMember("length");
-
-            if (!(objLength instanceof Integer)) {
-                return String.valueOf(args);
-            }
-
-            int length = (int) objLength;
-
-            String msg = String.valueOf(args.getSlot(0));
-
-            Object[] restArgs = new Object[Math.max(0, length - 1)];
-            for (int i = 1; i < length; i++) {
-                restArgs[i - 1] = args.getSlot(i);
-            }
-
-            return String.format(msg, restArgs);
-        }
-
-        public void error(JSObject args) {
-            logger.atError().setMessage("{}").addArgument(() -> formatMessage(args)).log();
-        }
-
-        public void warn(JSObject args) {
-            logger.atWarn().setMessage("{}").addArgument(() -> formatMessage(args)).log();
-        }
-
-        public void info(JSObject args) {
-            logger.atInfo().setMessage("{}").addArgument(() -> formatMessage(args)).log();
-        }
-
-        public void debug(JSObject args) {
-            logger.atDebug().setMessage("{}").addArgument(() -> formatMessage(args)).log();
-        }
-
-        public void trace(JSObject args) {
-            logger.atTrace().setMessage("{}").addArgument(() -> formatMessage(args)).log();
-        }
-    }
-
     public static Object callMethod(JSObject object, String methodName, Object[] args) {
         try {
             return object.call(methodName, args);
@@ -159,6 +111,53 @@ public final class WebViews {
     public static void filterEvents(WebView wv, Predicate<KeyEvent> filterKey, Predicate<MouseEvent> filterMouse) {
         WebEventDispatcher dispatcher = new WebEventDispatcher(wv.getEventDispatcher(), filterKey, filterMouse);
         wv.setEventDispatcher(dispatcher);
+    }
+
+    public static class JSLogger {
+        private final Logger logger;
+
+        public JSLogger(Logger logger) {
+            this.logger = Objects.requireNonNull(logger);
+        }
+
+        public void error(JSObject args) {
+            logger.atError().setMessage("{}").addArgument(() -> formatMessage(args)).log();
+        }
+
+        private static String formatMessage(JSObject args) {
+            Object objLength = args.getMember("length");
+
+            if (!(objLength instanceof Integer)) {
+                return String.valueOf(args);
+            }
+
+            int length = (int) objLength;
+
+            String msg = String.valueOf(args.getSlot(0));
+
+            Object[] restArgs = new Object[Math.max(0, length - 1)];
+            for (int i = 1; i < length; i++) {
+                restArgs[i - 1] = args.getSlot(i);
+            }
+
+            return String.format(msg, restArgs);
+        }
+
+        public void warn(JSObject args) {
+            logger.atWarn().setMessage("{}").addArgument(() -> formatMessage(args)).log();
+        }
+
+        public void info(JSObject args) {
+            logger.atInfo().setMessage("{}").addArgument(() -> formatMessage(args)).log();
+        }
+
+        public void debug(JSObject args) {
+            logger.atDebug().setMessage("{}").addArgument(() -> formatMessage(args)).log();
+        }
+
+        public void trace(JSObject args) {
+            logger.atTrace().setMessage("{}").addArgument(() -> formatMessage(args)).log();
+        }
     }
 
     /**

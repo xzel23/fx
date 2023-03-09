@@ -20,186 +20,197 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.Consumer;
 
-public class WizardDialog extends Dialog<Map<String,Object>> {
+public class WizardDialog extends Dialog<Map<String, Object>> {
 
-	/** Logger instance */
+    /**
+     * Logger instance
+     */
     private static final Logger LOG = LoggerFactory.getLogger(WizardDialog.class);
+    /**
+     * Stack of displayed pages (for navigating back).
+     */
+    private final ObservableList<Pair<String, Page<?, ?>>> pageStack = FXCollections.observableArrayList();
+    /**
+     * Cancelable flag.
+     */
+    private boolean cancelable = true;
+    /**
+     * Flag: show 'previous'-button?
+     */
+    private boolean showPreviousButton = true;
+    /**
+     * Map {@code <page-name> |-> <page-information>}.
+     */
+    private Map<String, Page<?, ?>> pages;
+    /**
+     * The currently displayed page.
+     */
+    private Pair<String, Page<?, ?>> current;
 
-    /** Cancelable flag. */
-	private boolean cancelable = true;
+    public WizardDialog() {
+        setResultConverter(btn -> {
+            // add current page to the stack, then build and return the result map
+            pageStack.add(current);
 
-	/** Flag: show 'previous'-button? */
-	private boolean showPreviousButton = true;
+            // WARNING: do not use collect(Collectors.toMap(...)) because it cannot handle null
+            LinkedHashMap<String, Object> result = new LinkedHashMap<>();
+            pageStack.forEach(p -> result.put(p.first(), p.second().result));
 
-	public WizardDialog() {
-		setResultConverter(btn -> {
-			// add current page to the stack, then build and return the result map
-			pageStack.add(current);
+            return result;
+        });
+    }
 
-			// WARNING: do not use collect(Collectors.toMap(...)) because it cannot handle null
-			LinkedHashMap<String, Object> result = new LinkedHashMap<>();
-			pageStack.forEach(p -> result.put(p.first(), p.second().result) );
+    public void setPages(Map<String, Page<?, ?>> pages, String startPage) {
+        this.pages = pages;
 
-			return result;
-		});
-	}
+        checkPages();
 
-	/**
-	 * Check if dialog can be canceled.
-	 * @return true if dialog is cancelable
-	 */
-	public boolean isCancelable() {
-		return cancelable;
-	}
+        setPage(startPage);
+    }
 
-	/**
-	 * Check if a 'previous' ( or 'navigate-back') button should be displayed.
-	 * @return true if dialog is cancelable
-	 */
-	public boolean isShowPreviousButton() {
-		return showPreviousButton;
-	}
+    private void checkPages() {
+        Set<String> pageNames = pages.keySet();
+        for (Entry<String, Page<?, ?>> entry : pages.entrySet()) {
+            String name = entry.getKey();
+            Page<?, ?> page = entry.getValue();
+            InputDialogPane<?> pane = page.getPane();
 
-	/**
-	 * Wizard page information class.
-	 */
-	static class Page<D extends InputDialogPane<R>,R> {
-		private D pane;
-		private String next;
-		private R result;
-		private ResultHandler<R> resultHandler;
+            // check page names
+            String next = page.getNext();
+            if (next != null && !pageNames.contains(next)) {
+                throw new IllegalStateException(String.format("Page '%s': next page doesn't exist ['%s']", name, next));
+            }
 
-		String getNext() {
-			return next;
-		}
+            // prepare buttons
+            pane.initButtons();
 
-		void setNext(String next) {
-			this.next = next;
-		}
+            // cancel button
+            if (isCancelable()) {
+                addButtonToDialogPane(page, ButtonType.CANCEL, p -> {}, null);
+            }
 
-		D getPane() {
-			return pane;
-		}
+            // next button
+            if (page.getNext() == null) {
+                addButtonToDialogPane(page, ButtonType.FINISH, p -> {}, pane.validProperty());
+            } else {
+                addButtonToDialogPane(
+                        page,
+                        ButtonType.NEXT,
+                        p -> {
+                            pageStack.add(Pair.of(name, page));
+                            setPage(page.getNext());
+                        },
+                        pane.validProperty());
+            }
 
-		void setPane(D pane, ResultHandler<R> resultHandler) {
-			this.pane = pane;
-			this.resultHandler = resultHandler;
-		}
+            // prev button
+            if (isShowPreviousButton()) {
+                addButtonToDialogPane(
+                        page,
+                        ButtonType.PREVIOUS,
+                        p -> setPage(pageStack.remove(pageStack.size() - 1).first()),
+                        Bindings.isNotEmpty(pageStack)
+                );
+            }
+        }
+    }
 
-		boolean apply(ButtonType btn) {
-			R r = pane.get();
-			boolean done = resultHandler.handleResult(btn, r);
-			this.result = done ? r : null;
-			return done;
-		}
-	}
+    private void setPage(String pageName) {
+        this.current = Pair.of(pageName, pages.get(pageName));
 
-	/** Map {@code <page-name> |-> <page-information>}. */
-	private Map<String, Page<?,?>> pages;
-	/** The currently displayed page. */
-	private Pair<String,Page<?,?>> current;
-	/** Stack of displayed pages (for navigating back). */
-	private final ObservableList<Pair<String,Page<?,?>>> pageStack = FXCollections.observableArrayList();
+        InputDialogPane<?> pane = current.second().pane;
+        setDialogPane(pane);
 
-	public void setPages(Map<String,Page<?,?>> pages, String startPage) {
-		this.pages = pages;
+        pane.init();
+        pane.layout();
+        pane.getScene().getWindow().sizeToScene();
 
-		checkPages();
+        LOG.debug("current page: {}", pageName);
+    }
 
-		setPage(startPage);
-	}
+    /**
+     * Check if dialog can be canceled.
+     *
+     * @return true if dialog is cancelable
+     */
+    public boolean isCancelable() {
+        return cancelable;
+    }
 
-	private void checkPages() {
-		Set<String> pageNames = pages.keySet();
-		for (Entry<String, Page<?,?>> entry: pages.entrySet()) {
-			String name = entry.getKey();
-			Page<?,?> page = entry.getValue();
-			InputDialogPane<?> pane = page.getPane();
+    private static void addButtonToDialogPane(
+            Page<?, ?> page,
+            ButtonType bt,
+            Consumer<InputDialogPane<?>> action,
+            BooleanExpression enabled) {
+        InputDialogPane<?> pane = page.pane;
+        List<ButtonType> buttons = pane.getButtonTypes();
 
-			// check page names
-			String next = page.getNext();
-			if (next != null && !pageNames.contains(next)) {
-				throw new IllegalStateException(String.format("Page '%s': next page doesn't exist ['%s']", name, next));
-			}
+        buttons.add(bt);
+        Button btn = (Button) pane.lookupButton(bt);
 
-			// prepare buttons
-			pane.initButtons();
+        // it seems counter-intuitive to use an event filter instead of a handler, but
+        // when using an event handler, Dialog.close() is called before our own
+        // event handler.
+        btn.addEventFilter(ActionEvent.ACTION, evt -> {
+            // get and translate result
+            if (!page.apply(bt)) {
+                LOG.debug("Button {}: result conversion failed", bt);
+                evt.consume();
+            }
 
-			// cancel button
-			if (isCancelable()) {
-				addButtonToDialogPane(page, ButtonType.CANCEL, p -> {}, null);
-			}
+            action.accept(page.getPane());
+        });
 
-			// next button
-			if (page.getNext()==null) {
-				addButtonToDialogPane(page, ButtonType.FINISH, p -> {}, pane.validProperty());
-			} else {
-				addButtonToDialogPane(
-						page,
-						ButtonType.NEXT,
-						p -> {
-							pageStack.add(Pair.of(name,page));
-							setPage(page.getNext());
-						},
-						pane.validProperty());
-			}
+        if (enabled != null) {
+            btn.disableProperty().bind(Bindings.not(enabled));
+        }
+    }
 
-			// prev button
-			if (isShowPreviousButton()) {
-				addButtonToDialogPane(
-						page,
-						ButtonType.PREVIOUS,
-						p -> setPage(pageStack.remove(pageStack.size()-1).first()),
-						Bindings.isNotEmpty(pageStack)
-				);
-			}
-		}
-	}
+    /**
+     * Check if a 'previous' ( or 'navigate-back') button should be displayed.
+     *
+     * @return true if dialog is cancelable
+     */
+    public boolean isShowPreviousButton() {
+        return showPreviousButton;
+    }
 
-	private void setPage(String pageName) {
-		this.current = Pair.of(pageName, pages.get(pageName));
+    public Page<?, ?> getCurrentPage() {
+        return current.second();
+    }
 
-		InputDialogPane<?> pane = current.second().pane;
-		setDialogPane(pane);
+    /**
+     * Wizard page information class.
+     */
+    static class Page<D extends InputDialogPane<R>, R> {
+        private D pane;
+        private String next;
+        private R result;
+        private ResultHandler<R> resultHandler;
 
-		pane.init();
-		pane.layout();
-		pane.getScene().getWindow().sizeToScene();
+        String getNext() {
+            return next;
+        }
 
-		LOG.debug("current page: {}", pageName);
-	}
+        void setNext(String next) {
+            this.next = next;
+        }
 
-	public Page<?,?> getCurrentPage() {
-		return current.second();
-	}
+        D getPane() {
+            return pane;
+        }
 
-	private static void addButtonToDialogPane(
-			Page<?, ?> page,
-			ButtonType bt,
-			Consumer<InputDialogPane<?>> action,
-			BooleanExpression enabled) {
-		InputDialogPane<?> pane = page.pane;
-		List<ButtonType> buttons = pane.getButtonTypes();
+        void setPane(D pane, ResultHandler<R> resultHandler) {
+            this.pane = pane;
+            this.resultHandler = resultHandler;
+        }
 
-		buttons.add(bt);
-		Button btn = (Button) pane.lookupButton(bt);
-
-		// it seems counter-intuitive to use an event filter instead of a handler, but
-		// when using an event handler, Dialog.close() is called before our own
-		// event handler.
-		btn.addEventFilter(ActionEvent.ACTION,  evt -> {
-			// get and translate result
-			if (!page.apply(bt)) {
-				LOG.debug("Button {}: result conversion failed", bt);
-				evt.consume();
-			}
-
-			action.accept(page.getPane());
-		});
-
-		if (enabled!=null) {
-			btn.disableProperty().bind(Bindings.not(enabled));
-		}
-	}
+        boolean apply(ButtonType btn) {
+            R r = pane.get();
+            boolean done = resultHandler.handleResult(btn, r);
+            this.result = done ? r : null;
+            return done;
+        }
+    }
 
 }

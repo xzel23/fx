@@ -31,60 +31,56 @@ import java.net.URI;
 import java.net.URL;
 import java.util.Objects;
 
-
-
 public class AboutDialog extends Dialog<Void> {
-    /** Logger instance */
+    /**
+     * Logger instance
+     */
     private static final Logger LOG = LoggerFactory.getLogger(AboutDialog.class);
-
-    /** The email URI, i.e. {@code "mailto:info@domain.com"}. */
-    private String mailAddress = "";
-
     @FXML
     Label lTitle;
-    
     @FXML
     Label lVersion;
-    
     @FXML
     Label lCopyright;
-    
     @FXML
     Hyperlink hlMail;
-
     @FXML
     Button btnOk;
+    /**
+     * The email URI, i.e. {@code "mailto:info@domain.com"}.
+     */
+    private String mailAddress = "";
+
+    public AboutDialog() {
+        this(null);
+    }
+
+    public AboutDialog(URL css) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("about.fxml"));
+            loader.setController(this);
+            DialogPane dialogPane = loader.load();
+            URL dialogCss = css != null ? css : AboutDialog.class.getResource("about.css");
+            assert dialogCss != null;
+            dialogPane.getStylesheets().add(dialogCss.toExternalForm());
+            setDialogPane(dialogPane);
+            dialogPane.getButtonTypes().addAll(ButtonType.OK);
+        } catch (IOException e) {
+            LOG.warn("could not create dialog", e);
+        }
+    }
 
     @FXML
     public void initialize() {
         // no content. may be overridden.
     }
 
-    public AboutDialog() {
-        this(null);
-    }
-    
-    public AboutDialog(URL css) {
-    	try {
-	        FXMLLoader loader = new FXMLLoader(getClass().getResource("about.fxml"));
-	        loader.setController(this);
-	        DialogPane dialogPane = loader.load();
-	        URL dialogCss = css != null ? css : AboutDialog.class.getResource("about.css");
-            assert dialogCss != null;
-            dialogPane.getStylesheets().add(dialogCss.toExternalForm());
-	        setDialogPane(dialogPane);
-	        dialogPane.getButtonTypes().addAll(ButtonType.OK);
-    	} catch (IOException e) {
-    		LOG.warn("could not create dialog", e);
-    	}
-     }
-
     public void mail() {
-    	if (mailAddress.isBlank()) {
+        if (mailAddress.isBlank()) {
             LOG.warn("email not configured");
-            return;    		
-    	}
-    	
+            return;
+        }
+
         if (!Desktop.isDesktopSupported()) {
             LOG.warn("Desktop API is not supported");
             return;
@@ -95,7 +91,7 @@ public class AboutDialog extends Dialog<Void> {
             try {
                 LOG.info("opening mail application");
                 desktop.mail(URI.create(mailAddress));
-            } catch (IOException|IllegalArgumentException e) {
+            } catch (IOException | IllegalArgumentException e) {
                 LOG.warn("could not open mail application", e);
             }
         }
@@ -103,41 +99,43 @@ public class AboutDialog extends Dialog<Void> {
 
     /**
      * Set name.
-     * @param value
-     *  the text to display
+     *
+     * @param value the text to display
      */
-	public void setName(String value) {
-		lTitle.setText(value);
-	}
-	
-	/**
-	 * Set version text.
-	 * @param value
-	 *  the text to display
-	 */
-	public void setVersion(String value) {
-		lVersion.setText(value);
-	}
-	
+    public void setName(String value) {
+        lTitle.setText(value);
+    }
+
+    /**
+     * Set version text.
+     *
+     * @param value the text to display
+     */
+    public void setVersion(String value) {
+        lVersion.setText(value);
+    }
+
     /**
      * Set copyright text.
-     * @param value
-     *  the text to display
+     *
+     * @param value the text to display
      */
     public void setCopyright(String value) {
-    	lCopyright.setText(value);
+        lCopyright.setText(value);
     }
-    
+
     /**
      * Set the email text.
+     *
      * @param value the text to display for the email
      */
     public void setEmailText(String value) {
-    	hlMail.setText(value);
+        hlMail.setText(value);
     }
 
     /**
      * Set the email URI.
+     *
      * @param value the mail URI to set
      */
     public void setEmailAddress(String value) {

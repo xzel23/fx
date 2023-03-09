@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import java.net.URI
 import com.adarshr.gradle.testlogger.theme.ThemeType
+import java.net.URI
 
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
@@ -30,15 +30,15 @@ plugins {
 
 /////////////////////////////////////////////////////////////////////////////
 object meta {
-    val group           = "com.dua3.fx"
-    val scm             = "https://github.com/xzel23/fx.git"
-    val repo            = "public"
-    val licenseName     = "The Apache Software License, Version 2.0"
-    val licenseUrl      = "https://www.apache.org/licenses/LICENSE-2.0.txt"
-    val developerId     = "axh"
-    val developerName   = "Axel Howind"
-    val developerEmail  = "axh@dua3.com"
-    val organization    = "dua3"
+    val group = "com.dua3.fx"
+    val scm = "https://github.com/xzel23/fx.git"
+    val repo = "public"
+    val licenseName = "The Apache Software License, Version 2.0"
+    val licenseUrl = "https://www.apache.org/licenses/LICENSE-2.0.txt"
+    val developerId = "axh"
+    val developerName = "Axel Howind"
+    val developerEmail = "axh@dua3.com"
+    val organization = "dua3"
     val organizationUrl = "https://www.dua3.com"
 }
 /////////////////////////////////////////////////////////////////////////////
@@ -120,9 +120,9 @@ subprojects {
     publishing {
         publications {
             create<MavenPublication>("maven") {
-                groupId    = meta.group
+                groupId = meta.group
                 artifactId = project.name
-                version    = project.version.toString()
+                version = project.version.toString()
 
                 from(components["java"])
 

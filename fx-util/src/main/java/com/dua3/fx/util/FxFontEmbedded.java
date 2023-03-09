@@ -7,11 +7,11 @@ import com.dua3.utility.text.FontDef;
 import java.util.Objects;
 
 public class FxFontEmbedded extends Font {
-    
+
     private final javafx.scene.text.Font fxFont;
 
     FxFontEmbedded(javafx.scene.text.Font fxFont, String family, float size, Color color, boolean bold, boolean italic, boolean underline, boolean strikeThrough) {
-        super(family, size, color, bold, italic,  underline, strikeThrough);
+        super(family, size, color, bold, italic, underline, strikeThrough);
         this.fxFont = fxFont;
     }
 
@@ -22,20 +22,25 @@ public class FxFontEmbedded extends Font {
     @Override
     public Font deriveFont(final FontDef fd) {
         // use the same base font if only attributes that are not part of JavaFX Font attributes
-        if (   isNullOrEquals(fd.getSize(), getSizeInPoints())
-            && isNullOrEquals(fd.getFamily(), getFamily())
-            && isNullOrEquals(fd.getBold(), isBold())
-            && isNullOrEquals(fd.getItalic(), isItalic())) {
+        if (isNullOrEquals(fd.getSize(), getSizeInPoints())
+                && isNullOrEquals(fd.getFamily(), getFamily())
+                && isNullOrEquals(fd.getBold(), isBold())
+                && isNullOrEquals(fd.getItalic(), isItalic())) {
 
-            return new FxFontEmbedded(fxFont, getFamily(),  getSizeInPoints(),  getColor(), isBold(),  isItalic(),  isUnderline(),  isStrikeThrough());
+            return new FxFontEmbedded(fxFont, getFamily(), getSizeInPoints(), getColor(), isBold(), isItalic(), isUnderline(), isStrikeThrough());
         }
 
         // otherwise, use the standard method
         return super.deriveFont(fd);
     }
-    
+
     private static <T> boolean isNullOrEquals(T a, T b) {
-        return a==null || b==null || a.equals(b);
+        return a == null || b == null || a.equals(b);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), this.fxFont);
     }
 
     @Override
@@ -47,9 +52,4 @@ public class FxFontEmbedded extends Font {
         return Objects.equals(this.fxFont, that.fxFont);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), this.fxFont);
-    }
-    
 }

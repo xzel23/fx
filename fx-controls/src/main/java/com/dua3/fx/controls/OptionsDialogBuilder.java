@@ -14,13 +14,13 @@
 
 package com.dua3.fx.controls;
 
+import com.dua3.utility.options.Arguments;
+import com.dua3.utility.options.Option;
+import javafx.stage.Window;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
-
-import com.dua3.utility.options.Option;
-import com.dua3.utility.options.Arguments;
-import javafx.stage.Window;
 
 /**
  * Builder for Alert Dialogs.
@@ -29,44 +29,41 @@ import javafx.stage.Window;
  */
 public class OptionsDialogBuilder extends AbstractDialogBuilder<OptionsDialog, OptionsDialogBuilder, Arguments> {
 
-	public OptionsDialogBuilder(Window parentWindow) {
-		super(parentWindow);
-		setDialogSupplier(OptionsDialog::new);
-	}
+    private Collection<Option<?>> options = new ArrayList<>();
+    private Arguments currentValues = Arguments.empty();
+    public OptionsDialogBuilder(Window parentWindow) {
+        super(parentWindow);
+        setDialogSupplier(OptionsDialog::new);
+    }
 
-	private Collection<Option<?>> options = new ArrayList<>();
-	private Arguments currentValues = Arguments.empty();
+    @Override
+    public OptionsDialog build() {
+        OptionsDialog dlg = super.build();
 
-	@Override
-	public OptionsDialog build() {
-		OptionsDialog dlg = super.build();
+        dlg.setOptions(options, currentValues);
 
-		dlg.setOptions(options, currentValues);
+        return dlg;
+    }
 
-		return dlg;
-	}
+    /**
+     * Set options.
+     *
+     * @param options the options to set
+     * @return this builder instance
+     */
+    public OptionsDialogBuilder options(Collection<Option<?>> options) {
+        this.options = Objects.requireNonNull(options);
+        return this;
+    }
 
-	/**
-	 * Set options.
-	 * @param options
-	 *  the options to set
-	 * @return
-	 *  this builder instance
-	 */
-	public OptionsDialogBuilder options(Collection<Option<?>> options) {
-		this.options = Objects.requireNonNull(options);
-		return this;
-	}
-
-	/**
-	 * Set current values.
-	 * @param currentValues
-	 *  the currentValues to set
-	 * @return
-	 *  this builder instance
-	 */
-	public OptionsDialogBuilder currentValues(Arguments currentValues) {
-		this.currentValues = Objects.requireNonNull(currentValues);
-		return this;
-	}
+    /**
+     * Set current values.
+     *
+     * @param currentValues the currentValues to set
+     * @return this builder instance
+     */
+    public OptionsDialogBuilder currentValues(Arguments currentValues) {
+        this.currentValues = Objects.requireNonNull(currentValues);
+        return this;
+    }
 }

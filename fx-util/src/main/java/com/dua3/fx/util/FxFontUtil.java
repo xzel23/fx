@@ -17,7 +17,6 @@ package com.dua3.fx.util;
 import com.dua3.utility.lang.LangUtil;
 import com.dua3.utility.math.geometry.Dimension2f;
 import com.dua3.utility.text.FontUtil;
-
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
@@ -32,6 +31,9 @@ import java.util.Locale;
 
 public class FxFontUtil implements FontUtil<Font> {
 
+    public FxFontUtil() {
+    }
+
     @Override
     public Font convert(com.dua3.utility.text.Font font) {
         return FxUtil.convert(font);
@@ -39,8 +41,8 @@ public class FxFontUtil implements FontUtil<Font> {
 
     @Override
     public Dimension2f getTextDimension(CharSequence s, com.dua3.utility.text.Font f) {
-         var bounds = FxUtil.getTextBounds(s, f);
-         return Dimension2f.of((float) bounds.getWidth(), (float) bounds.getHeight());
+        var bounds = FxUtil.getTextBounds(s, f);
+        return Dimension2f.of((float) bounds.getWidth(), (float) bounds.getHeight());
     }
 
     @Override
@@ -57,12 +59,12 @@ public class FxFontUtil implements FontUtil<Font> {
     public List<com.dua3.utility.text.Font> loadFonts(InputStream in) throws IOException {
         try (in) {
             Font[] fxFonts = Font.loadFonts(in, 0);
-            if (fxFonts==null) {
+            if (fxFonts == null) {
                 return Collections.emptyList();
             }
 
             List<com.dua3.utility.text.Font> fonts = new ArrayList<>(fxFonts.length);
-            for (Font fxFont: fxFonts) {
+            for (Font fxFont : fxFonts) {
                 String style = fxFont.getStyle().toLowerCase(Locale.ROOT);
                 com.dua3.utility.text.Font font = new com.dua3.utility.text.Font(
                         fxFont.getFamily(),
@@ -79,23 +81,14 @@ public class FxFontUtil implements FontUtil<Font> {
             return Collections.unmodifiableList(fonts);
         }
     }
-    
-    @Override
-    public com.dua3.utility.text.Font loadFontAs(InputStream in, com.dua3.utility.text.Font font) throws IOException {
-        try (in) {
-            Font fxFont = Font.loadFont(in, font.getSizeInPoints());
-            LangUtil.check(fxFont!=null, () -> new IOException("no font loaded"));
-            return new FxFontEmbedded(fxFont, font.getFamily(), font.getSizeInPoints(), font.getColor(), font.isBold(), font.isItalic(),  font.isUnderline(), font.isStrikeThrough());
-        }
-    }
-    
+
     @Override
     public List<String> getFamilies(FontTypes types) {
         List<String> fonts = Font.getFamilies();
 
         boolean mono;
         switch (types) {
-            case ALL -> { return fonts; }
+            case ALL -> {return fonts;}
             case MONOSPACED -> mono = true;
             case PROPORTIONAL -> mono = false;
             default -> throw new IllegalArgumentException("unknown value: " + types);
@@ -105,7 +98,7 @@ public class FxFontUtil implements FontUtil<Font> {
 
         Text thin = new Text("1 l");
         Text thick = new Text("M_W");
-        for (String family: fonts) {
+        for (String family : fonts) {
             Font font = Font.font(family, FontWeight.NORMAL, FontPosture.REGULAR, 14.0d);
             thin.setFont(font);
             thick.setFont(font);
@@ -118,7 +111,13 @@ public class FxFontUtil implements FontUtil<Font> {
         return list;
     }
 
-    public FxFontUtil() {
+    @Override
+    public com.dua3.utility.text.Font loadFontAs(InputStream in, com.dua3.utility.text.Font font) throws IOException {
+        try (in) {
+            Font fxFont = Font.loadFont(in, font.getSizeInPoints());
+            LangUtil.check(fxFont != null, () -> new IOException("no font loaded"));
+            return new FxFontEmbedded(fxFont, font.getFamily(), font.getSizeInPoints(), font.getColor(), font.isBold(), font.isItalic(), font.isUnderline(), font.isStrikeThrough());
+        }
     }
 
 }

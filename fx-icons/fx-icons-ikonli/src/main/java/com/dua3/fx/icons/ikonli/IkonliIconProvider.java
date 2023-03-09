@@ -17,27 +17,12 @@ public class IkonliIconProvider implements IconProvider {
 
     private static final Logger LOG = LoggerFactory.getLogger(IkonliIconProvider.class);
 
-    static class IkonliIcon extends FontIcon implements Icon {
-        private final String name;
-
-        IkonliIcon(Ikon ikon, String name) {
-            super(ikon);
-            this.name = Objects.requireNonNull(name);
-        }
-
-        @Override
-        public Node node() {
-            return this;
-        }
-
-        @Override
-        public String getIconIdentifier() {
-            return name;
-        }
-        
-    }
-    
     public IkonliIconProvider() {}
+
+    @Override
+    public String name() {
+        return getClass().getSimpleName();
+    }
 
     @Override
     public IkonliIcon forName(String name) {
@@ -53,9 +38,24 @@ public class IkonliIconProvider implements IconProvider {
         return null;
     }
 
-    @Override
-    public String name() {
-        return getClass().getSimpleName();
+    static class IkonliIcon extends FontIcon implements Icon {
+        private final String name;
+
+        IkonliIcon(Ikon ikon, String name) {
+            super(ikon);
+            this.name = Objects.requireNonNull(name);
+        }
+
+        @Override
+        public String getIconIdentifier() {
+            return name;
+        }
+
+        @Override
+        public Node node() {
+            return this;
+        }
+
     }
 
 }

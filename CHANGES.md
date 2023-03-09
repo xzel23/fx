@@ -3,169 +3,179 @@ Changelog
 
 #### Version 0.23.0
 
- - update JavaFX to 19.0.2.1
+- update JavaFX to 19.0.2.1
 
 #### Version 0.2x.x
- - updates and bugfixes; 
- - use GitHub CI
+
+- updates and bugfixes;
+- use GitHub CI
 
 #### Version 0.19.0
+
 - use version catalog for dependencies
 - update dependencies
 - JavaFX 19
 - fixes and improvements
 
 #### Version 0.18.0
- - update dependencies
- - log through SLF4J
- - fixes and improvements
+
+- update dependencies
+- log through SLF4J
+- fixes and improvements
 
 #### Version 0.17.0
- - requires Java 17!
- - JavaFX 18
- - remove FxSettings
- - code cleanups
- - move all classes from fx.util.controls to fx.controls (also implies moving from module fx_util to fx_controls)
- - Controls.makeResizable()
- - FxApplication provides a Cleaner to use by applications
- - register cleanup actions in FxApplication to execute when application stops
- - FxUtil.copyToClipboard() (supports texts, images, files)
- - FxUtil.createMenuItem()
- - FxUtil.dragEventHandler()/dropEventHandler()
- - Controls.toggleButton()
- - replace File by Path where possible
+
+- requires Java 17!
+- JavaFX 18
+- remove FxSettings
+- code cleanups
+- move all classes from fx.util.controls to fx.controls (also implies moving from module fx_util to fx_controls)
+- Controls.makeResizable()
+- FxApplication provides a Cleaner to use by applications
+- register cleanup actions in FxApplication to execute when application stops
+- FxUtil.copyToClipboard() (supports texts, images, files)
+- FxUtil.createMenuItem()
+- FxUtil.dragEventHandler()/dropEventHandler()
+- Controls.toggleButton()
+- replace File by Path where possible
 
 #### Version 0.16
+
 (unreleased)
 
 #### Version 0.15
- - stop publishing to bintray
- - publish builds to GitLab packages
- - publish releases to Sonatype OSSRH 
- - Catch SecurityException when setting initial directory in FileChooserBuilder to an inaccessible path
- - update dependencies
+
+- stop publishing to bintray
+- publish builds to GitLab packages
+- publish releases to Sonatype OSSRH
+- Catch SecurityException when setting initial directory in FileChooserBuilder to an inaccessible path
+- update dependencies
 
 #### Version 0.14.1
 
- - fix exception after setting invalid initial directory in FileChooserBuilder 
+- fix exception after setting invalid initial directory in FileChooserBuilder
 
 #### Version 0.14
 
- - update to JavaFX 15
- - update plugins
- - update dependencies
- 
+- update to JavaFX 15
+- update plugins
+- update dependencies
+
 #### Version 0.13
 
- - update to JavaFX 14
- - update to ikonli 11.5.0
- - remove dependency on ControlsFX
- - update gradle to 6.3 (for JDK 14 support)
- - update SpotBugs and SpotBugs gradle plugin
- - update utility
+- update to JavaFX 14
+- update to ikonli 11.5.0
+- remove dependency on ControlsFX
+- update gradle to 6.3 (for JDK 14 support)
+- update SpotBugs and SpotBugs gradle plugin
+- update utility
 
 #### Version 0.12
 
- - new class Fxsettings
- - FxUtil: added methods to list available fonts
- - FxController.getCurrentDocumentLocation()
- - FxController.onDocumentUriChanged() (protected)
- - FxUtil: new class RecentlyUsedDocumentsList
- 
+- new class Fxsettings
+- FxUtil: added methods to list available fonts
+- FxController.getCurrentDocumentLocation()
+- FxController.onDocumentUriChanged() (protected)
+- FxUtil: new class RecentlyUsedDocumentsList
+
 #### Version 0.11
 
- - new Validator class
+- new Validator class
 
 #### Version 0.10
 
- - do not try to open non-existent files
- - code cleanup
- - update utility to 5.3
- - Controller.getCurrentDir() gets the current (document) directory
- - fix IAE in open dialog
- 
+- do not try to open non-existent files
+- code cleanup
+- update utility to 5.3
+- Controller.getCurrentDir() gets the current (document) directory
+- fix IAE in open dialog
+
 #### Version 0.9.5
 
- - code cleanups, remove workarounds for JavaFX bugs (working on a patch for JavaFX instead)
- 
+- code cleanups, remove workarounds for JavaFX bugs (working on a patch for JavaFX instead)
+
 #### Version 0.9.4
 
- - new FxLauncher class
- 
+- new FxLauncher class
+
 #### Version 0.9.3
 
- - most Dialogs/DialogBuilders have a new  `parentWindow` parameter. Stage-Icons (Windows platform) are copied from the parent window.
- 
+- most Dialogs/DialogBuilders have a new  `parentWindow` parameter. Stage-Icons (Windows platform) are copied from the
+  parent window.
+
 #### Version 0.9.2
 
- - new static method `FxApplication.launchApplication()` as replacement for `Application.launch()`. When using this method, the commandline is automatically reparsed (see next item).
- 
- - new static method `FxApplication.reparseCommandLine(String[])` to fix messing up command line arguments on Windows.
- 
+- new static method `FxApplication.launchApplication()` as replacement for `Application.launch()`. When using this
+  method, the commandline is automatically reparsed (see next item).
+
+- new static method `FxApplication.reparseCommandLine(String[])` to fix messing up command line arguments on Windows.
+
 #### Version 0.9.1
 
- - make About-dialog styleable
- - update dependencies and plugins
+- make About-dialog styleable
+- update dependencies and plugins
 
 #### Version 0.9
 
- - lots of i18n changes
- - i18n of dialogs
- - FxApplication constructor takes a resource bundle
- - BREAKING CHANGE: fx-editors subproject has been removed 
- - possible to set graphic and details for about dialog
- - support resource bundles in FxApplication
- 
+- lots of i18n changes
+- i18n of dialogs
+- FxApplication constructor takes a resource bundle
+- BREAKING CHANGE: fx-editors subproject has been removed
+- possible to set graphic and details for about dialog
+- support resource bundles in FxApplication
+
 #### Version 0.8.4
 
- - new publish to local repository
- - allow to set CSS for AboutDialog and Alert
- - update utility to 5.1.2
+- new publish to local repository
+- allow to set CSS for AboutDialog and Alert
+- update utility to 5.1.2
 
 #### Version 0.8.3
 
- - allow about dialog to grow to allow for longer title text
+- allow about dialog to grow to allow for longer title text
 
 #### Version 0.8.2
 
- - added FileChooserBuilder.showOpenMultipleDialog()
- - update JavaFX to 13.0.2
- - update utility to 5.1.1
- - update spotbugs to 4.0.0-RC1
- 
+- added FileChooserBuilder.showOpenMultipleDialog()
+- update JavaFX to 13.0.2
+- update utility to 5.1.1
+- update spotbugs to 4.0.0-RC1
+
 #### Version 0.8.1
 
- - fix scroll to first line in markdown editor if first line is not labeled (i.e. when using `${toc}`).
- - set graphics in AboutDialogBuilder
- - set expandableContent in AboutDialogBuilder
- 
+- fix scroll to first line in markdown editor if first line is not labeled (i.e. when using `${toc}`).
+- set graphics in AboutDialogBuilder
+- set expandableContent in AboutDialogBuilder
+
 #### Version 0.8
 
- - update utility to 5.0
- - fix NPE in initialDir
- - fix entry in META-INF for non-modular apps
- - add IconView constructor taking id, size and color
- - CSS loading
- 
+- update utility to 5.0
+- fix NPE in initialDir
+- fix entry in META-INF for non-modular apps
+- add IconView constructor taking id, size and color
+- CSS loading
+
 #### Version 0.7
 
- - don't export JavaFX dependencies
- - revert accidentally switching back to OpenJavaFX 11
- - cleanup the JavaFX dependency tree
- 
+- don't export JavaFX dependencies
+- revert accidentally switching back to OpenJavaFX 11
+- cleanup the JavaFX dependency tree
+
 #### Version 0.6.4
 
- - use the OpenJFX Gradle plugin; this should remove platform dependencies
- 
+- use the OpenJFX Gradle plugin; this should remove platform dependencies
+
 #### Version 0.6.3
 
- - merge code for determining initial dir for saveAs() and open() and add some logging
- - FIX: don't overwrite last location when creating a new document
- - FxApplication.getController() (protected)
- 
+- merge code for determining initial dir for saveAs() and open() and add some logging
+- FIX: don't overwrite last location when creating a new document
+- FxApplication.getController() (protected)
+
 #### Version 0.6.2
 
-- Implementations must implement FxApplication.getPreferencesUserRoot(). This is necessary to work around the missing implementation in current versions og GraalVM/Gluon Client. dua3_utility.prefs can be used as an alternative implementation.
+- Implementations must implement FxApplication.getPreferencesUserRoot(). This is necessary to work around the missing
+  implementation in current versions og GraalVM/Gluon Client. dua3_utility.prefs can be used as an alternative
+  implementation.
 
 #### Version 0.6.1
 
@@ -189,7 +199,7 @@ Changelog
 - fx-editors: add markdown support
 - fx-editors: math support in markdown using kaTeX
 - log filtering (use `--log=<global_level>,<package_name>:,...)
- 
+
 #### Version 0.4.2
 
 - avoid deadlocks when methods are not called on the Fx-Application thread

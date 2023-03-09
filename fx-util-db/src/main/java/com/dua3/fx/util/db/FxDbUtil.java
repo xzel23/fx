@@ -43,25 +43,24 @@ import java.util.function.Function;
 
 public final class FxDbUtil {
 
-    /** Logger */
+    /**
+     * Logger
+     */
     private static final Logger LOG = LoggerFactory.getLogger(FxDbUtil.class);
-	private static final String ERROR_TEXT = "###";
+    private static final String ERROR_TEXT = "###";
 
     // utility - no instances
-	private FxDbUtil() {}
+    private FxDbUtil() {}
 
     /**
      * Fill TableView instance with data from {@link ResultSet}.
      * <p>
      * All columns will be removed and recreated based on the ResultSet's metadata.
-     * @param tv
-     *  the TableView
-     * @param rs
-     *  the ResultSet
-     * @return
-     *  the number of rows read
-     * @throws SQLException
-     *  if an error occurs while reading from the ResultSet.
+     *
+     * @param tv the TableView
+     * @param rs the ResultSet
+     * @return the number of rows read
+     * @throws SQLException if an error occurs while reading from the ResultSet.
      */
     public static int fill(TableView<ObservableList<Object>> tv, ResultSet rs) throws SQLException {
         LOG.debug("populating TableView with ResultSet data");
@@ -119,15 +118,15 @@ public final class FxDbUtil {
 
             // CellValueFactory
             Callback<CellDataFeatures<ObservableList<Object>, Object>, ObservableValue<Object>> cellValueFactory
-            	= param -> {
-	                var list = param.getValue();
-	                var x = idx < list.size() ? list.get(idx) : null;
-	                return new ReadOnlyObjectWrapper<>(x);
-	            };
+                    = param -> {
+                var list = param.getValue();
+                var x = idx < list.size() ? list.get(idx) : null;
+                return new ReadOnlyObjectWrapper<>(x);
+            };
 
-	        // CellFactory
-	        Callback<TableColumn<ObservableList<Object>, Object>, TableCell<ObservableList<Object>, Object>> cellFactory
-				= col -> new TableCell<>() {
+            // CellFactory
+            Callback<TableColumn<ObservableList<Object>, Object>, TableCell<ObservableList<Object>, Object>> cellFactory
+                    = col -> new TableCell<>() {
                 @Override
                 protected void updateItem(Object item, boolean empty) {
                     super.updateItem(item, empty);
@@ -141,10 +140,10 @@ public final class FxDbUtil {
                 }
             };
 
-	        // create column
+            // create column
             TableColumn<ObservableList<Object>, Object> column = new TableColumn<>(label);
-			column.setCellValueFactory(cellValueFactory);
-			column.setCellFactory(cellFactory);
+            column.setCellValueFactory(cellValueFactory);
+            column.setCellFactory(cellFactory);
             newColumns.add(column);
         }
 
@@ -161,30 +160,30 @@ public final class FxDbUtil {
 
         LOG.trace("setting rows");
         PlatformHelper.runLater(() -> {
-        	columns.setAll(newColumns);
-        	items.setAll(newItems);
+            columns.setAll(newColumns);
+            items.setAll(newItems);
         });
 
         return newItems.size();
     }
 
-	private static Object getObject(ResultSet rs, int i) throws SQLException {
-		Object obj = rs.getObject(i);
+    private static Object getObject(ResultSet rs, int i) throws SQLException {
+        Object obj = rs.getObject(i);
 
-		if (obj instanceof Clob) {
-			obj = toString((Clob) obj);
-		}
+        if (obj instanceof Clob) {
+            obj = toString((Clob) obj);
+        }
 
-		return obj;
-	}
+        return obj;
+    }
 
-	private static String toString(Clob clob) {
-		try {
-			return clob.getSubString(1L, (int) Math.min(Integer.MAX_VALUE, clob.length()));
-		} catch (SQLException e) {
-			LOG.warn("could no convert Clob to String", e);
-			return ERROR_TEXT;
-		}
-	}
+    private static String toString(Clob clob) {
+        try {
+            return clob.getSubString(1L, (int) Math.min(Integer.MAX_VALUE, clob.length()));
+        } catch (SQLException e) {
+            LOG.warn("could no convert Clob to String", e);
+            return ERROR_TEXT;
+        }
+    }
 
 }

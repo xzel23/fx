@@ -15,9 +15,8 @@
 package com.dua3.fx.controls;
 
 import com.dua3.utility.lang.LangUtil;
-import com.dua3.utility.options.Option;
 import com.dua3.utility.options.Arguments;
-
+import com.dua3.utility.options.Option;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
@@ -31,36 +30,35 @@ import java.util.Collection;
  */
 public class OptionsDialog extends Dialog<Arguments> {
 
-	private OptionsPane optionPane;
-	
-	public OptionsDialog() {		
-		// buttons
-		DialogPane dialogPane = getDialogPane();
-		dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+    private OptionsPane optionPane;
 
-		setResultConverter(btn -> {
-			LangUtil.check(optionPane!=null, "setOptions() not called!");
+    public OptionsDialog() {
+        // buttons
+        DialogPane dialogPane = getDialogPane();
+        dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
-			if (btn != ButtonType.OK) {
-				return null;
-			}
+        setResultConverter(btn -> {
+            LangUtil.check(optionPane != null, "setOptions() not called!");
 
-			return optionPane.get();
-		});
-	}
+            if (btn != ButtonType.OK) {
+                return null;
+            }
 
-	/**
-	 * Set options.
-	 * @param optionSet 
-	 *  the options to set
-	 * @param currentValues
-	 *  the current values
-	 */
-	public void setOptions(Collection<Option<?>> optionSet, Arguments currentValues) {
-		LangUtil.check(optionPane==null, "setOptions() already called!");
-		this.optionPane = new OptionsPane(optionSet, currentValues);
-		optionPane.init();
-		getDialogPane().setContent(optionPane);
-	}
+            return optionPane.get();
+        });
+    }
+
+    /**
+     * Set options.
+     *
+     * @param optionSet     the options to set
+     * @param currentValues the current values
+     */
+    public void setOptions(Collection<Option<?>> optionSet, Arguments currentValues) {
+        LangUtil.check(optionPane == null, "setOptions() already called!");
+        this.optionPane = new OptionsPane(optionSet, currentValues);
+        optionPane.init();
+        getDialogPane().setContent(optionPane);
+    }
 
 }

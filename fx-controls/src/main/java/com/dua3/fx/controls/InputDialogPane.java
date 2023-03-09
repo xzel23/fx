@@ -21,53 +21,53 @@ import java.util.function.Supplier;
 
 public abstract class InputDialogPane<R> extends DialogPane implements Supplier<R> {
 
-	protected final BooleanProperty valid = new SimpleBooleanProperty(true);
+    protected final BooleanProperty valid = new SimpleBooleanProperty(true);
 
-	protected final List<Pair<ButtonType, Consumer<InputDialogPane<R>>>> buttons = new ArrayList<>();
+    protected final List<Pair<ButtonType, Consumer<InputDialogPane<R>>>> buttons = new ArrayList<>();
+    private Predicate<R> validate = r -> true;
 
-	public abstract void init();
+    public abstract void init();
 
-	/**
-	 * Get valid state property.
-	 * @return the valid state property of the input
-	 */
-	public ReadOnlyBooleanProperty validProperty() {
-		return valid;
-	}
+    /**
+     * Get valid state property.
+     *
+     * @return the valid state property of the input
+     */
+    public ReadOnlyBooleanProperty validProperty() {
+        return valid;
+    }
 
-	private Predicate<R> validate = r -> true;
+    protected void setValidate(Predicate<R> validate) {
+        this.validate = Objects.requireNonNull(validate);
+    }
 
-	protected void setValidate(Predicate<R> validate) {
-		this.validate = Objects.requireNonNull(validate);
-	}
+    protected void updateValidState(R r) {
+        valid.setValue(validate.test(r));
+    }
 
-	protected void updateValidState(R r) {
-		valid.setValue(validate.test(r));
-	}
+    public void initButtons() {
+        ObservableList<ButtonType> bt = getButtonTypes();
+        bt.clear();
+        for (var b : buttons) {
+            bt.add(b.first());
+            Button btn = (Button) lookupButton(b.first());
+            btn.setOnAction(evt -> b.second().accept(this));
+        }
+    }
 
-	public void initButtons() {
-		ObservableList<ButtonType> bt = getButtonTypes();
-		bt.clear();
-		for (var b: buttons) {
-			bt.add(b.first());
-			Button btn = (Button) lookupButton(b.first());
-			btn.setOnAction(evt -> b.second().accept(this));
-		}
-	}
+    @Override
+    protected Node createButton(ButtonType buttonType) {
+        // a wizard dialog should only close when finish or cancel is clicked
+        if (LangUtil.isOneOf(buttonType, ButtonType.OK, ButtonType.FINISH, ButtonType.CANCEL)) {
+            return super.createButton(buttonType);
+        }
 
-	@Override
-	protected Node createButton(ButtonType buttonType) {
-		// a wizard dialog should only close when finish or cancel is clicked
-		if (LangUtil.isOneOf(buttonType, ButtonType.OK, ButtonType.FINISH, ButtonType.CANCEL)) {
-			return super.createButton(buttonType);
-		}
+        final Button button = new Button(buttonType.getText());
+        final ButtonBar.ButtonData buttonData = buttonType.getButtonData();
+        ButtonBar.setButtonData(button, buttonData);
+        button.setDefaultButton(buttonData.isDefaultButton());
+        button.setCancelButton(buttonData.isCancelButton());
 
-		final Button button = new Button(buttonType.getText());
-		final ButtonBar.ButtonData buttonData = buttonType.getButtonData();
-		ButtonBar.setButtonData(button, buttonData);
-		button.setDefaultButton(buttonData.isDefaultButton());
-		button.setCancelButton(buttonData.isCancelButton());
-
-		return button;
-	}
+        return button;
+    }
 }

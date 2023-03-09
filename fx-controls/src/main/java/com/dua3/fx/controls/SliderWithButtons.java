@@ -28,30 +28,19 @@ import java.util.regex.Pattern;
 public class SliderWithButtons extends Region {
 
     private static final Pattern PATTERN_DIGIT = Pattern.compile("\\d");
-
-    public enum Mode {
-        SLIDER_ONLY,
-        SLIDER_VALUE,
-        SLIDER_VALUE_TOTAL,
-        SLIDER_INPUT_TOTAL,
-    }
-    
-    private Pane pane;
     private final Mode mode;
-    private final BiFunction<Double,Double,String> formatter;
-    
+    private final BiFunction<Double, Double, String> formatter;
     private final Slider slider;
     private final Button btnIncrement;
     private final Button btnDecrement;
-    
+    private final List<Node> children = new ArrayList<>();
+    private Pane pane;
     private TextField tfValue;
     private Label label;
-    private final List<Node> children = new ArrayList<>();
-    
-    SliderWithButtons(Mode mode, BiFunction<Double,Double,String> formatter) {
+    SliderWithButtons(Mode mode, BiFunction<Double, Double, String> formatter) {
         this.mode = mode;
         this.formatter = Objects.requireNonNull(formatter);
-        
+
         this.slider = new Slider();
         this.btnDecrement = new Button("-");
         this.btnIncrement = new Button("+");
@@ -80,9 +69,9 @@ public class SliderWithButtons extends Region {
                 children.add(label = new Label());
             }
         }
-        
-        slider.valueProperty().addListener( (v,o,n) -> this.valueChanged(o,n) );
-        slider.maxProperty().addListener( (v,o,n) -> this.updateLabel() );
+
+        slider.valueProperty().addListener((v, o, n) -> this.valueChanged(o, n));
+        slider.maxProperty().addListener((v, o, n) -> this.updateLabel());
 
         initPane();
     }
@@ -96,11 +85,21 @@ public class SliderWithButtons extends Region {
         }
     }
 
-    public void setOrientation(Orientation orientation) {
-        if (orientation!=slider.getOrientation()) {
-            slider.setOrientation(orientation);
-            initPane();
-        }
+    private void updateLabel() {
+        double v = getValue();
+        double m = getMax();
+
+        String proto = PATTERN_DIGIT.matcher(formatter.apply(m, m)).replaceAll("0");
+        Text text = new Text(proto);
+        text.setFont(label.getFont());
+        double w = text.getBoundsInLocal().getWidth();
+
+        int paddingLeft = 2;
+        int paddingRight = 4;
+        label.setMinWidth(w + paddingLeft + paddingRight);
+        label.setPadding(new Insets(0, paddingRight, 0, paddingLeft));
+
+        valueChanged(v, v);
     }
 
     private void initPane() {
@@ -109,8 +108,20 @@ public class SliderWithButtons extends Region {
         getChildren().setAll(pane);
     }
 
+    public double getMax() {
+        return slider.getMax();
+    }
+
+    public void setMax(double value) {
+        slider.setMax(value);
+    }
+
+    public double getValue() {
+        return slider.getValue();
+    }
+
     private static Pane box(Orientation orientation) {
-        if (orientation==Orientation.HORIZONTAL) {
+        if (orientation == Orientation.HORIZONTAL) {
             HBox box = new HBox();
             box.setAlignment(Pos.CENTER);
             return box;
@@ -118,6 +129,17 @@ public class SliderWithButtons extends Region {
             VBox box = new VBox();
             box.setAlignment(Pos.CENTER);
             return box;
+        }
+    }
+
+    public void setValue(double value) {
+        slider.setValue(value);
+    }
+
+    public void setOrientation(Orientation orientation) {
+        if (orientation != slider.getOrientation()) {
+            slider.setOrientation(orientation);
+            initPane();
         }
     }
 
@@ -140,58 +162,21 @@ public class SliderWithButtons extends Region {
     public void setIncrementGraphic(Node value) {
         btnIncrement.setGraphic(value);
     }
-    
-    public void setMin(double value) {
-        slider.setMin(value);
-    }
-    
-    public void setMax(double value) {
-        slider.setMax(value);
-    }
 
-    private void updateLabel() {
-        double v = getValue();
-        double m = getMax();
-
-        String proto = PATTERN_DIGIT.matcher(formatter.apply(m, m)).replaceAll("0");
-        Text text = new Text(proto);
-        text.setFont(label.getFont());
-        double w = text.getBoundsInLocal().getWidth();
-        
-        int paddingLeft=2;
-        int paddingRight=4;
-        label.setMinWidth(w+paddingLeft+paddingRight);
-        label.setPadding(new Insets(0, paddingRight, 0, paddingLeft));
-
-        valueChanged(v, v);
-    }
-
-    public void setValue(double value) {
-        slider.setValue(value);
-    }
-    
-    public void setBlockIncrement(double value) {
-        slider.setBlockIncrement(value);
-    }
-    
     public void setShowTickLabels(boolean value) {
         slider.setShowTickLabels(value);
     }
-    
+
     public void setShowTickMarks(boolean value) {
         slider.setShowTickMarks(value);
     }
-    
-    public double getMax() {
-        return slider.getMax();
-    }
-    
+
     public double getMin() {
         return slider.getMin();
     }
 
-    public double getValue() {
-        return slider.getValue();
+    public void setMin(double value) {
+        slider.setMin(value);
     }
 
     public double getMajorTickUnit() {
@@ -204,6 +189,10 @@ public class SliderWithButtons extends Region {
 
     public double getBlockIncrement() {
         return slider.getBlockIncrement();
+    }
+
+    public void setBlockIncrement(double value) {
+        slider.setBlockIncrement(value);
     }
 
     public DoubleProperty valueProperty() {
@@ -244,6 +233,13 @@ public class SliderWithButtons extends Region {
 
     public BooleanProperty snapToTicksProperty() {
         return slider.snapToTicksProperty();
+    }
+
+    public enum Mode {
+        SLIDER_ONLY,
+        SLIDER_VALUE,
+        SLIDER_VALUE_TOTAL,
+        SLIDER_INPUT_TOTAL,
     }
 
 }

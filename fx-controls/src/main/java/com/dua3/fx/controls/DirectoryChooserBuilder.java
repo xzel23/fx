@@ -25,62 +25,59 @@ import java.nio.file.Paths;
 import java.util.Optional;
 
 
-
-/** 
+/**
  * Builder for directory chooser dialogs.
- * <p> 
- * Provides a fluent interface to create file dialogs. 
+ * <p>
+ * Provides a fluent interface to create file dialogs.
  */
 public class DirectoryChooserBuilder {
-	private static final Logger LOG = LoggerFactory.getLogger(DirectoryChooserBuilder.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DirectoryChooserBuilder.class);
 
-	public static final Path USER_HOME = Paths.get(System.getProperty("user.home"));
+    public static final Path USER_HOME = Paths.get(System.getProperty("user.home"));
 
-	private Path initialDir = USER_HOME;
+    private Path initialDir = USER_HOME;
 
-	DirectoryChooserBuilder() {
-	}
+    DirectoryChooserBuilder() {
+    }
 
-	/**
-	 * Show "Open" dialog.
-	 * @param parent
-	 *  the parent window
-	 * @return
-	 *  an Optional containing the selected file.
-	 */
-	public Optional<Path> showDialog(Window parent) {
-		DirectoryChooser chooser = build();
-		return Optional.ofNullable(chooser.showDialog(parent)).map(File::toPath);
-	}
+    /**
+     * Show "Open" dialog.
+     *
+     * @param parent the parent window
+     * @return an Optional containing the selected file.
+     */
+    public Optional<Path> showDialog(Window parent) {
+        DirectoryChooser chooser = build();
+        return Optional.ofNullable(chooser.showDialog(parent)).map(File::toPath);
+    }
 
-	private DirectoryChooser build() {
-		DirectoryChooser chooser = new DirectoryChooser();
-		if (initialDir!=null) {
-			// NOTE there's an inconsistency between Paths.get("").toFile() and new File(""), so convert Path to File
-			// before testing for directory and do not use Files.isDirectory(Path)
-			try {
-				File initialFile = initialDir.toFile();
-				if (initialFile.isDirectory()) {
-					LOG.debug("initial directory: {}", initialFile);
-					chooser.setInitialDirectory(initialFile);
-				}
-			} catch (UnsupportedOperationException e) {
-				LOG.warn("could not set initial directory", e);
-			}
-		}
-		return chooser;
-	}
+    private DirectoryChooser build() {
+        DirectoryChooser chooser = new DirectoryChooser();
+        if (initialDir != null) {
+            // NOTE there's an inconsistency between Paths.get("").toFile() and new File(""), so convert Path to File
+            // before testing for directory and do not use Files.isDirectory(Path)
+            try {
+                File initialFile = initialDir.toFile();
+                if (initialFile.isDirectory()) {
+                    LOG.debug("initial directory: {}", initialFile);
+                    chooser.setInitialDirectory(initialFile);
+                }
+            } catch (UnsupportedOperationException e) {
+                LOG.warn("could not set initial directory", e);
+            }
+        }
+        return chooser;
+    }
 
-	/**
-	 * Set initial directory.
-	 * @param initialDir
-	 *  the initial directory
-	 * @return
-	 *  this instance
-	 */
-	public DirectoryChooserBuilder initialDir(Path initialDir) {
-		this.initialDir = initialDir != null ? initialDir : USER_HOME;
-		return this;
-	}
+    /**
+     * Set initial directory.
+     *
+     * @param initialDir the initial directory
+     * @return this instance
+     */
+    public DirectoryChooserBuilder initialDir(Path initialDir) {
+        this.initialDir = initialDir != null ? initialDir : USER_HOME;
+        return this;
+    }
 
 }

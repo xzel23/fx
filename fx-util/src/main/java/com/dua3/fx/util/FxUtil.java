@@ -45,30 +45,15 @@ public final class FxUtil {
 
     private static final Pattern PATTERN_FILENAME_AND_DOT = Pattern.compile("^\\*\\.");
 
+    private FxUtil() {}
+
     public static String asText(URI uri) {
-        return uri==null ? "" : URLDecoder.decode(uri.toString(), StandardCharsets.UTF_8);
-    }
-    
-    /**
-     * Convert {@link com.dua3.utility.text.Font} to JavaFX {@link Font}.
-     * @param font the font
-     * @return the JavaFX Font
-     */
-    public static Font convert(com.dua3.utility.text.Font font) {
-        if (font instanceof FxFontEmbedded fxf) {
-            return fxf.fxFont();
-        }
-        
-        return Font.font(
-                font.getFamily(),
-                font.isBold() ? FontWeight.BOLD : FontWeight.NORMAL,
-                font.isItalic() ? FontPosture.ITALIC : FontPosture.REGULAR,
-                font.getSizeInPoints()
-        );
+        return uri == null ? "" : URLDecoder.decode(uri.toString(), StandardCharsets.UTF_8);
     }
 
     /**
      * Convert JavaFX {@link Font} to {@link FontDef}.
+     *
      * @param font the font
      * @return the FontDef
      */
@@ -81,66 +66,72 @@ public final class FxUtil {
 
     /**
      * Convert {@link com.dua3.utility.data.Color} to {@link Color}.
+     *
      * @param color the color
      * @return the JavaFX color
      */
     public static Color convert(com.dua3.utility.data.Color color) {
         int argb = color.argb();
-        
+
         int a = (argb >> 24) & 0xff;
         int r = (argb >> 16) & 0xff;
-        int g = (argb >>  8) & 0xff;
-        int b = (argb      ) & 0xff;
+        int g = (argb >> 8) & 0xff;
+        int b = (argb) & 0xff;
 
-        return Color.rgb(r, g, b, a/255.0);
+        return Color.rgb(r, g, b, a / 255.0);
     }
 
     /**
      * Convert {@link Color to }{@link com.dua3.utility.data.Color}.
+     *
      * @param color the JavaFX color
      * @return the color
      */
     public static com.dua3.utility.data.Color convert(Color color) {
         return com.dua3.utility.data.Color.rgb(
-                (int) Math.round(color.getRed()*255.0),
-                (int) Math.round(color.getGreen()*255.0),
-                (int) Math.round(color.getBlue()*255.0),
-                (int) Math.round(color.getOpacity()*255.0)
+                (int) Math.round(color.getRed() * 255.0),
+                (int) Math.round(color.getGreen() * 255.0),
+                (int) Math.round(color.getBlue() * 255.0),
+                (int) Math.round(color.getOpacity() * 255.0)
         );
     }
 
     /**
      * Convert {@link FillRule} to JavaFX {@link javafx.scene.shape.FillRule}.
+     *
      * @param rule the fill rule
      * @return the JavaFX fill rule
      */
     public static javafx.scene.shape.FillRule convert(FillRule rule) {
-        return rule==FillRule.EVEN_ODD ? javafx.scene.shape.FillRule.EVEN_ODD : javafx.scene.shape.FillRule.NON_ZERO;
+        return rule == FillRule.EVEN_ODD ? javafx.scene.shape.FillRule.EVEN_ODD : javafx.scene.shape.FillRule.NON_ZERO;
     }
 
     /**
      * Convert {@link javafx.scene.shape.FillRule} to JavaFX {@link FillRule}.
+     *
      * @param rule JavaFX the fill rule
      * @return the fill rule
      */
     public static FillRule convert(javafx.scene.shape.FillRule rule) {
-        return rule==javafx.scene.shape.FillRule.EVEN_ODD ? FillRule.EVEN_ODD : FillRule.NON_ZERO;
+        return rule == javafx.scene.shape.FillRule.EVEN_ODD ? FillRule.EVEN_ODD : FillRule.NON_ZERO;
     }
 
     /**
      * Convert {@link AffineTransformation2f} to JavaFX {@link Affine}.
+     *
      * @param at the affine transformation
      * @return the JavaFX affine transformation
      */
     public static Affine convert(AffineTransformation2f at) {
         return new Affine(
-                at.getScaleX(), at.getShearX(), at.getTranslateX(), 
+                at.getScaleX(), at.getShearX(), at.getTranslateX(),
                 at.getShearY(), at.getScaleY(), at.getTranslateY()
         );
     }
 
     /**
      * Convert JavaFX {@link Affine} to {@link AffineTransformation2f}.
+     *
      * @param a the JavaFX affine transformation
      * @return the affine transformation
      */
@@ -150,23 +141,42 @@ public final class FxUtil {
                 (float) a.getMyx(), (float) a.getMyy(), (float) a.getTy()
         );
     }
-    
+
+    public static Bounds getTextBounds(CharSequence s, com.dua3.utility.text.Font f) {
+        return boundsInLocal(s, f);
+    }
+
     private static Bounds boundsInLocal(CharSequence s, com.dua3.utility.text.Font f) {
         Text text = new Text(s.toString());
         text.setFont(convert(f));
         return text.getBoundsInLocal();
     }
 
-    public static Bounds getTextBounds(CharSequence s, com.dua3.utility.text.Font f) {
-        return boundsInLocal(s,f);
+    /**
+     * Convert {@link com.dua3.utility.text.Font} to JavaFX {@link Font}.
+     *
+     * @param font the font
+     * @return the JavaFX Font
+     */
+    public static Font convert(com.dua3.utility.text.Font font) {
+        if (font instanceof FxFontEmbedded fxf) {
+            return fxf.fxFont();
+        }
+
+        return Font.font(
+                font.getFamily(),
+                font.isBold() ? FontWeight.BOLD : FontWeight.NORMAL,
+                font.isItalic() ? FontPosture.ITALIC : FontPosture.REGULAR,
+                font.getSizeInPoints()
+        );
     }
 
     public static double getTextWidth(CharSequence s, com.dua3.utility.text.Font f) {
-        return boundsInLocal(s,f).getWidth();
+        return boundsInLocal(s, f).getWidth();
     }
 
     public static double getTextHeight(CharSequence s, com.dua3.utility.text.Font f) {
-        return boundsInLocal(s,f).getHeight();
+        return boundsInLocal(s, f).getHeight();
     }
 
     public static Dimension2D growToFit(Dimension2D a, Bounds b) {
@@ -174,22 +184,10 @@ public final class FxUtil {
     }
 
     /**
-     * Test if filename matches filter.
-     * @param filter the filter
-     * @param filename the filename
-     * @return true if filename matches filter
-     */
-    public static boolean matches(FileChooser.ExtensionFilter filter, String filename) {
-        String fext = IoUtil.getExtension(filename).toLowerCase(Locale.ROOT);
-        return filter.getExtensions().stream()
-                .map(ext -> PATTERN_FILENAME_AND_DOT.matcher(ext).replaceFirst("").toLowerCase(Locale.ROOT))    
-                .anyMatch(ext -> Objects.equals(ext, fext));
-    }
-
-    /**
      * Test if file matches filter.
+     *
      * @param filter the filter
-     * @param file the file
+     * @param file   the file
      * @return true if filename matches filter
      */
     public static boolean matches(FileChooser.ExtensionFilter filter, Path file) {
@@ -198,8 +196,23 @@ public final class FxUtil {
 
     /**
      * Test if filename matches filter.
+     *
+     * @param filter   the filter
+     * @param filename the filename
+     * @return true if filename matches filter
+     */
+    public static boolean matches(FileChooser.ExtensionFilter filter, String filename) {
+        String fext = IoUtil.getExtension(filename).toLowerCase(Locale.ROOT);
+        return filter.getExtensions().stream()
+                .map(ext -> PATTERN_FILENAME_AND_DOT.matcher(ext).replaceFirst("").toLowerCase(Locale.ROOT))
+                .anyMatch(ext -> Objects.equals(ext, fext));
+    }
+
+    /**
+     * Test if filename matches filter.
+     *
      * @param filter the filter
-     * @param file the file
+     * @param file   the file
      * @return true if file matches filter
      */
     public static boolean matches(FileChooser.ExtensionFilter filter, File file) {
@@ -208,8 +221,9 @@ public final class FxUtil {
 
     /**
      * Test if URI matches filter.
+     *
      * @param filter the filter
-     * @param uri the URI
+     * @param uri    the URI
      * @return true if file matches filter
      */
     public static boolean matches(FileChooser.ExtensionFilter filter, URI uri) {
@@ -218,6 +232,7 @@ public final class FxUtil {
 
     /**
      * Copy text to clipboard.
+     *
      * @param s the text
      */
     public static void copyToClipboard(String s) {
@@ -229,6 +244,16 @@ public final class FxUtil {
 
     /**
      * Copy image to clipboard.
+     *
+     * @param img the image
+     */
+    public static void copyToClipboard(Image img) {
+        copyToClipboard(FxImageUtil.instance().convert(img));
+    }
+
+    /**
+     * Copy image to clipboard.
+     *
      * @param img the image
      */
     public static void copyToClipboard(javafx.scene.image.Image img) {
@@ -237,17 +262,19 @@ public final class FxUtil {
         content.putImage(img);
         clipboard.setContent(content);
     }
-    
+
     /**
-     * Copy image to clipboard.
-     * @param img the image
+     * Copy file/folder to clipboard.
+     *
+     * @param path the path to the file/folder to copy to the clipboard
      */
-    public static void copyToClipboard(Image img) {
-        copyToClipboard(FxImageUtil.instance().convert(img));
+    public static void copyToClipboard(Path path) {
+        copyToClipboard(List.of(path));
     }
 
     /**
      * Copy files/folders to clipboard.
+     *
      * @param paths the list of paths to copy to the clipboard
      */
     public static void copyToClipboard(Collection<Path> paths) {
@@ -259,19 +286,24 @@ public final class FxUtil {
     }
 
     /**
-     * Copy file/folder to clipboard.
-     * @param path the path to the file/folder to copy to the clipboard
+     * Create new {@link MenuItem}.
+     *
+     * @param text    the text to show
+     * @param graphic the graphic to show before the text
+     * @param action  the action to perform when the menu item is invoked
+     * @return new menu item
      */
-    public static void copyToClipboard(Path path) {
-        copyToClipboard(List.of(path));
+    public static MenuItem createMenuItem(String text, Node graphic, Runnable action) {
+        return createMenuItem(text, graphic, action, true);
     }
 
     /**
      * Create new {@link MenuItem}.
-     * @param text the text to show
+     *
+     * @param text    the text to show
      * @param graphic the graphic to show before the text
      * @param enabled the enabled state
-     * @param action the action to perform when the menu item is invoked
+     * @param action  the action to perform when the menu item is invoked
      * @return new menu item
      */
     public static MenuItem createMenuItem(String text, Node graphic, Runnable action, boolean enabled) {
@@ -283,9 +315,21 @@ public final class FxUtil {
 
     /**
      * Create new {@link MenuItem}.
-     * @param text the text to show
-     * @param enabled the enabled state
+     *
+     * @param text   the text to show
      * @param action the action to perform when the menu item is invoked
+     * @return new menu item
+     */
+    public static MenuItem createMenuItem(String text, Runnable action) {
+        return createMenuItem(text, action, true);
+    }
+
+    /**
+     * Create new {@link MenuItem}.
+     *
+     * @param text    the text to show
+     * @param enabled the enabled state
+     * @param action  the action to perform when the menu item is invoked
      * @return new menu item
      */
     public static MenuItem createMenuItem(String text, Runnable action, boolean enabled) {
@@ -296,28 +340,8 @@ public final class FxUtil {
     }
 
     /**
-     * Create new {@link MenuItem}.
-     * @param text the text to show
-     * @param graphic the graphic to show before the text
-     * @param action the action to perform when the menu item is invoked
-     * @return new menu item
-     */
-    public static MenuItem createMenuItem(String text, Node graphic, Runnable action) {
-        return createMenuItem(text, graphic, action, true);
-    }
-
-    /**
-     * Create new {@link MenuItem}.
-     * @param text the text to show
-     * @param action the action to perform when the menu item is invoked
-     * @return new menu item
-     */
-    public static MenuItem createMenuItem(String text, Runnable action) {
-        return createMenuItem(text, action, true);
-    }
-
-    /**
      * Create an {@link EventHandler<DragEvent>} that accepts dragging files.
+     *
      * @param modeGetter Function that determines the supported {@link TransferMode}s.
      *                   Should return an empty list if the drag is not accepted.
      * @return event handler
@@ -334,6 +358,7 @@ public final class FxUtil {
 
     /**
      * Create an {@link EventHandler<DragEvent>} that accepts paths.
+     *
      * @param processor consumer that processes the drop event
      * @return event handler
      */
@@ -350,6 +375,7 @@ public final class FxUtil {
     /**
      * Create union of two rectangles. The union here is defined as the rectangle r of minimum size that contains
      * both rectangles r1 and r2.
+     *
      * @param r1 first rectangle
      * @param r2 second rectangle
      * @return minimal rectangle containing both r1 and r2
@@ -359,8 +385,6 @@ public final class FxUtil {
         var yMin = Math.min(r1.getMinY(), r2.getMinY());
         var xMax = Math.max(r1.getMaxX(), r2.getMaxX());
         var yMax = Math.max(r1.getMaxY(), r2.getMaxY());
-        return new Rectangle2D(xMin, yMin, xMax-xMin, yMax-yMin);
+        return new Rectangle2D(xMin, yMin, xMax - xMin, yMax - yMin);
     }
-
-    private FxUtil() {}
 }

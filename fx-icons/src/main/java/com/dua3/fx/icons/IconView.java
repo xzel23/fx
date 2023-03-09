@@ -29,7 +29,7 @@ import java.util.Optional;
  */
 public class IconView extends Control {
     private static final Logger LOG = LoggerFactory.getLogger(IconView.class);
-    
+
     private static final String DEFAULT_ICON_IDENTIFIER = "";
     private static final int DEFAULT_ICON_SIZE = 10;
     private static final Paint DEFAULT_ICON_COLOR = Paint.valueOf("BLACK");
@@ -44,8 +44,6 @@ public class IconView extends Control {
     }
 
     private final StackPane pane;
-    private Icon icon;
-    
     private final StyleableStringProperty iconIdentifier = new StyleableStringProperty(DEFAULT_ICON_IDENTIFIER) {
         @Override
         public CssMetaData<IconView, String> getCssMetaData() {
@@ -80,7 +78,6 @@ public class IconView extends Control {
         }
 
     };
-    
     private final StyleableIntegerProperty iconSize = new StyleableIntegerProperty(DEFAULT_ICON_SIZE) {
         @Override
         public CssMetaData<IconView, Number> getCssMetaData() {
@@ -97,6 +94,7 @@ public class IconView extends Control {
             return "iconSize";
         }
     };
+    private Icon icon;
 
     public IconView() {
         this.pane = new StackPane();
@@ -115,11 +113,6 @@ public class IconView extends Control {
         return STYLEABLES;
     }
 
-    @Override
-    public List<CssMetaData<? extends Styleable, ?>> getControlCssMetaData() {
-        return STYLEABLES;
-    }
-
     private void setIcon(String iconId) {
         int size = getIconSize();
         Paint color = getIconColor();
@@ -131,19 +124,24 @@ public class IconView extends Control {
             LOG.warn("icon not found: {}", iconId);
             this.icon = IconUtil.emptyIcon();
         }
-        
+
         this.icon.iconSizeProperty().bind(this.iconSize);
         this.icon.iconColorProperty().bind(this.iconColor);
 
         iconSize.set(size);
         iconColor.set(color);
-        
+
         pane.getChildren().setAll(this.icon.node());
     }
 
     @Override
     protected Skin<?> createDefaultSkin() {
         return new IconViewSkin(this);
+    }
+
+    @Override
+    public List<CssMetaData<? extends Styleable, ?>> getControlCssMetaData() {
+        return STYLEABLES;
     }
 
     @Override

@@ -58,7 +58,7 @@ dependencyResolutionManagement {
         // Sonatype Releases
         maven {
             name = "oss.sonatype.org-releases"
-            url  = java.net.URI("https://s01.oss.sonatype.org/content/repositories/releases/")
+            url = java.net.URI("https://s01.oss.sonatype.org/content/repositories/releases/")
             mavenContent {
                 releasesOnly()
             }
@@ -67,7 +67,7 @@ dependencyResolutionManagement {
         // Apache releases
         maven {
             name = "apache-releases"
-            url  = java.net.URI("https://repository.apache.org/content/repositories/releases/")
+            url = java.net.URI("https://repository.apache.org/content/repositories/releases/")
             mavenContent {
                 releasesOnly()
             }

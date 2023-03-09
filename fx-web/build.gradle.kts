@@ -15,7 +15,7 @@
 description = "JavaFX utilities (web)"
 
 javafx {
-    modules = listOf( "javafx.web" )
+    modules = listOf("javafx.web")
 }
 
 dependencies {

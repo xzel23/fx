@@ -24,13 +24,6 @@ public class DialogSample extends Application {
         launch(args);
     }
 
-    private static Button createButton(String text, Runnable action) {
-        Button btn = new Button(text);
-        btn.setOnAction(e -> action.run());
-        btn.setPrefWidth(120.0);
-        return btn;
-    }
-
     @Override
     public void start(Stage primaryStage) {
         VBox container = new VBox();
@@ -55,12 +48,12 @@ public class DialogSample extends Application {
 
         // Information
         container.getChildren().add(createButton("Info", () ->
-            Dialogs.information(primaryStage)
-                    .title("Info")
-                    .header("Elevator cleaning")
-                    .text("To clean and service the electromagnetic coils in the bottom, " +
-                            "it is necessary to jettison the access plate in the floor.")
-                    .showAndWait()));
+                Dialogs.information(primaryStage)
+                        .title("Info")
+                        .header("Elevator cleaning")
+                        .text("To clean and service the electromagnetic coils in the bottom, " +
+                                "it is necessary to jettison the access plate in the floor.")
+                        .showAndWait()));
 
         // Warning
         container.getChildren().add(createButton("Warning", () ->
@@ -119,7 +112,7 @@ public class DialogSample extends Application {
                                     .header("Create new database connection")
                                     .text("""
                                             This wizard helps you to define a new database connection.
-                                            
+                                                                                        
                                             You will need the following information:
                                             - the vendor or manufacturer name of your database system
                                             - the server name and port
@@ -140,5 +133,12 @@ public class DialogSample extends Application {
         primaryStage.setTitle("Dialogs");
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    private static Button createButton(String text, Runnable action) {
+        Button btn = new Button(text);
+        btn.setOnAction(e -> action.run());
+        btn.setPrefWidth(120.0);
+        return btn;
     }
 }

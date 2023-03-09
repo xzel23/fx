@@ -15,18 +15,18 @@
 import com.dua3.fx.util.FxFontUtil;
 import com.dua3.fx.util.FxImageUtil;
 
-module  com.dua3.fx.util {
-	exports com.dua3.fx.util;
-	opens com.dua3.fx.util;
-	
-	provides com.dua3.utility.text.FontUtil
-	with FxFontUtil;
+module com.dua3.fx.util {
+    exports com.dua3.fx.util;
+    opens com.dua3.fx.util;
 
-	provides com.dua3.utility.data.ImageUtil
-	with FxImageUtil;
+    provides com.dua3.utility.text.FontUtil
+            with FxFontUtil;
 
-	requires com.dua3.utility;
-	requires java.prefs;
-	requires javafx.controls;
+    provides com.dua3.utility.data.ImageUtil
+            with FxImageUtil;
+
+    requires com.dua3.utility;
+    requires java.prefs;
+    requires javafx.controls;
     requires org.slf4j;
 }

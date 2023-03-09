@@ -2,20 +2,20 @@
 
     <!-- this bug pattern is currently completely broken / https://github.com/spotbugs/spotbugs/issues/1601 -->
     <Match>
-        <Bug pattern="EI_EXPOSE_REP" />
+        <Bug pattern="EI_EXPOSE_REP"/>
     </Match>
     <Match>
-        <Bug pattern="EI_EXPOSE_REP2" />
+        <Bug pattern="EI_EXPOSE_REP2"/>
     </Match>
     <Match>
-        <Bug pattern="THROWS_METHOD_THROWS_CLAUSE_BASIC_EXCEPTION" />
+        <Bug pattern="THROWS_METHOD_THROWS_CLAUSE_BASIC_EXCEPTION"/>
     </Match>
 
     <!-- false positive; the field contains an unmodifiable list -->
     <Match>
-        <Class name="com.dua3.fx.icons.IconView" />
-        <Method name="getClassCssMetaData" />
-        <Bug pattern="MS_EXPOSE_REP" />
+        <Class name="com.dua3.fx.icons.IconView"/>
+        <Method name="getClassCssMetaData"/>
+        <Bug pattern="MS_EXPOSE_REP"/>
     </Match>
-    
+
 </FindBugsFilter>

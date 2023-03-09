@@ -1,48 +1,48 @@
 package com.dua3.fx.util;
 
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import javafx.concurrent.Service;
-import javafx.concurrent.Task;
-
 public abstract class FxService<T> extends Service<T> {
 
-	protected FxService() {
-	}
+    private final List<FxTaskTracker> taskTrackers = new ArrayList<>();
 
-	@Override
-	protected final Task<T> createTask() {
-		Task<T> task = doCreateTask();
-		task.progressProperty().addListener((v,o,n) -> updateTaskProgress(task, n.doubleValue()));
-		task.stateProperty().addListener((v,o,n) -> updateTaskState(task, n));
-		task.titleProperty().addListener((v,o,n) -> updateTaskTitle(task, n));
-		return task;
-	}
+    protected FxService() {
+    }
 
-	private void updateTaskTitle(Task<T> task, String arg) {
-		taskTrackers.forEach(t -> t.updateTaskTitle(task, arg));
-	}
+    @Override
+    protected final Task<T> createTask() {
+        Task<T> task = doCreateTask();
+        task.progressProperty().addListener((v, o, n) -> updateTaskProgress(task, n.doubleValue()));
+        task.stateProperty().addListener((v, o, n) -> updateTaskState(task, n));
+        task.titleProperty().addListener((v, o, n) -> updateTaskTitle(task, n));
+        return task;
+    }
 
-	private void updateTaskState(Task<T> task, State arg) {
-		taskTrackers.forEach(t -> t.updateTaskState(task, arg));
-	}
+    protected abstract Task<T> doCreateTask();
 
-	private void updateTaskProgress(Task<T> task, double arg) {
-		taskTrackers.forEach(t -> t.updateTaskProgress(task, arg));
-	}
+    private void updateTaskProgress(Task<T> task, double arg) {
+        taskTrackers.forEach(t -> t.updateTaskProgress(task, arg));
+    }
 
-	protected abstract Task<T> doCreateTask();
+    private void updateTaskState(Task<T> task, State arg) {
+        taskTrackers.forEach(t -> t.updateTaskState(task, arg));
+    }
 
-	private final List<FxTaskTracker> taskTrackers = new ArrayList<>();
+    private void updateTaskTitle(Task<T> task, String arg) {
+        taskTrackers.forEach(t -> t.updateTaskTitle(task, arg));
+    }
 
-	public void addTaskTracker(FxTaskTracker t) {
-		taskTrackers.add(Objects.requireNonNull(t));
-	}
+    public void addTaskTracker(FxTaskTracker t) {
+        taskTrackers.add(Objects.requireNonNull(t));
+    }
 
-	public void removeTaskTracker(FxTaskTracker t) {
-		taskTrackers.remove(Objects.requireNonNull(t));
-	}
+    public void removeTaskTracker(FxTaskTracker t) {
+        taskTrackers.remove(Objects.requireNonNull(t));
+    }
 
 }

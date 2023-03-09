@@ -20,21 +20,19 @@ import javafx.scene.control.TableView;
 public final class TableViews {
 
     // utility - no instances
-	private TableViews() {}
-    
+    private TableViews() {}
+
     /**
      * Clear TableView.
-     * <p> 
+     * <p>
      * Clears both items and columns of the TableView instance.
-     * 
-     * @param tv
-     *  the TableView
-     * @param <T>
-     *  the TableView type parameter
+     *
+     * @param tv  the TableView
+     * @param <T> the TableView type parameter
      */
     public static <T> void clear(TableView<T> tv) {
         Platform.runLater(() -> {
-        	tv.getItems().clear();
+            tv.getItems().clear();
             tv.getColumns().clear();
         });
     }

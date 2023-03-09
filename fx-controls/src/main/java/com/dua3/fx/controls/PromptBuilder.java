@@ -17,28 +17,28 @@ package com.dua3.fx.controls;
 import javafx.scene.control.TextInputDialog;
 import javafx.stage.Window;
 
-/** 
+/**
  * Builder for Alert Dialogs.
- * <p> 
- * Provides a fluent interface to create Alerts. 
+ * <p>
+ * Provides a fluent interface to create Alerts.
  */
 public class PromptBuilder extends AbstractDialogBuilder<TextInputDialog, PromptBuilder, String> {
-	public PromptBuilder(Window parentWindow) {
-		super(parentWindow);
-		setDialogSupplier(TextInputDialog::new);
-		validate(r -> !r.isBlank()); // valid <=> not blank
-	}
-	
-	public PromptBuilder defaultValue(String fmt, Object... args) {
-		String defaultValue = args.length==0 ? fmt : String.format(fmt, args);
-		setDialogSupplier(() -> new TextInputDialog(defaultValue));
-		return this;
-	}
-	
-	@Override
-	public TextInputDialog build() {
-		TextInputDialog dlg = super.build();
-		dlg.setGraphic(null);
-		return dlg;
-	}
+    public PromptBuilder(Window parentWindow) {
+        super(parentWindow);
+        setDialogSupplier(TextInputDialog::new);
+        validate(r -> !r.isBlank()); // valid <=> not blank
+    }
+
+    public PromptBuilder defaultValue(String fmt, Object... args) {
+        String defaultValue = args.length == 0 ? fmt : String.format(fmt, args);
+        setDialogSupplier(() -> new TextInputDialog(defaultValue));
+        return this;
+    }
+
+    @Override
+    public TextInputDialog build() {
+        TextInputDialog dlg = super.build();
+        dlg.setGraphic(null);
+        return dlg;
+    }
 }

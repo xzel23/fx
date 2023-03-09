@@ -14,10 +14,10 @@
 
 package com.dua3.fx.controls;
 
-import java.util.Map;
-
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
+
+import java.util.Map;
 
 /**
  * A Dialog for inputting values.
@@ -26,13 +26,13 @@ import javafx.scene.control.Dialog;
  */
 public class InputDialog extends Dialog<Map<String, Object>> {
 
-	public InputDialog() {
-		setResultConverter(btn -> {
-			if (btn != ButtonType.OK) {
-				return null;
-			}
-			return ((InputPane) getDialogPane()).get();
-		});
-	}
-	
+    public InputDialog() {
+        setResultConverter(btn -> {
+            if (btn != ButtonType.OK) {
+                return null;
+            }
+            return ((InputPane) getDialogPane()).get();
+        });
+    }
+
 }

@@ -21,96 +21,94 @@ import java.util.Optional;
 
 public class RadioPane<T> extends VBox implements InputControl<T> {
 
-    /** Logger */
+    /**
+     * Logger
+     */
     protected static final Logger LOG = LoggerFactory.getLogger(RadioPane.class);
-
+    private static final double SPACING = 4;
     private final LinkedHashMap<T, RadioButton> items = new LinkedHashMap<>();
-	private final ToggleGroup group;
+    private final ToggleGroup group;
+    private final InputControl.State<T> state;
 
-	private static final double SPACING = 4;
+    /**
+     * Create new Radio Pane.
+     *
+     * @param items        the available items
+     * @param currentValue the current value
+     */
+    @SuppressWarnings("unchecked")
+    public RadioPane(Collection<T> items, T currentValue) {
+        this.group = new ToggleGroup();
 
-	private final InputControl.State<T> state;
+        this.setSpacing(SPACING);
+        ObservableList<Node> children = getChildren();
+        for (var item : items) {
+            RadioButton control = new RadioButton(String.valueOf(item));
+            control.setUserData(item);
+            control.setToggleGroup(group);
+            children.add(control);
+            this.items.put(item, control);
+        }
 
-	/**
-	 * Create new Radio Pane.
-	 * @param items
-	 *  the available items
-	 * @param currentValue
-	 *  the current value
-	 */
-	@SuppressWarnings("unchecked")
-	public RadioPane(Collection<T> items, T currentValue) {
-		this.group = new ToggleGroup();
+        // update state when selected toggle changes
+        Property<T> property = new SimpleObjectProperty<>();
+        group.selectedToggleProperty().addListener((v, o, n) -> {
+            Toggle toggle = group.getSelectedToggle();
+            property.setValue(toggle != null ? (T) toggle.getUserData() : null);
+        });
 
-		this.setSpacing(SPACING);
-		ObservableList<Node> children = getChildren();
-		for (var item: items) {
-			RadioButton control = new RadioButton(String.valueOf(item));
-			control.setUserData(item);
-			control.setToggleGroup(group);
-			children.add(control);
-			this.items.put(item, control);
-		}
+        this.state = new State<>(property);
+        //noinspection VariableNotUsedInsideIf
+        this.state.setValidate(v -> v == null ? Optional.of("Nothing selected.") : Optional.empty());
 
-		// update state when selected toggle changes
-		Property<T> property = new SimpleObjectProperty<>();
-		group.selectedToggleProperty().addListener( (v,o,n) -> {
-			Toggle toggle = group.getSelectedToggle();
-			property.setValue(toggle != null ? (T) toggle.getUserData() : null);
-		});
-		
-		this.state = new State<>(property);
-		//noinspection VariableNotUsedInsideIf
-		this.state.setValidate( v -> v==null?Optional.of("Nothing selected.") : Optional.empty());
-		
-		// update toggle, when state changes
-		state.valueProperty().addListener( (v,o,n) -> group.selectToggle(this.items.get(n)));
-		
-		// set initial toggle
-		group.selectToggle(this.items.get(currentValue));
-	}
+        // update toggle, when state changes
+        state.valueProperty().addListener((v, o, n) -> group.selectToggle(this.items.get(n)));
+
+        // set initial toggle
+        group.selectToggle(this.items.get(currentValue));
+    }
 
     @Override
     public Node node() {
         return this;
     }
 
-	@Override
-	public Property<T> valueProperty() {
-		return state.valueProperty();
-	}
+    @Override
+    public void reset() {
+        state.reset();
+    }
 
-	@Override
-	public ReadOnlyBooleanProperty validProperty() {
-		return state.validProperty();
-	}
+    @Override
+    public Property<T> valueProperty() {
+        return state.valueProperty();
+    }
 
-	@Override
-	public ReadOnlyStringProperty errorProperty() {
-		return state.errorProperty();
-	}
-	
-	@Override
-	public void reset() {
-		state.reset();
-	}
+    @Override
+    public ReadOnlyBooleanProperty validProperty() {
+        return state.validProperty();
+    }
 
-	@Override
-	public void requestFocus() {
-		if (group.getToggles().isEmpty()) {
-			super.requestFocus();
-		}
+    @Override
+    public ReadOnlyStringProperty errorProperty() {
+        return state.errorProperty();
+    }
 
-		Toggle t = group.getSelectedToggle();
-		if (t==null) {
-			t = group.getToggles().get(0);
+    @Override
+    public void requestFocus() {
+        if (group.getToggles().isEmpty()) {
+            super.requestFocus();
+        }
 
-		}
+        Toggle t = group.getSelectedToggle();
+        if (t == null) {
+            t = group.getToggles().get(0);
 
-		if (t instanceof Control) {
-			((Control) t).requestFocus();
-		} else {
-			super.requestFocus();
-		}
-	}
+        }
+
+        if (t instanceof Control) {
+            ((Control) t).requestFocus();
+        } else {
+            super.requestFocus();
+        }
+    }
 }

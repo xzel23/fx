@@ -15,7 +15,7 @@
 description = "JavaFX utilities (database)"
 
 javafx {
-    modules = listOf( "javafx.controls", "javafx.graphics" )
+    modules = listOf("javafx.controls", "javafx.graphics")
 }
 
 dependencies {

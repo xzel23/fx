@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-module  com.dua3.fx.application {
-	exports com.dua3.fx.application;
-	opens com.dua3.fx.application;
+module com.dua3.fx.application {
+    exports com.dua3.fx.application;
+    opens com.dua3.fx.application;
 
-    requires transitive  com.dua3.fx.util;
-    requires transitive  com.dua3.fx.controls;
+    requires transitive com.dua3.fx.util;
+    requires transitive com.dua3.fx.controls;
 
     requires com.dua3.utility;
 

@@ -1,4 +1,4 @@
-module  com.dua3.fx.icons.ikonli {
+module com.dua3.fx.icons.ikonli {
     exports com.dua3.fx.icons.ikonli;
     opens com.dua3.fx.icons.ikonli;
 

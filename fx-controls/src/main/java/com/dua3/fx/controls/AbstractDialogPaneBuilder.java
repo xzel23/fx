@@ -14,121 +14,112 @@
 
 package com.dua3.fx.controls;
 
+import javafx.scene.control.ButtonType;
+
 import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import javafx.scene.control.ButtonType;
-
-/** 
+/**
  * Abstract base class for DialogPane builders.
- * <p> 
- * Provides a fluent interface to create Dialog panes. 
- * 
+ * <p>
+ * Provides a fluent interface to create Dialog panes.
+ *
  * @param <D> the type of the dialog or pane to build
- * @param <B> the type of the builder 
+ * @param <B> the type of the builder
  * @param <R> the result type
  */
 public abstract class AbstractDialogPaneBuilder<D, B extends AbstractDialogPaneBuilder<D, B, R>, R> {
-	
-	/**
-	 * Dialog(Pane) result handler.
-	 *
-	 * @param <R> the result type
-	 */
-	@FunctionalInterface
-	public interface ResultHandler<R> {
-		/**
-		 * Handle result.
-		 * 
-		 * @param btn
-		 *  the button that was pressed
-		 *  
-		 * @param result
-		 *  the dialog/pane result as returned by the result converter
-		 *  
-		 * @return
-		 *  true, if it's ok to proceed (the current page should be left)
-		 *  false otherwise
-		 */
-		boolean handleResult(ButtonType btn, R result);
-	}
-	
+
     private final BiConsumer<D, String> headerSetter;
+    private Supplier<D> dialogSupplier;
+    private String header = null;
+    private ResultHandler<R> resultHandler = (b, r) -> true;
+    private Predicate<R> validate = r -> true;
 
-	AbstractDialogPaneBuilder(
-		BiConsumer<D, String> headerSetter
-	) {
-		this.dialogSupplier = () -> { throw new IllegalStateException("call setDialogSupplier() first"); };
-		this.headerSetter=headerSetter;
-	}
+    AbstractDialogPaneBuilder(
+            BiConsumer<D, String> headerSetter
+    ) {
+        this.dialogSupplier = () -> {throw new IllegalStateException("call setDialogSupplier() first");};
+        this.headerSetter = headerSetter;
+    }
 
-	private Supplier<D> dialogSupplier;
-	private String header = null;
+    protected final void setDialogSupplier(Supplier<D> dialogSupplier) {
+        this.dialogSupplier = Objects.requireNonNull(dialogSupplier);
+    }
 
-	private ResultHandler<R> resultHandler = (b,r) -> true;
+    /**
+     * Create Alert instance.
+     *
+     * @return Alert instance
+     */
+    public D build() {
+        D dlg = dialogSupplier.get();
 
-	protected final void setDialogSupplier(Supplier<D> dialogSupplier) {
-		this.dialogSupplier = Objects.requireNonNull(dialogSupplier);
-	}
+        applyIfNotNull(headerSetter, dlg, header);
 
-	protected static <C,D> void applyIfNotNull(BiConsumer<C,D> consumer, C a, D b) {
-		if (a!=null && b!=null) {
-			consumer.accept(a,b);
-		}
-	}
-	
-	protected static String format(String fmt, Object... args) {
-		return String.format(fmt, args);
-	}
+        return dlg;
+    }
 
-	/**
-	 * Create Alert instance.
-	 * @return Alert instance
-	 */
-	public D build() {
-		D dlg = dialogSupplier.get();
+    protected static <C, D> void applyIfNotNull(BiConsumer<C, D> consumer, C a, D b) {
+        if (a != null && b != null) {
+            consumer.accept(a, b);
+        }
+    }
 
-		applyIfNotNull(headerSetter, dlg, header);
+    /**
+     * Set Alert header text.
+     *
+     * @param fmt  the format String as defined by {@link java.util.Formatter}
+     * @param args the arguments passed to the formatter
+     * @return {@code this}
+     */
+    @SuppressWarnings("unchecked")
+    public B header(String fmt, Object... args) {
+        this.header = format(fmt, args);
+        return (B) this;
+    }
 
-		return dlg;
-	}
+    protected static String format(String fmt, Object... args) {
+        return String.format(fmt, args);
+    }
 
-	/**
-	 * Set Alert header text.
-	 * @param fmt
-	 * 	the format String as defined by {@link java.util.Formatter}
-	 * @param args
-	 * 	the arguments passed to the formatter
-	 * @return 
-	 * 	{@code this}
-	 */
-	@SuppressWarnings("unchecked")
-	public B header(String fmt, Object... args) {
-		this.header = format(fmt, args);
-		return (B) this;
-	}
+    @SuppressWarnings("unchecked")
+    public B resultHandler(ResultHandler<R> resultHandler) {
+        this.resultHandler = Objects.requireNonNull(resultHandler);
+        return (B) this;
+    }
 
-	@SuppressWarnings("unchecked")
-	public B resultHandler(ResultHandler<R> resultHandler) {
-		this.resultHandler = Objects.requireNonNull(resultHandler);
-		return (B) this;
-	}
+    public ResultHandler<R> getResultHandler() {
+        return resultHandler;
+    }
 
-	public ResultHandler<R> getResultHandler() {
-		return resultHandler;
-	}
+    @SuppressWarnings("unchecked")
+    public B validate(Predicate<R> validate) {
+        this.validate = Objects.requireNonNull(validate);
+        return (B) this;
+    }
 
-	private Predicate<R> validate = r -> true;
+    protected Predicate<R> getValidate() {
+        return validate;
+    }
 
-	@SuppressWarnings("unchecked")
-	public B validate(Predicate<R> validate) {
-		this.validate = Objects.requireNonNull(validate);
-		return (B) this;
-	}
-
-	protected Predicate<R> getValidate() {
-		return validate;
-	}
+    /**
+     * Dialog(Pane) result handler.
+     *
+     * @param <R> the result type
+     */
+    @FunctionalInterface
+    public interface ResultHandler<R> {
+        /**
+         * Handle result.
+         *
+         * @param btn    the button that was pressed
+         * @param result the dialog/pane result as returned by the result converter
+         * @return true, if it's ok to proceed (the current page should be left)
+         * false otherwise
+         */
+        boolean handleResult(ButtonType btn, R result);
+    }
 }

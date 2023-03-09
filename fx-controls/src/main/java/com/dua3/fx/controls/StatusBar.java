@@ -14,14 +14,8 @@
 
 package com.dua3.fx.controls;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
-
-
-
-import com.dua3.fx.util.PlatformHelper;
 import com.dua3.fx.util.FxTaskTracker;
-
+import com.dua3.fx.util.PlatformHelper;
 import javafx.concurrent.Task;
 import javafx.concurrent.Worker.State;
 import javafx.fxml.FXML;
@@ -34,90 +28,97 @@ import javafx.scene.layout.HBox;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
+
 /**
  * Dialog to configure a editor settings.
  */
 public class StatusBar extends HBox implements FxTaskTracker {
 
-	/** Logger instance */
+    /**
+     * Logger instance
+     */
     private static final Logger LOG = LoggerFactory.getLogger(StatusBar.class);
 
     // -- input controls
-	@FXML Label text;
-	@FXML ProgressBar progress;
+    @FXML
+    Label text;
+    @FXML
+    ProgressBar progress;
 
-	/**
-	 * Construct new StatusBar instance.
-	 */
-	public StatusBar() {
-		// load FXML
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("status_bar.fxml"));
-		fxmlLoader.setRoot(this);
-		fxmlLoader.setController(this);
+    /**
+     * Construct new StatusBar instance.
+     */
+    public StatusBar() {
+        // load FXML
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("status_bar.fxml"));
+        fxmlLoader.setRoot(this);
+        fxmlLoader.setController(this);
 
-		try {
-			fxmlLoader.load();
-		} catch (IOException e) {
-			LOG.warn("exception while loading FXML", e);
-			throw new UncheckedIOException(e);
-		}
-	}
+        try {
+            fxmlLoader.load();
+        } catch (IOException e) {
+            LOG.warn("exception while loading FXML", e);
+            throw new UncheckedIOException(e);
+        }
+    }
 
-	@FXML
-	private void initialize() {
-	}
+    @FXML
+    private void initialize() {
+    }
 
-	public void setText(String s) {
-		PlatformHelper.runLater(() -> text.setText(s));
-	}
+    public void setText(String s) {
+        PlatformHelper.runLater(() -> text.setText(s));
+    }
 
-	public void setProgress(double p) {
-		PlatformHelper.runLater(() -> progress.setProgress(p));
-	}
+    public void setProgress(double p) {
+        PlatformHelper.runLater(() -> progress.setProgress(p));
+    }
 
-	@Override
-	public void updateTaskState(Task<?> task, State state) {
-		PlatformHelper.runLater(() -> {
-			switch (state) {
-				case RUNNING -> {
-					progress.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
-					progress.setVisible(true);
-				}
-				case SUCCEEDED -> {
-					progress.setProgress(1.0);
-					progress.setVisible(false);
-				}
-				case READY -> {
-					progress.setProgress(0.0);
-					progress.setVisible(false);
-				}
-				case SCHEDULED -> {
-					progress.setProgress(0.0);
-					progress.setVisible(true);
-				}
-				case CANCELLED, FAILED -> {
-					progress.setProgress(0.0);
-					progress.setVisible(false);
-				}
-				default -> LOG.warn("StatusBar.updateTaskState() - unexpected state: {}", state);
-			}
-		});
-	}
+    @Override
+    public void updateTaskState(Task<?> task, State state) {
+        PlatformHelper.runLater(() -> {
+            switch (state) {
+                case RUNNING -> {
+                    progress.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
+                    progress.setVisible(true);
+                }
+                case SUCCEEDED -> {
+                    progress.setProgress(1.0);
+                    progress.setVisible(false);
+                }
+                case READY -> {
+                    progress.setProgress(0.0);
+                    progress.setVisible(false);
+                }
+                case SCHEDULED -> {
+                    progress.setProgress(0.0);
+                    progress.setVisible(true);
+                }
+                case CANCELLED, FAILED -> {
+                    progress.setProgress(0.0);
+                    progress.setVisible(false);
+                }
+                default -> LOG.warn("StatusBar.updateTaskState() - unexpected state: {}", state);
+            }
+        });
+    }
 
-	@Override
-	public void updateTaskProgress(Task<?> task, double p) {
-		progress.setProgress(p);
-		
-	}
+    @Override
+    public void updateTaskProgress(Task<?> task, double p) {
+        progress.setProgress(p);
 
-	@Override
-	public void updateTaskTitle(Task<?> task, String s) {
-		text.setText(s);
-	}
+    }
 
-	@Override
-	public void updateTaskMessage(Task<?> task, String s) {
-		progress.setTooltip(new Tooltip(s));
-	}
+    @Override
+    public void updateTaskTitle(Task<?> task, String s) {
+        text.setText(s);
+    }
+
+    @Override
+    public void updateTaskMessage(Task<?> task, String s) {
+        progress.setTooltip(new Tooltip(s));
+    }
 
 }

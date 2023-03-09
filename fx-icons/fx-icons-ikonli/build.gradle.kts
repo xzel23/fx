@@ -15,7 +15,7 @@
 description = "JavaFX utilities (icons-ikonli)"
 
 javafx {
-    modules = listOf( "javafx.graphics" )
+    modules = listOf("javafx.graphics")
 }
 
 dependencies {

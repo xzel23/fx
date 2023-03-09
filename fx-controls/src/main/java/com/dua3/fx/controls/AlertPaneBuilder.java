@@ -23,37 +23,37 @@ import javafx.scene.control.DialogPane;
  * Provides a fluent interface to create Alerts.
  */
 public class AlertPaneBuilder
-extends AbstractPaneBuilder<InputDialogPane<Void>, AlertPaneBuilder, Void> {
-	private String text = null;
+        extends AbstractPaneBuilder<InputDialogPane<Void>, AlertPaneBuilder, Void> {
+    private String text = null;
 
-	public AlertPaneBuilder(AlertType type) {
-		setDialogSupplier(() -> createPane(type));
-	}
+    public AlertPaneBuilder(AlertType type) {
+        setDialogSupplier(() -> createPane(type));
+    }
 
-	public AlertPaneBuilder text(String fmt, Object... args) {
-		this.text = format(fmt, args);
-		return this;
-	}
+    private static InputDialogPane<Void> createPane(AlertType type) {
+        return new InputDialogPane<>() {
+            @Override
+            public Void get() {
+                return null;
+            }
 
-	private static InputDialogPane<Void> createPane(AlertType type) {
-		return new InputDialogPane<>() {
-			@Override
-			public Void get() {
-				return null;
-			}
+            @Override
+            public void init() {
+                // nop
+            }
+        };
+    }
 
-			@Override
-			public void init() {
-				// nop
-			}
-		};
-	}
+    public AlertPaneBuilder text(String fmt, Object... args) {
+        this.text = format(fmt, args);
+        return this;
+    }
 
-	@Override
-	public InputDialogPane<Void> build() {
-		InputDialogPane<Void> inputPane = super.build();
-		applyIfNotNull(DialogPane::setContentText, inputPane, text);
-		inputPane.setValidate(getValidate());
-		return inputPane;
-	}
+    @Override
+    public InputDialogPane<Void> build() {
+        InputDialogPane<Void> inputPane = super.build();
+        applyIfNotNull(DialogPane::setContentText, inputPane, text);
+        inputPane.setValidate(getValidate());
+        return inputPane;
+    }
 }

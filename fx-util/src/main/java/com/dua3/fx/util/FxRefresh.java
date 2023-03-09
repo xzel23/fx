@@ -19,106 +19,41 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public final class FxRefresh {
     private static final Logger LOG = LoggerFactory.getLogger(FxRefresh.class);
-    
-    /** The instance name (used in logging). */
+
+    /**
+     * The instance name (used in logging).
+     */
     private final String name;
 
-    /** The revision number of the last completed update operation. */
+    /**
+     * The revision number of the last completed update operation.
+     */
     private final AtomicInteger currentRevision = new AtomicInteger();
-    /** The revision number of the last request. {@code currentRevision < requestedRevision} implies a pending update. */
+    /**
+     * The revision number of the last request. {@code currentRevision < requestedRevision} implies a pending update.
+     */
     private final AtomicInteger requestedRevision = new AtomicInteger();
 
     // synchronization
     private final ReentrantLock lock = new ReentrantLock();
     private final Condition trigger = lock.newCondition();
 
-    /** The active state. Refresh requests in inactive state are put on hold until activated again. */
+    /**
+     * The active state. Refresh requests in inactive state are put on hold until activated again.
+     */
     private final AtomicBoolean active = new AtomicBoolean(false);
-
-    /** The update thread, null if not running or stop requested. */ 
-    private volatile Thread updateThread = null;
-    
-    /** the update task to execute. */
+    /**
+     * the update task to execute.
+     */
     private final Runnable task;
-
     /**
-     * Create new instance. The initial state is active. 
-     * @param name the name for the instance
-     * @param task the task to call when refreshing
-     * @return new instance
+     * The update thread, null if not running or stop requested.
      */
-    public static FxRefresh create(String name, Runnable task) {
-        return create(name, task, true);
-    }
-
-    /**
-     * Create new instance.
-     * @param name the name for the instance
-     * @param task the task to call when refreshing
-     * @param active the initial active state
-     * @return new instance
-     */
-    public static FxRefresh create(String name, Runnable task, boolean active) {
-        FxRefresh r = new FxRefresh(name, task);
-        r.setActive(active);
-        return r;
-    }
-
-    /**
-     * Create a refresher instance for a JavaFX {@link Node}.
-     * The refresher will prevent updates when the node is hidden. The refresher is stopped when the node is
-     * removed from the scene graph. The initial state is active.
-     * @param name the refresher name
-     * @param task the task to run on refresh
-     * @param node the node associated with this refresher
-     * @return new instance
-     */
-    public static FxRefresh create(String name, Runnable task, Node node) {
-        return create(name, task, node, true);    
-    }
-    
-    /**
-     * Create a refresher instance for a JavaFX {@link Node}.
-     * The refresher will prevent updates when the node is hidden. The refresher is stopped when the node is
-     * removed from the scene graph.
-     * @param name the refresher name
-     * @param task the task to run on refresh
-     * @param node the node associated with this refresher
-     * @param active the initial active state
-     * @return new instance
-     */
-    public static FxRefresh create(String name, Runnable task, Node node, boolean active) {
-        FxRefresh r = new FxRefresh(name, () -> {
-            if (!node.isVisible()) {
-                LOG.debug("node is not visible, update skipped");
-                return;
-            }
-            
-            task.run();
-        });
-
-        // stop update thread when node is removed from scene graph
-        node.parentProperty().addListener(  (v, o, n) -> {
-            if (n == null) {
-                LOG.debug("node was removed from parent, stopping refresher");
-                r.stop();
-            }
-        } );
-
-        node.sceneProperty().addListener( (v,o,n) -> {
-            if (n==null) {
-                LOG.debug("node was removed from scene graph, stopping refresher");
-                r.stop();
-            }
-        } );
-
-        r.setActive(active);
-        
-        return r;
-    }
+    private volatile Thread updateThread = null;
 
     /**
      * Constructor.
+     *
      * @param name the name for the instance
      * @param task the task to call when refreshing
      */
@@ -130,7 +65,7 @@ public final class FxRefresh {
     }
 
     /**
-     * Loop of the update thread. Waits for incoming requests and calls the update task. 
+     * Loop of the update thread. Waits for incoming requests and calls the update task.
      */
     private void refreshLoop() {
         LOG.debug("[{}] entering refresh loop", name);
@@ -138,9 +73,9 @@ public final class FxRefresh {
             lock.lock();
             try {
                 // stay in loop as long as stop is not requested (updateThread!=null) and
-                // refresher is inactive or no redraw request has been issued  
-                while(updateThread!=null
-                      && (!active.get() || requestedRevision.get()<=currentRevision.get())) {
+                // refresher is inactive or no redraw request has been issued
+                while (updateThread != null
+                        && (!active.get() || requestedRevision.get() <= currentRevision.get())) {
                     trigger.await();
                 }
             } catch (InterruptedException e) {
@@ -168,8 +103,42 @@ public final class FxRefresh {
                     LOG.debug("[{}] already at revision: {}", name, myRevision);
                 }
             }
-        } while (updateThread!= null);
+        } while (updateThread != null);
         LOG.debug("[{}] exiting refresh loop", name);
+    }
+
+    /**
+     * Stop the refresher.
+     */
+    public synchronized void stop() {
+        LOG.debug("[{}] stopping", name);
+        this.updateThread = null;
+        setActive(false);
+    }
+
+    /**
+     * Create new instance. The initial state is active.
+     *
+     * @param name the name for the instance
+     * @param task the task to call when refreshing
+     * @return new instance
+     */
+    public static FxRefresh create(String name, Runnable task) {
+        return create(name, task, true);
+    }
+
+    /**
+     * Create new instance.
+     *
+     * @param name   the name for the instance
+     * @param task   the task to call when refreshing
+     * @param active the initial active state
+     * @return new instance
+     */
+    public static FxRefresh create(String name, Runnable task, boolean active) {
+        FxRefresh r = new FxRefresh(name, task);
+        r.setActive(active);
+        return r;
     }
 
     /**
@@ -186,9 +155,64 @@ public final class FxRefresh {
     }
 
     /**
+     * Create a refresher instance for a JavaFX {@link Node}.
+     * The refresher will prevent updates when the node is hidden. The refresher is stopped when the node is
+     * removed from the scene graph. The initial state is active.
+     *
+     * @param name the refresher name
+     * @param task the task to run on refresh
+     * @param node the node associated with this refresher
+     * @return new instance
+     */
+    public static FxRefresh create(String name, Runnable task, Node node) {
+        return create(name, task, node, true);
+    }
+
+    /**
+     * Create a refresher instance for a JavaFX {@link Node}.
+     * The refresher will prevent updates when the node is hidden. The refresher is stopped when the node is
+     * removed from the scene graph.
+     *
+     * @param name   the refresher name
+     * @param task   the task to run on refresh
+     * @param node   the node associated with this refresher
+     * @param active the initial active state
+     * @return new instance
+     */
+    public static FxRefresh create(String name, Runnable task, Node node, boolean active) {
+        FxRefresh r = new FxRefresh(name, () -> {
+            if (!node.isVisible()) {
+                LOG.debug("node is not visible, update skipped");
+                return;
+            }
+
+            task.run();
+        });
+
+        // stop update thread when node is removed from scene graph
+        node.parentProperty().addListener((v, o, n) -> {
+            if (n == null) {
+                LOG.debug("node was removed from parent, stopping refresher");
+                r.stop();
+            }
+        });
+
+        node.sceneProperty().addListener((v, o, n) -> {
+            if (n == null) {
+                LOG.debug("node was removed from scene graph, stopping refresher");
+                r.stop();
+            }
+        });
+
+        r.setActive(active);
+
+        return r;
+    }
+
+    /**
      * Check if the refresher has been started. Note that it's possible that the refresher is running,
      * but inactive, i.e. if the window is hidden.
-     * 
+     *
      * @return true, if the refresher is running
      */
     public boolean isRunning() {
@@ -196,30 +220,23 @@ public final class FxRefresh {
     }
 
     /**
-     * Stop the refresher.
+     * Check active state.
+     *
+     * @return true if active
      */
-    public synchronized void stop() {
-        LOG.debug("[{}] stopping", name);
-        this.updateThread = null;
-        setActive(false);
+    public boolean isActive() {
+        return active.get();
     }
 
     /**
      * Set active state.
+     *
      * @param flag whether to activate or deactivate the refresher
      */
     public synchronized void setActive(boolean flag) {
         LOG.debug("[{}] setActive({})", name, flag);
         this.active.set(flag);
         signal();
-    }
-
-    /**
-     * Check active state.
-     * @return true if active
-     */
-    public boolean isActive() {
-        return active.get();
     }
 
     /**

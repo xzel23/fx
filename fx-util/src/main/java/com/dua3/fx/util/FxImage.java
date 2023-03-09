@@ -6,11 +6,11 @@ import javafx.scene.image.PixelFormat;
 import java.util.Objects;
 
 public record FxImage(javafx.scene.image.Image fxImage) implements Image {
-    
+
     public FxImage {
         Objects.requireNonNull(fxImage);
     }
-    
+
     @Override
     public int width() {
         return (int) Math.round(fxImage.getWidth());
@@ -25,7 +25,7 @@ public record FxImage(javafx.scene.image.Image fxImage) implements Image {
     public int[] getArgb() {
         int w = width();
         int h = height();
-        int[] data = new int[w*h];
+        int[] data = new int[w * h];
         fxImage.getPixelReader().getPixels(0, 0, w, h, PixelFormat.getIntArgbInstance(), data, 0, w);
         return data;
     }

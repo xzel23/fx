@@ -8,25 +8,27 @@ import org.slf4j.LoggerFactory;
 
 public class PromptPane extends InputDialogPane<String> {
 
-    /** Logger */
+    /**
+     * Logger
+     */
     protected static final Logger LOG = LoggerFactory.getLogger(PromptPane.class);
 
     private final TextField text;
 
-	@Override
-	public String get() {
-		return text.getText();
-	}
+    public PromptPane() {
+        text = new TextField();
+        text.textProperty().addListener((v, o, n) -> updateValidState(n));
+        setContent(new StackPane(text));
+    }
 
-	public PromptPane() {
-		text = new TextField();
-		text.textProperty().addListener( (v,o,n) -> updateValidState(n) );
-		setContent(new StackPane(text));
-	}
+    @Override
+    public String get() {
+        return text.getText();
+    }
 
-	@Override
-	public void init() {
-		text.requestFocus();
-		updateValidState(text.getText());
-	}
+    @Override
+    public void init() {
+        text.requestFocus();
+        updateValidState(text.getText());
+    }
 }

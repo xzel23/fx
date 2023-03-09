@@ -20,7 +20,7 @@ description = "JavaFX utilities (samples)"
 
 javafx {
     configuration = "implementation"
-    modules = listOf( "javafx.base", "javafx.fxml", "javafx.controls" )
+    modules = listOf("javafx.base", "javafx.fxml", "javafx.controls")
 }
 
 dependencies {

@@ -43,7 +43,7 @@ public class FileInput extends HBox implements InputControl<Path> {
 
     public FileInput(InputBuilder.FileDialogMode mode, Supplier<Path> dflt, FileChooser.ExtensionFilter... filters) {
         this.mode = Objects.requireNonNull(mode);
-        this.filters = Arrays.copyOf(Objects.requireNonNull(filters),filters.length);
+        this.filters = Arrays.copyOf(Objects.requireNonNull(filters), filters.length);
         this.dflt = Objects.requireNonNull(dflt);
 
         this.tfFilename = new TextField();
@@ -51,14 +51,14 @@ public class FileInput extends HBox implements InputControl<Path> {
         button.setOnAction(evt -> {
 
             Path initialDir = value.get();
-            if (initialDir!=null && !Files.isDirectory(initialDir)) {
+            if (initialDir != null && !Files.isDirectory(initialDir)) {
                 initialDir = initialDir.getParent();
             }
-            if (initialDir==null) {
-                initialDir= Paths.get(".");
+            if (initialDir == null) {
+                initialDir = Paths.get(".");
             }
 
-            if (this.mode==InputBuilder.FileDialogMode.OPEN) {
+            if (this.mode == InputBuilder.FileDialogMode.OPEN) {
                 Dialogs.chooseFile()
                         .initialDir(initialDir)
                         .filter(this.filters)
@@ -82,11 +82,11 @@ public class FileInput extends HBox implements InputControl<Path> {
         StringExpression errorText = Bindings.createStringBinding(
                 () -> {
                     Path file = value.get();
-                    if (file == null ) {
+                    if (file == null) {
                         return "No file selected.";
                     }
-                    if (mode==InputBuilder.FileDialogMode.OPEN && !Files.exists(file)) {
-                        return "File does not exist: "+file;
+                    if (mode == InputBuilder.FileDialogMode.OPEN && !Files.exists(file)) {
+                        return "File does not exist: " + file;
                     }
                     return "";
                 },
@@ -97,12 +97,16 @@ public class FileInput extends HBox implements InputControl<Path> {
 
         // valid property
         BooleanExpression isNotNull = value.isNotNull();
-        if (mode== InputBuilder.FileDialogMode.OPEN) {
+        if (mode == InputBuilder.FileDialogMode.OPEN) {
             BooleanBinding exists = Bindings.createBooleanBinding(() -> getPath() != null && Files.exists(getPath()), value);
             valid.bind(Bindings.and(isNotNull, exists));
         } else {
             valid.bind(value.isNotNull());
         }
+    }
+
+    private Path getPath() {
+        return value.get();
     }
 
     @Override
@@ -118,10 +122,6 @@ public class FileInput extends HBox implements InputControl<Path> {
     @Override
     public Property<Path> valueProperty() {
         return value;
-    }
-
-    private Path getPath() {
-        return value.get();
     }
 
     @Override

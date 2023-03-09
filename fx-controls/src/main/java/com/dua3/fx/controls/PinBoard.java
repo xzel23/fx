@@ -41,13 +41,16 @@ import java.util.function.Supplier;
  */
 public class PinBoard extends Control {
 
+    final ObservableList<Item> items = FXCollections.observableArrayList();
+    private final ObjectProperty<Rectangle2D> areaProperty = new SimpleObjectProperty<>(new Rectangle2D(0, 0, 0, 0));
+
     public PinBoard() {
     }
-    
+
     public void clear() {
         PlatformHelper.checkApplicationThread();
         items.clear();
-        areaProperty.set(new Rectangle2D(0,0,0,0));
+        areaProperty.set(new Rectangle2D(0, 0, 0, 0));
     }
 
     public void refresh() {
@@ -61,13 +64,7 @@ public class PinBoard extends Control {
             skin.dispose();
         }
     }
-    
-    public record Item(String name, Rectangle2D area, Supplier<Node> nodeBuilder) {}
-    
-    private final ObjectProperty<Rectangle2D> areaProperty = new SimpleObjectProperty<>(new Rectangle2D(0,0,0,0));
 
-    final ObservableList<Item> items = FXCollections.observableArrayList();
-    
     @Override
     protected Skin<PinBoard> createDefaultSkin() {
         return new PinBoardSkin(this);
@@ -80,27 +77,68 @@ public class PinBoard extends Control {
     public ObservableList<Item> getItems() {
         return FXCollections.unmodifiableObservableList(items);
     }
-    
-    public Rectangle2D getArea() {
-        return areaProperty.get();
-    }
-    
-    public Pair<Double,Double> getScrollPosition() {
+
+    public Pair<Double, Double> getScrollPosition() {
         if (getSkin() instanceof PinBoardSkin skin) {
             return skin.getScrollPosition();
         } else {
-            return Pair.of(0.0,0.0);
+            return Pair.of(0.0, 0.0);
         }
     }
-    
+
+    public void setScrollPosition(Pair<Double, Double> scrollPosition) {
+        setScrollPosition(scrollPosition.first(), scrollPosition.second());
+    }
+
     public void setScrollPosition(double hValue, double vValue) {
         if (getSkin() instanceof PinBoardSkin skin) {
             skin.setScrollPosition(hValue, vValue);
         }
     }
 
-    public void setScrollPosition(Pair<Double,Double> scrollPosition) {
-        setScrollPosition(scrollPosition.first(), scrollPosition.second());
+    /**
+     * Get Item at point.
+     *
+     * @param x x-coordinate (relative to viewport)
+     * @param y y-coordinate (relative to viewport)
+     * @return Optional containing the item at (x,y)
+     */
+    public Optional<Item> getItemAt(double x, double y) {
+        return getPositionInItem(x, y).map(PositionInItem::item);
+    }
+
+    /**
+     * Get Item at point and coordinates trransformed to item coordinates.
+     *
+     * @param x x-coordinate (relative to viewport)
+     * @param y y-coordinate (relative to viewport)
+     * @return Optional containing the item and the transformed coordinates
+     */
+    public Optional<PositionInItem> getPositionInItem(double x, double y) {
+        if (getSkin() instanceof PinBoardSkin skin) {
+            return skin.getPositionInItem(x, y);
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    /**
+     * Add item at the bottom, centered horizontally.
+     *
+     * @param name         item name
+     * @param nodeSupplier supplier (factory) for item node
+     * @param dimension    item dimensiuon
+     */
+    public void pinBottom(String name, Supplier<Node> nodeSupplier, Dimension2D dimension) {
+        Rectangle2D boardArea = getArea();
+        double xCenter = (boardArea.getMaxX() + boardArea.getMinX()) / 2.0;
+        double y = boardArea.getMaxY();
+        Rectangle2D area = new Rectangle2D(xCenter - dimension.getWidth() / 2, y, dimension.getWidth(), dimension.getHeight());
+        pin(new Item(name, area, nodeSupplier));
+    }
+
+    public Rectangle2D getArea() {
+        return areaProperty.get();
     }
 
     public void pin(Item item) {
@@ -120,63 +158,27 @@ public class PinBoard extends Control {
                 .map(Item::area)
                 .reduce(FxUtil::union)
                 .map(r -> FxUtil.union(this.getArea(), r))
-                .ifPresent( r -> {
+                .ifPresent(r -> {
                     if (!r.equals(getArea())) {
                         areaProperty.set(r);
                     }
                 });
     }
 
-    public record PositionInItem(Item item, double x, double y) {}
-
-    /**
-     * Get Item at point and coordinates trransformed to item coordinates.
-     * @param x x-coordinate (relative to viewport)
-     * @param y y-coordinate (relative to viewport)
-     * @return Optional containing the item and the transformed coordinates
-     */
-    public Optional<PositionInItem> getPositionInItem(double x, double y) {
-        if (getSkin() instanceof PinBoardSkin skin) {
-            return skin.getPositionInItem(x,y);
-        } else {
-            return Optional.empty();
-        }
-    }
-
-    /**
-     * Get Item at point.
-     * @param x x-coordinate (relative to viewport)
-     * @param y y-coordinate (relative to viewport)
-     * @return Optional containing the item at (x,y)
-     */
-    public Optional<Item> getItemAt(double x, double y) {
-        return getPositionInItem(x, y).map(PositionInItem::item);
-    }
-
-    /**
-     * Add item at the bottom, centered horizontally.
-     * @param name item name
-     * @param nodeSupplier supplier (factory) for item node
-     * @param dimension item dimensiuon
-     */
-    public void pinBottom(String name, Supplier<Node> nodeSupplier, Dimension2D dimension) {
-        Rectangle2D boardArea = getArea();
-        double xCenter = (boardArea.getMaxX()+boardArea.getMinX())/2.0;
-        double y = boardArea.getMaxY();
-        Rectangle2D area = new Rectangle2D(xCenter - dimension.getWidth() / 2, y, dimension.getWidth(), dimension.getHeight());
-        pin(new Item(name, area, nodeSupplier));
-    }
-    
     @Override
     public String toString() {
         return "PinBoard{" +
-               "area=" + areaProperty.get() +
-               ", items=" + items +
-               '}';
+                "area=" + areaProperty.get() +
+                ", items=" + items +
+                '}';
     }
+
+    public record Item(String name, Rectangle2D area, Supplier<Node> nodeBuilder) {}
+
+    public record PositionInItem(Item item, double x, double y) {}
 }
 
-class PinBoardSkin extends SkinBase<PinBoard>  {
+class PinBoardSkin extends SkinBase<PinBoard> {
 
     private static final Logger LOG = LoggerFactory.getLogger(PinBoardSkin.class);
     private final FxRefresh refresher;
@@ -185,21 +187,21 @@ class PinBoardSkin extends SkinBase<PinBoard>  {
 
     PinBoardSkin(PinBoard pinBoard) {
         super(pinBoard);
-        
+
         this.refresher = FxRefresh.create(
                 LangUtil.defaultToString(this),
                 () -> PlatformHelper.runLater(this::updateNodes),
                 pinBoard
         );
-        
+
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         scrollPane.setPannable(true);
 
         getChildren().setAll(scrollPane);
 
-        pinBoard.areaProperty().addListener( (v,o,n) -> {
-            pane.setMinWidth(n.getWidth()); 
+        pinBoard.areaProperty().addListener((v, o, n) -> {
+            pane.setMinWidth(n.getWidth());
             pane.setMinHeight(n.getHeight());
         });
 
@@ -209,21 +211,12 @@ class PinBoardSkin extends SkinBase<PinBoard>  {
         scrollPane.vvalueProperty().addListener((v) -> refresh());
         scrollPane.widthProperty().addListener((e) -> refresh());
         scrollPane.heightProperty().addListener((e) -> refresh());
-        scrollPane.viewportBoundsProperty().addListener((v,o,n) -> refresh());
-        
+        scrollPane.viewportBoundsProperty().addListener((v, o, n) -> refresh());
+
         // enable/disable refresher
         refresher.setActive(true);
     }
-    
-    void refresh() {
-        refresher.refresh();
-    }
-    
-    private Rectangle2D getViewPort() {
-        Bounds vpBounds = scrollPane.getViewportBounds();
-        return new Rectangle2D(-vpBounds.getMinX(), -vpBounds.getMinY(), vpBounds.getWidth(), vpBounds.getHeight());
-    }
-    
+
     private void updateNodes() {
         LOG.trace("updateNodes()");
 
@@ -256,13 +249,22 @@ class PinBoardSkin extends SkinBase<PinBoard>  {
         pane.getChildren().setAll(nodes);
     }
 
+    void refresh() {
+        refresher.refresh();
+    }
+
+    private Rectangle2D getViewPort() {
+        Bounds vpBounds = scrollPane.getViewportBounds();
+        return new Rectangle2D(-vpBounds.getMinX(), -vpBounds.getMinY(), vpBounds.getWidth(), vpBounds.getHeight());
+    }
+
     @Override
     public void dispose() {
         refresher.stop();
         super.dispose();
     }
 
-    public Pair<Double,Double> getScrollPosition() {
+    public Pair<Double, Double> getScrollPosition() {
         return Pair.of(scrollPane.getHvalue(), scrollPane.getVvalue());
     }
 
@@ -273,6 +275,7 @@ class PinBoardSkin extends SkinBase<PinBoard>  {
 
     /**
      * Get Item at point and coordinates relative to item.
+     *
      * @param xViewport x-coordinate (relative to board)
      * @param yViewport y-coordinate (relative to board)
      * @return Optional containing the item at (x,y) and the coordinates relative to the item area
@@ -283,10 +286,10 @@ class PinBoardSkin extends SkinBase<PinBoard>  {
         double y = yViewport + vp.getMinY();
         Rectangle2D b = getSkinnable().getArea();
         List<PinBoard.Item> items = new ArrayList<>(getSkinnable().getItems());
-        for (PinBoard.Item item: items) {
+        for (PinBoard.Item item : items) {
             Rectangle2D a = item.area();
             if (a.contains(x, y)) {
-                return Optional.of(new PinBoard.PositionInItem(item, x+b.getMinX()-a.getMinX(), y+b.getMinY()-a.getMinY()));
+                return Optional.of(new PinBoard.PositionInItem(item, x + b.getMinX() - a.getMinX(), y + b.getMinY() - a.getMinY()));
             }
         }
         return Optional.empty();

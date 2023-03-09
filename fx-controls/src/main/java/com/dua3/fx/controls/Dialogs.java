@@ -19,176 +19,176 @@ import javafx.stage.Window;
 
 public final class Dialogs {
 
-	// utility - no instances
-	private Dialogs() {}
+    // utility - no instances
+    private Dialogs() {}
 
-	/**
-	 * Start definition of new Warning dialog.
-	 * @param parentWindow	the parent window
-	 * @return 
-	 * 	new {@link AlertBuilder} instance
-	 */
-	public static AlertBuilder warning(Window parentWindow) {
-		return new AlertBuilder(AlertType.WARNING, parentWindow);
-	}
+    /**
+     * Start definition of new Warning dialog.
+     *
+     * @param parentWindow the parent window
+     * @return new {@link AlertBuilder} instance
+     */
+    public static AlertBuilder warning(Window parentWindow) {
+        return new AlertBuilder(AlertType.WARNING, parentWindow);
+    }
 
-	/**
-	 * Start definition of new Warning pane.
-	 * @return 
-	 * 	new {@link AlertPaneBuilder} instance
-	 */
-	public static AlertPaneBuilder warningPane() {
-		return new AlertPaneBuilder(AlertType.WARNING);
-	}
+    /**
+     * Start definition of new Warning pane.
+     *
+     * @return new {@link AlertPaneBuilder} instance
+     */
+    public static AlertPaneBuilder warningPane() {
+        return new AlertPaneBuilder(AlertType.WARNING);
+    }
 
-	/**
-	 * Start definition of new Error dialog.
-	 * @param parentWindow	the parent window
-	 * @return
-	 * 	new {@link AlertBuilder} instance
-	 */
-	public static AlertBuilder error(Window parentWindow) {
-		return new AlertBuilder(AlertType.ERROR, parentWindow);
-	}
+    /**
+     * Start definition of new Error dialog.
+     *
+     * @param parentWindow the parent window
+     * @return new {@link AlertBuilder} instance
+     */
+    public static AlertBuilder error(Window parentWindow) {
+        return new AlertBuilder(AlertType.ERROR, parentWindow);
+    }
 
-	/**
-	 * Start definition of new Error pane.
-	 * @return 
-	 * 	new {@link AlertPaneBuilder} instance
-	 */
-	public static AlertPaneBuilder errorPane() {
-		return new AlertPaneBuilder(AlertType.ERROR);
-	}
+    /**
+     * Start definition of new Error pane.
+     *
+     * @return new {@link AlertPaneBuilder} instance
+     */
+    public static AlertPaneBuilder errorPane() {
+        return new AlertPaneBuilder(AlertType.ERROR);
+    }
 
-	/**
-	 * Start definition of new Information dialog.
-	 * @param parentWindow	the parent window
-	 * @return 
-	 * 	new {@link AlertBuilder} instance
-	 */
-	public static AlertBuilder information(Window parentWindow) {
-		return new AlertBuilder(AlertType.INFORMATION, parentWindow);
-	}
+    /**
+     * Start definition of new Information dialog.
+     *
+     * @param parentWindow the parent window
+     * @return new {@link AlertBuilder} instance
+     */
+    public static AlertBuilder information(Window parentWindow) {
+        return new AlertBuilder(AlertType.INFORMATION, parentWindow);
+    }
 
-	/**
-	 * Start definition of new Information pane.
-	 * @return 
-	 * 	new {@link AlertPaneBuilder} instance
-	 */
-	public static AlertPaneBuilder informationPane() {
-		return new AlertPaneBuilder(AlertType.INFORMATION);
-	}
+    /**
+     * Start definition of new Information pane.
+     *
+     * @return new {@link AlertPaneBuilder} instance
+     */
+    public static AlertPaneBuilder informationPane() {
+        return new AlertPaneBuilder(AlertType.INFORMATION);
+    }
 
-	/**
-	 * Start definition of new Confirmation dialog.
-	 * @param parentWindow	the parent window
-	 * @return 
-	 * 	new {@link AlertBuilder} instance
-	 */
-	public static AlertBuilder confirmation(Window parentWindow) {
-		return new AlertBuilder(AlertType.CONFIRMATION, parentWindow);
-	}
+    /**
+     * Start definition of new Confirmation dialog.
+     *
+     * @param parentWindow the parent window
+     * @return new {@link AlertBuilder} instance
+     */
+    public static AlertBuilder confirmation(Window parentWindow) {
+        return new AlertBuilder(AlertType.CONFIRMATION, parentWindow);
+    }
 
-	/**
-	 * Start definition of new Confirmation pane.
-	 * @return 
-	 * 	new {@link AlertPaneBuilder} instance
-	 */
-	public static AlertPaneBuilder confirmationPane() {
-		return new AlertPaneBuilder(AlertType.CONFIRMATION);
-	}
+    /**
+     * Start definition of new Confirmation pane.
+     *
+     * @return new {@link AlertPaneBuilder} instance
+     */
+    public static AlertPaneBuilder confirmationPane() {
+        return new AlertPaneBuilder(AlertType.CONFIRMATION);
+    }
 
-	/**
-	 * Start definition of new FileChooser.
-	 * @return 
-	 * 	new {@link FileChooserBuilder} instance
-	 */
-	public static FileChooserBuilder chooseFile() {
-		return new FileChooserBuilder();
-	}
-	
-	/**
-	 * Start definition of new DirectoryChooser.
-	 * @return 
-	 * 	new {@link DirectoryChooserBuilder} instance
-	 */
-	public static DirectoryChooserBuilder chooseDirectory() {
-		return new DirectoryChooserBuilder();
-	}
+    /**
+     * Start definition of new FileChooser.
+     *
+     * @return new {@link FileChooserBuilder} instance
+     */
+    public static FileChooserBuilder chooseFile() {
+        return new FileChooserBuilder();
+    }
 
-	/**
-	 * Start definition of new AboutDialog.
-	 * @param parentWindow	the parent window
-	 * @return
-	 * 	new {@link AboutDialogBuilder} instance
-	 */
-	public static AboutDialogBuilder about(Window parentWindow) {
-		return new AboutDialogBuilder(parentWindow);
-	}
+    /**
+     * Start definition of new DirectoryChooser.
+     *
+     * @return new {@link DirectoryChooserBuilder} instance
+     */
+    public static DirectoryChooserBuilder chooseDirectory() {
+        return new DirectoryChooserBuilder();
+    }
 
-	/**
-	 * Start definition of new prompt dialog.
-	 * @param parentWindow	the parent window
-	 * @return
-	 * 	new {@link PromptBuilder} instance
-	 */
-	public static PromptBuilder prompt(Window parentWindow) {
-		return new PromptBuilder(parentWindow);
-	}
+    /**
+     * Start definition of new AboutDialog.
+     *
+     * @param parentWindow the parent window
+     * @return new {@link AboutDialogBuilder} instance
+     */
+    public static AboutDialogBuilder about(Window parentWindow) {
+        return new AboutDialogBuilder(parentWindow);
+    }
 
-	/**
-	 * Start definition of new prompt pane.
-	 * @return
-	 * 	new {@link PromptBuilder} instance
-	 */
-	public static PromptPaneBuilder promptPane() {
-		return new PromptPaneBuilder();
-	}
+    /**
+     * Start definition of new prompt dialog.
+     *
+     * @param parentWindow the parent window
+     * @return new {@link PromptBuilder} instance
+     */
+    public static PromptBuilder prompt(Window parentWindow) {
+        return new PromptBuilder(parentWindow);
+    }
 
-	/**
-	 * Start definition of new input dialog.
-	 * @param parentWindow	the parent window
-	 * @return 
-	 * 	new {@link InputDialogBuilder} instance
-	 */
-	public static InputDialogBuilder input(Window parentWindow) {
-		return new InputDialogBuilder(parentWindow);
-	}
+    /**
+     * Start definition of new prompt pane.
+     *
+     * @return new {@link PromptBuilder} instance
+     */
+    public static PromptPaneBuilder promptPane() {
+        return new PromptPaneBuilder();
+    }
 
-	/**
-	 * Start definition of new input pane.
-	 * @return
-	 * 	new {@link InputPaneBuilder} instance
-	 */
-	public static InputPaneBuilder inputPane() {
-		return new InputPaneBuilder();
-	}
+    /**
+     * Start definition of new input dialog.
+     *
+     * @param parentWindow the parent window
+     * @return new {@link InputDialogBuilder} instance
+     */
+    public static InputDialogBuilder input(Window parentWindow) {
+        return new InputDialogBuilder(parentWindow);
+    }
 
-	/**
-	 * Start definition of new input dialog.
-	 * @return
-	 * 	new {@link InputDialogBuilder} instance
-	 */
-	public static InputGridBuilder inputGrid() {
-		return new InputGridBuilder();
-	}
+    /**
+     * Start definition of new input pane.
+     *
+     * @return new {@link InputPaneBuilder} instance
+     */
+    public static InputPaneBuilder inputPane() {
+        return new InputPaneBuilder();
+    }
 
-	/**
-	 * Start definition of new options dialog.
-	 * @param parentWindow	the parent window
-	 * @return 
-	 * 	new {@link OptionsDialogBuilder} instance
-	 */
-	public static OptionsDialogBuilder options(Window parentWindow) {
-		return new OptionsDialogBuilder(parentWindow);
-	}
+    /**
+     * Start definition of new input dialog.
+     *
+     * @return new {@link InputDialogBuilder} instance
+     */
+    public static InputGridBuilder inputGrid() {
+        return new InputGridBuilder();
+    }
 
-	/**
-	 * Start definition of new wizard dialog.
-	 * @return 
-	 * 	new {@link WizardDialogBuilder} instance
-	 */
-	public static WizardDialogBuilder wizard() {
-		return new WizardDialogBuilder();
-	}
+    /**
+     * Start definition of new options dialog.
+     *
+     * @param parentWindow the parent window
+     * @return new {@link OptionsDialogBuilder} instance
+     */
+    public static OptionsDialogBuilder options(Window parentWindow) {
+        return new OptionsDialogBuilder(parentWindow);
+    }
+
+    /**
+     * Start definition of new wizard dialog.
+     *
+     * @return new {@link WizardDialogBuilder} instance
+     */
+    public static WizardDialogBuilder wizard() {
+        return new WizardDialogBuilder();
+    }
 }

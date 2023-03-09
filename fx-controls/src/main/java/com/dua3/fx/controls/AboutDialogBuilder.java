@@ -28,145 +28,145 @@ import java.net.URL;
 import java.util.Objects;
 
 
-
-/** 
+/**
  * Builder for Alert Dialogs.
- * <p> 
- * Provides a fluent interface to create Alerts. 
+ * <p>
+ * Provides a fluent interface to create Alerts.
  */
 public class AboutDialogBuilder {
-	private static final Logger LOG = LoggerFactory.getLogger(AboutDialogBuilder.class);
-	
-	private String title = "";
-	private String name = "";
-	private String copyright = "";
-	private String version = "";
-	private String mailText = "";
-	private String mailAddress = "";
+    private static final Logger LOG = LoggerFactory.getLogger(AboutDialogBuilder.class);
 
-	private Window parentWindow = null;
-	private URL css = null;
-	private Node graphic = null;
-	private Node expandableContent = null;
-	
-	public AboutDialogBuilder(Window parentWindow) {
-		this.parentWindow = parentWindow;
-	}
-	
-	public AboutDialogBuilder title(String value) {
-		this.title = Objects.requireNonNull(value);
-		return this;
-	}
+    private String title = "";
+    private String name = "";
+    private String copyright = "";
+    private String version = "";
+    private String mailText = "";
+    private String mailAddress = "";
 
-	public AboutDialogBuilder name(String value) {
-		this.name = Objects.requireNonNull(value);
-		return this;
-	}
+    private Window parentWindow = null;
+    private URL css = null;
+    private Node graphic = null;
+    private Node expandableContent = null;
 
-	public AboutDialogBuilder version(String value) {
-		this.version = Objects.requireNonNull(value);
-		return this;
-	}
+    public AboutDialogBuilder(Window parentWindow) {
+        this.parentWindow = parentWindow;
+    }
 
-	public AboutDialogBuilder copyright(String value) {
-		this.copyright = Objects.requireNonNull(value);
-		return this;
-	}
+    public AboutDialogBuilder title(String value) {
+        this.title = Objects.requireNonNull(value);
+        return this;
+    }
 
-	public AboutDialogBuilder mail(String address) {
-		this.mailText = address;
-		this.mailAddress = "mailto:"+address;
-		return this;
-	}
+    public AboutDialogBuilder name(String value) {
+        this.name = Objects.requireNonNull(value);
+        return this;
+    }
 
-	public AboutDialogBuilder mail(String text, String mailtoUri) {
-		this.mailText = text;
-		this.mailAddress = mailtoUri;
-		return this;
-	}
+    public AboutDialogBuilder version(String value) {
+        this.version = Objects.requireNonNull(value);
+        return this;
+    }
 
-	/**
-	 * Set supplemental CSS.
-	 * @param css the name of the CSS resource to load ({@link URL#toExternalForm()}
-	 * @return this
-	 */
-	public AboutDialogBuilder css(URL css) {
-		this.css = css;
-		return this;
-	}
+    public AboutDialogBuilder copyright(String value) {
+        this.copyright = Objects.requireNonNull(value);
+        return this;
+    }
 
-	public AboutDialogBuilder graphic(URL url) {
-		if (url==null) {
-			this.graphic = null;
-			return this;
-		}
+    public AboutDialogBuilder mail(String address) {
+        this.mailText = address;
+        this.mailAddress = "mailto:" + address;
+        return this;
+    }
 
-		try (var in = url.openStream()) {
-			Image image = new Image(in);
-			graphic(new javafx.scene.image.ImageView(image));
-		} catch (IOException e) {
-			LOG.warn("could not read image: {}", url, e);
-			this.graphic = null;
-		}
-		return this;
-	}
+    public AboutDialogBuilder mail(String text, String mailtoUri) {
+        this.mailText = text;
+        this.mailAddress = mailtoUri;
+        return this;
+    }
 
-	public AboutDialogBuilder graphic(Node graphic) {
-		this.graphic = graphic;
-		return this;
-	}
+    /**
+     * Set supplemental CSS.
+     *
+     * @param css the name of the CSS resource to load ({@link URL#toExternalForm()}
+     * @return this
+     */
+    public AboutDialogBuilder css(URL css) {
+        this.css = css;
+        return this;
+    }
 
-	public AboutDialogBuilder expandableContent(Node c) {
-		this.expandableContent = c;
-		return this;
-	}
+    public AboutDialogBuilder graphic(URL url) {
+        if (url == null) {
+            this.graphic = null;
+            return this;
+        }
 
-	public AboutDialogBuilder expandableContent(String text) {
-		if (text==null || text.isBlank()) {
-			expandableContent = null;
-			return this;
-		}
-		
-		this.expandableContent = new StackPane(new Text(text));
-		return this;
-	}
+        try (var in = url.openStream()) {
+            Image image = new Image(in);
+            graphic(new javafx.scene.image.ImageView(image));
+        } catch (IOException e) {
+            LOG.warn("could not read image: {}", url, e);
+            this.graphic = null;
+        }
+        return this;
+    }
 
-	public AboutDialog build() {
-		AboutDialog dlg = new AboutDialog(css);
+    public AboutDialogBuilder graphic(Node graphic) {
+        this.graphic = graphic;
+        return this;
+    }
 
-		if (parentWindow!=null) {
-			Stage stage = (Stage) dlg.getDialogPane().getScene().getWindow();
-			stage.getIcons().addAll(((Stage) parentWindow).getIcons());
-		}
-		if (graphic!=null) {
-			dlg.setGraphic(graphic);
-		}
-		if (!title.isBlank()) {
-			dlg.setTitle(title);
-		}
-		if (!name.isBlank()) {
-			dlg.setName(name);
-		}
-		if (!copyright.isBlank()) {
-			dlg.setCopyright(copyright);
-		}
-		if (!version.isBlank()) {
-			dlg.setVersion(version);
-		}
-		if (!mailText.isBlank()) {
-			dlg.setEmailText(mailText);
-		}
-		if (mailAddress!=null) {
-			dlg.setEmailAddress(mailAddress);
-		}
-		if (expandableContent!=null) {
-			dlg.getDialogPane().setExpandableContent(expandableContent);
-		}
-		
-		return dlg;
-	}
-	
-	public void showAndWait() {
-		build().showAndWait();
-	}
+    public AboutDialogBuilder expandableContent(Node c) {
+        this.expandableContent = c;
+        return this;
+    }
+
+    public AboutDialogBuilder expandableContent(String text) {
+        if (text == null || text.isBlank()) {
+            expandableContent = null;
+            return this;
+        }
+
+        this.expandableContent = new StackPane(new Text(text));
+        return this;
+    }
+
+    public void showAndWait() {
+        build().showAndWait();
+    }
+
+    public AboutDialog build() {
+        AboutDialog dlg = new AboutDialog(css);
+
+        if (parentWindow != null) {
+            Stage stage = (Stage) dlg.getDialogPane().getScene().getWindow();
+            stage.getIcons().addAll(((Stage) parentWindow).getIcons());
+        }
+        if (graphic != null) {
+            dlg.setGraphic(graphic);
+        }
+        if (!title.isBlank()) {
+            dlg.setTitle(title);
+        }
+        if (!name.isBlank()) {
+            dlg.setName(name);
+        }
+        if (!copyright.isBlank()) {
+            dlg.setCopyright(copyright);
+        }
+        if (!version.isBlank()) {
+            dlg.setVersion(version);
+        }
+        if (!mailText.isBlank()) {
+            dlg.setEmailText(mailText);
+        }
+        if (mailAddress != null) {
+            dlg.setEmailAddress(mailAddress);
+        }
+        if (expandableContent != null) {
+            dlg.getDialogPane().setExpandableContent(expandableContent);
+        }
+
+        return dlg;
+    }
 }

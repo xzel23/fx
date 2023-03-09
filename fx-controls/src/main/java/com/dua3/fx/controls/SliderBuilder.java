@@ -14,64 +14,64 @@ public class SliderBuilder {
     public SliderBuilder(SliderWithButtons.Mode mode, BiFunction<Double, Double, String> formatter) {
         slider = new SliderWithButtons(mode, formatter);
     }
-    
+
     public SliderBuilder orientation(Orientation value) {
         slider.setOrientation(value);
         return this;
     }
-    
+
     public SliderBuilder min(double value) {
         slider.setMin(value);
         return this;
     }
-    
+
     public SliderBuilder max(double value) {
         slider.setMax(value);
         return this;
     }
-    
+
     public SliderBuilder value(double value) {
         slider.setValue(value);
         return this;
     }
-    
+
     public SliderBuilder incrementText(String value) {
         slider.setIncrementText(value);
         return this;
     }
-    
+
     public SliderBuilder incrementGraphic(Node value) {
         slider.setIncrementGraphic(value);
         return this;
     }
-    
+
     public SliderBuilder decrementText(String value) {
         slider.setDecrementText(value);
         return this;
     }
-    
+
     public SliderBuilder decrementGraphic(Node value) {
         slider.setDecrementGraphic(value);
         return this;
     }
-    
+
     public SliderBuilder blockIncrement(double value) {
         slider.setBlockIncrement(value);
         return this;
     }
-    
+
     public SliderBuilder showTickLabels(boolean value) {
         slider.setShowTickLabels(value);
         return this;
     }
-    
+
     public SliderBuilder showTickMarks(boolean value) {
         slider.setShowTickMarks(value);
         return this;
     }
-    
+
     public SliderBuilder onChange(DoubleConsumer onChange) {
-        slider.valueProperty().addListener((v,o,n) -> onChange.accept(n.doubleValue()));
+        slider.valueProperty().addListener((v, o, n) -> onChange.accept(n.doubleValue()));
         return this;
     }
 
