@@ -1,6 +1,11 @@
 Changelog
 =========
 
+### next
+
+- Controls.checkbox()
+- Controls.tooltipIcon()
+
 #### Version 0.23.0
 
 - update JavaFX to 19.0.2.1

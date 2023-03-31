@@ -2,13 +2,16 @@ package com.dua3.fx.controls;
 
 import com.dua3.fx.icons.Icon;
 import com.dua3.fx.icons.IconUtil;
+import com.dua3.fx.icons.IconView;
 import com.dua3.fx.util.FxUtil;
 import com.dua3.utility.data.Color;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Separator;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Paint;
 
@@ -46,6 +49,29 @@ public final class Controls {
     public static ButtonBuilder<ToggleButton> toggleButton(boolean selected) {
         return ButtonBuilder.builder(() -> {
             ToggleButton b = new ToggleButton();
+            b.setSelected(selected);
+            return b;
+        });
+    }
+
+    /**
+     * Create {@link ButtonBuilder} instance for checkboxes.
+     *
+     * @return new ButtonBuilder
+     */
+    public static ButtonBuilder<CheckBox> checkbox() {
+        return ButtonBuilder.builder(CheckBox::new);
+    }
+
+    /**
+     * Create {@link ButtonBuilder} instance for checkboxes.
+     *
+     * @param selected the initial selection state of the button
+     * @return new ButtonBuilder
+     */
+    public static ButtonBuilder<CheckBox> checkbox(boolean selected) {
+        return ButtonBuilder.builder(() -> {
+            CheckBox b = new CheckBox();
             b.setSelected(selected);
             return b;
         });
@@ -148,10 +174,41 @@ public final class Controls {
      * @see IconUtil#iconFromName(String)
      */
     public static Node graphic(String name, int size, Color color) {
-        Icon icon = icon(name);
-        icon.setIconSize(size);
-        icon.setIconColor(FxUtil.convert(color));
-        return icon.node();
+        return graphic(name, size, FxUtil.convert(color));
+    }
+
+    /**
+     * Create an Icon with a tooltip.
+     *
+     * @param name  the icon name
+     * @param size  the requested size
+     * @param paint the {@link Paint} to use
+     * @param tooltipText the text to display as tooltip
+     * @return a node for the graphic
+     * @throws IllegalStateException if no icon with a matching name is found
+     * @see IconUtil#iconFromName(String)
+     */
+    public static Node tooltipIcon(String name, int size, Paint paint, String tooltipText) {
+        IconView iv = new IconView(name, size, paint);
+        if (!tooltipText.isBlank()) {
+            iv.setTooltip(new Tooltip(tooltipText));
+        }
+        return iv;
+    }
+
+    /**
+     * Create an Icon with a tooltip.
+     *
+     * @param name  the icon name
+     * @param size  the requested size
+     * @param color the {@link Color} to use
+     * @param tooltipText the text to display as tooltip
+     * @return a node for the graphic
+     * @throws IllegalStateException if no icon with a matching name is found
+     * @see IconUtil#iconFromName(String)
+     */
+    public static Node tooltipIcon(String name, int size, Color color, String tooltipText) {
+        return tooltipIcon(name, size, FxUtil.convert(color), tooltipText);
     }
 
     /**
