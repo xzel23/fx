@@ -28,7 +28,7 @@ public final class Controls {
      * @return new ButtonBuilder
      */
     public static ButtonBuilder<Button> button() {
-        return ButtonBuilder.builder(Button::new);
+        return new ButtonBuilder<>(Button::new);
     }
 
     /**
@@ -37,7 +37,7 @@ public final class Controls {
      * @return new ButtonBuilder
      */
     public static ButtonBuilder<ToggleButton> toggleButton() {
-        return ButtonBuilder.builder(ToggleButton::new);
+        return new ButtonBuilder<>(ToggleButton::new);
     }
 
     /**
@@ -47,7 +47,7 @@ public final class Controls {
      * @return new ButtonBuilder
      */
     public static ButtonBuilder<ToggleButton> toggleButton(boolean selected) {
-        return ButtonBuilder.builder(() -> {
+        return new ButtonBuilder<>(() -> {
             ToggleButton b = new ToggleButton();
             b.setSelected(selected);
             return b;
@@ -60,7 +60,7 @@ public final class Controls {
      * @return new ButtonBuilder
      */
     public static ButtonBuilder<CheckBox> checkbox() {
-        return ButtonBuilder.builder(CheckBox::new);
+        return new ButtonBuilder<>(CheckBox::new);
     }
 
     /**
@@ -70,7 +70,7 @@ public final class Controls {
      * @return new ButtonBuilder
      */
     public static ButtonBuilder<CheckBox> checkbox(boolean selected) {
-        return ButtonBuilder.builder(() -> {
+        return new ButtonBuilder<>(() -> {
             CheckBox b = new CheckBox();
             b.setSelected(selected);
             return b;
@@ -216,7 +216,7 @@ public final class Controls {
      * @return TextFieldBuilder instance
      */
     public static TextFieldBuilder textField() {
-        return TextFieldBuilder.builder();
+        return new TextFieldBuilder();
     }
 
     /**

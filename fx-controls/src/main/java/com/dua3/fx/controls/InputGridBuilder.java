@@ -47,7 +47,7 @@ public class InputGridBuilder
     private final LinkedHashMap<String, InputGrid.Meta<?>> data = new LinkedHashMap<>();
     private int columns = 1;
 
-    public InputGridBuilder() {
+    InputGridBuilder() {
         super();
     }
 

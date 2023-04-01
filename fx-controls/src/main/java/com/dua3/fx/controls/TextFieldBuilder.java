@@ -22,8 +22,7 @@ public final class TextFieldBuilder {
     private String text;
     private TextFieldType type = TextFieldType.TEXT;
 
-    static TextFieldBuilder builder() {
-        return new TextFieldBuilder();
+    TextFieldBuilder() {
     }
 
     public TextFieldBuilder text(String text) {

@@ -48,7 +48,7 @@ public class AboutDialogBuilder {
     private Node graphic = null;
     private Node expandableContent = null;
 
-    public AboutDialogBuilder(Window parentWindow) {
+    AboutDialogBuilder(Window parentWindow) {
         this.parentWindow = parentWindow;
     }
 

@@ -20,7 +20,7 @@ package com.dua3.fx.controls;
  * Provides a fluent interface to create Prompts.
  */
 public class PromptPaneBuilder extends AbstractPaneBuilder<PromptPane, PromptPaneBuilder, String> {
-    public PromptPaneBuilder() {
+    PromptPaneBuilder() {
         setDialogSupplier(PromptPane::new);
         validate(r -> !r.isBlank()); // valid <=> not blank
     }

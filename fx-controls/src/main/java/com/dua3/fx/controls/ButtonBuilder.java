@@ -6,28 +6,23 @@ import javafx.scene.Node;
 import javafx.scene.control.ButtonBase;
 import javafx.scene.control.Tooltip;
 
+import java.util.Objects;
 import java.util.function.Supplier;
 
-public abstract class ButtonBuilder<B extends ButtonBase> {
+public class ButtonBuilder<B extends ButtonBase> {
+    private final Supplier<B> factory;
     private String text = null;
     private Node graphic = null;
     private String tooltip = null;
     private EventHandler<ActionEvent> action = null;
 
     /**
-     * Factory method for {@link ButtonBuilder} instances.
+     * Constructor.
      *
      * @param factory the factory method for Button instances
-     * @param <B>     the button type
-     * @return ButtonBuilder instance
      */
-    static <B extends ButtonBase> ButtonBuilder<B> builder(Supplier<B> factory) {
-        return new ButtonBuilder<>() {
-            @Override
-            protected B newButton() {
-                return factory.get();
-            }
-        };
+    ButtonBuilder(Supplier<B> factory) {
+        this.factory = Objects.requireNonNull(factory);
     }
 
     /**
@@ -91,7 +86,7 @@ public abstract class ButtonBuilder<B extends ButtonBase> {
      * @return new button instance
      */
     public B build() {
-        B button = newButton();
+        B button = factory.get();
 
         if (text != null) {
             button.setText(text);
@@ -108,7 +103,5 @@ public abstract class ButtonBuilder<B extends ButtonBase> {
 
         return button;
     }
-
-    protected abstract B newButton();
 
 }

@@ -35,7 +35,8 @@ public class AlertBuilder
     private String text = null;
     private ButtonType[] buttons;
     private ButtonType defaultButton;
-    public AlertBuilder(AlertType type, Window parentWindow) {
+
+    AlertBuilder(AlertType type, Window parentWindow) {
         super(parentWindow);
         setDialogSupplier(() -> new Alert(type));
     }

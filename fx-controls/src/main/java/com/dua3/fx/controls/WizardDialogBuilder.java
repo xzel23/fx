@@ -13,6 +13,8 @@ public class WizardDialogBuilder {
     private String title = "";
     private String startPage = null;
 
+    WizardDialogBuilder() {}
+
     public WizardDialogBuilder title(String title) {
         this.title = title;
         return this;

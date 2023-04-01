@@ -41,7 +41,7 @@ public class InputDialogBuilder
 
     private final InputPaneBuilder pb = new InputPaneBuilder();
 
-    public InputDialogBuilder(Window parentWindow) {
+    InputDialogBuilder(Window parentWindow) {
         super(parentWindow);
         setDialogSupplier(this::createDialog);
     }

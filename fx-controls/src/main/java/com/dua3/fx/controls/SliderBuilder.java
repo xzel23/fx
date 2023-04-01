@@ -11,7 +11,7 @@ import java.util.function.DoubleConsumer;
 public class SliderBuilder {
     private final SliderWithButtons slider;
 
-    public SliderBuilder(SliderWithButtons.Mode mode, BiFunction<Double, Double, String> formatter) {
+    SliderBuilder(SliderWithButtons.Mode mode, BiFunction<Double, Double, String> formatter) {
         slider = new SliderWithButtons(mode, formatter);
     }
 

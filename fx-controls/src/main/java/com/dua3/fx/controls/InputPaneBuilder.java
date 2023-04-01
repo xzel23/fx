@@ -43,7 +43,7 @@ public class InputPaneBuilder
     private final InputGridBuilder pb = new InputGridBuilder();
     private final List<Pair<ButtonType, Consumer<InputDialogPane<Map<String, Object>>>>> buttons = new ArrayList<>();
 
-    public InputPaneBuilder() {
+    InputPaneBuilder() {
         super();
         setDialogSupplier(() -> new InputPane(pb.build()));
     }

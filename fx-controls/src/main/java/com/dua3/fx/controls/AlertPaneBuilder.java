@@ -26,7 +26,7 @@ public class AlertPaneBuilder
         extends AbstractPaneBuilder<InputDialogPane<Void>, AlertPaneBuilder, Void> {
     private String text = null;
 
-    public AlertPaneBuilder(AlertType type) {
+    AlertPaneBuilder(AlertType type) {
         setDialogSupplier(() -> createPane(type));
     }
 

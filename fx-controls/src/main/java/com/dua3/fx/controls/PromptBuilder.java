@@ -23,7 +23,7 @@ import javafx.stage.Window;
  * Provides a fluent interface to create Alerts.
  */
 public class PromptBuilder extends AbstractDialogBuilder<TextInputDialog, PromptBuilder, String> {
-    public PromptBuilder(Window parentWindow) {
+    PromptBuilder(Window parentWindow) {
         super(parentWindow);
         setDialogSupplier(TextInputDialog::new);
         validate(r -> !r.isBlank()); // valid <=> not blank
