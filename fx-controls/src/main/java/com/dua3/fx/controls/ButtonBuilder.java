@@ -21,7 +21,7 @@ public abstract class ButtonBuilder<B extends ButtonBase> {
      * @param <B>     the button type
      * @return ButtonBuilder instance
      */
-    public static <B extends ButtonBase> ButtonBuilder<B> builder(Supplier<B> factory) {
+    static <B extends ButtonBase> ButtonBuilder<B> builder(Supplier<B> factory) {
         return new ButtonBuilder<>() {
             @Override
             protected B newButton() {
