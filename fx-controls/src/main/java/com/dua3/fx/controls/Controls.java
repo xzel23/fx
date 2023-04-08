@@ -78,6 +78,15 @@ public final class Controls {
     }
 
     /**
+     * Create a {@link FileInputBuilder}.
+     *
+     * @return new FileInputBuilder
+     */
+    public static FileInputBuilder fileInput(FileDialogMode mode) {
+        return new FileInputBuilder(mode);
+    }
+
+    /**
      * Create {@link SliderBuilder} instance.
      *
      * @return new SliderBuilder

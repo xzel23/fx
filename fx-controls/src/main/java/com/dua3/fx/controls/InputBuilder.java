@@ -207,9 +207,4 @@ public interface InputBuilder<B extends InputBuilder<B>> {
      */
     B chooseFile(String id, String label, Supplier<Path> dflt, FileDialogMode mode, FileChooser.ExtensionFilter filter);
 
-    enum FileDialogMode {
-        OPEN,
-        SAVE
-    }
-
 }

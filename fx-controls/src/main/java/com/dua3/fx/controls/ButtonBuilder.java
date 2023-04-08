@@ -1,5 +1,7 @@
 package com.dua3.fx.controls;
 
+import javafx.beans.value.ObservableBooleanValue;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -15,6 +17,7 @@ public class ButtonBuilder<B extends ButtonBase> {
     private Node graphic = null;
     private String tooltip = null;
     private EventHandler<ActionEvent> action = null;
+    private ObservableValue<Boolean> disabled = null;
 
     /**
      * Constructor.
@@ -81,27 +84,40 @@ public class ButtonBuilder<B extends ButtonBase> {
     }
 
     /**
+     * Bind the button's disabled state to an {@link ObservableValue}.
+     * @param disabled the value to bind the button's disableProperty to
+     * @return this ButtonBuilder instance
+     */
+    public ButtonBuilder<B> bindDisabled(ObservableBooleanValue disabled) {
+        this.disabled = disabled;
+        return this;
+    }
+
+    /**
      * Build the button.
      *
      * @return new button instance
      */
     public B build() {
-        B button = factory.get();
+        B control = factory.get();
 
         if (text != null) {
-            button.setText(text);
+            control.setText(text);
         }
         if (graphic != null) {
-            button.setGraphic(graphic);
+            control.setGraphic(graphic);
         }
         if (tooltip != null) {
-            button.setTooltip(new Tooltip(tooltip));
+            control.setTooltip(new Tooltip(tooltip));
         }
         if (action != null) {
-            button.setOnAction(action);
+            control.setOnAction(action);
+        }
+        if (disabled != null) {
+            control.disableProperty().bind(disabled);
         }
 
-        return button;
+        return control;
     }
 
 }

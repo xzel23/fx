@@ -1,9 +1,12 @@
 package com.dua3.fx.controls;
 
+import javafx.beans.value.ObservableBooleanValue;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.util.converter.IntegerStringConverter;
 
+import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 
@@ -21,6 +24,7 @@ public final class TextFieldBuilder {
 
     private String text;
     private TextFieldType type = TextFieldType.TEXT;
+    private ObservableValue<Boolean> disabled;
 
     TextFieldBuilder() {
     }
@@ -35,6 +39,16 @@ public final class TextFieldBuilder {
         return this;
     }
 
+    /**
+     * Bind the control's disabled state to an {@link ObservableValue}.
+     * @param disabled the value to bind the control's disableProperty to
+     * @return this instance
+     */
+    public TextFieldBuilder bindDisabled(ObservableBooleanValue disabled) {
+        this.disabled = disabled;
+        return this;
+    }
+
     public TextField build() {
         TextField tf = new TextField();
 
@@ -46,6 +60,10 @@ public final class TextFieldBuilder {
 
         if (text != null) {
             tf.setText(text);
+        }
+
+        if (disabled!=null) {
+            tf.disableProperty().bind(disabled);
         }
 
         return tf;

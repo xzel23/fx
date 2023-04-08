@@ -79,7 +79,7 @@ public interface InputControl<R> {
         return new SimpleInputControl<>(control, value, dflt, r -> Optional.empty());
     }
 
-    static InputControl<Path> chooseFile(Supplier<Path> dflt, InputBuilder.FileDialogMode mode, FileChooser.ExtensionFilter... filters) {
+    static InputControl<Path> chooseFile(Supplier<Path> dflt, FileDialogMode mode, FileChooser.ExtensionFilter... filters) {
         return new FileInput(mode, dflt, filters);
     }
 
