@@ -22,6 +22,7 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.stage.FileChooser;
+import javafx.util.StringConverter;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -35,6 +36,20 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class FileInput extends HBox implements InputControl<Path> {
+
+    private static final StringConverter<Path> PATH_CONVERTER = new PathConverter();
+
+    static class PathConverter extends StringConverter<Path> {
+        @Override
+        public String toString(Path path) {
+            return path == null ? "" : path.toString();
+        }
+
+        @Override
+        public Path fromString(String s) {
+            return s == null ? Paths.get("") : Paths.get(s);
+        }
+    }
 
     private final ObjectProperty<Path> value = new SimpleObjectProperty<>();
 
@@ -91,8 +106,7 @@ public class FileInput extends HBox implements InputControl<Path> {
 
         this.getChildren().setAll(tfFilename, button);
 
-        StringBinding fileName = Bindings.createStringBinding(() -> Objects.toString(value.get(), ""), value);
-        tfFilename.textProperty().bind(fileName);
+        tfFilename.textProperty().bindBidirectional(valueProperty(), PATH_CONVERTER);
 
         // error property
         StringExpression errorText = Bindings.createStringBinding(
