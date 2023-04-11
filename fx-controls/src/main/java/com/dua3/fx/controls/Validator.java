@@ -3,12 +3,16 @@ package com.dua3.fx.controls;
 import com.dua3.fx.icons.IconView;
 import com.dua3.fx.util.ValidationResult;
 import com.dua3.utility.lang.LangUtil;
-import javafx.beans.binding.Bindings;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.MapProperty;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleMapProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -17,39 +21,44 @@ import javafx.scene.control.TextInputControl;
 import javafx.scene.control.Tooltip;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.IdentityHashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.MissingResourceException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 
 public class Validator {
     private static final Logger LOG = LoggerFactory.getLogger(Validator.class);
-    public static final String ICON_EORROR = "fth-alert-circle";
 
     private final ResourceBundle resources;
     private final LinkedHashMap<Control, List<Supplier<ValidationResult>>> controls = new LinkedHashMap<>();
     private final MapProperty<Control,ValidationResult> validationResultProperty = new SimpleMapProperty<>();
     private final BooleanProperty validProperty = new SimpleBooleanProperty();
-    private int iconSize = 20;
+    private final List<Runnable> disposeList = new ArrayList<>();
+    private int iconSize = (int) Math.round(Font.getDefault().getSize());
+    private String iconError = "fth-x-circle";
 
     /**
      * Creates a Validator instance without assigning a resource bundle.
      */
     public Validator() {
         this(null);
-        validProperty.bind(
-                Bindings.createBooleanBinding(
-                        () -> validationResultProperty.values().stream().map(ValidationResult::level).anyMatch(lvl -> lvl== ValidationResult.Level.ERROR),
-                validationResultProperty)
-        );
+    }
+
+    public void dispose() {
+        disposeList.forEach(Runnable::run);
     }
 
     /**^
@@ -80,10 +89,17 @@ public class Validator {
      */
     private List<Supplier<ValidationResult>> createRuleList(Control control) {
         control.setFocusTraversable(true);
-        if (control instanceof InputControl<?> ic) {
-            ic.valueProperty().addListener((v,o,n) -> validate(control));
+        ChangeListener<Object> changeListener = (v, o, n) -> validateNode(control);
+        if (control instanceof InputControl<?> c) {
+            c.valueProperty().addListener(changeListener);
+            disposeList.add(() -> c.valueProperty().removeListener(changeListener));
+        } else if (control instanceof TextInputControl c) {
+            c.textProperty().addListener(changeListener);
+            disposeList.add(() -> c.textProperty().removeListener(changeListener));
+        } else {
+            control.focusedProperty().addListener((v, o, n) -> this.validateNode(control));
+            disposeList.add(() -> control.focusedProperty().removeListener(changeListener));
         }
-        control.focusedProperty().addListener((v, o, n) -> this.validate(control));
         return new ArrayList<>();
     }
 
@@ -115,8 +131,25 @@ public class Validator {
      * @param message the message to display if validation fails
      * @param test    the test to perform the validation
      */
-    public void check(Control c, String message, BooleanSupplier test) {
+    public void check(Control c, String message, BooleanSupplier test, Observable... trigger) {
         rules(c).add(() -> test.getAsBoolean() ? ValidationResult.ok(c) : ValidationResult.error(c, message));
+        Arrays.stream(trigger).forEach(t -> {
+            InvalidationListener il = tt -> validateNode(c);
+            t.addListener(il);
+            disposeList.add(() -> t.removeListener(il));
+        });
+    }
+
+    /**
+     * Custom validation.
+     *
+     * @param c       the control
+     * @param message the message to display if validation fails
+     * @param test    ObservableValue that triggers updates and provides the validation result
+     */
+    public void check(Control c, String message, ObservableValue<Boolean> test) {
+        rules(c).add(() -> test.getValue() ? ValidationResult.ok(c) : ValidationResult.error(c, message));
+        test.addListener((v,o,n) -> validateNode(c));
     }
 
     private String getMessage(String m) {
@@ -139,16 +172,16 @@ public class Validator {
     /**
      * Validate all rules of this validator, update decorations, and update value of validProperty.
      */
-    private void validateAll() {
-        List<Map.Entry<Control, ValidationResult>> results = controls.entrySet().stream()
-                .map(entry -> Map.entry(
-                        entry.getKey(),
-                        validate(entry.getKey())
-                ))
-                .toList();
-        // set result map
-        validationResultProperty.entrySet().clear();
-        validationResultProperty.entrySet().addAll(results);
+    public void validateAll() {
+        Map<Control,ValidationResult> resultMap = new IdentityHashMap<>(controls.keySet().stream()
+                .collect(Collectors.toMap(control -> control, this::validate)));
+        validationResultProperty.set(FXCollections.observableMap(resultMap));
+        validProperty.set(resultMap.values().stream().anyMatch(entry -> !entry.isOk()));
+    }
+
+    private ValidationResult validateNode(Control c) {
+        validateAll();
+        return Optional.ofNullable(validationResultProperty.get(c)).orElseGet(() -> ValidationResult.ok(c));
     }
 
     private ValidationResult validate(Control c) {
@@ -157,12 +190,19 @@ public class Validator {
                 .reduce(ValidationResult::merge)
                 .orElseGet(() -> ValidationResult.ok(c));
 
+        LOG.debug("validate(): {}", validationResult);
+
         // update control decorations
         updateDecoration(c, validationResult);
 
-        LOG.debug("validate(): {}", validationResult);
-
         return validationResult;
+    }
+
+    /**
+     * Remove all validation decorations from controls.
+     */
+    public void clearDecorations() {
+        controls.keySet().forEach(c -> Decoration.removeDecoration(c, getClass().getName()));
     }
 
     private void updateDecoration(Control c, ValidationResult vr) {
@@ -175,25 +215,26 @@ public class Validator {
             case OK:
                 break;
             case ERROR:
-                iconId = ICON_EORROR;
+                iconId = iconError;
                 paint = Color.RED;
                 break;
         }
 
         if (iconId != null) {
             IconView icon = new IconView();
-            icon.setIconIdentifier(iconId);
-            icon.setIconColor(paint);
-            icon.setIconSize(iconSize);
-            icon.setStyle(String.format("-fx-translate-x: -%d;", (int) (1.25 * iconSize / 2.0 + 0.5)));
-            icon.setFocusTraversable(false);
 
             String message = getMessage(vr.message());
             if (!message.isEmpty()) {
                 Tooltip.install(icon, new Tooltip(message));
             }
 
-            Decoration.addDecoration(c, Pos.CENTER_RIGHT, icon, getClass().getName());
+            icon.setFocusTraversable(false);
+            icon.setIconIdentifier(iconId);
+            icon.setIconColor(paint);
+            icon.setIconSize(iconSize);
+            icon.setStyle(String.format("-fx-translate-x: -%d; -fx-translate-y: %d;", (int) Math.round(iconSize / 2.0), (int) Math.round(iconSize / 2.0)));
+
+            Decoration.addDecoration(c, Pos.TOP_RIGHT, icon, getClass().getName());
         } else {
             Decoration.removeDecoration(c, getClass().getName());
         }
