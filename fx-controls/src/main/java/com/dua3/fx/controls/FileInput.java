@@ -58,7 +58,7 @@ public class FileInput extends CustomControl<HBox> implements InputControl<Path>
     private final FileDialogMode mode;
     private final FileChooser.ExtensionFilter[] filters;
     private final Supplier<Path> dflt;
-
+    private boolean existingOnly = true;
 
     private final StringProperty error = new SimpleStringProperty("");
     private final BooleanProperty valid = new SimpleBooleanProperty(true);
@@ -131,19 +131,34 @@ public class FileInput extends CustomControl<HBox> implements InputControl<Path>
         error.bind(errorText);
 
         // valid property
-        BooleanExpression isNotNull = value.isNotNull();
-        if (mode == FileDialogMode.OPEN) {
-            BooleanBinding exists = Bindings.createBooleanBinding(() -> getPath() != null && Files.exists(getPath()), value);
-            valid.bind(Bindings.and(isNotNull, exists));
-        } else {
-            valid.bind(value.isNotNull());
-        }
+        valid.bind(Bindings.createBooleanBinding(() -> {
+                            Path p = getPath();
+
+                            if (p == null) {
+                                return false;
+                            }
+
+                            boolean exists = Files.exists(p);
+                            boolean isDirectory = Files.isDirectory(p);
+
+                            return switch (mode) {
+                                case DIRECTORY -> isDirectory || (!existingOnly && !exists);
+                                case OPEN, SAVE -> !isDirectory && (!existingOnly || !exists);
+                            };
+                        },
+                        value
+                )
+        );
 
         // enable drag&drop
         Function<List<Path>, List<TransferMode>> acceptPath = list ->
                 list.isEmpty() ? Collections.emptyList() : List.of(TransferMode.MOVE);
         tfFilename.setOnDragOver(FxUtil.dragEventHandler(acceptPath));
         tfFilename.setOnDragDropped(FxUtil.dropEventHandler(list -> valueProperty().setValue(list.get(0))));
+    }
+
+    public void setExistingOnly(boolean existingOnly) {
+        this.existingOnly = existingOnly;
     }
 
     private Path getPath() {

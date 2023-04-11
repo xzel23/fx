@@ -15,6 +15,7 @@ public final class FileInputBuilder {
     private final FileDialogMode mode;
     private final List<FileChooser.ExtensionFilter> extensionFilters = new ArrayList<>();
     private Supplier<Path> initialPath = () -> Paths.get(".");
+    private boolean existingOnly = true;
     private ObservableValue<Boolean> disabled;
 
     FileInputBuilder(FileDialogMode mode) {
@@ -41,9 +42,14 @@ public final class FileInputBuilder {
         return this;
     }
 
+    public FileInputBuilder existingOnly(boolean flag) {
+        this.existingOnly = flag;
+        return this;
+    }
+
     public FileInput build() {
         FileInput control = new FileInput(mode, initialPath, extensionFilters);
-
+        control.setExistingOnly(existingOnly);
         if (disabled != null) {
             control.disableProperty().bind(disabled);
         }
