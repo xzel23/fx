@@ -3,6 +3,12 @@ package com.dua3.fx.controls;
 import com.dua3.fx.icons.IconView;
 import com.dua3.fx.util.ValidationResult;
 import com.dua3.utility.lang.LangUtil;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.MapProperty;
+import javafx.beans.property.ReadOnlyBooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleMapProperty;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -17,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.function.BooleanSupplier;
@@ -25,9 +32,12 @@ import java.util.function.Supplier;
 
 public class Validator {
     private static final Logger LOG = LoggerFactory.getLogger(Validator.class);
+    public static final String ICON_EORROR = "fth-alert-circle";
 
     private final ResourceBundle resources;
     private final LinkedHashMap<Control, List<Supplier<ValidationResult>>> controls = new LinkedHashMap<>();
+    private final MapProperty<Control,ValidationResult> validationResultProperty = new SimpleMapProperty<>();
+    private final BooleanProperty validProperty = new SimpleBooleanProperty();
     private int iconSize = 20;
 
     /**
@@ -35,9 +45,14 @@ public class Validator {
      */
     public Validator() {
         this(null);
+        validProperty.bind(
+                Bindings.createBooleanBinding(
+                        () -> validationResultProperty.values().stream().map(ValidationResult::level).anyMatch(lvl -> lvl== ValidationResult.Level.ERROR),
+                validationResultProperty)
+        );
     }
 
-    /**
+    /**^
      * Creates a Validator instance.
      *
      * @param resources the resource bundle to look up message texts
@@ -65,6 +80,9 @@ public class Validator {
      */
     private List<Supplier<ValidationResult>> createRuleList(Control control) {
         control.setFocusTraversable(true);
+        if (control instanceof InputControl<?> ic) {
+            ic.valueProperty().addListener((v,o,n) -> validate(control));
+        }
         control.focusedProperty().addListener((v, o, n) -> this.validate(control));
         return new ArrayList<>();
     }
@@ -76,7 +94,7 @@ public class Validator {
      * @param message the message to display if validation fails
      */
     public void notEmpty(TextInputControl c, String message) {
-        rules(c).add(() -> !c.getText().isEmpty() ? ValidationResult.ok() : ValidationResult.error(message));
+        rules(c).add(() -> !c.getText().isEmpty() ? ValidationResult.ok(c) : ValidationResult.error(c, message));
     }
 
     /**
@@ -87,7 +105,7 @@ public class Validator {
      * @param regex   the regular expression to test the control's text
      */
     public void matches(TextInputControl c, String message, String regex) {
-        rules(c).add(() -> c.getText().matches(regex) ? ValidationResult.ok() : ValidationResult.error(message));
+        rules(c).add(() -> c.getText().matches(regex) ? ValidationResult.ok(c) : ValidationResult.error(c, message));
     }
 
     /**
@@ -98,23 +116,56 @@ public class Validator {
      * @param test    the test to perform the validation
      */
     public void check(Control c, String message, BooleanSupplier test) {
-        rules(c).add(() -> test.getAsBoolean() ? ValidationResult.ok() : ValidationResult.error(message));
+        rules(c).add(() -> test.getAsBoolean() ? ValidationResult.ok(c) : ValidationResult.error(c, message));
+    }
+
+    private String getMessage(String m) {
+        if (m == null || m.isEmpty()) {
+            return "";
+        }
+
+        if (resources == null) {
+            return m;
+        }
+
+        try {
+            return resources.getString(m);
+        } catch (MissingResourceException e) {
+            LOG.warn("resource string not found: {}", m, e);
+            return m;
+        }
     }
 
     /**
-     * Validate rules for a control. Rule violations are sorted by severity and the highest severity level is returned.
-     * Decorations indicating the rule violation are automatically set, and if a message is present, a tooltip
-     * is also created.
-     *
-     * @param c the control
-     * @return the validation result
+     * Validate all rules of this validator, update decorations, and update value of validProperty.
      */
-    public ValidationResult.Level validate(Control c) {
-        var vr = rules(c).stream()
-                .map(Supplier::get)
-                .min((a, b) -> b.level().compareTo(a.level()))
-                .orElseGet(ValidationResult::ok);
+    private void validateAll() {
+        List<Map.Entry<Control, ValidationResult>> results = controls.entrySet().stream()
+                .map(entry -> Map.entry(
+                        entry.getKey(),
+                        validate(entry.getKey())
+                ))
+                .toList();
+        // set result map
+        validationResultProperty.entrySet().clear();
+        validationResultProperty.entrySet().addAll(results);
+    }
 
+    private ValidationResult validate(Control c) {
+        ValidationResult validationResult = rules(c).stream()
+                .map(Supplier::get)
+                .reduce(ValidationResult::merge)
+                .orElseGet(() -> ValidationResult.ok(c));
+
+        // update control decorations
+        updateDecoration(c, validationResult);
+
+        LOG.debug("validate(): {}", validationResult);
+
+        return validationResult;
+    }
+
+    private void updateDecoration(Control c, ValidationResult vr) {
         // remove decorations
         Decoration.getDecorations(c).clear();
 
@@ -124,7 +175,7 @@ public class Validator {
             case OK:
                 break;
             case ERROR:
-                iconId = "fth-circle-cross";
+                iconId = ICON_EORROR;
                 paint = Color.RED;
                 break;
         }
@@ -146,37 +197,6 @@ public class Validator {
         } else {
             Decoration.removeDecoration(c, getClass().getName());
         }
-
-        return vr.level();
-    }
-
-    private String getMessage(String m) {
-        if (m == null || m.isEmpty()) {
-            return "";
-        }
-
-        if (resources == null) {
-            return m;
-        }
-
-        try {
-            return resources.getString(m);
-        } catch (MissingResourceException e) {
-            LOG.warn("resource string not found: {}", m, e);
-            return "";
-        }
-    }
-
-    /**
-     * Validate all rules of this validator.
-     *
-     * @return highest level returned by any rule
-     */
-    public ValidationResult.Level validate() {
-        return controls.keySet().stream()
-                .map(this::validate)
-                .max(ValidationResult.Level::compareTo)
-                .orElse(ValidationResult.Level.OK);
     }
 
     /**
@@ -202,7 +222,7 @@ public class Validator {
         }
 
         button.addEventFilter(ActionEvent.ACTION, ae -> {
-            if (validate() != ValidationResult.Level.OK) {
+            if (!validProperty.get()) {
                 ae.consume(); //not valid
             }
         });
@@ -210,5 +230,9 @@ public class Validator {
 
     public void focusFirst() {
         controls.keySet().stream().findFirst().ifPresent(Control::requestFocus);
+    }
+
+    public ReadOnlyBooleanProperty validProperty() {
+        return validProperty;
     }
 }
