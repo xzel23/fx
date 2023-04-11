@@ -111,6 +111,14 @@ public interface InputControl<R> {
     }
 
     /**
+     * Test if content is valid.
+     * @return true, if content is valid
+     */
+    default boolean isValid() {
+        return validProperty().get();
+    }
+
+    /**
      * Set/update control state.
      */
     default void init() {

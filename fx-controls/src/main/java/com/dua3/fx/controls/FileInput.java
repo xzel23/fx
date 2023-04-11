@@ -4,7 +4,6 @@ import com.dua3.fx.util.FxUtil;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.binding.BooleanExpression;
-import javafx.beans.binding.StringBinding;
 import javafx.beans.binding.StringExpression;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
@@ -35,7 +34,7 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public class FileInput extends HBox implements InputControl<Path> {
+public class FileInput extends CustomControl<HBox> implements InputControl<Path> {
 
     private static final StringConverter<Path> PATH_CONVERTER = new PathConverter();
 
@@ -51,14 +50,15 @@ public class FileInput extends HBox implements InputControl<Path> {
         }
     }
 
+    private final TextField tfFilename;
+    private final Button button;
+
     private final ObjectProperty<Path> value = new SimpleObjectProperty<>();
 
     private final FileDialogMode mode;
     private final FileChooser.ExtensionFilter[] filters;
     private final Supplier<Path> dflt;
 
-    private final TextField tfFilename;
-    private final Button button;
 
     private final StringProperty error = new SimpleStringProperty("");
     private final BooleanProperty valid = new SimpleBooleanProperty(true);
@@ -68,14 +68,19 @@ public class FileInput extends HBox implements InputControl<Path> {
     }
 
     public FileInput(FileDialogMode mode, Supplier<Path> dflt, FileChooser.ExtensionFilter... filters) {
+        super(new HBox());
+
+        getStyleClass().setAll("file-input");
+
         this.mode = Objects.requireNonNull(mode);
         this.filters = Arrays.copyOf(Objects.requireNonNull(filters), filters.length);
         this.dflt = Objects.requireNonNull(dflt);
 
         this.tfFilename = new TextField();
-        setHgrow(tfFilename, Priority.ALWAYS);
-
         this.button = new Button("…");
+
+        HBox.setHgrow(tfFilename, Priority.ALWAYS);
+
         button.setOnAction(evt -> {
 
             Path initialDir = value.get();
@@ -104,7 +109,7 @@ public class FileInput extends HBox implements InputControl<Path> {
             }
         });
 
-        this.getChildren().setAll(tfFilename, button);
+        container.getChildren().setAll(tfFilename, button);
 
         tfFilename.textProperty().bindBidirectional(valueProperty(), PATH_CONVERTER);
 
@@ -169,4 +174,5 @@ public class FileInput extends HBox implements InputControl<Path> {
     public ReadOnlyStringProperty errorProperty() {
         return error;
     }
+
 }
