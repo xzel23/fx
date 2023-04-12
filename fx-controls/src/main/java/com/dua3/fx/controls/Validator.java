@@ -57,8 +57,12 @@ public class Validator {
         this(null);
     }
 
+    /**
+     * Run cleanup actions.
+     */
     public void dispose() {
         disposeList.forEach(Runnable::run);
+        disposeList.clear();
     }
 
     /**^
@@ -232,8 +236,7 @@ public class Validator {
             icon.setIconIdentifier(iconId);
             icon.setIconColor(paint);
             icon.setIconSize(iconSize);
-            icon.setStyle(String.format("-fx-translate-x: -%d; -fx-translate-y: %d;", (int) Math.round(iconSize / 2.0), (int) Math.round(iconSize / 2.0)));
-
+            icon.setStyle(String.format("-fx-translate-x: -%1$d; -fx-translate-y: %1$d;", (iconSize + 1) / 2));
             Decoration.addDecoration(c, Pos.TOP_RIGHT, icon, getClass().getName());
         } else {
             Decoration.removeDecoration(c, getClass().getName());
@@ -241,13 +244,12 @@ public class Validator {
     }
 
     /**
-     * Set the icon size for notification icons
-     *
-     * @param iconSize the icon size
+     * Set icon size.
+     * @param sz the new size
      */
-    public void setIconSize(int iconSize) {
-        LangUtil.check(iconSize >= 0);
-        this.iconSize = iconSize;
+    public void setIconSize(int sz) {
+        LangUtil.check(sz > 0, () -> new IllegalArgumentException("size must be positive: " + sz));
+        iconSize = sz;
     }
 
     /**
