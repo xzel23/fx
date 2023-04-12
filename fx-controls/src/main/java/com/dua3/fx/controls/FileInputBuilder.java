@@ -4,7 +4,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.stage.FileChooser;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -14,7 +13,7 @@ public final class FileInputBuilder {
 
     private final FileDialogMode mode;
     private final List<FileChooser.ExtensionFilter> extensionFilters = new ArrayList<>();
-    private Supplier<Path> initialPath = () -> Paths.get(".");
+    private Supplier<Path> initialPath = () -> null;
     private boolean existingOnly = true;
     private ObservableValue<Boolean> disabled;
 

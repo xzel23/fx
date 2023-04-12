@@ -159,6 +159,12 @@ public class FileInput extends CustomControl<HBox> implements InputControl<Path>
                 list.isEmpty() ? Collections.emptyList() : List.of(TransferMode.MOVE);
         tfFilename.setOnDragOver(FxUtil.dragEventHandler(acceptPath));
         tfFilename.setOnDragDropped(FxUtil.dropEventHandler(list -> valueProperty().setValue(list.get(0))));
+
+        // set initial path
+        Path p = dflt.get();
+        if (p != null) {
+            set(p);
+        }
     }
 
     public void setExistingOnly(boolean existingOnly) {
