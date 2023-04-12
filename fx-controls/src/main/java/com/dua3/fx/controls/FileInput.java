@@ -142,8 +142,12 @@ public class FileInput extends CustomControl<HBox> implements InputControl<Path>
                             boolean isDirectory = Files.isDirectory(p);
 
                             return switch (mode) {
-                                case DIRECTORY -> isDirectory || (!existingOnly && !exists);
-                                case OPEN, SAVE -> !isDirectory && (!existingOnly || !exists);
+                                case DIRECTORY ->
+                                    // is a directory or existingOnly is not set and doesn't exist
+                                        isDirectory || (!existingOnly && !exists);
+                                case OPEN, SAVE ->
+                                    // is no directory, and existingOnly is not set or exists
+                                        !isDirectory && (!existingOnly || exists);
                             };
                         },
                         value
