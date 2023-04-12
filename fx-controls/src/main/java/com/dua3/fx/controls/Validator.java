@@ -49,6 +49,7 @@ public class Validator {
     private final List<Runnable> disposeList = new ArrayList<>();
     private int iconSize = (int) Math.round(Font.getDefault().getSize());
     private String iconError = "fth-x-circle";
+    private boolean decorateNodes = false;
 
     /**
      * Creates a Validator instance without assigning a resource bundle.
@@ -209,7 +210,27 @@ public class Validator {
         controls.keySet().forEach(c -> Decoration.removeDecoration(c, getClass().getName()));
     }
 
+    /**
+     * Set to true to enable decorating nodes with invalid values.
+     * @param decorateNodes true, if decoration shall be added to controls with invalid values
+     */
+    public void setDecorateNodes(boolean decorateNodes) {
+        this.decorateNodes = decorateNodes;
+    }
+
+    /**
+     * Check if decorations are enabled.
+     * @return true, if decorations are enabled
+     */
+    public boolean isDecorateNodes() {
+        return decorateNodes;
+    }
+
     private void updateDecoration(Control c, ValidationResult vr) {
+        if (!decorateNodes) {
+            return;
+        }
+
         // remove decorations
         Decoration.getDecorations(c).clear();
 
