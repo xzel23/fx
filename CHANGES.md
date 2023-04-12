@@ -1,10 +1,14 @@
 Changelog
 =========
 
-### next
+### version 0.26.0
 
+- overhaul of Validator class
 - Controls.checkbox()
 - Controls.tooltipIcon()
+
+#### Version 0.25.0
+#### Version 0.26.0
 
 #### Version 0.23.0
 
