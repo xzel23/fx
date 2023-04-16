@@ -10,8 +10,6 @@ import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.Node;
-import javafx.scene.control.MenuItem;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
@@ -283,60 +281,6 @@ public final class FxUtil {
         List<File> files = paths.stream().map(Path::toAbsolutePath).map(Path::toFile).toList();
         content.putFiles(files);
         clipboard.setContent(content);
-    }
-
-    /**
-     * Create new {@link MenuItem}.
-     *
-     * @param text    the text to show
-     * @param graphic the graphic to show before the text
-     * @param action  the action to perform when the menu item is invoked
-     * @return new menu item
-     */
-    public static MenuItem createMenuItem(String text, Node graphic, Runnable action) {
-        return createMenuItem(text, graphic, action, true);
-    }
-
-    /**
-     * Create new {@link MenuItem}.
-     *
-     * @param text    the text to show
-     * @param graphic the graphic to show before the text
-     * @param enabled the enabled state
-     * @param action  the action to perform when the menu item is invoked
-     * @return new menu item
-     */
-    public static MenuItem createMenuItem(String text, Node graphic, Runnable action, boolean enabled) {
-        MenuItem mi = new MenuItem(text, graphic);
-        mi.setDisable(!enabled);
-        mi.setOnAction(evt -> action.run());
-        return mi;
-    }
-
-    /**
-     * Create new {@link MenuItem}.
-     *
-     * @param text   the text to show
-     * @param action the action to perform when the menu item is invoked
-     * @return new menu item
-     */
-    public static MenuItem createMenuItem(String text, Runnable action) {
-        return createMenuItem(text, action, true);
-    }
-
-    /**
-     * Create new {@link MenuItem}.
-     *
-     * @param text    the text to show
-     * @param enabled the enabled state
-     * @param action  the action to perform when the menu item is invoked
-     * @return new menu item
-     */
-    public static MenuItem createMenuItem(String text, Runnable action, boolean enabled) {
-        MenuItem mi = new MenuItem(text);
-        mi.setDisable(!enabled);
-        mi.setOnAction(evt -> action.run());
-        return mi;
     }
 
     /**
