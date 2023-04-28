@@ -18,23 +18,21 @@ import com.dua3.fx.util.FxTaskTracker;
 import com.dua3.fx.util.PlatformHelper;
 import javafx.concurrent.Task;
 import javafx.concurrent.Worker.State;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.io.UncheckedIOException;
 
 /**
  * Dialog to configure a editor settings.
  */
-public class StatusBar extends HBox implements FxTaskTracker {
+public class StatusBar extends CustomControl<HBox> implements FxTaskTracker {
 
     /**
      * Logger instance
@@ -42,30 +40,29 @@ public class StatusBar extends HBox implements FxTaskTracker {
     private static final Logger LOG = LoggerFactory.getLogger(StatusBar.class);
 
     // -- input controls
-    @FXML
     Label text;
-    @FXML
-    ProgressBar progress;
+    ProgressBar progressBar;
 
     /**
      * Construct new StatusBar instance.
      */
     public StatusBar() {
-        // load FXML
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("status_bar.fxml"));
-        fxmlLoader.setRoot(this);
-        fxmlLoader.setController(this);
+        super(new HBox());
+        container.setAlignment(Pos.CENTER_LEFT);
 
-        try {
-            fxmlLoader.load();
-        } catch (IOException e) {
-            LOG.warn("exception while loading FXML", e);
-            throw new UncheckedIOException(e);
-        }
-    }
+        getStyleClass().setAll("statusbar");
 
-    @FXML
-    private void initialize() {
+        text = new Label();
+        progressBar = new ProgressBar(0.0);
+        HBox.setHgrow(text, Priority.ALWAYS);
+
+        progressBar.setPrefWidth(100);
+
+        Region region = new Region();
+        region.setPrefHeight(1);
+        region.setPrefWidth(4);
+
+        container.getChildren().setAll(text, region, progressBar);
     }
 
     public void setText(String s) {
@@ -73,7 +70,7 @@ public class StatusBar extends HBox implements FxTaskTracker {
     }
 
     public void setProgress(double p) {
-        PlatformHelper.runLater(() -> progress.setProgress(p));
+        PlatformHelper.runLater(() -> progressBar.setProgress(p));
     }
 
     @Override
@@ -81,24 +78,24 @@ public class StatusBar extends HBox implements FxTaskTracker {
         PlatformHelper.runLater(() -> {
             switch (state) {
                 case RUNNING -> {
-                    progress.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
-                    progress.setVisible(true);
+                    progressBar.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
+                    progressBar.setVisible(true);
                 }
                 case SUCCEEDED -> {
-                    progress.setProgress(1.0);
-                    progress.setVisible(false);
+                    progressBar.setProgress(1.0);
+                    progressBar.setVisible(false);
                 }
                 case READY -> {
-                    progress.setProgress(0.0);
-                    progress.setVisible(false);
+                    progressBar.setProgress(0.0);
+                    progressBar.setVisible(false);
                 }
                 case SCHEDULED -> {
-                    progress.setProgress(0.0);
-                    progress.setVisible(true);
+                    progressBar.setProgress(0.0);
+                    progressBar.setVisible(true);
                 }
                 case CANCELLED, FAILED -> {
-                    progress.setProgress(0.0);
-                    progress.setVisible(false);
+                    progressBar.setProgress(0.0);
+                    progressBar.setVisible(false);
                 }
                 default -> LOG.warn("StatusBar.updateTaskState() - unexpected state: {}", state);
             }
@@ -107,8 +104,7 @@ public class StatusBar extends HBox implements FxTaskTracker {
 
     @Override
     public void updateTaskProgress(Task<?> task, double p) {
-        progress.setProgress(p);
-
+        progressBar.setProgress(p);
     }
 
     @Override
@@ -118,7 +114,6 @@ public class StatusBar extends HBox implements FxTaskTracker {
 
     @Override
     public void updateTaskMessage(Task<?> task, String s) {
-        progress.setTooltip(new Tooltip(s));
+        progressBar.setTooltip(new Tooltip(s));
     }
-
 }
