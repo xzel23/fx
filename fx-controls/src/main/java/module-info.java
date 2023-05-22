@@ -26,4 +26,6 @@ module com.dua3.fx.controls {
     requires javafx.graphics;
     requires com.dua3.utility;
     requires java.desktop;
+
+    requires static com.dua3.cabe.annotations;
 }
