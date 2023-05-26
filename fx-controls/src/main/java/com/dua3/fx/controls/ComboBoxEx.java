@@ -180,7 +180,7 @@ public class ComboBoxEx<T> extends CustomControl<HBox> implements InputControl<T
     public List<T> getItems() {
         return List.copyOf(items);
     }
-    
+
     public ReadOnlyObjectProperty<T> selectedItemProperty() {
         return comboBox.selectionModelProperty().get().selectedItemProperty();
     }
