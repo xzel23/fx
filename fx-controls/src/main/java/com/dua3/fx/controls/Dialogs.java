@@ -146,7 +146,7 @@ public final class Dialogs {
     }
 
     /**
-     * Start definition of new input dialog.
+     * Start definition of a new input dialog.
      *
      * @param parentWindow the parent window
      * @return new {@link InputDialogBuilder} instance

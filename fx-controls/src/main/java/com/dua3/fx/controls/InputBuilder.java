@@ -1,5 +1,6 @@
 package com.dua3.fx.controls;
 
+import com.dua3.cabe.annotations.Nullable;
 import com.dua3.utility.options.Arguments;
 import com.dua3.utility.options.Option;
 import javafx.scene.Node;
@@ -8,8 +9,10 @@ import javafx.stage.FileChooser;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Optional;
+import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 
 public interface InputBuilder<B extends InputBuilder<B>> {
 
@@ -158,6 +161,27 @@ public interface InputBuilder<B extends InputBuilder<B>> {
      */
     <T> B comboBox(String id, String label, Supplier<T> dflt, Class<T> cls, Collection<T> items);
 
+    /**
+     * Add labeled extended combobox.
+     *
+     * @param <T>   the item type
+     * @param id    the ID
+     * @param label the label text
+     * @param dflt  supplier of default value
+     * @param cls   the result class
+     * @param items the items to choose from
+     * @return {@code this}
+     */
+    <T> B comboBoxEx(
+            String id,
+            String label,
+            @Nullable UnaryOperator<T> edit,
+            @Nullable Supplier<T> add,
+            @Nullable BiPredicate<ComboBoxEx<T>, T> remove,
+            Function<T,String> format,
+            Supplier<T> dflt,
+            Class<T> cls,
+            Collection<T> items);
     /**
      * Add labeled list of radiobuttons.
      *

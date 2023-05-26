@@ -1,5 +1,6 @@
 package com.dua3.fx.controls;
 
+import com.dua3.cabe.annotations.Nullable;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
@@ -21,6 +22,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
+import javafx.stage.Window;
 import javafx.util.StringConverter;
 
 import java.nio.file.Path;
@@ -29,8 +31,10 @@ import java.util.Collection;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 
 /**
  * Interface for an input field.
@@ -75,7 +79,19 @@ public interface InputControl<R> {
 
     static <T> SimpleInputControl<ComboBox<T>, T> comboBoxInput(Collection<T> choices, Supplier<T> dflt) {
         ComboBox<T> control = new ComboBox<>(FXCollections.observableArrayList(choices));
-        ObjectProperty<T> value = control.valueProperty();
+        Property<T> value = control.valueProperty();
+        return new SimpleInputControl<>(control, value, dflt, r -> Optional.empty());
+    }
+
+    static <T> SimpleInputControl<ComboBoxEx<T>, T> comboBoxExInput(
+            Collection<T> choices,
+            Supplier<T> dflt,
+            @Nullable UnaryOperator<T> edit,
+            @Nullable Supplier<T> add,
+            @Nullable BiPredicate<ComboBoxEx<T>, T> remove,
+            Function<T,String> format) {
+        ComboBoxEx<T> control = new ComboBoxEx<T>(edit, add, remove, format, FXCollections.observableArrayList(choices));
+        Property<T> value = control.valueProperty();
         return new SimpleInputControl<>(control, value, dflt, r -> Optional.empty());
     }
 

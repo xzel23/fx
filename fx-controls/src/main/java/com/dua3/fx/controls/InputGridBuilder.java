@@ -14,6 +14,7 @@
 
 package com.dua3.fx.controls;
 
+import com.dua3.cabe.annotations.Nullable;
 import com.dua3.fx.controls.InputGrid.Meta;
 import com.dua3.utility.lang.LangUtil;
 import com.dua3.utility.options.Arguments;
@@ -33,8 +34,10 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 
 /**
  * Builder for Alert Dialogs.
@@ -185,6 +188,23 @@ public class InputGridBuilder
     @Override
     public <T> InputGridBuilder comboBox(String id, String label, Supplier<T> dflt, Class<T> cls, Collection<T> items) {
         return add(id, label, cls, dflt, InputControl.comboBoxInput(items, dflt));
+    }
+
+    /* (non-Javadoc)
+     * @see com.dua3.fx.util.controls.InputBuilder#comboBoxEx(java.lang.String, java.lang.String, T, java.lang.Class, java.util.Collection)
+     */
+    @Override
+    public <T> InputGridBuilder comboBoxEx(
+            String id,
+            String label,
+            @Nullable UnaryOperator<T> edit,
+            @Nullable Supplier<T> add,
+            @Nullable BiPredicate<ComboBoxEx<T>, T> remove,
+            Function<T,String> format,
+            Supplier<T> dflt,
+            Class<T> cls,
+            Collection<T> items) {
+        return add(id, label, cls, dflt, InputControl.comboBoxExInput(items, dflt, edit, add, remove, format));
     }
 
     /* (non-Javadoc)

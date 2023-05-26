@@ -14,6 +14,7 @@
 
 package com.dua3.fx.controls;
 
+import com.dua3.cabe.annotations.Nullable;
 import com.dua3.utility.data.Pair;
 import com.dua3.utility.options.Arguments;
 import com.dua3.utility.options.Option;
@@ -27,9 +28,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 
 /**
  * Builder for Alert Dialogs.
@@ -105,6 +108,21 @@ public class InputPaneBuilder
     @Override
     public <T> InputPaneBuilder comboBox(String id, String label, Supplier<T> dflt, Class<T> cls, Collection<T> items) {
         pb.comboBox(id, label, dflt, cls, items);
+        return this;
+    }
+
+    @Override
+    public <T> InputPaneBuilder comboBoxEx(
+            String id,
+            String label,
+            @Nullable UnaryOperator<T> edit,
+            @Nullable Supplier<T> add,
+            @Nullable BiPredicate<ComboBoxEx<T>, T> remove,
+            Function<T,String> format,
+            Supplier<T> dflt,
+            Class<T> cls,
+            Collection<T> items) {
+        pb.comboBoxEx(id, label, edit, add, remove, format, dflt, cls, items);
         return this;
     }
 

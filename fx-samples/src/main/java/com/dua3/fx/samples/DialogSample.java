@@ -12,6 +12,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -31,7 +32,7 @@ public class DialogSample extends Application {
         // About
         container.getChildren().add(createButton("About", () ->
                 Dialogs.about(primaryStage)
-                        .title("About ...")
+                        .title("About…")
                         .name("Dialog Sample")
                         .version("v 0.1")
                         .copyright("(c) 2021 Axel Howind")
@@ -91,6 +92,15 @@ public class DialogSample extends Application {
                         .comboBox("list", "choose one", () -> "Maybe", String.class, List.of("Yes", "No", "Maybe"))
                         .checkBox("bool", "Yes or No:", () -> false, "yes")
                         .chooseFile("file", "File", () -> null, FileDialogMode.OPEN, new FileChooser.ExtensionFilter("all files", "*"))
+                        .comboBoxEx("listEx",
+                                "edit items and choose one",
+                                s -> Dialogs.prompt(primaryStage).title("Edit item").defaultValue("%s", s).build().showAndWait().orElse(null),
+                                () -> Dialogs.prompt(primaryStage).title("Edit item").build().showAndWait().orElse(null),
+                                (cb,item) -> true,
+                                Objects::toString,
+                                () -> null,
+                                String.class,
+                                List.of("1", "2","3"))
                         .showAndWait()));
 
         // Options
