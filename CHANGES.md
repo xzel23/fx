@@ -1,6 +1,10 @@
 Changelog
 =========
 
+### version 0.28.0
+
+- fix PinBoard content clipping
+
 ### version 0.27.0
 
 - FxUtil.createMenuItem() -> Controls.menuItem()
