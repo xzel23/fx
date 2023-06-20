@@ -12,6 +12,7 @@ Changelog
 - Controls.tooltipIcon()
 
 #### Version 0.25.0
+
 #### Version 0.26.0
 
 #### Version 0.23.0

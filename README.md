@@ -4,7 +4,7 @@ fx Application Framework [![CI](https://github.com/xzel23/fx/actions/workflows/g
 The framework consists of the following libraries:
 
 - **fxApplication:** base classes for building applications
- 
+
 - **fx-controls:** JavaFX controls
 
 - **fx-icons:** Icons to be used in JavaFX applications

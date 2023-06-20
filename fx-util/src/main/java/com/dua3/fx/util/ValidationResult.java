@@ -20,7 +20,7 @@ public record ValidationResult(Control control, Level level, String message) {
     }
 
     public ValidationResult merge(ValidationResult other) {
-        LangUtil.check(other.control()==control(), "trying to merge results for different controls");
+        LangUtil.check(other.control() == control(), "trying to merge results for different controls");
         if (isOk()) {
             return other;
         }
@@ -30,9 +30,9 @@ public record ValidationResult(Control control, Level level, String message) {
         return new ValidationResult(
                 control(),
                 Level.ERROR,
-                Stream.of(message(), other.message()).filter(s -> ! s.isBlank()).collect(Collectors.joining("\n"))
+                Stream.of(message(), other.message()).filter(s -> !s.isBlank()).collect(Collectors.joining("\n"))
         );
-     }
+    }
 
     public enum Level {
         OK,

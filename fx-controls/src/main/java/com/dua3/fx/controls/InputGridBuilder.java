@@ -66,6 +66,7 @@ public class InputGridBuilder
     }    /* (non-Javadoc)
      * @see com.dua3.fx.util.controls.InputBuilder#add(java.lang.String, java.lang.String, java.lang.Class, T, com.dua3.fx.util.controls.InputDialogPane.InputControl)
      */
+
     @Override
     public <T> InputGridBuilder add(String id, String label, Class<T> type, Supplier<T> dflt, InputControl<T> control) {
         Objects.requireNonNull(label);
@@ -109,6 +110,7 @@ public class InputGridBuilder
     }    /* (non-Javadoc)
      * @see com.dua3.fx.util.controls.InputBuilder#add(java.lang.String, java.lang.String, java.lang.Class, T, com.dua3.fx.util.controls.InputDialogPane.InputControl)
      */
+
     @Override
     public <T> InputGridBuilder add(String id, Class<T> type, Supplier<T> dflt, InputControl<T> control) {
         return doAdd(id, null, type, dflt, control);
@@ -121,7 +123,6 @@ public class InputGridBuilder
         LangUtil.check(prev == null, "Input with id '" + id + "' already defined");
         return this;
     }
-
 
 
     @Override
@@ -200,7 +201,7 @@ public class InputGridBuilder
             @Nullable UnaryOperator<T> edit,
             @Nullable Supplier<T> add,
             @Nullable BiPredicate<ComboBoxEx<T>, T> remove,
-            Function<T,String> format,
+            Function<T, String> format,
             Supplier<T> dflt,
             Class<T> cls,
             Collection<T> items) {

@@ -15,6 +15,7 @@ public final class Decoration {
     private static final String MASTER = Decoration.class.getName() + ":master";
     private static final String POSITION = Decoration.class.getName() + ":position";
     private static final String PREFIX = Decoration.class.getName() + ":";
+
     private Decoration() {
     }
 

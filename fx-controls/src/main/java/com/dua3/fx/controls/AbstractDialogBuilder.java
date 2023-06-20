@@ -31,6 +31,7 @@ public abstract class AbstractDialogBuilder<D extends Dialog<R>, B extends Abstr
     private final BiConsumer<D, String> titleSetter;
     private Window parentWindow = null;
     private String title = null;
+
     protected AbstractDialogBuilder(Window parentWindow) {
         super(Dialog::setHeaderText);
         this.parentWindow = parentWindow;

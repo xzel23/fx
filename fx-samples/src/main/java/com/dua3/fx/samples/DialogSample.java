@@ -96,11 +96,11 @@ public class DialogSample extends Application {
                                 "edit items and choose one",
                                 s -> Dialogs.prompt(primaryStage).title("Edit item").defaultValue("%s", s).build().showAndWait().orElse(null),
                                 () -> Dialogs.prompt(primaryStage).title("Edit item").build().showAndWait().orElse(null),
-                                (cb,item) -> true,
+                                (cb, item) -> true,
                                 Objects::toString,
                                 () -> null,
                                 String.class,
-                                List.of("1", "2","3"))
+                                List.of("1", "2", "3"))
                         .showAndWait()));
 
         // Options

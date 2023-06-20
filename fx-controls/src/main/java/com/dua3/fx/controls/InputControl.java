@@ -89,7 +89,7 @@ public interface InputControl<R> {
             @Nullable UnaryOperator<T> edit,
             @Nullable Supplier<T> add,
             @Nullable BiPredicate<ComboBoxEx<T>, T> remove,
-            Function<T,String> format) {
+            Function<T, String> format) {
         ComboBoxEx<T> control = new ComboBoxEx<T>(edit, add, remove, format, FXCollections.observableArrayList(choices));
         Property<T> value = control.valueProperty();
         return new SimpleInputControl<>(control, value, dflt, r -> Optional.empty());

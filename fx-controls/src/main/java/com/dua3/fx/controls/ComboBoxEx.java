@@ -39,7 +39,7 @@ public class ComboBoxEx<T> extends CustomControl<HBox> implements InputControl<T
     private Comparator<? super T> comparator = null;
     private final UnaryOperator<T> edit;
     private final Supplier<T> add;
-    private final BiPredicate<ComboBoxEx<T>,T> remove;
+    private final BiPredicate<ComboBoxEx<T>, T> remove;
     private final Function<T, String> format;
     private final ObservableList<T> items;
     private final ComboBox<T> comboBox;
@@ -50,11 +50,12 @@ public class ComboBoxEx<T> extends CustomControl<HBox> implements InputControl<T
     /**
      * Constructor.
      */
-    public ComboBoxEx(@Nullable UnaryOperator<T> edit, @Nullable Supplier<T> add, @Nullable BiPredicate<ComboBoxEx<T>, T> remove, Function<T,String> format, T... items) {
+    @SafeVarargs
+    public ComboBoxEx(@Nullable UnaryOperator<T> edit, @Nullable Supplier<T> add, @Nullable BiPredicate<ComboBoxEx<T>, T> remove, Function<T, String> format, T... items) {
         this(edit, add, remove, format, Arrays.asList(items));
     }
 
-    public ComboBoxEx(@Nullable UnaryOperator<T> edit, @Nullable Supplier<T> add, @Nullable BiPredicate<ComboBoxEx<T>, T> remove, Function<T,String> format, Collection<T> items) {
+    public ComboBoxEx(@Nullable UnaryOperator<T> edit, @Nullable Supplier<T> add, @Nullable BiPredicate<ComboBoxEx<T>, T> remove, Function<T, String> format, Collection<T> items) {
         super(new HBox());
         container.setAlignment(Pos.CENTER_LEFT);
 
@@ -67,7 +68,7 @@ public class ComboBoxEx<T> extends CustomControl<HBox> implements InputControl<T
         ObservableList<Node> children = container.getChildren();
         children.setAll(comboBox);
 
-        if (edit!=null) {
+        if (edit != null) {
             this.edit = edit;
             this.buttonEdit = Controls.button().text("✎").action(this::editItem).build();
             children.add(buttonEdit);
@@ -77,7 +78,7 @@ public class ComboBoxEx<T> extends CustomControl<HBox> implements InputControl<T
             this.buttonEdit = null;
         }
 
-        if (add!=null) {
+        if (add != null) {
             this.add = add;
             this.buttonAdd = Controls.button().text("+").action(this::addItem).build();
             children.add(buttonAdd);
@@ -86,12 +87,12 @@ public class ComboBoxEx<T> extends CustomControl<HBox> implements InputControl<T
             this.buttonAdd = null;
         }
 
-        if (remove!=null) {
+        if (remove != null) {
             this.remove = remove;
             this.buttonRemove = Controls.button().text("-").action(this::removeItem).build();
             children.add(buttonRemove);
             buttonRemove.disableProperty().bind(Bindings.createBooleanBinding(
-                    () -> comboBox.getSelectionModel().getSelectedItem() != null && this.items.size()>1,
+                    () -> comboBox.getSelectionModel().getSelectedItem() != null && this.items.size() > 1,
                     comboBox.selectionModelProperty(), this.items)
             );
             buttonRemove.disableProperty().bind(comboBox.selectionModelProperty().isNull().or(comboBox.valueProperty().isNull()));
@@ -121,7 +122,7 @@ public class ComboBoxEx<T> extends CustomControl<HBox> implements InputControl<T
                         }
                         setText(text);
                     }
-                } ;
+                };
             }
         };
 
@@ -131,7 +132,7 @@ public class ComboBoxEx<T> extends CustomControl<HBox> implements InputControl<T
 
     private void editItem() {
         int idx = comboBox.getSelectionModel().getSelectedIndex();
-        if (idx >=0) {
+        if (idx >= 0) {
             T item = items.get(idx);
             item = edit.apply(item);
             if (item != null) {
@@ -144,7 +145,11 @@ public class ComboBoxEx<T> extends CustomControl<HBox> implements InputControl<T
     }
 
     private void addItem() {
-        Optional.of(add.get()).ifPresent(item -> { items.add(item); comboBox.getSelectionModel().select(item); sortItems(); });
+        Optional.of(add.get()).ifPresent(item -> {
+            items.add(item);
+            comboBox.getSelectionModel().select(item);
+            sortItems();
+        });
     }
 
     private void removeItem() {
@@ -152,8 +157,8 @@ public class ComboBoxEx<T> extends CustomControl<HBox> implements InputControl<T
         if (Optional.ofNullable(remove).orElse(ComboBoxEx::alwaysRemoveSelectedItem).test(this, item)) {
             int idx = items.indexOf(item);
             items.remove(idx);
-            idx = Math.min(idx, items.size()-1);
-            if (idx>=0) {
+            idx = Math.min(idx, items.size() - 1);
+            if (idx >= 0) {
                 set(items.get(idx));
             }
         }
@@ -165,7 +170,7 @@ public class ComboBoxEx<T> extends CustomControl<HBox> implements InputControl<T
                 .defaultButton(ButtonType.YES)
                 .build()
                 .showAndWait()
-                .map(bt ->bt == ButtonType.YES || bt == ButtonType.OK)
+                .map(bt -> bt == ButtonType.YES || bt == ButtonType.OK)
                 .orElse(false);
     }
 
@@ -191,7 +196,7 @@ public class ComboBoxEx<T> extends CustomControl<HBox> implements InputControl<T
     }
 
     public void sortItems() {
-        if (comparator==null) {
+        if (comparator == null) {
             return;
         }
 

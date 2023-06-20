@@ -37,6 +37,7 @@ public class SliderWithButtons extends Region {
     private Pane pane;
     private TextField tfValue;
     private Label label;
+
     SliderWithButtons(Mode mode, BiFunction<Double, Double, String> formatter) {
         this.mode = mode;
         this.formatter = Objects.requireNonNull(formatter);

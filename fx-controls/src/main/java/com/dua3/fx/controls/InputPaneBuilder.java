@@ -118,7 +118,7 @@ public class InputPaneBuilder
             @Nullable UnaryOperator<T> edit,
             @Nullable Supplier<T> add,
             @Nullable BiPredicate<ComboBoxEx<T>, T> remove,
-            Function<T,String> format,
+            Function<T, String> format,
             Supplier<T> dflt,
             Class<T> cls,
             Collection<T> items) {

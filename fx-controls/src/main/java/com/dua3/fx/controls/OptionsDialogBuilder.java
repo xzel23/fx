@@ -31,6 +31,7 @@ public class OptionsDialogBuilder extends AbstractDialogBuilder<OptionsDialog, O
 
     private Collection<Option<?>> options = new ArrayList<>();
     private Arguments currentValues = Arguments.empty();
+
     OptionsDialogBuilder(Window parentWindow) {
         super(parentWindow);
         setDialogSupplier(OptionsDialog::new);

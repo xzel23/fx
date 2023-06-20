@@ -230,7 +230,7 @@ class PinBoardSkin extends SkinBase<PinBoard> {
         double dx = Math.max(0, viewPort.getWidth() - boardArea.getWidth()) / 2.0;
         double dy = Math.max(0, viewPort.getHeight() - boardArea.getHeight()) / 2.0;
 
-        Rectangle2D viewportInLocal = new Rectangle2D(viewPort.getMinX()+boardArea.getMinX(), viewPort.getMinY()+boardArea.getMinY(), viewPort.getWidth(), viewPort.getHeight());
+        Rectangle2D viewportInLocal = new Rectangle2D(viewPort.getMinX() + boardArea.getMinX(), viewPort.getMinY() + boardArea.getMinY(), viewPort.getWidth(), viewPort.getHeight());
 
         // populate pane with nodes of visible items
         List<Node> nodes = new ArrayList<>(board.items) // copy list to avoid concurrent modification

@@ -44,7 +44,7 @@ public class Validator {
 
     private final ResourceBundle resources;
     private final LinkedHashMap<Control, List<Supplier<ValidationResult>>> controls = new LinkedHashMap<>();
-    private final MapProperty<Control,ValidationResult> validationResultProperty = new SimpleMapProperty<>();
+    private final MapProperty<Control, ValidationResult> validationResultProperty = new SimpleMapProperty<>();
     private final BooleanProperty validProperty = new SimpleBooleanProperty();
     private final List<Runnable> disposeList = new ArrayList<>();
     private int iconSize = (int) Math.round(Font.getDefault().getSize());
@@ -154,7 +154,7 @@ public class Validator {
      */
     public void check(Control c, String message, ObservableValue<Boolean> test) {
         rules(c).add(() -> test.getValue() ? ValidationResult.ok(c) : ValidationResult.error(c, message));
-        test.addListener((v,o,n) -> validateNode(c));
+        test.addListener((v, o, n) -> validateNode(c));
     }
 
     private String getMessage(String m) {
@@ -178,7 +178,7 @@ public class Validator {
      * Validate all rules of this validator, update decorations, and update value of validProperty.
      */
     public void validateAll() {
-        Map<Control,ValidationResult> resultMap = new IdentityHashMap<>(controls.keySet().stream()
+        Map<Control, ValidationResult> resultMap = new IdentityHashMap<>(controls.keySet().stream()
                 .collect(Collectors.toMap(control -> control, this::validate)));
         validationResultProperty.set(FXCollections.observableMap(resultMap));
         validProperty.set(resultMap.values().stream().anyMatch(entry -> !entry.isOk()));

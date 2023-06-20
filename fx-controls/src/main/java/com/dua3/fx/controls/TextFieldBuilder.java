@@ -61,7 +61,7 @@ public final class TextFieldBuilder {
             tf.setText(text);
         }
 
-        if (disabled!=null) {
+        if (disabled != null) {
             tf.disableProperty().bind(disabled);
         }
 
