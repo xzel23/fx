@@ -28,24 +28,24 @@ plugins {
 }
 
 /////////////////////////////////////////////////////////////////////////////
-object meta {
-    val group = "com.dua3.fx"
-    val scm = "https://github.com/xzel23/fx.git"
-    val repo = "public"
-    val licenseName = "The Apache Software License, Version 2.0"
-    val licenseUrl = "https://www.apache.org/licenses/LICENSE-2.0.txt"
-    val developerId = "axh"
-    val developerName = "Axel Howind"
-    val developerEmail = "axh@dua3.com"
-    val organization = "dua3"
-    val organizationUrl = "https://www.dua3.com"
+object Meta {
+    const val GROUP = "com.dua3.fx"
+    const val SCM = "https://github.com/xzel23/fx.git"
+    const val REPO = "public"
+    const val LICENSE_NAME = "The Apache Software License, Version 2.0"
+    const val LICENSE_URL = "https://www.apache.org/licenses/LICENSE-2.0.txt"
+    const val DEVELOPER_ID = "axh"
+    const val DEVELOPER_NAME = "Axel Howind"
+    const val DEVELOPER_EMAIL = "axh@dua3.com"
+    const val ORGANIZATION_NAME = "dua3"
+    const val ORGABIZATION_URL = "https://www.dua3.com"
 }
 /////////////////////////////////////////////////////////////////////////////
 
 subprojects {
 
-    project.setVersion(rootProject.libs.versions.projectVersion.get())
-    val isReleaseVersion = !project.getVersion().toString().endsWith("SNAPSHOT")
+    project.version = rootProject.libs.versions.projectVersion.get()
+    val isReleaseVersion = !project.version.toString().endsWith("SNAPSHOT")
 
     apply(plugin = "java-library")
     apply(plugin = "maven-publish")
@@ -131,7 +131,7 @@ subprojects {
     publishing {
         publications {
             create<MavenPublication>("maven") {
-                groupId = meta.group
+                groupId = Meta.GROUP
                 artifactId = project.name
                 version = project.version.toString()
 
@@ -142,27 +142,27 @@ subprojects {
                         val root = asNode()
                         root.appendNode("description", project.description)
                         root.appendNode("name", project.name)
-                        root.appendNode("url", meta.scm)
+                        root.appendNode("url", Meta.SCM)
                     }
 
                     licenses {
                         license {
-                            name.set(meta.licenseName)
-                            url.set(meta.licenseUrl)
+                            name.set(Meta.LICENSE_NAME)
+                            url.set(Meta.LICENSE_URL)
                         }
                     }
                     developers {
                         developer {
-                            id.set(meta.developerId)
-                            name.set(meta.developerName)
-                            email.set(meta.developerEmail)
-                            organization.set(meta.organization)
-                            organizationUrl.set(meta.organizationUrl)
+                            id.set(Meta.DEVELOPER_ID)
+                            name.set(Meta.DEVELOPER_NAME)
+                            email.set(Meta.DEVELOPER_EMAIL)
+                            organization.set(Meta.ORGANIZATION_NAME)
+                            organizationUrl.set(Meta.ORGABIZATION_URL)
                         }
                     }
 
                     scm {
-                        url.set(meta.scm)
+                        url.set(Meta.SCM)
                     }
                 }
             }
@@ -184,14 +184,14 @@ subprojects {
 
     // === sign artifacts
     signing {
-        setRequired(isReleaseVersion && gradle.taskGraph.hasTask("publish"))
+        isRequired = isReleaseVersion && gradle.taskGraph.hasTask("publish")
         sign(publishing.publications["maven"])
     }
 
     // === SPOTBUGS ===
     spotbugs.excludeFilter.set(rootProject.file("spotbugs-exclude.xml"))
 
-    tasks.withType<com.github.spotbugs.snom.SpotBugsTask>() {
+    tasks.withType<com.github.spotbugs.snom.SpotBugsTask> {
         reports.create("html") {
             required.set(true)
             outputLocation.set(file("$buildDir/reports/spotbugs.html"))
@@ -200,11 +200,11 @@ subprojects {
     }
 
     // === PUBLISHING ===
-    tasks.withType<PublishToMavenRepository>() {
+    tasks.withType<PublishToMavenRepository> {
         dependsOn(tasks.publishToMavenLocal)
     }
 
-    tasks.withType<Jar>() {
+    tasks.withType<Jar> {
         duplicatesStrategy = DuplicatesStrategy.INCLUDE
     }
 
