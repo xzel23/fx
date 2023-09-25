@@ -58,11 +58,12 @@ subprojects {
     apply(plugin = "org.openjfx.javafxplugin")
 
     java {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-
-        withJavadocJar()
+        toolchain { languageVersion.set(JavaLanguageVersion.of(21)) }
         withSourcesJar()
+    }
+
+    tasks.withType<JavaExec>().configureEach {
+        javaLauncher.set(javaToolchains.launcherFor(java.toolchain))
     }
 
     javafx {
@@ -84,11 +85,22 @@ subprojects {
         testImplementation(rootProject.libs.junit.jupiter.engine)
     }
 
+    // workaround for SpotBugs to replace the asm module with a version compatible with Java 21
+    configurations.all {
+        resolutionStrategy {
+            force("org.ow2.asm:asm:9.5")
+            force("org.ow2.asm:asm-analysis:9.5")
+            force("org.ow2.asm:asm-commons:9.5")
+            force("org.ow2.asm:asm-tree:9.5")
+            force("org.ow2.asm:asm-util:9.5")
+        }
+    }
+
     idea {
         module {
             inheritOutputDirs = false
-            outputDir = file("$buildDir/classes/java/main/")
-            testOutputDir = file("$buildDir/classes/java/test/")
+            outputDir = project.layout.buildDirectory.file("classes/java/main/").get().asFile
+            testOutputDir = project.layout.buildDirectory.file("classes/java/test/").get().asFile
         }
     }
 
