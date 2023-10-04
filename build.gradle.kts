@@ -54,12 +54,17 @@ subprojects {
     apply(plugin = "com.github.ben-manes.versions")
     apply(plugin = "com.adarshr.test-logger")
     apply(plugin = "com.github.spotbugs")
-//    apply(plugin = "com.dua3.cabe")
+    apply(plugin = "com.dua3.cabe")
     apply(plugin = "org.openjfx.javafxplugin")
 
     java {
         toolchain { languageVersion.set(JavaLanguageVersion.of(21)) }
         withSourcesJar()
+    }
+
+    tasks.withType<JavaCompile>().configureEach {
+        options.release.set(21)
+        options.encoding = "UTF-8"
     }
 
     tasks.withType<JavaExec>().configureEach {
@@ -115,6 +120,7 @@ subprojects {
     tasks.compileJava {
         options.encoding = "UTF-8"
         options.javaModuleVersion.set(provider { project.version as String })
+        System.setProperty("prism.order", "j2d");
     }
 
     tasks.compileTestJava {
