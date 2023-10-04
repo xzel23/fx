@@ -1,6 +1,10 @@
 Changelog
 =========
 
+### version 0.30.0
+
+- conversion of Value to ObservableValue
+
 ### version 0.29.0
 
 - update dependencies

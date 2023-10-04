@@ -1,11 +1,16 @@
 package com.dua3.fx.util;
 
+import com.dua3.utility.concurrent.Value;
 import com.dua3.utility.data.DataUtil;
 import com.dua3.utility.data.Image;
 import com.dua3.utility.io.IoUtil;
 import com.dua3.utility.math.geometry.AffineTransformation2f;
 import com.dua3.utility.math.geometry.FillRule;
 import com.dua3.utility.text.FontDef;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.geometry.Dimension2D;
@@ -32,6 +37,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.regex.Pattern;
@@ -317,7 +323,7 @@ public final class FxUtil {
     }
 
     /**
-     * Create union of two rectangles. The union here is defined as the rectangle r of minimum size that contains
+     * Create the union of two rectangles. The union here is defined as the rectangle r of minimum size that contains
      * both rectangles r1 and r2.
      *
      * @param r1 first rectangle
@@ -330,5 +336,79 @@ public final class FxUtil {
         var xMax = Math.max(r1.getMaxX(), r2.getMaxX());
         var yMax = Math.max(r1.getMaxY(), r2.getMaxY());
         return new Rectangle2D(xMin, yMin, xMax - xMin, yMax - yMin);
+    }
+
+    /**
+     * Represents an adapter for an InvalidationListener.
+     * <p>
+     * This class implements the {@link BiConsumer} functional interface.
+     * It accepts two values of type T and calls the {@link InvalidationListener#invalidated(Observable)}
+     * method of the invalidationListener, passing the observable object.
+     *
+     * @param <T> The type of the values accepted by the adapter.
+     */
+    private record InvalidationListenerAdapter<T>(Observable observable, InvalidationListener invalidationListener)
+            implements BiConsumer<T, T> {
+        @Override
+        public void accept(T t1, T t2) {
+            invalidationListener.invalidated(observable);
+        }
+    }
+
+    /**
+     * A class that adapts a {@code ChangeListener} to a {@code BiConsumer}.
+     *
+     * @param <T> the type of the value being observed by the {@code ObservableValue}
+     */
+    private record ChangeListenerAdapter<T>(ObservableValue<T> observableValue, ChangeListener<? super T> changeListener)
+            implements BiConsumer<T, T> {
+        @Override
+        public void accept(T t1, T t2) {
+            changeListener.changed(observableValue, t1, t2);
+        }
+    }
+
+    /**
+     * Converts a {@link Value} object into an {@link ObservableValue}.
+     *
+     * @param value the Value object to be converted
+     * @param <T> the type of the value stored in the Value object
+     * @return an ObservableValue object that reflects changes in the Value object
+     */
+    public static <T> ObservableValue<T> toObservableValue(Value<T> value) {
+        return new ObservableValue<T>() {
+            @Override
+            public void addListener(ChangeListener<? super T> listener) {
+                value.addChangeListener(new ChangeListenerAdapter<T>(this, listener));
+            }
+
+            @Override
+            public void removeListener(ChangeListener<? super T> listener) {
+                List.copyOf(value.getChangeListeners()).forEach(changeListener -> {
+                    if (changeListener instanceof ChangeListenerAdapter<?> a && a.changeListener==listener) {
+                        value.removeChangeListener(changeListener);
+                    }
+                });
+            }
+
+            @Override
+            public T getValue() {
+                return value.get();
+            }
+
+            @Override
+            public void addListener(InvalidationListener listener) {
+                value.addChangeListener(new InvalidationListenerAdapter<>(this, listener));
+            }
+
+            @Override
+            public void removeListener(InvalidationListener listener) {
+                List.copyOf(value.getChangeListeners()).forEach(changeListener -> {
+                    if (changeListener instanceof InvalidationListenerAdapter<?> cla && cla.invalidationListener==listener) {
+                        value.removeChangeListener(changeListener);
+                    }
+                });
+            }
+        };
     }
 }
