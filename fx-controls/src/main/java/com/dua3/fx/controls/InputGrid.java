@@ -34,7 +34,7 @@ public class InputGrid extends GridPane {
     protected static final Logger LOG = LoggerFactory.getLogger(InputGrid.class);
 
     private static final String MARKER_INITIAL = "";
-    private static final String MARKER_ERROR = "\u26A0";
+    private static final String MARKER_ERROR = "⚠";
     private static final String MARKER_OK = "";
 
     protected final BooleanProperty valid = new SimpleBooleanProperty(true);

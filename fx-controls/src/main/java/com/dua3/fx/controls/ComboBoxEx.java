@@ -1,7 +1,6 @@
 package com.dua3.fx.controls;
 
 import com.dua3.cabe.annotations.Nullable;
-import com.dua3.fx.util.FxUtil;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.Property;
 import javafx.beans.property.ReadOnlyBooleanProperty;
@@ -22,7 +21,6 @@ import javafx.util.Callback;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.swing.JOptionPane;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
@@ -101,11 +99,11 @@ public class ComboBoxEx<T> extends CustomControl<HBox> implements InputControl<T
             this.buttonRemove = null;
         }
 
-        Callback<ListView<T>, ListCell<T>> cellFactory = new Callback<ListView<T>, ListCell<T>>() {
+        Callback<ListView<T>, ListCell<T>> cellFactory = new Callback<>() {
 
             @Override
             public ListCell<T> call(ListView<T> l) {
-                return new ListCell<T>() {
+                return new ListCell<>() {
 
                     @Override
                     protected void updateItem(T item, boolean empty) {

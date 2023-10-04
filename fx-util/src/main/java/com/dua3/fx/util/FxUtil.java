@@ -376,16 +376,16 @@ public final class FxUtil {
      * @return an ObservableValue object that reflects changes in the Value object
      */
     public static <T> ObservableValue<T> toObservableValue(Value<T> value) {
-        return new ObservableValue<T>() {
+        return new ObservableValue<>() {
             @Override
             public void addListener(ChangeListener<? super T> listener) {
-                value.addChangeListener(new ChangeListenerAdapter<T>(this, listener));
+                value.addChangeListener(new ChangeListenerAdapter<>(this, listener));
             }
 
             @Override
             public void removeListener(ChangeListener<? super T> listener) {
                 List.copyOf(value.getChangeListeners()).forEach(changeListener -> {
-                    if (changeListener instanceof ChangeListenerAdapter<?> a && a.changeListener==listener) {
+                    if (changeListener instanceof ChangeListenerAdapter<?> a && a.changeListener == listener) {
                         value.removeChangeListener(changeListener);
                     }
                 });
@@ -404,7 +404,7 @@ public final class FxUtil {
             @Override
             public void removeListener(InvalidationListener listener) {
                 List.copyOf(value.getChangeListeners()).forEach(changeListener -> {
-                    if (changeListener instanceof InvalidationListenerAdapter<?> cla && cla.invalidationListener==listener) {
+                    if (changeListener instanceof InvalidationListenerAdapter<?> cla && cla.invalidationListener == listener) {
                         value.removeChangeListener(changeListener);
                     }
                 });

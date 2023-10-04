@@ -22,7 +22,6 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
-import javafx.stage.Window;
 import javafx.util.StringConverter;
 
 import java.nio.file.Path;
@@ -90,7 +89,7 @@ public interface InputControl<R> {
             @Nullable Supplier<T> add,
             @Nullable BiPredicate<ComboBoxEx<T>, T> remove,
             Function<T, String> format) {
-        ComboBoxEx<T> control = new ComboBoxEx<T>(edit, add, remove, format, FXCollections.observableArrayList(choices));
+        ComboBoxEx<T> control = new ComboBoxEx<>(edit, add, remove, format, FXCollections.observableArrayList(choices));
         Property<T> value = control.valueProperty();
         return new SimpleInputControl<>(control, value, dflt, r -> Optional.empty());
     }
