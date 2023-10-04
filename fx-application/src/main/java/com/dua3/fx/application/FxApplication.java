@@ -437,7 +437,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
             setPreference(key, value);
             return true;
         }
-        LOG.debug("not setting preference '{}': preferences not initialised", key);
+        LOG.debug("not setting preference '{}': preferences not initialized", key);
         return false;
     }
 

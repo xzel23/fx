@@ -11,10 +11,10 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * A class intended for controlling possibly long-running update operations. Refresh happen mutually exclusive, i.e.
+ * A class intended for controlling possibly long-running update operations. Refreshs happen mutually exclusive, i.e.
  * the update tasks do not have to be explicitly synchronized as long as not called directly from other code.
- * An example is updating a JavaFX node. I.e. if redraw requests come in before current drawing finishes,
- * the application becomes sluggish or burns CPU cycles for drawing outdated data. the FxRefresher automatically
+ * An example is updating a JavaFX node. I.e. if redraw requests come in before the current drawing finishes,
+ * the application becomes sluggish or burns CPU cycles for drawing outdated data. The FxRefresher automatically
  * skips intermediate frames if redraw requests come in too fast for the drawing to come up with.
  */
 public final class FxRefresh {
@@ -240,7 +240,7 @@ public final class FxRefresh {
     }
 
     /**
-     * Request refresh. The refresh will be performed ass soon as all the following are met:
+     * Request refresh. The refresh will be performed as soon as all the following are met:
      * <ul>
      *     <li>the refresher is running
      *     <li>the refresher's state is "active"

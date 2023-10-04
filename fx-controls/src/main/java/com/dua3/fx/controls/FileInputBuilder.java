@@ -26,12 +26,12 @@ public final class FileInputBuilder {
         return this;
     }
 
-    public FileInputBuilder intialPath(Path initialPath) {
+    public FileInputBuilder initialPath(Path initialPath) {
         this.initialPath = () -> initialPath;
         return this;
     }
 
-    public FileInputBuilder intialPath(Supplier<Path> initialPath) {
+    public FileInputBuilder initialPath(Supplier<Path> initialPath) {
         this.initialPath = initialPath;
         return this;
     }

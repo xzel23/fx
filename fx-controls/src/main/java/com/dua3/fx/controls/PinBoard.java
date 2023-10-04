@@ -108,7 +108,7 @@ public class PinBoard extends Control {
     }
 
     /**
-     * Get Item at point and coordinates trransformed to item coordinates.
+     * Get Item at point and coordinates transformed to item coordinates.
      *
      * @param x x-coordinate (relative to viewport)
      * @param y y-coordinate (relative to viewport)
@@ -127,7 +127,7 @@ public class PinBoard extends Control {
      *
      * @param name         item name
      * @param nodeSupplier supplier (factory) for item node
-     * @param dimension    item dimensiuon
+     * @param dimension    item dimension
      */
     public void pinBottom(String name, Supplier<Node> nodeSupplier, Dimension2D dimension) {
         Rectangle2D boardArea = getArea();

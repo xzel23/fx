@@ -4,6 +4,9 @@ Changelog
 ### version 0.30.0
 
 - conversion of Value to ObservableValue
+- re-enable cabe generated assertions after build problems are fixed
+- switch to Java 21
+- minor fixes and cleanups
 
 ### version 0.29.0
 
@@ -98,7 +101,7 @@ Changelog
 
 #### Version 0.12
 
-- new class Fxsettings
+- new class FxSettings
 - FxUtil: added methods to list available fonts
 - FxController.getCurrentDocumentLocation()
 - FxController.onDocumentUriChanged() (protected)

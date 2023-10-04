@@ -7,7 +7,7 @@ import javafx.util.Duration;
  * A record holding tooltip durations.
  * @param showDelay the delay before a tooltip is shown after the pointer enters the node
  * @param showDuration how long the tooltip is shown
- * @param hideDelay the delay before the tooltip is hidden when the ointer is moved outside the node
+ * @param hideDelay the delay before the tooltip is hidden when the pointer is moved outside the node
  */
 public record TooltipConfig(Duration showDelay, Duration showDuration, Duration hideDelay) {
     private static final TooltipConfig DEFAULT_CONFIG = from(new Tooltip());

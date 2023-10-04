@@ -38,7 +38,7 @@ object Meta {
     const val DEVELOPER_NAME = "Axel Howind"
     const val DEVELOPER_EMAIL = "axh@dua3.com"
     const val ORGANIZATION_NAME = "dua3"
-    const val ORGABIZATION_URL = "https://www.dua3.com"
+    const val ORGANIZATION_URL = "https://www.dua3.com"
 }
 /////////////////////////////////////////////////////////////////////////////
 
@@ -163,7 +163,7 @@ subprojects {
                             name.set(Meta.DEVELOPER_NAME)
                             email.set(Meta.DEVELOPER_EMAIL)
                             organization.set(Meta.ORGANIZATION_NAME)
-                            organizationUrl.set(Meta.ORGABIZATION_URL)
+                            organizationUrl.set(Meta.ORGANIZATION_URL)
                         }
                     }
 
