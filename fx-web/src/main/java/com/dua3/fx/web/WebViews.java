@@ -40,11 +40,16 @@ public final class WebViews {
         // utility class
     }
 
+    @Deprecated
     public static void setupEngine(WebEngine engine, Logger logger) {
         setAlertHandler(engine);
         setConfirmationHandler(engine);
         setPromptHandler(engine);
         setLogger(engine, logger);
+    }
+
+    public static void setupEngine(WebEngine engine, String loggerName) {
+        setupEngine(engine, LoggerFactory.getLogger(loggerName));
     }
 
     public static void setAlertHandler(WebEngine engine) {

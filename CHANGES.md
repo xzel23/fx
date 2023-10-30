@@ -1,6 +1,14 @@
 Changelog
 =========
 
+### version 0.31.0
+
+- BREAKING: WebViews.setupEngine() take a logger name instead of a logger instance
+
+### version 0.30.1
+
+- update plugins and dependencies
+
 ### version 0.30.0
 
 - conversion of Value to ObservableValue
