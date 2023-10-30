@@ -1,5 +1,5 @@
 rootProject.name = "dua3-fx"
-val projectVersion = "0.30.2"
+val projectVersion = "0.31.0"
 
 include("fx-util")
 include("fx-util-db")
@@ -42,8 +42,6 @@ dependencyResolutionManagement {
             library("ikonli-javafx", "org.kordamp.ikonli", "ikonli-javafx").versionRef("ikonli")
             library("slf4j-api", "org.slf4j", "slf4j-api").versionRef("slf4j")
             library("slf4j-simple", "org.slf4j", "slf4j-simple").versionRef("slf4j")
-            library("jul-to-slf4j", "org.slf4j", "jul-to-slf4j").versionRef("slf4j")
-            library("log4j-to-slf4j", "org.apache.logging.log4j", "log4j-to-slf4j").versionRef("log4j")
             library("junit-jupiter-api", "org.junit.jupiter", "junit-jupiter-api").versionRef("junit")
             library("junit-jupiter-engine", "org.junit.jupiter", "junit-jupiter-engine").versionRef("junit")
         }

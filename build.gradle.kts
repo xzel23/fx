@@ -84,7 +84,6 @@ subprojects {
 
         // SLF4J
         implementation(rootProject.libs.slf4j.api)
-        implementation(rootProject.libs.log4j.to.slf4j)
 
         // JUnit
         testImplementation(rootProject.libs.junit.jupiter.api)

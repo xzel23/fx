@@ -30,6 +30,7 @@ dependencies {
     implementation(project(":fx-icons"))
     runtimeOnly(project(":fx-icons:fx-icons-ikonli"))
     runtimeOnly(rootProject.libs.ikonli.fontawesome)
+    runtimeOnly(rootProject.libs.slf4j.simple)
 }
 
 // set main
