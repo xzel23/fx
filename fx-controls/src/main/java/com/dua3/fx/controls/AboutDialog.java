@@ -22,8 +22,8 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.awt.Desktop;
 import java.io.IOException;
@@ -35,7 +35,7 @@ public class AboutDialog extends Dialog<Void> {
     /**
      * Logger instance
      */
-    private static final Logger LOG = LoggerFactory.getLogger(AboutDialog.class);
+    private static final Logger LOG = LogManager.getLogger(AboutDialog.class);
     @FXML
     Label lTitle;
     @FXML

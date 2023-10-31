@@ -25,8 +25,8 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import netscape.javascript.JSException;
 import netscape.javascript.JSObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -34,7 +34,7 @@ import java.util.function.Predicate;
 
 
 public final class WebViews {
-    private static final Logger LOG = LoggerFactory.getLogger(WebViews.class);
+    private static final Logger LOG = LogManager.getLogger(WebViews.class);
 
     private WebViews() {
         // utility class
@@ -44,7 +44,7 @@ public final class WebViews {
         setAlertHandler(engine);
         setConfirmationHandler(engine);
         setPromptHandler(engine);
-        setLogger(engine, LoggerFactory.getLogger(loggerName));
+        setLogger(engine, LogManager.getLogger(loggerName));
     }
 
     public static void setAlertHandler(WebEngine engine) {
@@ -121,7 +121,7 @@ public final class WebViews {
         }
 
         public void error(JSObject args) {
-            logger.atError().setMessage("{}").addArgument(() -> formatMessage(args)).log();
+            logger.error("{}", () -> formatMessage(args));
         }
 
         private static String formatMessage(JSObject args) {
@@ -144,19 +144,19 @@ public final class WebViews {
         }
 
         public void warn(JSObject args) {
-            logger.atWarn().setMessage("{}").addArgument(() -> formatMessage(args)).log();
+            logger.warn("{}", () -> formatMessage(args));
         }
 
         public void info(JSObject args) {
-            logger.atInfo().setMessage("{}").addArgument(() -> formatMessage(args)).log();
+            logger.info("{}", () -> formatMessage(args));
         }
 
         public void debug(JSObject args) {
-            logger.atDebug().setMessage("{}").addArgument(() -> formatMessage(args)).log();
+            logger.debug("{}", () -> formatMessage(args));
         }
 
         public void trace(JSObject args) {
-            logger.atTrace().setMessage("{}").addArgument(() -> formatMessage(args)).log();
+            logger.trace("{}", () -> formatMessage(args));
         }
     }
 

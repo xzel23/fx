@@ -2,8 +2,8 @@ package com.dua3.fx.util;
 
 import com.dua3.utility.data.Pair;
 import com.dua3.utility.io.IoUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
  */
 public class RecentlyUsedDocumentsList {
 
-    private static final Logger LOG = LoggerFactory.getLogger(RecentlyUsedDocumentsList.class);
+    private static final Logger LOG = LogManager.getLogger(RecentlyUsedDocumentsList.class);
 
     private final int capacity;
     private final Map<URI, String> items = new LinkedHashMap<>();

@@ -2,7 +2,7 @@ module com.dua3.fx.icons.ikonli {
     exports com.dua3.fx.icons.ikonli;
     opens com.dua3.fx.icons.ikonli;
 
-    requires org.slf4j;
+    requires org.apache.logging.log4j;
 
 
     requires org.kordamp.ikonli.core;

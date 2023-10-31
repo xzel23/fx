@@ -6,8 +6,8 @@ import javafx.scene.Node;
 import org.kordamp.ikonli.Ikon;
 import org.kordamp.ikonli.IkonHandler;
 import org.kordamp.ikonli.javafx.FontIcon;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Objects;
 import java.util.ServiceLoader;
@@ -15,7 +15,7 @@ import java.util.ServiceLoader;
 
 public class IkonliIconProvider implements IconProvider {
 
-    private static final Logger LOG = LoggerFactory.getLogger(IkonliIconProvider.class);
+    private static final Logger LOG = LogManager.getLogger(IkonliIconProvider.class);
 
     public IkonliIconProvider() {}
 

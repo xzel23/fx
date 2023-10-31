@@ -30,8 +30,8 @@ import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URI;
@@ -54,7 +54,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
     /**
      * Logger
      */
-    protected static final Logger LOG = LoggerFactory.getLogger(FxController.class);
+    protected static final Logger LOG = LogManager.getLogger(FxController.class);
     /**
      * Preference: last document.
      */

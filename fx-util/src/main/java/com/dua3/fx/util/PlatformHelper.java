@@ -2,8 +2,8 @@ package com.dua3.fx.util;
 
 import com.dua3.utility.lang.LangUtil;
 import javafx.application.Platform;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
@@ -15,7 +15,7 @@ public final class PlatformHelper {
     /**
      * Logger instance
      */
-    private static final Logger LOG = LoggerFactory.getLogger(PlatformHelper.class);
+    private static final Logger LOG = LogManager.getLogger(PlatformHelper.class);
 
     private PlatformHelper() {
         // utility class

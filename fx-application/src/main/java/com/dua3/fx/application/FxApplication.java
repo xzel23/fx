@@ -27,8 +27,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.awt.desktop.AboutEvent;
 import java.awt.desktop.OpenFilesEvent;
@@ -57,7 +57,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
     /**
      * Logger
      */
-    private static final Logger LOG = LoggerFactory.getLogger(FxApplication.class);
+    private static final Logger LOG = LogManager.getLogger(FxApplication.class);
     /**
      * The command line argument to set the logging level (i.e. "--log=FINE").
      */

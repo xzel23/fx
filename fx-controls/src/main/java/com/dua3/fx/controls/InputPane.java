@@ -1,8 +1,8 @@
 package com.dua3.fx.controls;
 
 import javafx.scene.Node;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Collections;
 import java.util.Map;
@@ -13,7 +13,7 @@ public class InputPane extends InputDialogPane<Map<String, Object>> {
     /**
      * Logger
      */
-    protected static final Logger LOG = LoggerFactory.getLogger(InputPane.class);
+    protected static final Logger LOG = LogManager.getLogger(InputPane.class);
 
     private final InputGrid inputGrid;
 

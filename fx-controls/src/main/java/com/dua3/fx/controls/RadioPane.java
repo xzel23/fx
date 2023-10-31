@@ -11,8 +11,8 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.VBox;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -24,7 +24,7 @@ public class RadioPane<T> extends VBox implements InputControl<T> {
     /**
      * Logger
      */
-    protected static final Logger LOG = LoggerFactory.getLogger(RadioPane.class);
+    protected static final Logger LOG = LogManager.getLogger(RadioPane.class);
     private static final double SPACING = 4;
     private final LinkedHashMap<T, RadioButton> items = new LinkedHashMap<>();
     private final ToggleGroup group;

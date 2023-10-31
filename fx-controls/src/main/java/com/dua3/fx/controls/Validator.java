@@ -22,8 +22,8 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,7 +40,7 @@ import java.util.stream.Collectors;
 
 
 public class Validator {
-    private static final Logger LOG = LoggerFactory.getLogger(Validator.class);
+    private static final Logger LOG = LogManager.getLogger(Validator.class);
 
     private final ResourceBundle resources;
     private final LinkedHashMap<Control, List<Supplier<ValidationResult>>> controls = new LinkedHashMap<>();

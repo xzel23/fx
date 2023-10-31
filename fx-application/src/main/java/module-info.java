@@ -21,7 +21,7 @@ module com.dua3.fx.application {
 
     requires com.dua3.utility;
 
-    requires org.slf4j;
+    requires org.apache.logging.log4j;
 
     requires java.prefs;
     requires javafx.base;

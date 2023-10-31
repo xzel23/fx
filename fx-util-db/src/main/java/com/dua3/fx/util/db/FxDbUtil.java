@@ -26,8 +26,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Clob;
 import java.sql.JDBCType;
@@ -46,7 +46,7 @@ public final class FxDbUtil {
     /**
      * Logger
      */
-    private static final Logger LOG = LoggerFactory.getLogger(FxDbUtil.class);
+    private static final Logger LOG = LogManager.getLogger(FxDbUtil.class);
     private static final String ERROR_TEXT = "###";
 
     // utility - no instances

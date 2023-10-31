@@ -16,8 +16,8 @@ package com.dua3.fx.controls;
 
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Window;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -31,7 +31,7 @@ import java.util.Optional;
  * Provides a fluent interface to create file dialogs.
  */
 public class DirectoryChooserBuilder {
-    private static final Logger LOG = LoggerFactory.getLogger(DirectoryChooserBuilder.class);
+    private static final Logger LOG = LogManager.getLogger(DirectoryChooserBuilder.class);
 
     public static final Path USER_HOME = Paths.get(System.getProperty("user.home"));
 

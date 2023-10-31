@@ -16,8 +16,8 @@ import javafx.scene.control.SkinBase;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,7 +28,7 @@ import java.util.Optional;
  * A JavaFX control to display icons.
  */
 public class IconView extends Control {
-    private static final Logger LOG = LoggerFactory.getLogger(IconView.class);
+    private static final Logger LOG = LogManager.getLogger(IconView.class);
 
     private static final String DEFAULT_ICON_IDENTIFIER = "";
     private static final int DEFAULT_ICON_SIZE = 10;

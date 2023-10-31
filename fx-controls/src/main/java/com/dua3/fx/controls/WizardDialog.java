@@ -10,8 +10,8 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -25,7 +25,7 @@ public class WizardDialog extends Dialog<Map<String, Object>> {
     /**
      * Logger instance
      */
-    private static final Logger LOG = LoggerFactory.getLogger(WizardDialog.class);
+    private static final Logger LOG = LogManager.getLogger(WizardDialog.class);
     /**
      * Stack of displayed pages (for navigating back).
      */

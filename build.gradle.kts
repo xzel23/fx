@@ -83,7 +83,7 @@ subprojects {
         compileOnly(rootProject.libs.cabe.annotations)
 
         // SLF4J
-        implementation(rootProject.libs.slf4j.api)
+        implementation(rootProject.libs.log4j.api)
 
         // JUnit
         testImplementation(rootProject.libs.junit.jupiter.api)

@@ -13,8 +13,8 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -31,7 +31,7 @@ public class InputGrid extends GridPane {
     /**
      * Logger
      */
-    protected static final Logger LOG = LoggerFactory.getLogger(InputGrid.class);
+    protected static final Logger LOG = LogManager.getLogger(InputGrid.class);
 
     private static final String MARKER_INITIAL = "";
     private static final String MARKER_ERROR = "⚠";

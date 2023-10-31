@@ -25,8 +25,8 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Skin;
 import javafx.scene.control.SkinBase;
 import javafx.scene.layout.AnchorPane;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -180,7 +180,7 @@ public class PinBoard extends Control {
 
 class PinBoardSkin extends SkinBase<PinBoard> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(PinBoardSkin.class);
+    private static final Logger LOG = LogManager.getLogger(PinBoardSkin.class);
     private final FxRefresh refresher;
     private final AnchorPane pane = new AnchorPane();
     private final ScrollPane scrollPane = new ScrollPane(pane);

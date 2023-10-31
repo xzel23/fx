@@ -2,8 +2,8 @@ package com.dua3.fx.application;
 
 import com.dua3.utility.lang.Platform;
 import javafx.application.Application;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ public final class FxLauncher {
     /**
      * Logger
      */
-    private static final Logger LOG = LoggerFactory.getLogger(FxLauncher.class);
+    private static final Logger LOG = LogManager.getLogger(FxLauncher.class);
     private static final Pattern PATTERN_PATH_OR_STARTS_WITH_DOUBLE_DASH = Pattern.compile("^(--|[a-zA-Z]:[/\\\\]).*");
 
     static {

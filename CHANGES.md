@@ -1,6 +1,11 @@
 Changelog
 =========
 
+### version 0.32.0
+
+- use log4j-api instead of slf4j for all internal logging
+- update dependencies
+- 
 ### version 0.31.0
 
 - BREAKING: WebViews.setupEngine() take a logger name instead of a logger instance

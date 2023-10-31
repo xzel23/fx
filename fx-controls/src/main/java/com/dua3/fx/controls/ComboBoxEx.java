@@ -18,8 +18,8 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -32,7 +32,7 @@ import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
 public class ComboBoxEx<T> extends CustomControl<HBox> implements InputControl<T> {
-    private static final Logger LOG = LoggerFactory.getLogger(ComboBoxEx.class);
+    private static final Logger LOG = LogManager.getLogger(ComboBoxEx.class);
 
     private Comparator<? super T> comparator = null;
     private final UnaryOperator<T> edit;
