@@ -47,7 +47,6 @@ public class InputPaneBuilder
     private final List<Pair<ButtonType, Consumer<InputDialogPane<Map<String, Object>>>>> buttons = new ArrayList<>();
 
     InputPaneBuilder() {
-        super();
         setDialogSupplier(() -> new InputPane(pb.build()));
     }
 

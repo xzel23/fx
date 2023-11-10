@@ -123,7 +123,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
         switch (dirtyList.size()) {
             case 0 -> goOn.set(true);
             case 1 -> {
-                D doc = dirtyList.get(0);
+                D doc = dirtyList.getFirst();
 
                 String header;
                 if (!doc.hasLocation()) {
@@ -131,7 +131,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
                 } else {
                     header = getApp().getMessage(
                             "fx.application.message.unsaved_changes_single_document",
-                            Pair.of("document", dirtyList.get(0).getName())
+                            Pair.of("document", dirtyList.getFirst().getName())
                     );
                 }
 

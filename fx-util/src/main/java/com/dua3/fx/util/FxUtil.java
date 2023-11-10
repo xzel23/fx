@@ -360,7 +360,8 @@ public final class FxUtil {
      *
      * @param <T> the type of the value being observed by the {@code ObservableValue}
      */
-    private record ChangeListenerAdapter<T>(ObservableValue<T> observableValue, ChangeListener<? super T> changeListener)
+    private record ChangeListenerAdapter<T>(ObservableValue<T> observableValue,
+                                            ChangeListener<? super T> changeListener)
             implements BiConsumer<T, T> {
         @Override
         public void accept(T t1, T t2) {

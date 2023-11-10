@@ -51,7 +51,6 @@ public class InputGridBuilder
     private int columns = 1;
 
     InputGridBuilder() {
-        super();
     }
 
     /* (non-Javadoc)

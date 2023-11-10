@@ -108,7 +108,7 @@ public class WizardDialog extends Dialog<Map<String, Object>> {
                 addButtonToDialogPane(
                         page,
                         ButtonType.PREVIOUS,
-                        p -> setPage(pageStack.remove(pageStack.size() - 1).first()),
+                        p -> setPage(pageStack.removeLast().first()),
                         Bindings.isNotEmpty(pageStack)
                 );
             }
