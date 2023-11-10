@@ -51,7 +51,7 @@ public abstract class FxDocument {
     }
 
     public void save() throws IOException {
-        LangUtil.check(hasLocation());
+        LangUtil.check(hasLocation(), "location not set");
         write(locationProperty.get());
     }
 
