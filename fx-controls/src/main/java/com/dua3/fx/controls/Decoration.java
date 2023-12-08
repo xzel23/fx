@@ -60,7 +60,6 @@ public final class Decoration {
             case LEFT -> bounds.getMinX() - decorationBounds.getWidth() / 2.0;
             case CENTER -> bounds.getCenterX() - decorationBounds.getWidth() / 2.0;
             case RIGHT -> bounds.getMaxX() - decorationBounds.getWidth() / 2.0;
-            default -> throw new IllegalArgumentException("position: " + position);
         };
 
         double y = switch (position.getVpos()) {
@@ -68,7 +67,6 @@ public final class Decoration {
             case CENTER -> bounds.getCenterY() - decorationBounds.getHeight() / 2.0;
             case BOTTOM -> bounds.getMaxY() - decorationBounds.getHeight() / 2.0;
             case BASELINE -> bounds.getMaxY() - decorationBounds.getHeight() / 2.0;
-            default -> throw new IllegalArgumentException("position: " + position);
         };
 
         decoration.setLayoutX(x + node.getLayoutX());

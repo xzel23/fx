@@ -100,7 +100,7 @@ public final class FxDbUtil {
                 // numbers that have scale
                 case DECIMAL, NUMERIC -> {
                     if (scale > 0) {
-                        //noinspection StringConcatenationInFormatCall
+                        //noinspection StringConcatenationInFormatCall,StringConcatenationMissingWhitespace
                         format = item -> String.format(
                                 locale,
                                 "%.0" + scale + "f",

@@ -120,7 +120,7 @@ subprojects {
     tasks.compileJava {
         options.encoding = "UTF-8"
         options.javaModuleVersion.set(provider { project.version as String })
-        System.setProperty("prism.order", "j2d");
+        System.setProperty("prism.order", "j2d")
     }
 
     tasks.compileTestJava {

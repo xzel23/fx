@@ -49,7 +49,7 @@ public final class FxRefresh {
     /**
      * The update thread, null if not running or stop requested.
      */
-    private volatile Thread updateThread = null;
+    private volatile Thread updateThread;
 
     /**
      * Constructor.

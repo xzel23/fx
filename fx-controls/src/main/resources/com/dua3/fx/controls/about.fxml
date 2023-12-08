@@ -16,5 +16,5 @@
             </VBox>
         </StackPane>
     </content>
-    <expandableContent></expandableContent>
+    <expandableContent/>
 </DialogPane>

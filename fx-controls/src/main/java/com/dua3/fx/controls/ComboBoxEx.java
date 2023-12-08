@@ -112,7 +112,7 @@ public class ComboBoxEx<T> extends CustomControl<HBox> implements InputControl<T
                         String text = "";
                         if (item != null && !empty) {
                             try {
-                                text = format.apply((T) item);
+                                text = format.apply(item);
                             } catch (Exception e) {
                                 LOG.warn("error during formatting", e);
                                 text = String.valueOf(item);
@@ -151,7 +151,7 @@ public class ComboBoxEx<T> extends CustomControl<HBox> implements InputControl<T
     }
 
     private void removeItem() {
-        T item = (T) comboBox.getSelectionModel().getSelectedItem();
+        T item = comboBox.getSelectionModel().getSelectedItem();
         if (Optional.ofNullable(remove).orElse(ComboBoxEx::alwaysRemoveSelectedItem).test(this, item)) {
             int idx = items.indexOf(item);
             items.remove(idx);
@@ -162,9 +162,9 @@ public class ComboBoxEx<T> extends CustomControl<HBox> implements InputControl<T
         }
     }
 
-    public <T> boolean askBeforeRemoveSelectedItem(ComboBoxEx<T> cb, T item) {
+    public boolean askBeforeRemoveSelectedItem(T item) {
         return Dialogs.confirmation(Optional.ofNullable(getScene()).map(Scene::getWindow).orElse(null))
-                .header("Remove %s?", cb.format.apply(item))
+                .header("Remove %s?", format.apply(item))
                 .defaultButton(ButtonType.YES)
                 .build()
                 .showAndWait()
@@ -177,7 +177,7 @@ public class ComboBoxEx<T> extends CustomControl<HBox> implements InputControl<T
     }
 
     public Optional<T> getSelectedItem() {
-        return Optional.ofNullable((T) comboBox.getSelectionModel().getSelectedItem());
+        return Optional.ofNullable(comboBox.getSelectionModel().getSelectedItem());
     }
 
     public List<T> getItems() {

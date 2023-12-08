@@ -43,10 +43,10 @@ public class AboutDialogBuilder {
     private String mailText = "";
     private String mailAddress = "";
 
-    private Window parentWindow = null;
-    private URL css = null;
-    private Node graphic = null;
-    private Node expandableContent = null;
+    private Window parentWindow;
+    private URL css;
+    private Node graphic;
+    private Node expandableContent;
 
     AboutDialogBuilder(Window parentWindow) {
         this.parentWindow = parentWindow;

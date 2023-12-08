@@ -25,7 +25,7 @@ public class IkonliIconProvider implements IconProvider {
     }
 
     @Override
-    public IkonliIcon forName(String name) {
+    public Icon forName(String name) {
         for (var handler : ServiceLoader.load(IkonHandler.class)) {
             if (handler.supports(name)) {
                 LOG.debug("using: {}", handler.getClass().getName());

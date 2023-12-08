@@ -156,7 +156,7 @@ public interface InputControl<R> {
 
         private Supplier<R> dflt;
 
-        private Function<R, Optional<String>> validate = s -> Optional.empty();
+        private Function<R, Optional<String>> validate;
 
         public State(Property<R> value) {
             this(value, freeze(value));

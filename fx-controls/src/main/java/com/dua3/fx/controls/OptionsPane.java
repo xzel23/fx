@@ -84,7 +84,7 @@ public class OptionsPane extends GridPane implements InputControl<Arguments> {
             Stream<List<?>> stream = arg.stream(option);
             Optional<?> value = stream.filter(list -> !list.isEmpty())
                     .reduce((first, second) -> second)
-                    .map(list -> list.getLast());
+                    .map(List::getLast);
             control.set(value.orElse(null));
         }
     }
