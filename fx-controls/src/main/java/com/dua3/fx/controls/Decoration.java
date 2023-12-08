@@ -12,7 +12,7 @@ import javafx.scene.layout.AnchorPane;
 public final class Decoration {
 
     private static final String DECORATION_LIST = Decoration.class.getName() + ".decoration_list";
-    private static final String MASTER = Decoration.class.getName() + ":master";
+    private static final String OWNER = Decoration.class.getName() + ":owner";
     private static final String POSITION = Decoration.class.getName() + ":position";
     private static final String PREFIX = Decoration.class.getName() + ":";
 
@@ -32,7 +32,7 @@ public final class Decoration {
     public static void addDecoration(Node node, Pos position, Node decoration, String id) {
         DecorationPane decorationPane = DecorationPane.getDecorationPane(node);
 
-        decoration.getProperties().put(MASTER, node);
+        decoration.getProperties().put(OWNER, node);
         decoration.getProperties().put(POSITION, position);
         updateDecorationPosition(decoration);
         Object oldDecoration = node.getProperties().put(getDecorationId(id), decoration);
@@ -45,7 +45,7 @@ public final class Decoration {
     }
 
     static void updateDecorationPosition(Node decoration) {
-        Node node = (Node) decoration.getProperties().get(MASTER);
+        Node node = (Node) decoration.getProperties().get(OWNER);
 
         if (node == null) {
             return;
