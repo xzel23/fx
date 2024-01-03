@@ -22,10 +22,10 @@ dependencyResolutionManagement {
             plugin("versions", "com.github.ben-manes.versions").version("0.50.0")
             plugin("test-logger", "com.adarshr.test-logger").version("4.0.0")
             plugin("spotbugs", "com.github.spotbugs").version("6.0.4")
-            plugin("cabe", "com.dua3.cabe").version("1.3.0")
+            plugin("cabe", "com.dua3.cabe").version("2.0-rc15")
             plugin("javafx", "org.openjfx.javafxplugin").version("0.1.0")
 
-            version("cabe", "1.0.0")
+            version("cabe", "2.0")
             version("dua3-utility", "12.0.0-beta9")
             version("javafx", "21.0.1")
             version("ikonli", "12.3.1")
