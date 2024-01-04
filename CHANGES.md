@@ -5,6 +5,7 @@ Changelog
 
 - use log4j-api instead of slf4j for all internal logging
 - update dependencies
+- added TableCellAutoCommit
 
 ### version 0.31.0
 
