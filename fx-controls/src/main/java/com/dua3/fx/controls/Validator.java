@@ -72,7 +72,7 @@ public class Validator {
      *
      * @param resources the resource bundle to look up message texts
      */
-    public Validator(ResourceBundle resources) {
+    public Validator(@Nullable ResourceBundle resources) {
         this.resources = resources;
     }
 
