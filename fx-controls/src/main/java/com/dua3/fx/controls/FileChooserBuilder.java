@@ -14,6 +14,7 @@
 
 package com.dua3.fx.controls;
 
+import com.dua3.cabe.annotations.Nullable;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Window;
@@ -91,7 +92,7 @@ public class FileChooserBuilder {
      * @param parent the parent window
      * @return a List containing the selected files, or an empty list if no files were selected
      */
-    public List<Path> showOpenMultipleDialog(Window parent) {
+    public List<Path> showOpenMultipleDialog(@Nullable Window parent) {
         FileChooser chooser = build();
         List<File> files = chooser.showOpenMultipleDialog(parent);
         return files == null ? Collections.emptyList() : files.stream().map(File::toPath).toList();
@@ -127,7 +128,7 @@ public class FileChooserBuilder {
      * @param initialFileName the initial filename
      * @return this instance
      */
-    public FileChooserBuilder initialFileName(String initialFileName) {
+    public FileChooserBuilder initialFileName(@Nullable String initialFileName) {
         this.initialFileName = initialFileName != null ? initialFileName : "";
         return this;
     }
@@ -140,7 +141,7 @@ public class FileChooserBuilder {
      * @param initialDir the initial directory
      * @return this instance
      */
-    public FileChooserBuilder initialDir(Path initialDir) {
+    public FileChooserBuilder initialDir(@Nullable Path initialDir) {
         this.initialDir = initialDir != null ? initialDir : USER_HOME;
         return this;
     }
@@ -192,7 +193,7 @@ public class FileChooserBuilder {
      * @param f the selected filter
      * @return this instance
      */
-    public FileChooserBuilder selectedFilter(ExtensionFilter f) {
+    public FileChooserBuilder selectedFilter(@Nullable ExtensionFilter f) {
         this.selectedFilter = f;
         if (f != null && !filters.contains(f)) {
             filters.add(f);

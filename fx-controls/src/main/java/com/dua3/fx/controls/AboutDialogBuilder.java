@@ -14,6 +14,7 @@
 
 package com.dua3.fx.controls;
 
+import com.dua3.cabe.annotations.Nullable;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
@@ -95,7 +96,7 @@ public class AboutDialogBuilder {
         return this;
     }
 
-    public AboutDialogBuilder graphic(URL url) {
+    public AboutDialogBuilder graphic(@Nullable URL url) {
         if (url == null) {
             this.graphic = null;
             return this;
@@ -121,7 +122,7 @@ public class AboutDialogBuilder {
         return this;
     }
 
-    public AboutDialogBuilder expandableContent(String text) {
+    public AboutDialogBuilder expandableContent(@Nullable String text) {
         if (text == null || text.isBlank()) {
             expandableContent = null;
             return this;

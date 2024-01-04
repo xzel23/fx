@@ -1,5 +1,6 @@
 package com.dua3.fx.controls;
 
+import com.dua3.cabe.annotations.Nullable;
 import com.dua3.utility.options.Arguments;
 import com.dua3.utility.options.ChoiceOption;
 import com.dua3.utility.options.Flag;
@@ -151,7 +152,7 @@ public class OptionsPane extends GridPane implements InputControl<Arguments> {
         throw new UnsupportedOperationException("unsupported input type: " + option.getClass().getName());
     }
 
-    private void addToGrid(Node node, int c, int r) {
+    private void addToGrid(@Nullable Node node, int c, int r) {
         if (node != null) {
             add(node, c, r);
             setMargin(node, INSETS);

@@ -143,7 +143,7 @@ public class ComboBoxEx<T> extends CustomControl<HBox> implements InputControl<T
     }
 
     private void addItem() {
-        Optional.of(add.get()).ifPresent(item -> {
+        Optional.ofNullable(add.get()).ifPresent(item -> {
             items.add(item);
             comboBox.getSelectionModel().select(item);
             sortItems();

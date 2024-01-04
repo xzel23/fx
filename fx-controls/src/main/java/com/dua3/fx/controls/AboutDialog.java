@@ -14,6 +14,7 @@
 
 package com.dua3.fx.controls;
 
+import com.dua3.cabe.annotations.Nullable;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -55,7 +56,7 @@ public class AboutDialog extends Dialog<Void> {
         this(null);
     }
 
-    public AboutDialog(URL css) {
+    public AboutDialog(@Nullable URL css) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("about.fxml"));
             loader.setController(this);

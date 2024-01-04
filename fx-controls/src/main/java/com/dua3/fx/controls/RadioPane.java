@@ -1,5 +1,6 @@
 package com.dua3.fx.controls;
 
+import com.dua3.cabe.annotations.Nullable;
 import javafx.beans.property.Property;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.ReadOnlyStringProperty;
@@ -37,7 +38,7 @@ public class RadioPane<T> extends VBox implements InputControl<T> {
      * @param currentValue the current value
      */
     @SuppressWarnings("unchecked")
-    public RadioPane(Collection<T> items, T currentValue) {
+    public RadioPane(Collection<T> items, @Nullable T currentValue) {
         this.group = new ToggleGroup();
 
         this.setSpacing(SPACING);

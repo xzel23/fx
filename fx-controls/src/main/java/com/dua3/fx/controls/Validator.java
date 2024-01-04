@@ -1,5 +1,6 @@
 package com.dua3.fx.controls;
 
+import com.dua3.cabe.annotations.Nullable;
 import com.dua3.fx.icons.IconView;
 import com.dua3.fx.util.ValidationResult;
 import com.dua3.utility.lang.LangUtil;
@@ -157,7 +158,7 @@ public class Validator {
         test.addListener((v, o, n) -> validateNode(c));
     }
 
-    private String getMessage(String m) {
+    private String getMessage(@Nullable String m) {
         if (m == null || m.isEmpty()) {
             return "";
         }
@@ -279,7 +280,7 @@ public class Validator {
      *
      * @param button the button to add validation to
      */
-    public void addValidation(Button button) {
+    public void addValidation(@Nullable Button button) {
         if (button == null) {
             LOG.warn("addValidation(): button is null");
             return;

@@ -29,4 +29,5 @@ module com.dua3.fx.util {
     requires java.prefs;
     requires javafx.controls;
     requires org.apache.logging.log4j;
+    requires static com.dua3.cabe.annotations;
 }

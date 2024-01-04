@@ -1,5 +1,6 @@
 package com.dua3.fx.util;
 
+import com.dua3.cabe.annotations.Nullable;
 import com.dua3.utility.data.Color;
 import com.dua3.utility.text.Font;
 import com.dua3.utility.text.FontDef;
@@ -34,7 +35,7 @@ public class FxFontEmbedded extends Font {
         return super.deriveFont(fd);
     }
 
-    private static <T> boolean isNullOrEquals(T a, T b) {
+    private static <T> boolean isNullOrEquals(@Nullable T a, @Nullable T b) {
         return a == null || b == null || a.equals(b);
     }
 
@@ -44,7 +45,7 @@ public class FxFontEmbedded extends Font {
     }
 
     @Override
-    public boolean equals(final Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) return true;
         if (o == null || this.getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;

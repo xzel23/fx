@@ -14,6 +14,7 @@
 
 package com.dua3.fx.controls;
 
+import com.dua3.cabe.annotations.Nullable;
 import javafx.scene.control.ButtonType;
 
 import java.util.Objects;
@@ -62,7 +63,7 @@ public abstract class AbstractDialogPaneBuilder<D, B extends AbstractDialogPaneB
         return dlg;
     }
 
-    protected static <C, D> void applyIfNotNull(BiConsumer<C, D> consumer, C a, D b) {
+    protected static <C, D> void applyIfNotNull(BiConsumer<C, D> consumer, @Nullable C a, @Nullable D b) {
         if (a != null && b != null) {
             consumer.accept(a, b);
         }

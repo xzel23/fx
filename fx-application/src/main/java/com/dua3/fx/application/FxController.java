@@ -14,6 +14,7 @@
 
 package com.dua3.fx.application;
 
+import com.dua3.cabe.annotations.Nullable;
 import com.dua3.fx.controls.Dialogs;
 import com.dua3.fx.util.FxUtil;
 import com.dua3.utility.data.Pair;
@@ -370,7 +371,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
      * @param document the current document
      * @return the initial folder to set
      */
-    private Path initialDir(D document) {
+    private Path initialDir(@Nullable D document) {
         if (document == null) {
             return getApp().getUserHome();
         }
@@ -484,7 +485,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
      */
     void setApp(A app) {
         LangUtil.check(this.app == null, "app instance was already set");
-        this.app = Objects.requireNonNull(app, "app instance must not be null");
+        this.app = app;
         init(app);
     }
 

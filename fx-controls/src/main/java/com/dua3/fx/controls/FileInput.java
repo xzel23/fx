@@ -1,5 +1,6 @@
 package com.dua3.fx.controls;
 
+import com.dua3.cabe.annotations.Nullable;
 import com.dua3.fx.util.FxUtil;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringExpression;
@@ -38,12 +39,12 @@ public class FileInput extends CustomControl<HBox> implements InputControl<Path>
 
     static class PathConverter extends StringConverter<Path> {
         @Override
-        public String toString(Path path) {
+        public String toString(@Nullable Path path) {
             return path == null ? "" : path.toString();
         }
 
         @Override
-        public Path fromString(String s) {
+        public Path fromString(@Nullable String s) {
             return s == null ? Paths.get("") : Paths.get(s);
         }
     }
@@ -70,9 +71,9 @@ public class FileInput extends CustomControl<HBox> implements InputControl<Path>
 
         getStyleClass().setAll("file-input");
 
-        this.mode = Objects.requireNonNull(mode);
+        this.mode = mode;
         this.filters = Arrays.copyOf(Objects.requireNonNull(filters), filters.length);
-        this.dflt = Objects.requireNonNull(dflt);
+        this.dflt = dflt;
 
         this.tfFilename = new TextField();
         this.button = new Button("…");

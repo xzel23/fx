@@ -20,4 +20,5 @@ module com.dua3.fx.web {
     requires javafx.web;
     requires jdk.jsobject;
     requires org.apache.logging.log4j;
+    requires static com.dua3.cabe.annotations;
 }

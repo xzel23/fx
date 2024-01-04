@@ -14,6 +14,7 @@
 
 package com.dua3.fx.controls;
 
+import com.dua3.cabe.annotations.Nullable;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Window;
 import org.apache.logging.log4j.LogManager;
@@ -75,7 +76,7 @@ public class DirectoryChooserBuilder {
      * @param initialDir the initial directory
      * @return this instance
      */
-    public DirectoryChooserBuilder initialDir(Path initialDir) {
+    public DirectoryChooserBuilder initialDir(@Nullable Path initialDir) {
         this.initialDir = initialDir != null ? initialDir : USER_HOME;
         return this;
     }

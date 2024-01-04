@@ -26,8 +26,8 @@ public class ChoiceInputControl<T> implements InputControl<T> {
     private final Property<T> valueProperty;
 
     public ChoiceInputControl(ChoiceOption<T> option, Supplier<T> dfltValue) {
-        this.option = Objects.requireNonNull(option);
-        this.dfltValue = Objects.requireNonNull(dfltValue);
+        this.option = option;
+        this.dfltValue = dfltValue;
         this.control = new ComboBox<>();
         control.getItems().setAll(option.choices());
         control.getSelectionModel().select(option.choice(dfltValue.get()));

@@ -22,4 +22,5 @@ module com.dua3.fx.util.db {
     requires org.apache.logging.log4j;
     requires javafx.controls;
     requires javafx.graphics;
+    requires static com.dua3.cabe.annotations;
 }

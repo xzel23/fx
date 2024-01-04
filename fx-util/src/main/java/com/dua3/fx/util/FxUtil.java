@@ -1,5 +1,6 @@
 package com.dua3.fx.util;
 
+import com.dua3.cabe.annotations.Nullable;
 import com.dua3.utility.concurrent.Value;
 import com.dua3.utility.data.DataUtil;
 import com.dua3.utility.data.Image;
@@ -51,7 +52,7 @@ public final class FxUtil {
 
     private FxUtil() {}
 
-    public static String asText(URI uri) {
+    public static String asText(@Nullable URI uri) {
         return uri == null ? "" : URLDecoder.decode(uri.toString(), StandardCharsets.UTF_8);
     }
 

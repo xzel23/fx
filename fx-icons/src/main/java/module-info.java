@@ -6,6 +6,7 @@ module com.dua3.fx.icons {
 
     requires javafx.controls;
     requires javafx.graphics;
+    requires static com.dua3.cabe.annotations;
 
     uses com.dua3.fx.icons.IconProvider;
 }
