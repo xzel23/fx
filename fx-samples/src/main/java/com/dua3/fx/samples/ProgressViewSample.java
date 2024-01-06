@@ -2,6 +2,7 @@ package com.dua3.fx.samples;
 
 import com.dua3.fx.controls.ProgressView;
 import com.dua3.utility.concurrent.ProgressTracker;
+import com.dua3.utility.concurrent.ThreadFactoryBuilder;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
@@ -12,7 +13,8 @@ import java.util.concurrent.Executors;
 
 public class ProgressViewSample extends Application {
 
-    ExecutorService pool = Executors.newFixedThreadPool(3);
+    ExecutorService pool = Executors.newFixedThreadPool(3,
+            ThreadFactoryBuilder.builder().prefix("sample-").daemon(true).build());
 
     public static void main(String[] args) {
         launch(args);
