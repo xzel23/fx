@@ -21,7 +21,7 @@ dependencyResolutionManagement {
 
             plugin("versions", "com.github.ben-manes.versions").version("0.50.0")
             plugin("test-logger", "com.adarshr.test-logger").version("4.0.0")
-            plugin("spotbugs", "com.github.spotbugs").version("6.0.5")
+            plugin("spotbugs", "com.github.spotbugs").version("6.0.6")
             plugin("cabe", "com.dua3.cabe").version("2.0")
             plugin("javafx", "org.openjfx.javafxplugin").version("0.1.0")
 
