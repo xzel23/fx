@@ -6,7 +6,12 @@ import com.dua3.utility.data.DataUtil;
 import com.dua3.utility.data.Image;
 import com.dua3.utility.io.IoUtil;
 import com.dua3.utility.math.geometry.AffineTransformation2f;
+import com.dua3.utility.math.geometry.Arc2f;
+import com.dua3.utility.math.geometry.Curve2f;
 import com.dua3.utility.math.geometry.FillRule;
+import com.dua3.utility.math.geometry.Line2f;
+import com.dua3.utility.math.geometry.MoveTo2f;
+import com.dua3.utility.math.geometry.Path2f;
 import com.dua3.utility.text.FontDef;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
@@ -22,6 +27,11 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.ArcTo;
+import javafx.scene.shape.CubicCurveTo;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.QuadCurveTo;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
@@ -146,6 +156,44 @@ public final class FxUtil {
                 (float) a.getMyx(), (float) a.getMyy(), (float) a.getTy()
         );
     }
+
+    /**
+     * Converts a {@link Path2f} object to a {@link javafx.scene.shape.Path} object.
+     *
+     * @param path the Path2f object to convert
+     * @return the converted javafx.scene.shape.Path object
+     * @throws IllegalArgumentException if the path contains unsupported segment types
+     */
+    public static javafx.scene.shape.Path convert(Path2f path) {
+        javafx.scene.shape.Path jfxPath = new javafx.scene.shape.Path();
+        path.segments().forEach(segment -> {
+            if (segment instanceof MoveTo2f s) {
+                jfxPath.getElements().add(new MoveTo(s.end().x(), s.end().y()));
+            } else if (segment instanceof Line2f s) {
+                jfxPath.getElements().add(new LineTo(s.end().x(), s.end().y()));
+            } else if (segment instanceof Curve2f s) {
+                int n = s.numberOfControls();
+                jfxPath.getElements().add(switch (n) {
+                    case 3 -> new QuadCurveTo(
+                            s.control(1).x(), s.control(1).y(),
+                            s.control(2).x(), s.control(2).y()
+                    );
+                    case 4 -> new CubicCurveTo(
+                            s.control(1).x(), s.control(1).y(),
+                            s.control(2).x(), s.control(2).y(),
+                            s.control(3).x(), s.control(3).y()
+                    );
+                    default -> throw new IllegalArgumentException("Unsupported number of control points: " + n);
+                });
+            } else if (segment instanceof Arc2f s) {
+                jfxPath.getElements().add(new ArcTo(s.rx(), s.ry(), s.angle(), s.control(1).x(), s.control(1).y(), false, false));
+            } else {
+                throw new IllegalArgumentException("Unsupported segment type: " + segment.getClass().getName());
+            }
+        });
+        return jfxPath;
+    }
+
 
     public static Bounds getTextBounds(CharSequence s, com.dua3.utility.text.Font f) {
         return boundsInLocal(s, f);
