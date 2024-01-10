@@ -87,6 +87,10 @@ public class SliderWithButtons extends Region {
     }
 
     private void updateLabel() {
+        if (label == null) {
+            return;
+        }
+
         double v = getValue();
         double m = getMax();
 
