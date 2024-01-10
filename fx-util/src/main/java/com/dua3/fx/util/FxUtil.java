@@ -399,7 +399,7 @@ public final class FxUtil {
     private record InvalidationListenerAdapter<T>(Observable observable, InvalidationListener invalidationListener)
             implements BiConsumer<T, T> {
         @Override
-        public void accept(T t1, T t2) {
+        public void accept(@Nullable T t1, @Nullable T t2) {
             invalidationListener.invalidated(observable);
         }
     }
@@ -413,7 +413,7 @@ public final class FxUtil {
                                             ChangeListener<? super T> changeListener)
             implements BiConsumer<T, T> {
         @Override
-        public void accept(T t1, T t2) {
+        public void accept(@Nullable T t1, @Nullable T t2) {
             changeListener.changed(observableValue, t1, t2);
         }
     }

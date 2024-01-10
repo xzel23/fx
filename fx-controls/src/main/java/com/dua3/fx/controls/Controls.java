@@ -1,5 +1,6 @@
 package com.dua3.fx.controls;
 
+import com.dua3.cabe.annotations.Nullable;
 import com.dua3.fx.icons.Icon;
 import com.dua3.fx.icons.IconUtil;
 import com.dua3.fx.icons.IconView;
@@ -258,7 +259,7 @@ public final class Controls {
      * @param items   the menu items
      * @return new menu
      */
-    public static Menu menu(String text, MenuItem... items) {
+    public static Menu menu(@Nullable String text, MenuItem... items) {
         return new Menu(text, null, items);
     }
 
@@ -270,7 +271,7 @@ public final class Controls {
      * @param items   the menu items
      * @return new menu
      */
-    public static Menu menu(String text, Node graphic, MenuItem... items) {
+    public static Menu menu(@Nullable String text, @Nullable Node graphic, MenuItem... items) {
         return new Menu(text, graphic, items);
     }
 
@@ -282,7 +283,7 @@ public final class Controls {
      * @param action  the action to perform when the menu item is invoked
      * @return new menu item
      */
-    public static MenuItem menuItem(String text, Node graphic, Runnable action) {
+    public static MenuItem menuItem(@Nullable String text, @Nullable Node graphic, Runnable action) {
         return menuItem(text, graphic, action, true);
     }
 
@@ -295,7 +296,7 @@ public final class Controls {
      * @param action  the action to perform when the menu item is invoked
      * @return new menu item
      */
-    public static MenuItem menuItem(String text, Node graphic, Runnable action, boolean enabled) {
+    public static MenuItem menuItem(@Nullable String text, @Nullable Node graphic, Runnable action, boolean enabled) {
         MenuItem mi = new MenuItem(text, graphic);
         mi.setDisable(!enabled);
         mi.setOnAction(evt -> action.run());
@@ -309,7 +310,7 @@ public final class Controls {
      * @param action the action to perform when the menu item is invoked
      * @return new menu item
      */
-    public static MenuItem menuItem(String text, Runnable action) {
+    public static MenuItem menuItem(@Nullable String text, Runnable action) {
         return menuItem(text, action, true);
     }
 
@@ -321,7 +322,7 @@ public final class Controls {
      * @param action  the action to perform when the menu item is invoked
      * @return new menu item
      */
-    public static MenuItem menuItem(String text, Runnable action, boolean enabled) {
+    public static MenuItem menuItem(@Nullable String text, Runnable action, boolean enabled) {
         MenuItem mi = new MenuItem(text);
         mi.setDisable(!enabled);
         mi.setOnAction(evt -> action.run());
