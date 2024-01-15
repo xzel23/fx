@@ -6,6 +6,8 @@ Changelog
 - use log4j-api instead of slf4j for all internal logging
 - update dependencies
 - added TableCellAutoCommit
+- FxUtil.convert(Rectangle2f r)
+- fixes and improvements
 
 ### version 0.31.0
 
