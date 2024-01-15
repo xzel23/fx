@@ -12,6 +12,7 @@ import com.dua3.utility.math.geometry.FillRule;
 import com.dua3.utility.math.geometry.Line2f;
 import com.dua3.utility.math.geometry.MoveTo2f;
 import com.dua3.utility.math.geometry.Path2f;
+import com.dua3.utility.math.geometry.Rectangle2f;
 import com.dua3.utility.text.FontDef;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
@@ -194,6 +195,9 @@ public final class FxUtil {
         return jfxPath;
     }
 
+    public static javafx.scene.shape.Rectangle convert(Rectangle2f r) {
+        return new javafx.scene.shape.Rectangle(r.x(), r.y(), r.width(), r.height());
+    }
 
     public static Bounds getTextBounds(CharSequence s, com.dua3.utility.text.Font f) {
         return boundsInLocal(s, f);
