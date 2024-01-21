@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import com.adarshr.gradle.testlogger.theme.ThemeType
+import com.dua3.cabe.processor.Config
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import java.net.URI
 
@@ -62,6 +63,14 @@ subprojects {
         toolchain { languageVersion.set(JavaLanguageVersion.of(21)) }
         withSourcesJar()
         withJavadocJar()
+    }
+
+    cabe {
+        if (isReleaseVersion) {
+            config.set(Config.StandardConfig.STANDARD.config)
+        } else {
+            config.set(Config.StandardConfig.DEVELOPMENT.config)
+        }
     }
 
     tasks.withType<JavaCompile>().configureEach {
