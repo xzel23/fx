@@ -102,7 +102,7 @@ public class ComboBoxEx<T> extends CustomControl<HBox> implements InputControl<T
         Callback<ListView<T>, ListCell<T>> cellFactory = new Callback<>() {
 
             @Override
-            public ListCell<T> call(ListView<T> l) {
+            public ListCell<T> call(ListView<T> lv) {
                 return new ListCell<>() {
 
                     @Override
@@ -110,7 +110,7 @@ public class ComboBoxEx<T> extends CustomControl<HBox> implements InputControl<T
                         super.updateItem(item, empty);
 
                         String text = "";
-                        if (item != null && !empty) {
+                        if (!empty) {
                             try {
                                 text = format.apply(item);
                             } catch (Exception e) {

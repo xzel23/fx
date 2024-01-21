@@ -1,5 +1,6 @@
 package com.dua3.fx.controls;
 
+import com.dua3.cabe.annotations.Nullable;
 import com.dua3.fx.controls.AbstractDialogPaneBuilder.ResultHandler;
 import com.dua3.utility.data.Pair;
 import javafx.beans.binding.Bindings;
@@ -141,7 +142,7 @@ public class WizardDialog extends Dialog<Map<String, Object>> {
             Page<?, ?> page,
             ButtonType bt,
             Consumer<InputDialogPane<?>> action,
-            BooleanExpression enabled) {
+            @Nullable BooleanExpression enabled) {
         InputDialogPane<?> pane = page.pane;
         List<ButtonType> buttons = pane.getButtonTypes();
 
