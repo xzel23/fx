@@ -26,7 +26,6 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import javafx.fxml.FXML;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.stage.FileChooser;
@@ -68,9 +67,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
      * The URI of the currently opened document.
      */
     protected final ObjectProperty<D> currentDocumentProperty = new SimpleObjectProperty<>();
-    @FXML
     protected URL location;
-    @FXML
     protected ResourceBundle resources;
     /**
      * The URI of the currently opened document.
@@ -93,7 +90,6 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
      * Request application close as if the close-window-button was clicked.
      * Called from FXML.
      */
-    @FXML
     public void closeApplicationWindow() {
         // handle dirty state
         if (!handleDirtyState()) {
@@ -228,7 +224,6 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
         currentDocumentProperty.set(null);
     }
 
-    @FXML
     public boolean newDocument() {
         // handle dirty state
         if (!handleDirtyState()) {
@@ -247,8 +242,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
         }
     }
 
-    @FXML
-    protected boolean open() {
+    public boolean open() {
         // handle dirty state
         if (!handleDirtyState()) {
             LOG.debug("open aborted because of dirty state");
@@ -301,8 +295,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
         return null;
     }
 
-    @FXML
-    protected boolean save() {
+    public boolean save() {
         if (!hasCurrentDocument()) {
             LOG.info("no document; not saving");
             return false;
@@ -332,8 +325,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
         return filters;
     }
 
-    @FXML
-    protected boolean saveAs() {
+    public boolean saveAs() {
         if (!hasCurrentDocument()) {
             LOG.info("no document; not saving");
             return false;

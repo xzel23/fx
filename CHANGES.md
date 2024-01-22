@@ -1,6 +1,10 @@
 Changelog
 =========
 
+### version 0.33.0
+
+- move dependency on FXML from FxApplication to new FxApplicationFxml class to facilitate creating non-FXML apps
+
 ### version 0.32.0
 
 - use log4j-api instead of slf4j for all internal logging

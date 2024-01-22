@@ -22,7 +22,6 @@ import com.dua3.utility.text.TextUtil;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.FileChooser;
@@ -57,29 +56,29 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
     /**
      * Logger
      */
-    private static final Logger LOG = LogManager.getLogger(FxApplication.class);
+    protected static final Logger LOG = LogManager.getLogger(FxApplication.class);
     /**
      * The command line argument to set the logging level (i.e. "--log=FINE").
      */
-    public static final String ARG_LOG_LEVEL = "log";
+    protected static final String ARG_LOG_LEVEL = "log";
     /**
      * Marker to indicate modified state in title.
      */
-    private static final String MARKER_MODIFIED = "*";
+    protected static final String MARKER_MODIFIED = "*";
 
     // - constants -
     /**
      * Marker to indicate unmodified state in title.
      */
-    private static final String MARKER_UNMODIFIED = " ";
+    protected static final String MARKER_UNMODIFIED = " ";
     /**
      * The user's home folder.
      */
-    private static final Path USER_HOME = Paths.get(System.getProperty("user.home"));
+    protected static final Path USER_HOME = Paths.get(System.getProperty("user.home"));
     /**
      * The name of the default bundle that is used if the application does not provide its own bundle.
      */
-    private static final String DEFAULT_BUNDLE = "fxapp";
+    protected static final String DEFAULT_BUNDLE = "fxapp";
     /**
      * Cleaner
      */
@@ -91,18 +90,18 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
     /**
      * The resource bundle
      */
-    private final ResourceBundle resources;
-    private final Path applicationDataDir = initApplicationDataDir();
+    protected final ResourceBundle resources;
+    protected final Path applicationDataDir = initApplicationDataDir();
 
     // - instance -
     /**
      * Preferences
      */
-    private Preferences preferences = null;
+    protected Preferences preferences = null;
     /**
      * The controller instance.
      */
-    private C controller;
+    protected C controller;
 
     // - UI -
 
@@ -195,69 +194,67 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
     public void start(Stage stage) throws IOException {
         LOG.info("starting application");
 
-        // store reference to stage
-        this.mainStage = stage;
+        try {
+            // store reference to stage
+            this.mainStage = stage;
 
-        // create a loader and load FXML
-        URL fxml = getFxml();
-        LOG.debug("FXML URL: {}", fxml);
-        FXMLLoader loader = new FXMLLoader(fxml, resources);
+            // create the parent
+            Parent root = createParentAndInitController();
+            Objects.requireNonNull(controller, "controller was not initialized in createParentAndinitController()");
+            controller.setApp((A) this);
 
-        Parent root = loader.load();
+            // create scene
+            Scene scene = new Scene(root);
 
-        // set controller
-        LOG.debug("setting FXML controller");
-        this.controller = Objects.requireNonNull(loader.getController(),
-                () -> "controller is null; set fx:controller in root element of FXML (" + fxml + ")");
-        this.controller.setApp((A) this);
+            URL css = getCss();
+            if (css != null) {
+                scene.getStylesheets().add(css.toExternalForm());
+            }
 
-        // create scene
-        Scene scene = new Scene(root);
+            // setup stage
+            stage.setTitle(resources.getString("fx.application.name"));
+            stage.setScene(scene);
 
-        URL css = getCss();
-        if (css != null) {
-            scene.getStylesheets().add(css.toExternalForm());
+            // automatically update title on document change
+            final ChangeListener<Boolean> dirtyStateListener = (v, o, n) -> updateApplicationTitle();
+
+            final ChangeListener<URI> locationListener = (v, o, n) -> updateApplicationTitle();
+
+            controller.currentDocumentProperty.addListener(
+                    (v, o, n) -> {
+                        updateApplicationTitle();
+                        if (o != null) {
+                            o.dirtyProperty.removeListener(dirtyStateListener);
+                            o.locationProperty.removeListener(locationListener);
+                        }
+                        if (n != null) {
+                            n.dirtyProperty.addListener(dirtyStateListener);
+                            n.locationProperty.addListener(locationListener);
+                        }
+                    });
+
+            stage.setOnCloseRequest(e -> {
+                e.consume();
+                controller.closeApplicationWindow();
+            });
+
+            stage.show();
+
+            LOG.debug("application started");
+        } catch (Exception e) {
+            LOG.fatal("error during application start", e);
         }
-
-        // setup stage
-        stage.setTitle(resources.getString("fx.application.name"));
-        stage.setScene(scene);
-
-        // automatically update title on document change
-        final ChangeListener<Boolean> dirtyStateListener = (v, o, n) -> updateApplicationTitle();
-
-        final ChangeListener<URI> locationListener = (v, o, n) -> updateApplicationTitle();
-
-        controller.currentDocumentProperty.addListener(
-                (v, o, n) -> {
-                    updateApplicationTitle();
-                    if (o != null) {
-                        o.dirtyProperty.removeListener(dirtyStateListener);
-                        o.locationProperty.removeListener(locationListener);
-                    }
-                    if (n != null) {
-                        n.dirtyProperty.addListener(dirtyStateListener);
-                        n.locationProperty.addListener(locationListener);
-                    }
-                });
-
-        stage.setOnCloseRequest(e -> {
-            e.consume();
-            controller.closeApplicationWindow();
-        });
-
-        stage.show();
-
-        LOG.debug("application started");
     }
 
-    /**
-     * Get application main FXML file.
-     *
-     * @return the path to the FXML file to load, relative to the
-     * application class
-     */
-    protected abstract URL getFxml();
+    protected abstract Parent createParentAndInitController() throws Exception;
+
+    protected void setController(C controller) {
+        if (this.controller != null) {
+            throw new IllegalStateException("controller already set");
+        }
+        LOG.debug("setting controller");
+        this.controller = controller;
+    }
 
     /**
      * Get application main CSS file.

@@ -12,15 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-description = "JavaFX utilities (application)"
+description = "JavaFX utilities (application using FXML)"
 
 javafx {
-    modules = listOf("javafx.base", "javafx.controls")
+    modules = listOf("javafx.fxml")
 }
 
 dependencies {
     api(project(":fx-util"))
     api(project(":fx-controls"))
+    api(project(":fx-application"))
 
     implementation(rootProject.libs.dua3.utility)
 }

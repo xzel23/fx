@@ -1,9 +1,10 @@
 rootProject.name = "dua3-fx"
-val projectVersion = "0.32.1"
+val projectVersion = "0.33-SNAPSHOT"
 
 include("fx-util")
 include("fx-util-db")
 include("fx-application")
+include("fx-application:fx-application-fxml")
 include("fx-controls")
 include("fx-icons")
 include("fx-icons:fx-icons-ikonli")
