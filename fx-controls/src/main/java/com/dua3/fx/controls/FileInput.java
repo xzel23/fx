@@ -30,6 +30,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -57,22 +58,24 @@ public class FileInput extends CustomControl<HBox> implements InputControl<Path>
     private final FileDialogMode mode;
     private final FileChooser.ExtensionFilter[] filters;
     private final Supplier<Path> dflt;
-    private boolean existingOnly = true;
+    private final boolean existingOnly;
 
     private final StringProperty error = new SimpleStringProperty("");
     private final BooleanProperty valid = new SimpleBooleanProperty(true);
 
-    public FileInput(FileDialogMode mode, Supplier<Path> dflt, Collection<FileChooser.ExtensionFilter> filters) {
-        this(mode, dflt, filters.toArray(FileChooser.ExtensionFilter[]::new));
-    }
-
-    public FileInput(FileDialogMode mode, Supplier<Path> dflt, FileChooser.ExtensionFilter... filters) {
+    public FileInput(
+            FileDialogMode mode,
+            boolean existingOnly,
+            Supplier<Path> dflt,
+            Collection<FileChooser.ExtensionFilter> filters,
+            Function<Path, Optional<String>> validate) {
         super(new HBox());
 
         getStyleClass().setAll("file-input");
 
         this.mode = mode;
-        this.filters = Arrays.copyOf(Objects.requireNonNull(filters), filters.length);
+        this.existingOnly = existingOnly;
+        this.filters = filters.toArray(FileChooser.ExtensionFilter[]::new);
         this.dflt = dflt;
 
         this.tfFilename = new TextField();
@@ -130,28 +133,7 @@ public class FileInput extends CustomControl<HBox> implements InputControl<Path>
         error.bind(errorText);
 
         // valid property
-        valid.bind(Bindings.createBooleanBinding(() -> {
-                            Path p = getPath();
-
-                            if (p == null) {
-                                return false;
-                            }
-
-                            boolean exists = Files.exists(p);
-                            boolean isDirectory = Files.isDirectory(p);
-
-                            return switch (mode) {
-                                case DIRECTORY ->
-                                    // is a directory or existingOnly is not set and doesn't exist
-                                        isDirectory || (!existingOnly && !exists);
-                                case OPEN, SAVE ->
-                                    // is no directory, and existingOnly is not set or exists
-                                        !isDirectory && (!existingOnly || exists);
-                            };
-                        },
-                        value
-                )
-        );
+        valid.bind(Bindings.createBooleanBinding(() -> validate.apply(getPath()).isPresent(), value));
 
         // enable drag&drop
         Function<List<Path>, List<TransferMode>> acceptPath = list ->
@@ -166,8 +148,38 @@ public class FileInput extends CustomControl<HBox> implements InputControl<Path>
         }
     }
 
-    public void setExistingOnly(boolean existingOnly) {
-        this.existingOnly = existingOnly;
+    public static Function<Path, Optional<String>> defaultValidate(FileDialogMode mode, boolean existingOnly) {
+        return p -> {
+            if (p == null) {
+                return Optional.empty();
+            }
+
+            boolean exists = Files.exists(p);
+            boolean isDirectory = Files.isDirectory(p);
+
+            switch (mode) {
+                case DIRECTORY -> {
+                    // is a directory or existingOnly is not set and doesn't exist
+                    if (!isDirectory) {
+                        return Optional.of("Not a directory: " + p);
+                    }
+                    if (existingOnly && !exists) {
+                        return Optional.of("Does not exist: " + p);
+                    }
+                    return Optional.empty();
+                }
+                case OPEN, SAVE -> {
+                    if (isDirectory) {
+                        return Optional.of("Is a directory: " + p);
+                    }
+                    if (existingOnly && !exists) {
+                        return Optional.of("Does not exist: " + p);
+                    }
+                    return Optional.empty();
+                }
+                default -> throw new IllegalArgumentException("Unknown FileDialogMode: " + mode);
+            }
+        };
     }
 
     private Path getPath() {

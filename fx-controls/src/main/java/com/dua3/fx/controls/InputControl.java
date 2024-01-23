@@ -70,16 +70,16 @@ public interface InputControl<R> {
         return new SimpleInputControl<>(control, value.asObject(), dflt, validate);
     }
 
-    static SimpleInputControl<CheckBox, Boolean> checkBoxInput(Supplier<Boolean> dflt, String text) {
+    static SimpleInputControl<CheckBox, Boolean> checkBoxInput(Supplier<Boolean> dflt, String text, Function<Boolean, Optional<String>> validate) {
         CheckBox control = new CheckBox(text);
         BooleanProperty value = control.selectedProperty();
-        return new SimpleInputControl<>(control, value.asObject(), dflt, r -> Optional.empty());
+        return new SimpleInputControl<>(control, value.asObject(), dflt, validate);
     }
 
-    static <T> SimpleInputControl<ComboBox<T>, T> comboBoxInput(Collection<T> choices, Supplier<T> dflt) {
+    static <T> SimpleInputControl<ComboBox<T>, T> comboBoxInput(Collection<T> choices, Supplier<T> dflt, Function<T, Optional<String>> validate) {
         ComboBox<T> control = new ComboBox<>(FXCollections.observableArrayList(choices));
         Property<T> value = control.valueProperty();
-        return new SimpleInputControl<>(control, value, dflt, r -> Optional.empty());
+        return new SimpleInputControl<>(control, value, dflt, validate);
     }
 
     static <T> SimpleInputControl<ComboBoxEx<T>, T> comboBoxExInput(
@@ -88,14 +88,16 @@ public interface InputControl<R> {
             @Nullable UnaryOperator<T> edit,
             @Nullable Supplier<T> add,
             @Nullable BiPredicate<ComboBoxEx<T>, T> remove,
-            Function<T, String> format) {
+            Function<T, String> format,
+            Function<T, Optional<String>> validate) {
         ComboBoxEx<T> control = new ComboBoxEx<>(edit, add, remove, format, FXCollections.observableArrayList(choices));
         Property<T> value = control.valueProperty();
-        return new SimpleInputControl<>(control, value, dflt, r -> Optional.empty());
+        return new SimpleInputControl<>(control, value, dflt, validate);
     }
 
-    static InputControl<Path> chooseFile(Supplier<Path> dflt, FileDialogMode mode, FileChooser.ExtensionFilter... filters) {
-        return new FileInput(mode, dflt, filters);
+    static InputControl<Path> chooseFile(Supplier<Path> dflt, FileDialogMode mode, boolean existingOnly, Collection<FileChooser.ExtensionFilter> filters,
+                                         Function<Path, Optional<String>> validate) {
+        return new FileInput(mode, existingOnly, dflt, filters, validate);
     }
 
     /**

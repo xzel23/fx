@@ -115,7 +115,7 @@ public class InputGridBuilder
         return doAdd(id, null, type, dflt, control);
     }
 
-    private <T> InputGridBuilder doAdd(String id, String label, Class<T> type, Supplier<T> dflt, InputControl<T> control) {
+    private <T> InputGridBuilder doAdd(String id, @Nullable String label, Class<T> type, Supplier<T> dflt, InputControl<T> control) {
         Objects.requireNonNull(id);
         Meta<T> meta = new Meta<>(id, label, type, dflt, control);
         Meta<?> prev = data.put(id, meta);
@@ -178,16 +178,16 @@ public class InputGridBuilder
      * @see com.dua3.fx.util.controls.InputBuilder#checkBox(java.lang.String, java.lang.String, boolean, java.lang.String)
      */
     @Override
-    public InputGridBuilder checkBox(String id, String label, Supplier<Boolean> dflt, String text) {
-        return add(id, label, Boolean.class, dflt, InputControl.checkBoxInput(dflt, text));
+    public InputGridBuilder checkBox(String id, String label, Supplier<Boolean> dflt, String text, Function<Boolean, Optional<String>> validate) {
+        return add(id, label, Boolean.class, dflt, InputControl.checkBoxInput(dflt, text, validate));
     }
 
     /* (non-Javadoc)
      * @see com.dua3.fx.util.controls.InputBuilder#comboBox(java.lang.String, java.lang.String, T, java.lang.Class, java.util.Collection)
      */
     @Override
-    public <T> InputGridBuilder comboBox(String id, String label, Supplier<T> dflt, Class<T> cls, Collection<T> items) {
-        return add(id, label, cls, dflt, InputControl.comboBoxInput(items, dflt));
+    public <T> InputGridBuilder comboBox(String id, String label, Supplier<T> dflt, Class<T> cls, Collection<T> items, Function<T, Optional<String>> validate) {
+        return add(id, label, cls, dflt, InputControl.comboBoxInput(items, dflt, validate));
     }
 
     /* (non-Javadoc)
@@ -203,16 +203,18 @@ public class InputGridBuilder
             Function<T, String> format,
             Supplier<T> dflt,
             Class<T> cls,
-            Collection<T> items) {
-        return add(id, label, cls, dflt, InputControl.comboBoxExInput(items, dflt, edit, add, remove, format));
+            Collection<T> items,
+            Function<T, Optional<String>> validate) {
+        return add(id, label, cls, dflt, InputControl.comboBoxExInput(items, dflt, edit, add, remove, format, validate));
     }
 
     /* (non-Javadoc)
      * @see com.dua3.fx.util.controls.InputBuilder#radioList(java.lang.String, java.lang.String, T, java.lang.Class, java.util.Collection)
      */
     @Override
-    public <T> InputGridBuilder radioList(String id, String label, Supplier<T> dflt, Class<T> cls, Collection<T> items) {
-        return add(id, label, cls, dflt, new RadioPane<>(items, null));
+    public <T> InputGridBuilder radioList(String id, String label, Supplier<T> dflt, Class<T> cls, Collection<T> items,
+                                          Function<T, Optional<String>> validate) {
+        return add(id, label, cls, dflt, new RadioPane<>(items, null, validate));
     }
 
     @Override
@@ -226,8 +228,8 @@ public class InputGridBuilder
     }
 
     @Override
-    public InputGridBuilder chooseFile(String id, String label, Supplier<Path> dflt, FileDialogMode mode, FileChooser.ExtensionFilter filter) {
-        return add(id, label, Path.class, dflt, new FileInput(mode, dflt, filter));
+    public InputGridBuilder chooseFile(String id, String label, Supplier<Path> dflt, FileDialogMode mode, boolean existingOnly, Collection<FileChooser.ExtensionFilter> filter, Function<Path, Optional<String>> validate) {
+        return add(id, label, Path.class, dflt, new FileInput(mode, existingOnly, dflt, filter, validate));
     }
 
 

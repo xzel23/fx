@@ -18,6 +18,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Optional;
+import java.util.function.Function;
 
 
 public class RadioPane<T> extends VBox implements InputControl<T> {
@@ -38,7 +39,7 @@ public class RadioPane<T> extends VBox implements InputControl<T> {
      * @param currentValue the current value
      */
     @SuppressWarnings("unchecked")
-    public RadioPane(Collection<T> items, @Nullable T currentValue) {
+    public RadioPane(Collection<T> items, @Nullable T currentValue, Function<T, Optional<String>> validate) {
         this.group = new ToggleGroup();
 
         this.setSpacing(SPACING);
@@ -59,8 +60,7 @@ public class RadioPane<T> extends VBox implements InputControl<T> {
         });
 
         this.state = new State<>(property);
-        //noinspection VariableNotUsedInsideIf
-        this.state.setValidate(v -> v == null ? Optional.of("Nothing selected.") : Optional.empty());
+        this.state.setValidate(validate);
 
         // update toggle, when state changes
         state.valueProperty().addListener((v, o, n) -> group.selectToggle(this.items.get(n)));

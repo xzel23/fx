@@ -99,14 +99,14 @@ public class InputPaneBuilder
     }
 
     @Override
-    public InputPaneBuilder checkBox(String id, String label, Supplier<Boolean> dflt, String text) {
-        pb.checkBox(id, label, dflt, text);
+    public InputPaneBuilder checkBox(String id, String label, Supplier<Boolean> dflt, String text, Function<Boolean, Optional<String>> validate) {
+        pb.checkBox(id, label, dflt, text, validate);
         return this;
     }
 
     @Override
-    public <T> InputPaneBuilder comboBox(String id, String label, Supplier<T> dflt, Class<T> cls, Collection<T> items) {
-        pb.comboBox(id, label, dflt, cls, items);
+    public <T> InputPaneBuilder comboBox(String id, String label, Supplier<T> dflt, Class<T> cls, Collection<T> items, Function<T, Optional<String>> validate) {
+        pb.comboBox(id, label, dflt, cls, items, validate);
         return this;
     }
 
@@ -120,14 +120,15 @@ public class InputPaneBuilder
             Function<T, String> format,
             Supplier<T> dflt,
             Class<T> cls,
-            Collection<T> items) {
-        pb.comboBoxEx(id, label, edit, add, remove, format, dflt, cls, items);
+            Collection<T> items,
+            Function<T, Optional<String>> validate) {
+        pb.comboBoxEx(id, label, edit, add, remove, format, dflt, cls, items, validate);
         return this;
     }
 
     @Override
-    public <T> InputPaneBuilder radioList(String id, String label, Supplier<T> dflt, Class<T> cls, Collection<T> items) {
-        pb.radioList(id, label, dflt, cls, items);
+    public <T> InputPaneBuilder radioList(String id, String label, Supplier<T> dflt, Class<T> cls, Collection<T> items, Function<T, Optional<String>> validate) {
+        pb.radioList(id, label, dflt, cls, items, validate);
         return this;
     }
 
@@ -144,8 +145,8 @@ public class InputPaneBuilder
     }
 
     @Override
-    public InputPaneBuilder chooseFile(String id, String label, Supplier<Path> dflt, FileDialogMode mode, FileChooser.ExtensionFilter filter) {
-        pb.chooseFile(id, label, dflt, mode, filter);
+    public InputPaneBuilder chooseFile(String id, String label, Supplier<Path> dflt, FileDialogMode mode, boolean existingOnly, Collection<FileChooser.ExtensionFilter> filter, Function<Path, Optional<String>> validate) {
+        pb.chooseFile(id, label, dflt, mode, existingOnly, filter, validate);
         return this;
     }
 
