@@ -30,14 +30,16 @@ public class DialogSample extends Application {
         VBox container = new VBox();
 
         // About
-        container.getChildren().add(createButton("About", () ->
-                Dialogs.about(primaryStage)
-                        .title("About…")
-                        .name("Dialog Sample")
-                        .version("v 0.1")
-                        .copyright("(c) 2021 Axel Howind")
-                        .mail("info@example.com")
-                        .showAndWait()));
+        container.getChildren().add(createButton("About", () -> {
+            Dialogs.about(primaryStage)
+                    .title("About…")
+                    .name("Dialog Sample")
+                    .version("v 0.1")
+                    .copyright("(c) 2021 Axel Howind")
+                    .mail("info@example.com")
+                    .showAndWait();
+            System.out.println("About Dialog shown");
+        }));
 
         // Confirmation
         container.getChildren().add(createButton("Confirmation", () ->
@@ -45,40 +47,50 @@ public class DialogSample extends Application {
                         .title("Elevator cleaning")
                         .header("Good for you!")
                         .text("You've decided to clean the elevator.")
-                        .showAndWait()));
+                        .showAndWait()
+                        .ifPresentOrElse(answer -> System.out.println("Answer: " + answer), () -> System.out.println("No answer"))
+        ));
 
         // Information
-        container.getChildren().add(createButton("Info", () ->
-                Dialogs.information(primaryStage)
-                        .title("Info")
-                        .header("Elevator cleaning")
-                        .text("To clean and service the electromagnetic coils in the bottom, " +
-                                "it is necessary to jettison the access plate in the floor.")
-                        .showAndWait()));
+        container.getChildren().add(createButton("Info", () -> {
+            Dialogs.information(primaryStage)
+                    .title("Info")
+                    .header("Elevator cleaning")
+                    .text("To clean and service the electromagnetic coils in the bottom, " +
+                            "it is necessary to jettison the access plate in the floor.")
+                    .showAndWait();
+            System.out.println("Info Dialog shown");
+        }));
 
         // Warning
-        container.getChildren().add(createButton("Warning", () ->
-                Dialogs.warning(primaryStage)
-                        .title("Warning")
-                        .header("Attention... danger")
-                        .text("Automatic charges will now blow the explosive bolts in the floor plate unit. " +
-                                "The plate will disengage from the floor in 5 seconds.")
-                        .showAndWait()));
+        container.getChildren().add(createButton("Warning", () -> {
+            Dialogs.warning(primaryStage)
+                    .title("Warning")
+                    .header("Attention... danger")
+                    .text("Automatic charges will now blow the explosive bolts in the floor plate unit. " +
+                            "The plate will disengage from the floor in 5 seconds.")
+                    .showAndWait();
+            System.out.println("Warning Dialog shown");
+        }));
 
         // Error
-        container.getChildren().add(createButton("Error", () ->
-                Dialogs.error(primaryStage)
-                        .title("Error")
-                        .header("Please leave the elevator immediately")
-                        .text("5-4-3-2-1...")
-                        .showAndWait()));
+        container.getChildren().add(createButton("Error", () -> {
+            Dialogs.error(primaryStage)
+                    .title("Error")
+                    .header("Please leave the elevator immediately")
+                    .text("5-4-3-2-1...")
+                    .showAndWait();
+            System.out.println("Error Dialog shown");
+        }));
 
         // Prompt
         container.getChildren().add(createButton("Prompt", () ->
                 Dialogs.prompt(primaryStage)
                         .title("Prompt")
                         .header("This is a prompt dialog.")
-                        .showAndWait()));
+                        .showAndWait()
+                        .ifPresentOrElse(answer -> System.out.println("Answer: " + answer), () -> System.out.println("No answer"))
+        ));
 
         // Input
         container.getChildren().add(createButton("Input", () ->
@@ -101,40 +113,42 @@ public class DialogSample extends Application {
                                 () -> null,
                                 String.class,
                                 List.of("1", "2", "3"))
-                        .showAndWait()));
+                        .showAndWait()
+                        .ifPresentOrElse(answer -> System.out.println("Answer: " + answer), () -> System.out.println("No answer"))
+        ));
 
         // Options
-        container.getChildren().add(createButton("Options", () -> {
-            var rc = Dialogs.options(primaryStage)
-                    .options(CsvIo.getOptions())
-                    .title("Options")
-                    .header("This is an options dialog.")
-                    .showAndWait();
-            rc.ifPresent(ops -> System.out.println("RESULT:\n" + ops));
-        }));
+        container.getChildren().add(createButton("Options", () ->
+                Dialogs.options(primaryStage)
+                        .options(CsvIo.getOptions())
+                        .title("Options")
+                        .header("This is an options dialog.")
+                        .showAndWait()
+                        .ifPresentOrElse(answer -> System.out.println("Answer: " + answer), () -> System.out.println("No answer"))
+        ));
 
         // Wizard
-        container.getChildren().add(createButton("Wizard", () -> {
-            var rc = Dialogs.wizard()
-                    .title("Database Connection Wizard")
-                    .page("start",
-                            Dialogs.informationPane()
-                                    .header("Create new database connection")
-                                    .text("""
-                                            This wizard helps you to define a new database connection.
-                                                                                        
-                                            You will need the following information:
-                                            - the vendor or manufacturer name of your database system
-                                            - the server name and port
-                                            """))
-                    .page("dbms",
-                            Dialogs.inputPane()
-                                    .header("Choose your Database from the list below.")
-                                    .radioList("rdbms", "Database", () -> null, String.class, List.of("H2", "PostgreSQL", "MySQL"))
-                    )
-                    .showAndWait();
-            System.out.format("Dialog result:%n%s%n", rc);
-        }));
+        container.getChildren().add(createButton("Wizard", () ->
+                Dialogs.wizard()
+                        .title("Database Connection Wizard")
+                        .page("start",
+                                Dialogs.informationPane()
+                                        .header("Create new database connection")
+                                        .text("""
+                                                This wizard helps you to define a new database connection.
+                                                                                            
+                                                You will need the following information:
+                                                - the vendor or manufacturer name of your database system
+                                                - the server name and port
+                                                """))
+                        .page("dbms",
+                                Dialogs.inputPane()
+                                        .header("Choose your Database from the list below.")
+                                        .radioList("rdbms", "Database", () -> null, String.class, List.of("H2", "PostgreSQL", "MySQL"))
+                        )
+                        .showAndWait()
+                        .ifPresentOrElse(answer -> System.out.println("Answer: " + answer), () -> System.out.println("No answer"))
+        ));
 
         StackPane root = new StackPane(container);
 
