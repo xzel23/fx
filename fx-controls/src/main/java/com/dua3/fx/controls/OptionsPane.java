@@ -21,6 +21,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayDeque;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -71,7 +72,9 @@ public class OptionsPane extends GridPane implements InputControl<Arguments> {
         for (var entry : items.entrySet()) {
             Option option = entry.getKey();
             Object value = entry.getValue().valueProperty().getValue();
-            entries.add(Arguments.createEntry(option, value));
+            if (value != null) {
+                entries.add(Arguments.createEntry(option, value));
+            }
         }
         return Arguments.of(entries.toArray(Arguments.Entry[]::new));
     }
@@ -109,31 +112,16 @@ public class OptionsPane extends GridPane implements InputControl<Arguments> {
 
             row++;
         }
-
-        // create binding
-        /* FIXME
-        Arguments values = new Arguments();
-        for (var entry: items.entrySet()) {
-            Option<?> option = entry.getKey();
-            Property<?> property = entry.getValue();
-            Value<?> value = (Value<?>) property.getValue();
-            values.put(option, value);
-        }
-        return values;
-        */
-
     }
 
     @SuppressWarnings("unchecked")
     private <T> InputControl<T> createControl(Arguments values, Option<T> option) {
         if (option instanceof ChoiceOption<T> co) {
-            return new ChoiceInputControl<>(co, () -> dflt.get().getOrThrow(co));
+            return new ChoiceInputControl<>(co, supplyDefault(co, values));
         } else if (option instanceof Flag f) {
-            Supplier<Boolean> dfltValue = () -> (dflt.get().isSet(f));
             CheckBox checkBox = new CheckBox(f.displayName());
-            return (InputControl<T>) new SimpleInputControl<>(checkBox, checkBox.selectedProperty(), dfltValue, x -> Optional.empty());
+            return (InputControl<T>) new SimpleInputControl<>(checkBox, checkBox.selectedProperty(), supplyDefault(f, values), nopValidator());
         } else if (option instanceof SimpleOption<T> so) {
-            Supplier<T> df = () -> dflt.get().get(so).or(so::getDefault).orElse(null);
             StringConverter<T> converter = new StringConverter<>() {
                 @Override
                 public String toString(T v) {
@@ -145,11 +133,31 @@ public class OptionsPane extends GridPane implements InputControl<Arguments> {
                     return option.map(s);
                 }
             };
-            Function<T, Optional<String>> validator = s -> Optional.empty();
-            return InputControl.stringInput(df, validator, converter);
+            return InputControl.stringInput(supplyDefault(so, values), nopValidator(), converter);
         }
 
         throw new UnsupportedOperationException("unsupported input type: " + option.getClass().getName());
+    }
+
+    private static <T> T getValue(Option<T> option, Arguments values) {
+        if (option instanceof Flag flag) {
+            return (T) (Object) values.isSet(flag);
+        }
+        if (option instanceof SimpleOption so) {
+            return (T) values.get(so).orElse(so.getDefault());
+        }
+        if (option instanceof ChoiceOption co) {
+            return (T) values.get(co).orElse(co.getDefault());
+        }
+        throw new IllegalArgumentException("Unknown option type: " + option);
+    }
+
+    private static <T> Function<T, Optional<String>> nopValidator() {
+        return s -> Optional.empty();
+    }
+
+    private static <T> Supplier<T> supplyDefault(Option<T> option, Arguments values) {
+        return () -> getValue(option, values);
     }
 
     private void addToGrid(@Nullable Node node, int c, int r) {

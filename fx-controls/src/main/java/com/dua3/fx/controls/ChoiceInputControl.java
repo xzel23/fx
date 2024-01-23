@@ -29,13 +29,13 @@ public class ChoiceInputControl<T> implements InputControl<T> {
         this.option = option;
         this.dfltValue = dfltValue;
         this.control = new ComboBox<>();
-        control.getItems().setAll(option.choices());
-        control.getSelectionModel().select(option.choice(dfltValue.get()));
-
         this.valueProperty = new SimpleObjectProperty<>();
 
         control.valueProperty().addListener((v, o, n) -> valueProperty.setValue(n == null ? null : n.value()));
         valueProperty.addListener((v, o, n) -> control.getSelectionModel().select(n == null ? null : option.choice(n)));
+
+        control.getItems().setAll(option.choices());
+        control.getSelectionModel().select(option.choice(dfltValue.get()));
     }
 
     @Override
