@@ -22,7 +22,6 @@ module com.dua3.fx.controls {
     requires org.apache.logging.log4j;
 
     requires javafx.controls;
-    requires javafx.fxml;
     requires javafx.graphics;
     requires com.dua3.utility;
     requires java.desktop;

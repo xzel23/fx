@@ -88,7 +88,6 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 
     /**
      * Request application close as if the close-window-button was clicked.
-     * Called from FXML.
      */
     public void closeApplicationWindow() {
         // handle dirty state
