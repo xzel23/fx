@@ -54,7 +54,7 @@ public class FileChooserBuilder {
      * @param parent the parent window
      * @return an Optional containing the selected file.
      */
-    public Optional<Path> showOpenDialog(Window parent) {
+    public Optional<Path> showOpenDialog(@Nullable Window parent) {
         FileChooser chooser = build();
         return Optional.ofNullable(chooser.showOpenDialog(parent)).map(File::toPath);
     }
@@ -104,7 +104,7 @@ public class FileChooserBuilder {
      * @param parent the parent window
      * @return an Optional containing the selected file.
      */
-    public Optional<Path> showSaveDialog(Window parent) {
+    public Optional<Path> showSaveDialog(@Nullable Window parent) {
         FileChooser chooser = build();
         return Optional.ofNullable(chooser.showSaveDialog(parent)).map(File::toPath);
     }

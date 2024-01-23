@@ -49,7 +49,7 @@ public class AboutDialogBuilder {
     private Node graphic;
     private Node expandableContent;
 
-    AboutDialogBuilder(Window parentWindow) {
+    AboutDialogBuilder(@Nullable Window parentWindow) {
         this.parentWindow = parentWindow;
     }
 

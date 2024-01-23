@@ -47,7 +47,7 @@ public class DirectoryChooserBuilder {
      * @param parent the parent window
      * @return an Optional containing the selected file.
      */
-    public Optional<Path> showDialog(Window parent) {
+    public Optional<Path> showDialog(@Nullable Window parent) {
         DirectoryChooser chooser = build();
         return Optional.ofNullable(chooser.showDialog(parent)).map(File::toPath);
     }

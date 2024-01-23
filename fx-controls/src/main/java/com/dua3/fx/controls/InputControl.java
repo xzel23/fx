@@ -181,7 +181,7 @@ public interface InputControl<R> {
             updateValidState(this.value.getValue());
         }
 
-        private void updateValidState(R r) {
+        private void updateValidState(@Nullable R r) {
             Optional<String> result = validate.apply(r);
             valid.setValue(result.isEmpty());
             error.setValue(result.orElse(""));

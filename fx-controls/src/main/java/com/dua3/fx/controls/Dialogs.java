@@ -14,6 +14,7 @@
 
 package com.dua3.fx.controls;
 
+import com.dua3.cabe.annotations.Nullable;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Window;
 
@@ -28,7 +29,7 @@ public final class Dialogs {
      * @param parentWindow the parent window
      * @return new {@link AlertBuilder} instance
      */
-    public static AlertBuilder warning(Window parentWindow) {
+    public static AlertBuilder warning(@Nullable Window parentWindow) {
         return new AlertBuilder(AlertType.WARNING, parentWindow);
     }
 
@@ -47,7 +48,7 @@ public final class Dialogs {
      * @param parentWindow the parent window
      * @return new {@link AlertBuilder} instance
      */
-    public static AlertBuilder error(Window parentWindow) {
+    public static AlertBuilder error(@Nullable Window parentWindow) {
         return new AlertBuilder(AlertType.ERROR, parentWindow);
     }
 
@@ -66,7 +67,7 @@ public final class Dialogs {
      * @param parentWindow the parent window
      * @return new {@link AlertBuilder} instance
      */
-    public static AlertBuilder information(Window parentWindow) {
+    public static AlertBuilder information(@Nullable Window parentWindow) {
         return new AlertBuilder(AlertType.INFORMATION, parentWindow);
     }
 
@@ -85,7 +86,7 @@ public final class Dialogs {
      * @param parentWindow the parent window
      * @return new {@link AlertBuilder} instance
      */
-    public static AlertBuilder confirmation(Window parentWindow) {
+    public static AlertBuilder confirmation(@Nullable Window parentWindow) {
         return new AlertBuilder(AlertType.CONFIRMATION, parentWindow);
     }
 
@@ -122,7 +123,7 @@ public final class Dialogs {
      * @param parentWindow the parent window
      * @return new {@link AboutDialogBuilder} instance
      */
-    public static AboutDialogBuilder about(Window parentWindow) {
+    public static AboutDialogBuilder about(@Nullable Window parentWindow) {
         return new AboutDialogBuilder(parentWindow);
     }
 
@@ -132,7 +133,7 @@ public final class Dialogs {
      * @param parentWindow the parent window
      * @return new {@link PromptBuilder} instance
      */
-    public static PromptBuilder prompt(Window parentWindow) {
+    public static PromptBuilder prompt(@Nullable Window parentWindow) {
         return new PromptBuilder(parentWindow);
     }
 
@@ -151,7 +152,7 @@ public final class Dialogs {
      * @param parentWindow the parent window
      * @return new {@link InputDialogBuilder} instance
      */
-    public static InputDialogBuilder input(Window parentWindow) {
+    public static InputDialogBuilder input(@Nullable Window parentWindow) {
         return new InputDialogBuilder(parentWindow);
     }
 
@@ -179,7 +180,7 @@ public final class Dialogs {
      * @param parentWindow the parent window
      * @return new {@link OptionsDialogBuilder} instance
      */
-    public static OptionsDialogBuilder options(Window parentWindow) {
+    public static OptionsDialogBuilder options(@Nullable Window parentWindow) {
         return new OptionsDialogBuilder(parentWindow);
     }
 

@@ -14,6 +14,7 @@
 
 package com.dua3.fx.controls;
 
+import com.dua3.cabe.annotations.Nullable;
 import com.dua3.utility.options.Arguments;
 import com.dua3.utility.options.Option;
 import javafx.stage.Window;
@@ -32,7 +33,7 @@ public class OptionsDialogBuilder extends AbstractDialogBuilder<OptionsDialog, O
     private Collection<Option<?>> options = new ArrayList<>();
     private Arguments currentValues = Arguments.empty();
 
-    OptionsDialogBuilder(Window parentWindow) {
+    OptionsDialogBuilder(@Nullable Window parentWindow) {
         super(parentWindow);
         setDialogSupplier(OptionsDialog::new);
     }

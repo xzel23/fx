@@ -193,7 +193,7 @@ public class WizardDialog extends Dialog<Map<String, Object>> {
             return next;
         }
 
-        void setNext(String next) {
+        void setNext(@Nullable String next) {
             this.next = next;
         }
 

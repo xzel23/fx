@@ -14,6 +14,7 @@
 
 package com.dua3.fx.controls;
 
+import com.dua3.cabe.annotations.Nullable;
 import javafx.scene.control.TextInputDialog;
 import javafx.stage.Window;
 
@@ -23,7 +24,7 @@ import javafx.stage.Window;
  * Provides a fluent interface to create Alerts.
  */
 public class PromptBuilder extends AbstractDialogBuilder<TextInputDialog, PromptBuilder, String> {
-    PromptBuilder(Window parentWindow) {
+    PromptBuilder(@Nullable Window parentWindow) {
         super(parentWindow);
         setDialogSupplier(TextInputDialog::new);
         validate(r -> !r.isBlank()); // valid <=> not blank

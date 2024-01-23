@@ -44,7 +44,7 @@ public class InputDialogBuilder
 
     private final InputPaneBuilder pb = new InputPaneBuilder();
 
-    InputDialogBuilder(Window parentWindow) {
+    InputDialogBuilder(@Nullable Window parentWindow) {
         super(parentWindow);
         setDialogSupplier(this::createDialog);
     }

@@ -14,6 +14,7 @@
 
 package com.dua3.fx.controls;
 
+import com.dua3.cabe.annotations.Nullable;
 import javafx.scene.control.Dialog;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -32,7 +33,7 @@ public abstract class AbstractDialogBuilder<D extends Dialog<R>, B extends Abstr
     private Window parentWindow = null;
     private String title = null;
 
-    protected AbstractDialogBuilder(Window parentWindow) {
+    protected AbstractDialogBuilder(@Nullable Window parentWindow) {
         super(Dialog::setHeaderText);
         this.parentWindow = parentWindow;
         this.titleSetter = Dialog::setTitle;
