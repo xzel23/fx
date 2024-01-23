@@ -50,6 +50,10 @@ public class WizardDialog extends Dialog<Map<String, Object>> {
 
     public WizardDialog() {
         setResultConverter(btn -> {
+            if (btn != ButtonType.FINISH) {
+                return null;
+            }
+
             // add current page to the stack, then build and return the result map
             pageStack.add(current);
 
