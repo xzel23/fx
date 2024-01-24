@@ -19,6 +19,7 @@ public class InputPane extends InputDialogPane<Map<String, Object>> {
 
     public InputPane(InputGrid inputGrid) {
         this.inputGrid = inputGrid;
+        this.valid.bind(inputGrid.validProperty());
         setContent(inputGrid);
     }
 

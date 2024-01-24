@@ -21,10 +21,9 @@ import java.util.function.Supplier;
 
 public abstract class InputDialogPane<R> extends DialogPane implements Supplier<R> {
 
-    protected final BooleanProperty valid = new SimpleBooleanProperty(true);
+    protected final BooleanProperty valid = new SimpleBooleanProperty(false);
 
     protected final List<Pair<ButtonType, Consumer<InputDialogPane<R>>>> buttons = new ArrayList<>();
-    private Predicate<R> validate = r -> true;
 
     public abstract void init();
 
@@ -35,14 +34,6 @@ public abstract class InputDialogPane<R> extends DialogPane implements Supplier<
      */
     public ReadOnlyBooleanProperty validProperty() {
         return valid;
-    }
-
-    protected void setValidate(Predicate<R> validate) {
-        this.validate = validate;
-    }
-
-    protected void updateValidState(R r) {
-        valid.setValue(validate.test(r));
     }
 
     public void initButtons() {

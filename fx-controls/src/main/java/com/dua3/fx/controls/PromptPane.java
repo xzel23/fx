@@ -17,7 +17,7 @@ public class PromptPane extends InputDialogPane<String> {
 
     public PromptPane() {
         text = new TextField();
-        text.textProperty().addListener((v, o, n) -> updateValidState(n));
+        valid.bind(text.textProperty().map(s -> s != null && !s.isEmpty()));
         setContent(new StackPane(text));
     }
 
@@ -29,6 +29,5 @@ public class PromptPane extends InputDialogPane<String> {
     @Override
     public void init() {
         text.requestFocus();
-        updateValidState(text.getText());
     }
 }

@@ -22,14 +22,12 @@ package com.dua3.fx.controls;
 public class PromptPaneBuilder extends AbstractPaneBuilder<PromptPane, PromptPaneBuilder, String> {
     PromptPaneBuilder() {
         setDialogSupplier(PromptPane::new);
-        validate(r -> !r.isBlank()); // valid <=> not blank
     }
 
     @Override
     public PromptPane build() {
         PromptPane pane = super.build();
         pane.setGraphic(null);
-        pane.setValidate(getValidate());
         return pane;
     }
 }

@@ -2,12 +2,12 @@ package com.dua3.fx.controls;
 
 import com.dua3.fx.util.FxUtil;
 import javafx.beans.binding.Bindings;
-import javafx.beans.binding.BooleanBinding;
 import javafx.beans.binding.BooleanExpression;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableBooleanValue;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -21,9 +21,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.Callable;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 
 public class InputGrid extends GridPane {
@@ -37,7 +36,7 @@ public class InputGrid extends GridPane {
     private static final String MARKER_ERROR = "⚠";
     private static final String MARKER_OK = "";
 
-    protected final BooleanProperty valid = new SimpleBooleanProperty(true);
+    protected final BooleanProperty valid = new SimpleBooleanProperty(false);
     private Collection<Meta<?>> data = null;
     private int columns = 1;
 
@@ -69,7 +68,7 @@ public class InputGrid extends GridPane {
     public void init() {
         getChildren().clear();
 
-        List<BooleanExpression> validators = new ArrayList<>();
+        List<InputControl> controls = new ArrayList<>();
 
         // create grid with input controls
         Insets insets = new Insets(2);
@@ -89,7 +88,7 @@ public class InputGrid extends GridPane {
                 span = 2;
             }
 
-            validators.add(entry.control.validProperty());
+            controls.add(entry.control);
 
             addToGrid(entry.control.node(), gridX, gridY, span, insets);
             gridX += span;
@@ -106,18 +105,16 @@ public class InputGrid extends GridPane {
         }
 
         // valid state is true if all inputs are valid
-        ObservableBooleanValue[] inputs = validators.toArray(ObservableBooleanValue[]::new);
-        Callable<Boolean> check = () -> {
-            for (var value : inputs) {
-                if (!value.get()) {
-                    return Boolean.FALSE;
-                }
-            }
-            return Boolean.TRUE;
-        };
-        BooleanBinding binding = Bindings.createBooleanBinding(check, inputs);
-        valid.bind(binding);
+        valid.bind(Bindings.createBooleanBinding(
+                () -> controls.stream().allMatch(control -> {
+                    boolean v = control.isValid();
+                    LOG.info("validate: {} -> {}", control, v);
+                    return v;
+                }),
+                controls.stream().flatMap(control -> Stream.of(control.valueProperty(), control.validProperty())).toArray(ObservableValue[]::new)
+        ));
 
+        // todo: request focus once to do what?
         for (var entry : data) {
             entry.control.node().requestFocus();
             break;

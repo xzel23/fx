@@ -180,7 +180,7 @@ public interface InputControl<R> {
             this.dflt = dflt;
             this.validate = validate;
 
-            updateValidState(this.value.getValue());
+            this.value.addListener((v, o, n) -> updateValidState(n));
         }
 
         private void updateValidState(@Nullable R r) {

@@ -33,13 +33,13 @@ public class AlertPaneBuilder
     private static InputDialogPane<Void> createPane(AlertType type) {
         return new InputDialogPane<>() {
             @Override
-            public Void get() {
-                return null;
+            public void init() {
+                valid.set(true);
             }
 
             @Override
-            public void init() {
-                // nop
+            public Void get() {
+                return null;
             }
         };
     }
@@ -53,7 +53,6 @@ public class AlertPaneBuilder
     public InputDialogPane<Void> build() {
         InputDialogPane<Void> inputPane = super.build();
         applyIfNotNull(DialogPane::setContentText, inputPane, text);
-        inputPane.setValidate(getValidate());
         return inputPane;
     }
 }

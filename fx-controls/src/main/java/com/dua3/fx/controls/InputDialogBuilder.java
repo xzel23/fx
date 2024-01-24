@@ -59,6 +59,7 @@ public class InputDialogBuilder
         okButton.disableProperty().bind(Bindings.not(dialogPane.validProperty()));
 
         dlg.setDialogPane(dialogPane);
+
         return dlg;
     }
 

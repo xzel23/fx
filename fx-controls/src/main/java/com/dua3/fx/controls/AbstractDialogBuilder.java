@@ -21,6 +21,7 @@ import javafx.stage.Window;
 
 import java.util.Optional;
 import java.util.function.BiConsumer;
+import java.util.function.Predicate;
 
 /**
  * Abstract base class for Dialog builders.

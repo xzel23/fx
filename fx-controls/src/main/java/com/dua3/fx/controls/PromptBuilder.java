@@ -15,8 +15,12 @@
 package com.dua3.fx.controls;
 
 import com.dua3.cabe.annotations.Nullable;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextInputDialog;
 import javafx.stage.Window;
+
+import java.util.Optional;
+import java.util.function.Predicate;
 
 /**
  * Builder for Alert Dialogs.
@@ -24,15 +28,21 @@ import javafx.stage.Window;
  * Provides a fluent interface to create Alerts.
  */
 public class PromptBuilder extends AbstractDialogBuilder<TextInputDialog, PromptBuilder, String> {
+    private String defaultValue = "";
+    private Predicate<String> validate = s -> s != null && !s.isEmpty();
+
     PromptBuilder(@Nullable Window parentWindow) {
         super(parentWindow);
-        setDialogSupplier(TextInputDialog::new);
-        validate(r -> !r.isBlank()); // valid <=> not blank
+        setDialogSupplier(this::createDialog);
     }
 
     public PromptBuilder defaultValue(String fmt, Object... args) {
-        String defaultValue = args.length == 0 ? fmt : String.format(fmt, args);
-        setDialogSupplier(() -> new TextInputDialog(defaultValue));
+        this.defaultValue = args.length == 0 ? fmt : String.format(fmt, args);
+        return this;
+    }
+
+    public PromptBuilder validate(Predicate<String> validate) {
+        this.validate = validate;
         return this;
     }
 
@@ -40,6 +50,18 @@ public class PromptBuilder extends AbstractDialogBuilder<TextInputDialog, Prompt
     public TextInputDialog build() {
         TextInputDialog dlg = super.build();
         dlg.setGraphic(null);
+        return dlg;
+    }
+
+    private TextInputDialog createDialog() {
+        TextInputDialog dlg = new TextInputDialog(defaultValue);
+        Optional.ofNullable(dlg.getDialogPane().lookupButton(ButtonType.OK))
+                .ifPresent(btn -> {
+                    btn.setDisable(!validate.test(dlg.getEditor().getText()));
+                    dlg.getEditor().textProperty().addListener((observable, oldValue, newValue) ->
+                            btn.setDisable(!validate.test(newValue))
+                    );
+                });
         return dlg;
     }
 }

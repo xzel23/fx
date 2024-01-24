@@ -37,7 +37,6 @@ public abstract class AbstractDialogPaneBuilder<D, B extends AbstractDialogPaneB
     private Supplier<D> dialogSupplier;
     private String header = null;
     private ResultHandler<R> resultHandler = (b, r) -> true;
-    private Predicate<R> validate = r -> true;
 
     AbstractDialogPaneBuilder(
             BiConsumer<D, String> headerSetter
@@ -94,16 +93,6 @@ public abstract class AbstractDialogPaneBuilder<D, B extends AbstractDialogPaneB
 
     public ResultHandler<R> getResultHandler() {
         return resultHandler;
-    }
-
-    @SuppressWarnings("unchecked")
-    public B validate(Predicate<R> validate) {
-        this.validate = validate;
-        return (B) this;
-    }
-
-    protected Predicate<R> getValidate() {
-        return validate;
     }
 
     /**
