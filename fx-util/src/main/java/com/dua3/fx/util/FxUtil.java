@@ -174,28 +174,28 @@ public final class FxUtil {
     public static javafx.scene.shape.Path convert(Path2f path) {
         javafx.scene.shape.Path jfxPath = new javafx.scene.shape.Path();
         path.segments().forEach(segment -> {
-            if (segment instanceof MoveTo2f s) {
-                jfxPath.getElements().add(new MoveTo(s.end().x(), s.end().y()));
-            } else if (segment instanceof Line2f s) {
-                jfxPath.getElements().add(new LineTo(s.end().x(), s.end().y()));
-            } else if (segment instanceof Curve2f s) {
-                int n = s.numberOfControls();
-                jfxPath.getElements().add(switch (n) {
-                    case 3 -> new QuadCurveTo(
-                            s.control(1).x(), s.control(1).y(),
-                            s.control(2).x(), s.control(2).y()
-                    );
-                    case 4 -> new CubicCurveTo(
-                            s.control(1).x(), s.control(1).y(),
-                            s.control(2).x(), s.control(2).y(),
-                            s.control(3).x(), s.control(3).y()
-                    );
-                    default -> throw new IllegalArgumentException("Unsupported number of control points: " + n);
-                });
-            } else if (segment instanceof Arc2f s) {
-                jfxPath.getElements().add(new ArcTo(s.rx(), s.ry(), s.angle(), s.control(1).x(), s.control(1).y(), false, false));
-            } else {
-                throw new IllegalArgumentException("Unsupported segment type: " + segment.getClass().getName());
+            switch (segment) {
+                case MoveTo2f s -> jfxPath.getElements().add(new MoveTo(s.end().x(), s.end().y()));
+                case Line2f s -> jfxPath.getElements().add(new LineTo(s.end().x(), s.end().y()));
+                case Curve2f s -> {
+                    int n = s.numberOfControls();
+                    jfxPath.getElements().add(switch (n) {
+                        case 3 -> new QuadCurveTo(
+                                s.control(1).x(), s.control(1).y(),
+                                s.control(2).x(), s.control(2).y()
+                        );
+                        case 4 -> new CubicCurveTo(
+                                s.control(1).x(), s.control(1).y(),
+                                s.control(2).x(), s.control(2).y(),
+                                s.control(3).x(), s.control(3).y()
+                        );
+                        default -> throw new IllegalArgumentException("Unsupported number of control points: " + n);
+                    });
+                }
+                case Arc2f s ->
+                        jfxPath.getElements().add(new ArcTo(s.rx(), s.ry(), s.angle(), s.control(1).x(), s.control(1).y(), false, false));
+                case null, default ->
+                        throw new IllegalArgumentException("Unsupported segment type: " + segment.getClass().getName());
             }
         });
         return jfxPath;

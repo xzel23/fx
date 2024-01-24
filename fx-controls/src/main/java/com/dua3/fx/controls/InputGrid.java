@@ -68,7 +68,7 @@ public class InputGrid extends GridPane {
     public void init() {
         getChildren().clear();
 
-        List<InputControl> controls = new ArrayList<>();
+        List<InputControl<?>> controls = new ArrayList<>();
 
         // create grid with input controls
         Insets insets = new Insets(2);
