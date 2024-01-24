@@ -10,6 +10,11 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
+/**
+ * The PlatformHelper class provides utility methods for performing tasks on the JavaFX application thread.
+ * It provides methods for running tasks synchronously or asynchronously on the JavaFX application thread,
+ * as well as checking if the current thread is the FX Application Thread.
+ */
 public final class PlatformHelper {
 
     /**
@@ -82,6 +87,10 @@ public final class PlatformHelper {
         Platform.runLater(action);
     }
 
+    /**
+     * Checks if the current thread is the FX Application Thread.
+     * Throws an exception if it is not.
+     */
     public static void checkApplicationThread() {
         LangUtil.check(Platform.isFxApplicationThread(), "not on FX Application Thread");
     }

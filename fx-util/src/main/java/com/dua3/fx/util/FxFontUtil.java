@@ -29,6 +29,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * Utility class for working with fonts in JavaFX.
+ */
 public class FxFontUtil implements FontUtil<Font> {
 
     public FxFontUtil() {

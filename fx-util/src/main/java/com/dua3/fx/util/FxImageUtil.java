@@ -9,6 +9,9 @@ import javafx.scene.image.WritableImage;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * Utility class for manipulating JavaFX images.
+ */
 public final class FxImageUtil implements ImageUtil<Image> {
 
     private static final FxImageUtil INSTANCE = new FxImageUtil();

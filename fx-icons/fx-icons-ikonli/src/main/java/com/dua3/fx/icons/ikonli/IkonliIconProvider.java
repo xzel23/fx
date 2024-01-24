@@ -13,6 +13,10 @@ import java.util.Objects;
 import java.util.ServiceLoader;
 
 
+/**
+ * The {@code IkonliIconProvider} class is an implementation of the {@link IconProvider} interface
+ * that provides icons using the Ikonli library.
+ */
 public class IkonliIconProvider implements IconProvider {
 
     private static final Logger LOG = LogManager.getLogger(IkonliIconProvider.class);

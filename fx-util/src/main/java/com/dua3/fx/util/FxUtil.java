@@ -63,6 +63,12 @@ public final class FxUtil {
 
     private FxUtil() {}
 
+    /**
+     * Convert a given URI to text.
+     *
+     * @param uri the URI to convert
+     * @return the text representation of the URI
+     */
     public static String asText(@Nullable URI uri) {
         return uri == null ? "" : URLDecoder.decode(uri.toString(), StandardCharsets.UTF_8);
     }
@@ -195,14 +201,34 @@ public final class FxUtil {
         return jfxPath;
     }
 
+    /**
+     * Convert a {@link Rectangle2f} object to a JavaFX Rectangle object.
+     *
+     * @param r the Rectangle2f object to convert
+     * @return the converted JavaFX Rectangle object
+     */
     public static javafx.scene.shape.Rectangle convert(Rectangle2f r) {
         return new javafx.scene.shape.Rectangle(r.x(), r.y(), r.width(), r.height());
     }
 
+    /**
+     * Returns the bounds of the given text string when rendered with the specified font.
+     *
+     * @param s the text string
+     * @param f the font
+     * @return the bounds of the text string
+     */
     public static Bounds getTextBounds(CharSequence s, com.dua3.utility.text.Font f) {
         return boundsInLocal(s, f);
     }
 
+    /**
+     * Calculates the bounds of the given text string when rendered with the specified font.
+     *
+     * @param s the text string
+     * @param f the font
+     * @return the bounds of the text string
+     */
     private static Bounds boundsInLocal(CharSequence s, com.dua3.utility.text.Font f) {
         Text text = new Text(s.toString());
         text.setFont(convert(f));
@@ -228,14 +254,35 @@ public final class FxUtil {
         );
     }
 
+    /**
+     * Returns the width of the given text string when rendered with the specified font.
+     *
+     * @param s the text string
+     * @param f the font
+     * @return the width of the text string
+     */
     public static double getTextWidth(CharSequence s, com.dua3.utility.text.Font f) {
         return boundsInLocal(s, f).getWidth();
     }
 
+    /**
+     * Returns the height of the given text string when rendered with the specified font.
+     *
+     * @param s the text string
+     * @param f the font
+     * @return the height of the text string
+     */
     public static double getTextHeight(CharSequence s, com.dua3.utility.text.Font f) {
         return boundsInLocal(s, f).getHeight();
     }
 
+    /**
+     * Calculates the dimensions required for a given {@link Dimension2D} object to fit within the specified {@link Bounds}.
+     *
+     * @param a the original dimension
+     * @param b the bounds to fit into
+     * @return a new Dimension2D object with the adjusted dimensions
+     */
     public static Dimension2D growToFit(Dimension2D a, Bounds b) {
         return new Dimension2D(Math.max(a.getWidth(), b.getWidth()), Math.max(a.getHeight(), b.getHeight()));
     }

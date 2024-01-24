@@ -5,6 +5,9 @@ import javafx.scene.image.PixelFormat;
 
 import java.util.Objects;
 
+/**
+ * Represents an image in JavaFX format.
+ */
 public record FxImage(javafx.scene.image.Image fxImage) implements Image {
 
     @Override

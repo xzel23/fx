@@ -7,6 +7,9 @@ import com.dua3.utility.text.FontDef;
 
 import java.util.Objects;
 
+/**
+ * This class represents an embedded font in JavaFX.
+ */
 public class FxFontEmbedded extends Font {
 
     private final javafx.scene.text.Font fxFont;
