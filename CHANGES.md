@@ -1,9 +1,20 @@
 Changelog
 =========
 
+### version 0.34.0
+
+- remove dependency on FXML from fx-controls
+- fix standard dialogs not returning values
+- fix validation issues
+- remove obsolete null checks
+- add javadoc
+- add logging to samples
+- code cleanup
+- update utility
+
 ### version 0.33.0
 
-- move dependency on FXML from FxApplication to new FxApplicationFxml class to facilitate creating non-FXML apps
+- move dependency on FXML from fx-application to new fx-application-fxml class to facilitate creating non-FXML apps
 
 ### version 0.32.0
 
