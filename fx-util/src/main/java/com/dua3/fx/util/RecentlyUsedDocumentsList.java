@@ -39,7 +39,7 @@ public class RecentlyUsedDocumentsList {
      */
     public RecentlyUsedDocumentsList(Preferences prefs, int capacity) {
         this.capacity = capacity;
-        this.prefs = Objects.requireNonNull(prefs);
+        this.prefs = prefs;
         load();
     }
 
@@ -119,7 +119,7 @@ public class RecentlyUsedDocumentsList {
      * @param listener the update listener
      */
     public void addUpdateListener(UpdateListener listener) {
-        listeners.add(Objects.requireNonNull(listener));
+        listeners.add(listener);
     }
 
     /**

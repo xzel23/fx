@@ -117,7 +117,7 @@ public final class WebViews {
         private final Logger logger;
 
         public JSLogger(Logger logger) {
-            this.logger = Objects.requireNonNull(logger);
+            this.logger = logger;
         }
 
         public void error(JSObject args) {
@@ -170,9 +170,9 @@ public final class WebViews {
         private final Predicate<MouseEvent> filterMouse;
 
         WebEventDispatcher(EventDispatcher originalDispatcher, Predicate<KeyEvent> filterKey, Predicate<MouseEvent> filterMouse) {
-            this.originalDispatcher = Objects.requireNonNull(originalDispatcher);
-            this.filterKey = Objects.requireNonNull(filterKey);
-            this.filterMouse = Objects.requireNonNull(filterMouse);
+            this.originalDispatcher = originalDispatcher;
+            this.filterKey = filterKey;
+            this.filterMouse = filterMouse;
         }
 
         @Override

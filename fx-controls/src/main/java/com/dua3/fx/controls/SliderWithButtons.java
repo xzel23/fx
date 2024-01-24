@@ -40,7 +40,7 @@ public class SliderWithButtons extends Region {
 
     SliderWithButtons(Mode mode, BiFunction<Double, Double, String> formatter) {
         this.mode = mode;
-        this.formatter = Objects.requireNonNull(formatter);
+        this.formatter = formatter;
 
         this.slider = new Slider();
         this.btnDecrement = new Button("-");

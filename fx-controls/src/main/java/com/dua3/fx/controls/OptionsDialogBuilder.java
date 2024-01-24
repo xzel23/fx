@@ -54,7 +54,7 @@ public class OptionsDialogBuilder extends AbstractDialogBuilder<OptionsDialog, O
      * @return this builder instance
      */
     public OptionsDialogBuilder options(Collection<Option<?>> options) {
-        this.options = Objects.requireNonNull(options);
+        this.options = options;
         return this;
     }
 
@@ -65,7 +65,7 @@ public class OptionsDialogBuilder extends AbstractDialogBuilder<OptionsDialog, O
      * @return this builder instance
      */
     public OptionsDialogBuilder currentValues(Arguments currentValues) {
-        this.currentValues = Objects.requireNonNull(currentValues);
+        this.currentValues = currentValues;
         return this;
     }
 }

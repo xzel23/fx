@@ -17,7 +17,7 @@ class SimpleInputControl<C extends Control, R> implements InputControl<R> {
     private final Supplier<R> dflt;
 
     protected SimpleInputControl(C control, Property<R> value, Supplier<R> dflt, Function<R, Optional<String>> validate) {
-        this.control = Objects.requireNonNull(control);
+        this.control = control;
         this.state = new State<>(value, dflt, validate);
         this.dflt = dflt;
 

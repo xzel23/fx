@@ -47,7 +47,7 @@ public abstract class AbstractDialogPaneBuilder<D, B extends AbstractDialogPaneB
     }
 
     protected final void setDialogSupplier(Supplier<D> dialogSupplier) {
-        this.dialogSupplier = Objects.requireNonNull(dialogSupplier);
+        this.dialogSupplier = dialogSupplier;
     }
 
     /**
@@ -88,7 +88,7 @@ public abstract class AbstractDialogPaneBuilder<D, B extends AbstractDialogPaneB
 
     @SuppressWarnings("unchecked")
     public B resultHandler(ResultHandler<R> resultHandler) {
-        this.resultHandler = Objects.requireNonNull(resultHandler);
+        this.resultHandler = resultHandler;
         return (B) this;
     }
 
@@ -98,7 +98,7 @@ public abstract class AbstractDialogPaneBuilder<D, B extends AbstractDialogPaneB
 
     @SuppressWarnings("unchecked")
     public B validate(Predicate<R> validate) {
-        this.validate = Objects.requireNonNull(validate);
+        this.validate = validate;
         return (B) this;
     }
 

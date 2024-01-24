@@ -7,10 +7,6 @@ import java.util.Objects;
 
 public record FxImage(javafx.scene.image.Image fxImage) implements Image {
 
-    public FxImage {
-        Objects.requireNonNull(fxImage);
-    }
-
     @Override
     public int width() {
         return (int) Math.round(fxImage.getWidth());

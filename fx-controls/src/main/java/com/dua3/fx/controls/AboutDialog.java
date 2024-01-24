@@ -153,6 +153,6 @@ public class AboutDialog extends Dialog<Void> {
      * @param value the mail URI to set
      */
     public void setEmailAddress(String value) {
-        mailAddress = Objects.requireNonNull(value);
+        mailAddress = value;
     }
 }

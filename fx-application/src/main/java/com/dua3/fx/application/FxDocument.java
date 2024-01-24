@@ -23,7 +23,7 @@ public abstract class FxDocument {
     protected final ObjectProperty<URI> locationProperty = new SimpleObjectProperty<>(VOID_URI);
 
     protected FxDocument(URI location) {
-        this.locationProperty.set(Objects.requireNonNull(location));
+        this.locationProperty.set(location);
     }
 
     public String getName() {

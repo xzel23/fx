@@ -177,8 +177,8 @@ public interface InputControl<R> {
         public State(Property<R> value, Supplier<R> dflt, Function<R, Optional<String>> validate) {
             this.value = value;
             this.value.addListener((v, o, n) -> updateValidState(n));
-            this.dflt = Objects.requireNonNull(dflt);
-            this.validate = Objects.requireNonNull(validate);
+            this.dflt = dflt;
+            this.validate = validate;
 
             updateValidState(this.value.getValue());
         }
@@ -190,7 +190,7 @@ public interface InputControl<R> {
         }
 
         public void setValidate(Function<R, Optional<String>> validate) {
-            this.validate = Objects.requireNonNull(validate);
+            this.validate = validate;
             updateValidState(valueProperty().getValue());
         }
 
@@ -207,7 +207,7 @@ public interface InputControl<R> {
         }
 
         public void setDefault(Supplier<R> dflt) {
-            this.dflt = Objects.requireNonNull(dflt);
+            this.dflt = dflt;
         }
 
         public void reset() {

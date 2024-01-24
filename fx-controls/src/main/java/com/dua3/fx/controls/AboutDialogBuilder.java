@@ -54,22 +54,22 @@ public class AboutDialogBuilder {
     }
 
     public AboutDialogBuilder title(String value) {
-        this.title = Objects.requireNonNull(value);
+        this.title = value;
         return this;
     }
 
     public AboutDialogBuilder name(String value) {
-        this.name = Objects.requireNonNull(value);
+        this.name = value;
         return this;
     }
 
     public AboutDialogBuilder version(String value) {
-        this.version = Objects.requireNonNull(value);
+        this.version = value;
         return this;
     }
 
     public AboutDialogBuilder copyright(String value) {
-        this.copyright = Objects.requireNonNull(value);
+        this.copyright = value;
         return this;
     }
 

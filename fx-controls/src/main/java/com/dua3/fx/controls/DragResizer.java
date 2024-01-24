@@ -32,7 +32,7 @@ final class DragResizer {
     private boolean draggingLeft = false;
 
     private DragResizer(Region region, int resizeMargin, Border... borders) {
-        this.region = Objects.requireNonNull(region);
+        this.region = region;
         this.resizeMargin = resizeMargin;
         this.borders = EnumSet.noneOf(Border.class);
         this.borders.addAll(List.of(borders));

@@ -44,8 +44,6 @@ public final class PlatformHelper {
      * @throws NullPointerException if {@code action} is {@code null}
      */
     public static <T> T runAndWait(Supplier<T> action) {
-        Objects.requireNonNull(action);
-
         // run synchronously on JavaFX thread
         if (Platform.isFxApplicationThread()) {
             return action.get();
@@ -81,8 +79,6 @@ public final class PlatformHelper {
      * @throws NullPointerException if {@code action} is {@code null}
      */
     public static void runLater(Runnable action) {
-        Objects.requireNonNull(action);
-
         Platform.runLater(action);
     }
 

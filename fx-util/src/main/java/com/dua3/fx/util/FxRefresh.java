@@ -58,8 +58,8 @@ public final class FxRefresh {
      * @param task the task to call when refreshing
      */
     private FxRefresh(String name, Runnable task) {
-        this.name = Objects.requireNonNull(name);
-        this.task = Objects.requireNonNull(task);
+        this.name = name;
+        this.task = task;
         this.updateThread = new Thread(this::refreshLoop);
         this.updateThread.start();
     }

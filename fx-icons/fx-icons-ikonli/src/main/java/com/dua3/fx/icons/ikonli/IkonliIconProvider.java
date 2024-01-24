@@ -43,7 +43,7 @@ public class IkonliIconProvider implements IconProvider {
 
         IkonliIcon(Ikon ikon, String name) {
             super(ikon);
-            this.name = Objects.requireNonNull(name);
+            this.name = name;
         }
 
         @Override

@@ -126,7 +126,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      * @param resourceBundle the resource bundle for retrieving resources
      */
     protected FxApplication(ResourceBundle resourceBundle) {
-        this.resources = Objects.requireNonNull(resourceBundle);
+        this.resources = resourceBundle;
     }
 
     /**
@@ -200,7 +200,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
 
             // create the parent
             Parent root = createParentAndInitController();
-            Objects.requireNonNull(controller, "controller was not initialized in createParentAndinitController()");
+            Objects.requireNonNull(controller, "controller was not initialized in createParentAndInitController()");
             controller.setApp((A) this);
 
             // create scene

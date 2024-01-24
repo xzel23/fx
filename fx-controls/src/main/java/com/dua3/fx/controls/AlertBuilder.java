@@ -102,7 +102,7 @@ public class AlertBuilder
      * @return {@code this}
      */
     public AlertBuilder defaultButton(ButtonType button) {
-        this.defaultButton = Objects.requireNonNull(button);
+        this.defaultButton = button;
         return this;
     }
 

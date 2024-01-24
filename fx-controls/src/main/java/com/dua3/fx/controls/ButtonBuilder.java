@@ -25,7 +25,7 @@ public class ButtonBuilder<B extends ButtonBase> {
      * @param factory the factory method for Button instances
      */
     ButtonBuilder(Supplier<B> factory) {
-        this.factory = Objects.requireNonNull(factory);
+        this.factory = factory;
     }
 
     /**

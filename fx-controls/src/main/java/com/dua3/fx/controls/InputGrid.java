@@ -62,7 +62,7 @@ public class InputGrid extends GridPane {
     }
 
     void setContent(Collection<Meta<?>> data, int columns) {
-        this.data = Objects.requireNonNull(data);
+        this.data = data;
         this.columns = columns;
     }
 

@@ -24,7 +24,7 @@ import javafx.scene.control.DialogPane;
  */
 public class AlertPaneBuilder
         extends AbstractPaneBuilder<InputDialogPane<Void>, AlertPaneBuilder, Void> {
-    private String text = null;
+    private String text;
 
     AlertPaneBuilder(AlertType type) {
         setDialogSupplier(() -> createPane(type));

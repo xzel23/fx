@@ -68,7 +68,6 @@ public class InputGridBuilder
 
     @Override
     public <T> InputGridBuilder add(String id, String label, Class<T> type, Supplier<T> dflt, InputControl<T> control) {
-        Objects.requireNonNull(label);
         return doAdd(id, label, type, dflt, control);
     }
 
@@ -81,7 +80,7 @@ public class InputGridBuilder
         private final ReadOnlyStringProperty error = new SimpleStringProperty("");
 
         ControlWrapper(Node node) {
-            this.node = Objects.requireNonNull(node);
+            this.node = node;
         }
 
         @Override
@@ -116,7 +115,6 @@ public class InputGridBuilder
     }
 
     private <T> InputGridBuilder doAdd(String id, @Nullable String label, Class<T> type, Supplier<T> dflt, InputControl<T> control) {
-        Objects.requireNonNull(id);
         Meta<T> meta = new Meta<>(id, label, type, dflt, control);
         Meta<?> prev = data.put(id, meta);
         LangUtil.check(prev == null, "Input with id '" + id + "' already defined");

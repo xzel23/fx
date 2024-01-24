@@ -38,7 +38,7 @@ public abstract class InputDialogPane<R> extends DialogPane implements Supplier<
     }
 
     protected void setValidate(Predicate<R> validate) {
-        this.validate = Objects.requireNonNull(validate);
+        this.validate = validate;
     }
 
     protected void updateValidState(R r) {

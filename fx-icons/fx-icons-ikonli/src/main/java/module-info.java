@@ -4,7 +4,6 @@ module com.dua3.fx.icons.ikonli {
 
     requires org.apache.logging.log4j;
 
-
     requires org.kordamp.ikonli.core;
     requires org.kordamp.ikonli.javafx;
 

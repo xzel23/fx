@@ -38,11 +38,11 @@ public abstract class FxService<T> extends Service<T> {
     }
 
     public void addTaskTracker(FxTaskTracker t) {
-        taskTrackers.add(Objects.requireNonNull(t));
+        taskTrackers.add(t);
     }
 
     public void removeTaskTracker(FxTaskTracker t) {
-        taskTrackers.remove(Objects.requireNonNull(t));
+        taskTrackers.remove(t);
     }
 
 }
