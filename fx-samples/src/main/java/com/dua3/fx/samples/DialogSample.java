@@ -105,6 +105,7 @@ public class DialogSample extends Application {
                         .comboBox("list", "choose one", () -> "Maybe", String.class, List.of("Yes", "No", "Maybe"))
                         .checkBox("bool", "Yes or No:", () -> false, "yes")
                         .chooseFile("file", "File", () -> null, FileDialogMode.OPEN, true, List.of(new FileChooser.ExtensionFilter("all files", "*")))
+                        .chooseFile("directory", "Directory", () -> null, FileDialogMode.DIRECTORY, true, List.of(new FileChooser.ExtensionFilter("all files", "*")))
                         .comboBoxEx("listEx",
                                 "edit items and choose one",
                                 s -> Dialogs.prompt(primaryStage).title("Edit item").defaultValue("%s", s).build().showAndWait().orElse(null),

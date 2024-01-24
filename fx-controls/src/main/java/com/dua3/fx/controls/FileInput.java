@@ -133,7 +133,7 @@ public class FileInput extends CustomControl<HBox> implements InputControl<Path>
         error.bind(errorText);
 
         // valid property
-        valid.bind(Bindings.createBooleanBinding(() -> validate.apply(getPath()).isPresent(), value));
+        valid.bind(Bindings.createBooleanBinding(() -> validate.apply(getPath()).isEmpty(), value));
 
         // enable drag&drop
         Function<List<Path>, List<TransferMode>> acceptPath = list ->
@@ -151,7 +151,7 @@ public class FileInput extends CustomControl<HBox> implements InputControl<Path>
     public static Function<Path, Optional<String>> defaultValidate(FileDialogMode mode, boolean existingOnly) {
         return p -> {
             if (p == null) {
-                return Optional.empty();
+                return Optional.of("Nothing selected");
             }
 
             boolean exists = Files.exists(p);
@@ -160,7 +160,7 @@ public class FileInput extends CustomControl<HBox> implements InputControl<Path>
             switch (mode) {
                 case DIRECTORY -> {
                     // is a directory or existingOnly is not set and doesn't exist
-                    if (!isDirectory) {
+                    if (exists && !isDirectory) {
                         return Optional.of("Not a directory: " + p);
                     }
                     if (existingOnly && !exists) {
