@@ -12,6 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/**
+ * Module for JavaFX WebView integration.
+ * <p>
+ * This module exports the package {@code com.dua3.fx.web} and opens it for reflection.
+ * It requires the modules {@code com.dua3.fx.controls}, {@code javafx.web}, {@code jdk.jsobject},
+ * {@code org.apache.logging.log4j}, and {@code com.dua3.cabe.annotations}.
+ */
 module com.dua3.fx.web {
     exports com.dua3.fx.web;
     opens com.dua3.fx.web;
@@ -20,5 +27,5 @@ module com.dua3.fx.web {
     requires javafx.web;
     requires jdk.jsobject;
     requires org.apache.logging.log4j;
-    requires static com.dua3.cabe.annotations;
+    requires com.dua3.cabe.annotations;
 }

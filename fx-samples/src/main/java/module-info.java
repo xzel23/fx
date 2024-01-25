@@ -12,6 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/**
+ * Module-info.java file for the com.dua3.fx.samples module.
+ * <p>
+ * This module provides sample code and examples for the Dua3 FX library.
+ */
 module com.dua3.fx.samples {
     exports com.dua3.fx.samples;
     opens com.dua3.fx.samples;
@@ -22,4 +27,5 @@ module com.dua3.fx.samples {
     requires com.dua3.fx.icons;
     requires com.dua3.fx.controls;
     requires com.dua3.fx.util;
+    requires com.dua3.cabe.annotations;
 }
