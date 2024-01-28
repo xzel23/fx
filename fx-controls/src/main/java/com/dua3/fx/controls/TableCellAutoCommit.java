@@ -1,6 +1,7 @@
 package com.dua3.fx.controls;
 
 import com.dua3.cabe.annotations.Nullable;
+import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.TableCell;
@@ -138,6 +139,7 @@ public class TableCellAutoCommit<S, T> extends TableCell<S, T> {
                         table, new TablePosition<>(table, getIndex(), column), TableColumn.editCommitEvent(), newValue
                 );
                 Event.fireEvent(column, event);
+                Platform.runLater(table::refresh);
             }
         }
         super.commitEdit(newValue);
