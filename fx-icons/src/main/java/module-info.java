@@ -41,7 +41,7 @@ module com.dua3.fx.icons {
 
     requires javafx.controls;
     requires javafx.graphics;
-    requires com.dua3.cabe.annotations;
+    requires static com.dua3.cabe.annotations;
 
     uses com.dua3.fx.icons.IconProvider;
 }

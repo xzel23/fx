@@ -31,7 +31,7 @@ module com.dua3.fx.application.fxml {
 
     requires org.apache.logging.log4j;
 
-    requires com.dua3.cabe.annotations;
+    requires static com.dua3.cabe.annotations;
     requires com.dua3.utility;
     requires javafx.fxml;
     requires javafx.graphics;

@@ -27,5 +27,5 @@ module com.dua3.fx.samples {
     requires com.dua3.fx.icons;
     requires com.dua3.fx.controls;
     requires com.dua3.fx.util;
-    requires com.dua3.cabe.annotations;
+    requires static com.dua3.cabe.annotations;
 }
