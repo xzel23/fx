@@ -1,12 +1,15 @@
 Changelog
 =========
 
-### version 0.35.0
+### version 0.36
+
+- add missing package-info.java and annotations
+- update dependencies, cabe, gradle
+
+### version 0.35
 
 - fix file input validation
 - fix cell sporadically displaying text before edit after focus lost
-- add missing package-info.java and annotations
-- update dependencies, cabe, gradle
 
 ### version 0.34.0
 
