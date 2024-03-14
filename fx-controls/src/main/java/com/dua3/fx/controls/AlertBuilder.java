@@ -23,7 +23,6 @@ import javafx.stage.Window;
 
 import java.net.URL;
 import java.util.Arrays;
-import java.util.Objects;
 
 /**
  * Builder for Alert Dialogs.

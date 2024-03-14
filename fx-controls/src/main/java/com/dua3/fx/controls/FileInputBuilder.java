@@ -58,7 +58,7 @@ public final class FileInputBuilder {
     }
 
     public FileInput build() {
-        FileInput control = new FileInput(mode, existingOnly,initialPath, extensionFilters, validate);
+        FileInput control = new FileInput(mode, existingOnly, initialPath, extensionFilters, validate);
         if (disabled != null) {
             control.disableProperty().bind(disabled);
         }
@@ -93,7 +93,7 @@ public final class FileInputBuilder {
                     : Optional.empty();
             case SAVE -> isDirectory
                     ? Optional.of("Selection is a directory")
-                    : ( !Files.isWritable(p) ? Optional.of(itemText(true) + "is not writeable") : Optional.empty() );
+                    : (!Files.isWritable(p) ? Optional.of(itemText(true) + "is not writeable") : Optional.empty());
         };
     }
 }

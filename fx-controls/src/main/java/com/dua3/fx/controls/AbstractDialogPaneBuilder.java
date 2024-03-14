@@ -17,9 +17,7 @@ package com.dua3.fx.controls;
 import com.dua3.cabe.annotations.Nullable;
 import javafx.scene.control.ButtonType;
 
-import java.util.Objects;
 import java.util.function.BiConsumer;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 /**

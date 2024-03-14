@@ -26,7 +26,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Objects;
 
 
 /**
@@ -44,7 +43,7 @@ public class AboutDialogBuilder {
     private String mailText = "";
     private String mailAddress = "";
 
-    private Window parentWindow;
+    private final Window parentWindow;
     private URL css;
     private Node graphic;
     private Node expandableContent;

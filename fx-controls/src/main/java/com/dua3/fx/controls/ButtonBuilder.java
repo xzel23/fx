@@ -8,7 +8,6 @@ import javafx.scene.Node;
 import javafx.scene.control.ButtonBase;
 import javafx.scene.control.Tooltip;
 
-import java.util.Objects;
 import java.util.function.Supplier;
 
 public class ButtonBuilder<B extends ButtonBase> {

@@ -14,9 +14,7 @@ import javafx.scene.control.DialogPane;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public abstract class InputDialogPane<R> extends DialogPane implements Supplier<R> {

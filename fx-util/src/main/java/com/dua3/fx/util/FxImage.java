@@ -3,8 +3,6 @@ package com.dua3.fx.util;
 import com.dua3.utility.data.Image;
 import javafx.scene.image.PixelFormat;
 
-import java.util.Objects;
-
 /**
  * Represents an image in JavaFX format.
  */

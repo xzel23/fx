@@ -94,7 +94,6 @@ public class IconView extends Control {
             return "iconSize";
         }
     };
-    private Icon icon;
 
     public IconView() {
         this.pane = new StackPane();
@@ -118,20 +117,21 @@ public class IconView extends Control {
         Paint color = getIconColor();
 
         Optional<Icon> icon = IconUtil.iconFromName(iconId);
+        Icon icon1;
         if (icon.isPresent()) {
-            this.icon = icon.get();
+            icon1 = icon.get();
         } else {
             LOG.warn("icon not found: {}", iconId);
-            this.icon = IconUtil.emptyIcon();
+            icon1 = IconUtil.emptyIcon();
         }
 
-        this.icon.iconSizeProperty().bind(this.iconSize);
-        this.icon.iconColorProperty().bind(this.iconColor);
+        icon1.iconSizeProperty().bind(this.iconSize);
+        icon1.iconColorProperty().bind(this.iconColor);
 
         iconSize.set(size);
         iconColor.set(color);
 
-        pane.getChildren().setAll(this.icon.node());
+        pane.getChildren().setAll(icon1.node());
     }
 
     @Override

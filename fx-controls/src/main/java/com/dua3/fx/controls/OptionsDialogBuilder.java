@@ -21,7 +21,6 @@ import javafx.stage.Window;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Objects;
 
 /**
  * Builder for Alert Dialogs.

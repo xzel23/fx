@@ -10,7 +10,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 
-import java.util.Objects;
 import java.util.function.Supplier;
 
 /**

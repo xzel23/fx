@@ -14,8 +14,6 @@
 
 package com.dua3.fx.controls;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 

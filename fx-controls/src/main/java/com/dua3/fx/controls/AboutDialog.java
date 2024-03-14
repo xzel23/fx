@@ -30,7 +30,6 @@ import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
-import java.util.Objects;
 
 public class AboutDialog extends Dialog<Void> {
     /**

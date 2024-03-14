@@ -21,7 +21,6 @@ import javafx.stage.Window;
 
 import java.util.Optional;
 import java.util.function.BiConsumer;
-import java.util.function.Predicate;
 
 /**
  * Abstract base class for Dialog builders.
@@ -31,7 +30,7 @@ public abstract class AbstractDialogBuilder<D extends Dialog<R>, B extends Abstr
         extends AbstractDialogPaneBuilder<D, B, R> {
 
     private final BiConsumer<D, String> titleSetter;
-    private Window parentWindow;
+    private final Window parentWindow;
     private String title;
 
     protected AbstractDialogBuilder(@Nullable Window parentWindow) {

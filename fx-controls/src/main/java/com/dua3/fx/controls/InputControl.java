@@ -28,7 +28,6 @@ import java.nio.file.Path;
 import java.text.NumberFormat;
 import java.util.Collection;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiPredicate;
 import java.util.function.Function;

@@ -32,7 +32,6 @@ import javafx.stage.FileChooser;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.LinkedHashMap;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiPredicate;
 import java.util.function.Function;

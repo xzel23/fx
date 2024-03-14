@@ -9,7 +9,6 @@ import org.kordamp.ikonli.javafx.FontIcon;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Objects;
 import java.util.ServiceLoader;
 
 

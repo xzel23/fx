@@ -2,11 +2,9 @@ package com.dua3.fx.controls;
 
 import com.dua3.fx.util.FxUtil;
 import javafx.beans.binding.Bindings;
-import javafx.beans.binding.BooleanExpression;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ObservableBooleanValue;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Insets;
@@ -140,12 +138,12 @@ public class InputGrid extends GridPane {
         final Class<T> cls;
         final Supplier<T> dflt;
         final InputControl<T> control;
-        final Label label = new Label();
+        final Label label;
         final Label marker = new Label();
 
         Meta(String id, String label, Class<T> cls, Supplier<T> dflt, InputControl<T> control) {
             this.id = id;
-            this.label.setText(label);
+            this.label = label != null ? new Label(label) : null;
             this.cls = cls;
             this.dflt = dflt;
             this.control = control;
