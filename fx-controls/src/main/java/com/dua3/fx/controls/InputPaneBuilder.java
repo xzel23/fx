@@ -44,7 +44,6 @@ public class InputPaneBuilder
         implements InputBuilder<InputPaneBuilder> {
 
     private final InputGridBuilder pb = new InputGridBuilder();
-    private final List<Pair<ButtonType, Consumer<InputDialogPane<Map<String, Object>>>>> buttons = new ArrayList<>();
 
     InputPaneBuilder() {
         setDialogSupplier(() -> new InputPane(pb.build()));
@@ -147,11 +146,6 @@ public class InputPaneBuilder
     @Override
     public InputPaneBuilder chooseFile(String id, String label, Supplier<Path> dflt, FileDialogMode mode, boolean existingOnly, Collection<FileChooser.ExtensionFilter> filter, Function<Path, Optional<String>> validate) {
         pb.chooseFile(id, label, dflt, mode, existingOnly, filter, validate);
-        return this;
-    }
-
-    public InputPaneBuilder button(ButtonType b, Consumer<InputDialogPane<Map<String, Object>>> action) {
-        buttons.add(Pair.of(b, action));
         return this;
     }
 
