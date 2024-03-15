@@ -1,5 +1,6 @@
 package com.dua3.fx.controls;
 
+import com.dua3.cabe.annotations.Nullable;
 import com.dua3.fx.util.FxUtil;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
@@ -141,7 +142,7 @@ public class InputGrid extends GridPane {
         final Label label;
         final Label marker = new Label();
 
-        Meta(String id, String label, Class<T> cls, Supplier<T> dflt, InputControl<T> control) {
+        Meta(String id, @Nullable String label, Class<T> cls, Supplier<T> dflt, InputControl<T> control) {
             this.id = id;
             this.label = label != null ? new Label(label) : null;
             this.cls = cls;
