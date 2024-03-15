@@ -1,6 +1,12 @@
 Changelog
 =========
 
+### version 0.37
+
+- remove InputPaneBuilder.buttons()
+- update dependencies
+- code cleanups
+
 ### version 0.36
 
 - add missing package-info.java and annotations
