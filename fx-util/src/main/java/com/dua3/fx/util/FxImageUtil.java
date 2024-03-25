@@ -16,6 +16,13 @@ public final class FxImageUtil implements ImageUtil<Image> {
 
     private static final FxImageUtil INSTANCE = new FxImageUtil();
 
+    /**
+     * Returns the instance of FxImageUtil. Only use this if your program uses different implementations of
+     * {@link ImageUtil} and you specifically need the implementation that is based on the JavaFX
+     * {@link Image} class. In general, {@link ImageUtil#getInstance()} should be used.
+     *
+     * @return the instance of FxImageUtil
+     */
     public static FxImageUtil instance() {
         return INSTANCE;
     }

@@ -4,7 +4,9 @@ import com.dua3.utility.data.Image;
 import javafx.scene.image.PixelFormat;
 
 /**
- * Represents an image in JavaFX format.
+ * A record representing an image in JavaFX.
+ * This class implements the {@link Image} interface.
+ * @param fxImage the {@link javafx.scene.image.Image} instance to wrap
  */
 public record FxImage(javafx.scene.image.Image fxImage) implements Image {
 

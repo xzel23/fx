@@ -23,8 +23,11 @@ import java.util.Optional;
 import java.util.function.BiConsumer;
 
 /**
- * Abstract base class for Dialog builders.
- * Provides a fluent interface to create Dialogs.
+ * Abstract class for building dialog boxes.
+ *
+ * @param <D> the type of dialog box to build
+ * @param <B> the type of the builder class itself
+ * @param <R> the type of the result returned by the dialog box
  */
 public abstract class AbstractDialogBuilder<D extends Dialog<R>, B extends AbstractDialogBuilder<D, B, R>, R>
         extends AbstractDialogPaneBuilder<D, B, R> {

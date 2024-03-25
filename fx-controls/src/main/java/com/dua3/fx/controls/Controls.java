@@ -81,9 +81,10 @@ public final class Controls {
     }
 
     /**
-     * Create a {@link FileInputBuilder}.
+     * Creates a new FileInputBuilder instance with the given mode.
      *
-     * @return new FileInputBuilder
+     * @param mode the {@link FileDialogMode} of the file dialog
+     * @return a new FileInputBuilder instance
      */
     public static FileInputBuilder fileInput(FileDialogMode mode) {
         return new FileInputBuilder(mode);

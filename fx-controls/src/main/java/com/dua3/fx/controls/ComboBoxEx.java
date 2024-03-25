@@ -46,7 +46,13 @@ public class ComboBoxEx<T> extends CustomControl<HBox> implements InputControl<T
     private final Button buttonRemove;
 
     /**
-     * Constructor.
+     * Constructs a ComboBoxEx with the specified edit, add, remove, format, and items.
+     *
+     * @param edit    the unary operator to perform editing on the selected item (nullable)
+     * @param add     the supplier to provide a new item to add (nullable)
+     * @param remove  the bi-predicate to determine if an item should be removed (nullable)
+     * @param format  the function to format the items as strings
+     * @param items   the initial items to populate the ComboBox (variadic parameter)
      */
     @SafeVarargs
     public ComboBoxEx(@Nullable UnaryOperator<T> edit, @Nullable Supplier<T> add, @Nullable BiPredicate<ComboBoxEx<T>, T> remove, Function<T, String> format, T... items) {

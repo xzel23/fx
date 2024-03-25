@@ -26,6 +26,12 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+/**
+ * Abstract class for JavaFX applications that use FXML to define the user interface.
+ *
+ * @param <A> the concrete application class extending this class
+ * @param <C> the concrete controller class extending FxController
+ */
 public abstract class FxApplicationFxml<A extends FxApplicationFxml<A, C>, C extends FxController<A, C, ?>>
         extends FxApplication<A, C> {
 
