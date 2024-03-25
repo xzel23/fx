@@ -30,7 +30,6 @@ dependencyResolutionManagement {
             version("dua3-utility", "12.1.0")
             version("javafx", "21.0.2")
             version("ikonli", "12.3.1")
-            version("junit", "5.10.2")
             version("log4j", "2.23.1")
 
             library("cabe-annotations", "com.dua3.cabe", "cabe-annotations").versionRef("cabe")
@@ -40,8 +39,6 @@ dependencyResolutionManagement {
             library("dua3-utility-swing", "com.dua3.utility", "utility-swing").versionRef("dua3-utility")
             library("ikonli-fontawesome", "org.kordamp.ikonli", "ikonli-fontawesome-pack").versionRef("ikonli")
             library("ikonli-javafx", "org.kordamp.ikonli", "ikonli-javafx").versionRef("ikonli")
-            library("junit-jupiter-api", "org.junit.jupiter", "junit-jupiter-api").versionRef("junit")
-            library("junit-jupiter-engine", "org.junit.jupiter", "junit-jupiter-engine").versionRef("junit")
             library("log4j-api", "org.apache.logging.log4j", "log4j-api").versionRef("log4j")
             library("log4j-core", "org.apache.logging.log4j", "log4j-core").versionRef("log4j")
         }

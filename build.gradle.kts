@@ -19,6 +19,7 @@ import java.net.URI
 
 plugins {
     id("java-library")
+    id("jvm-test-suite")
     id("maven-publish")
     id("signing")
     id("idea")
@@ -50,6 +51,7 @@ subprojects {
     val isReleaseVersion = !project.version.toString().endsWith("SNAPSHOT")
 
     apply(plugin = "java-library")
+    apply(plugin = "jvm-test-suite")
     apply(plugin = "maven-publish")
     apply(plugin = "signing")
     apply(plugin = "idea")
@@ -94,10 +96,6 @@ subprojects {
 
         // SLF4J
         implementation(rootProject.libs.log4j.api)
-
-        // JUnit
-        testImplementation(rootProject.libs.junit.jupiter.api)
-        testImplementation(rootProject.libs.junit.jupiter.engine)
     }
 
     idea {
@@ -108,8 +106,16 @@ subprojects {
         }
     }
 
-    tasks.test {
-        useJUnitPlatform()
+    testing {
+        suites {
+            val test by getting(JvmTestSuite::class) {
+                useJUnitJupiter()
+
+                dependencies {
+                    implementation(rootProject.libs.log4j.core)
+                }
+            }
+        }
     }
 
     testlogger {
