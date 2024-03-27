@@ -1,6 +1,13 @@
 Changelog
 =========
 
+### version 0.38
+
+- add javadoc
+- update gradle
+- update dependencies
+- use jvm-test-suite plugin
+
 ### version 0.37
 
 - remove InputPaneBuilder.buttons()
