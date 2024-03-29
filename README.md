@@ -1,4 +1,4 @@
-fx Application Framework [![CI](https://github.com/xzel23/fx/actions/workflows/gradle.yml/badge.svg)](https://github.com/xzel23/fx/actions/workflows/gradle.yml)
+fx Application Framework [![CI](https://github.com/xzel23/fx/actions/workflows/CI.yml/badge.svg)](https://github.com/xzel23/fx/actions/workflows/CI.yml)
 ========================
 
 The framework consists of the following libraries:
