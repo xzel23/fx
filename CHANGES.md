@@ -1,6 +1,10 @@
 Changelog
 =========
 
+### version 0.39
+
+- JavaFX 22
+
 ### version 0.38
 
 - add javadoc
