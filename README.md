@@ -1,5 +1,7 @@
-fx Application Framework [![CI](https://github.com/xzel23/fx/actions/workflows/gradle.yml/badge.svg)](https://github.com/xzel23/fx/actions/workflows/gradle.yml)
-========================
+# fx Application Framework
+[![Apache License](https://img.shields.io/badge/license-Apache-blue)](LICENSE)
+[![Language](https://img.shields.io/badge/language-Java-blue.svg?style=flat-square)](https://github.com/topics/java)
+[![build](https://github.com/xzel23/fx/actions/workflows/CI.yml/badge.svg)](https://github.com/xzel23/fx/actions/workflows/CI.yml)
 
 The framework consists of the following libraries:
 
