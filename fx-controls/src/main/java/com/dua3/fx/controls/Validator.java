@@ -40,6 +40,21 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 
+/**
+ * The Validator class is used for validating controls in a JavaFX application. It provides methods for setting
+ * validation rules for different types of controls, such as TextInputControl and Control. It also allows for
+ * custom validation rules to be set.
+ * <p>
+ * The Validator class supports the use of a ResourceBundle for looking up message texts. If a ResourceBundle is
+ * provided during initialization, it will be used to retrieve the messages for validation errors. Otherwise,
+ * the message will be used as is.
+ * <p>
+ * The Validator class also supports decorating nodes with invalid values. When a control fails validation, an
+ * icon and tooltip can be added to the control to indicate the validation error.
+ * <p>
+ * The Validator class is meant to be used in a JavaFX application and should be initialized with a valid
+ * ResourceBundle if localized validation messages are required.
+ */
 public class Validator {
     private static final Logger LOG = LogManager.getLogger(Validator.class);
 
@@ -49,7 +64,7 @@ public class Validator {
     private final BooleanProperty validProperty = new SimpleBooleanProperty();
     private final List<Runnable> disposeList = new ArrayList<>();
     private int iconSize = (int) Math.round(Font.getDefault().getSize());
-    private String iconError = "fth-x-circle";
+    private String iconError = "fth-alert-triangle";
     private boolean decorateNodes = false;
 
     /**
@@ -136,6 +151,7 @@ public class Validator {
      * @param c       the control
      * @param message the message to display if validation fails
      * @param test    the test to perform the validation
+     * @param trigger the {@link Observable}s that trigger validation
      */
     public void check(Control c, String message, BooleanSupplier test, Observable... trigger) {
         rules(c).add(() -> test.getAsBoolean() ? ValidationResult.ok(c) : ValidationResult.error(c, message));
@@ -293,10 +309,29 @@ public class Validator {
         });
     }
 
+    /**
+     * Focuses the first control.
+     */
     public void focusFirst() {
         controls.keySet().stream().findFirst().ifPresent(Control::requestFocus);
     }
 
+    /**
+     * Focuses the first control with an invalid validation result.
+     */
+    public void focusFirstInvalid() {
+        validationResultProperty.entrySet().stream()
+                .filter(entry -> !entry.getValue().isOk())
+                .findFirst()
+                .map(Map.Entry::getKey)
+                .ifPresent(Control::requestFocus);
+    }
+
+    /**
+     * Returns the read-only boolean property indicating the validity of all controls.
+     *
+     * @return the validProperty
+     */
     public ReadOnlyBooleanProperty validProperty() {
         return validProperty;
     }
