@@ -5,6 +5,7 @@ import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.lang.ref.Cleaner;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
@@ -21,6 +22,14 @@ public final class PlatformHelper {
      */
     private static final Logger LOG = LogManager.getLogger(PlatformHelper.class);
 
+    /**
+     * CLEANER is a private static final variable of type Cleaner.
+     */
+    private static final Cleaner CLEANER = Cleaner.create();
+
+    /**
+     * Utility class private constructor.
+     */
     private PlatformHelper() {
         // utility class
     }
@@ -92,5 +101,16 @@ public final class PlatformHelper {
      */
     public static void checkApplicationThread() {
         LangUtil.check(Platform.isFxApplicationThread(), "not on FX Application Thread");
+    }
+
+    /**
+     * Registers an object and a cleanup action to be executed when the object becomes phantom reachable.
+     *
+     * @param obj    the object to register for cleanup
+     * @param action the cleanup action to be executed when the object becomes phantom reachable
+     * @throws NullPointerException if {@code obj} or {@code action} is {@code null}
+     */
+    public static void registerForCleanup(Object obj, Runnable action) {
+        CLEANER.register(obj, action);
     }
 }
