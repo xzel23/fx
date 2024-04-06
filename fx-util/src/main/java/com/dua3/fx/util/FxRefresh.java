@@ -60,7 +60,9 @@ public final class FxRefresh {
         this.name = name;
         this.task = task;
         this.updateThread = new Thread(this::refreshLoop);
-        this.updateThread.start();
+
+        updateThread.setDaemon(true);
+        updateThread.start();
     }
 
     /**
