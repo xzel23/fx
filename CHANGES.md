@@ -3,6 +3,12 @@ Changelog
 
 ### version 0.39
 
+- change valdiator decoration to warning symbol
+- use daemon thread for FxRefresh
+- add Cleaner support to PlatformHelper
+
+### version 0.39
+
 - JavaFX 22
 
 ### version 0.38
