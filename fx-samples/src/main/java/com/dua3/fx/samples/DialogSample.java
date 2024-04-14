@@ -6,7 +6,6 @@ import com.dua3.utility.io.CsvIo;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -138,7 +137,7 @@ public class DialogSample extends Application {
                                         .header("Create new database connection")
                                         .text("""
                                                 This wizard helps you to define a new database connection.
-                                                                                            
+                                                
                                                 You will need the following information:
                                                 - the vendor or manufacturer name of your database system
                                                 - the server name and port

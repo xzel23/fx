@@ -36,7 +36,7 @@ public class TableCellAutoCommit<S, T> extends TableCell<S, T> {
     /**
      * The {@link StringConverter} used to convert from and to String.
      */
-    private final StringConverter<T> converter;
+    private final StringConverter<? super T> converter;
 
     /**
      * Returns a callback that creates an EditCell for a TableColumn with String type.

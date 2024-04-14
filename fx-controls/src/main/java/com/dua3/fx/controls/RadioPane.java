@@ -42,7 +42,7 @@ public class RadioPane<T> extends VBox implements InputControl<T> {
     public RadioPane(Collection<T> items, @Nullable T currentValue, Function<T, Optional<String>> validate) {
         this.group = new ToggleGroup();
 
-        this.setSpacing(SPACING);
+        setSpacing(SPACING);
         ObservableList<Node> children = getChildren();
         for (var item : items) {
             RadioButton control = new RadioButton(String.valueOf(item));
@@ -60,7 +60,7 @@ public class RadioPane<T> extends VBox implements InputControl<T> {
         });
 
         this.state = new State<>(property);
-        this.state.setValidate(validate);
+        state.setValidate(validate);
 
         // update toggle, when state changes
         state.valueProperty().addListener((v, o, n) -> group.selectToggle(this.items.get(n)));

@@ -38,7 +38,7 @@ public class OptionsPane extends GridPane implements InputControl<Arguments> {
     protected static final Logger LOG = LogManager.getLogger(OptionsPane.class);
     private static final Insets INSETS = new Insets(2);
     private final InputControl.State<Arguments> state;
-    private final Supplier<Collection<Option<?>>> options;
+    private final Supplier<? extends Collection<Option<?>>> options;
     private final Supplier<Arguments> dflt;
     private final Property<Arguments> value = new SimpleObjectProperty<>();
     private final Map<Option<?>, InputControl<?>> items = new LinkedHashMap<>();
@@ -53,7 +53,7 @@ public class OptionsPane extends GridPane implements InputControl<Arguments> {
         this(() -> optionSet, () -> currentValues);
     }
 
-    public OptionsPane(Supplier<Collection<Option<?>>> options, Supplier<Arguments> dflt) {
+    public OptionsPane(Supplier<? extends Collection<Option<?>>> options, Supplier<Arguments> dflt) {
         this.options = options;
         this.dflt = dflt;
         this.state = new State<>(value, dflt);
@@ -138,6 +138,7 @@ public class OptionsPane extends GridPane implements InputControl<Arguments> {
         throw new UnsupportedOperationException("unsupported input type: " + option.getClass().getName());
     }
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     private static <T> T getValue(Option<T> option, Arguments values) {
         if (option instanceof Flag flag) {
             return (T) (Object) values.isSet(flag);
@@ -155,7 +156,7 @@ public class OptionsPane extends GridPane implements InputControl<Arguments> {
         return s -> Optional.empty();
     }
 
-    private static <T> Supplier<T> supplyDefault(Option<T> option, Arguments values) {
+    private static <T> Supplier<T> supplyDefault(Option<? extends T> option, Arguments values) {
         return () -> getValue(option, values);
     }
 

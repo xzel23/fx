@@ -165,10 +165,10 @@ public final class WebViews {
      */
     private static class WebEventDispatcher implements EventDispatcher {
         private final EventDispatcher originalDispatcher;
-        private final Predicate<KeyEvent> filterKey;
-        private final Predicate<MouseEvent> filterMouse;
+        private final Predicate<? super KeyEvent> filterKey;
+        private final Predicate<? super MouseEvent> filterMouse;
 
-        WebEventDispatcher(EventDispatcher originalDispatcher, Predicate<KeyEvent> filterKey, Predicate<MouseEvent> filterMouse) {
+        WebEventDispatcher(EventDispatcher originalDispatcher, Predicate<? super KeyEvent> filterKey, Predicate<? super MouseEvent> filterMouse) {
             this.originalDispatcher = originalDispatcher;
             this.filterKey = filterKey;
             this.filterMouse = filterMouse;

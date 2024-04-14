@@ -174,7 +174,7 @@ public final class FxUtil {
     public static javafx.scene.shape.Path convert(Path2f path) {
         javafx.scene.shape.Path jfxPath = new javafx.scene.shape.Path();
         path.segments().forEach(segment -> {
-            switch (segment) {
+            switch (Objects.requireNonNull(segment, "segment is null")) {
                 case MoveTo2f s -> jfxPath.getElements().add(new MoveTo(s.end().x(), s.end().y()));
                 case Line2f s -> jfxPath.getElements().add(new LineTo(s.end().x(), s.end().y()));
                 case Curve2f s -> {
@@ -194,7 +194,7 @@ public final class FxUtil {
                 }
                 case Arc2f s ->
                         jfxPath.getElements().add(new ArcTo(s.rx(), s.ry(), s.angle(), s.control(1).x(), s.control(1).y(), false, false));
-                case null, default ->
+                default ->
                         throw new IllegalArgumentException("Unsupported segment type: " + segment.getClass().getName());
             }
         });

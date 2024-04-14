@@ -145,7 +145,7 @@ public class WizardDialog extends Dialog<Map<String, Object>> {
     private static void addButtonToDialogPane(
             Page<?, ?> page,
             ButtonType bt,
-            Consumer<InputDialogPane<?>> action,
+            Consumer<? super InputDialogPane<?>> action,
             @Nullable BooleanExpression enabled) {
         InputDialogPane<?> pane = page.pane;
         List<ButtonType> buttons = pane.getButtonTypes();
@@ -187,11 +187,11 @@ public class WizardDialog extends Dialog<Map<String, Object>> {
     /**
      * Wizard page information class.
      */
-    static class Page<D extends InputDialogPane<R>, R> {
+    public static class Page<D extends InputDialogPane<R>, R> {
         private D pane;
         private String next;
         private R result;
-        private ResultHandler<R> resultHandler;
+        private ResultHandler<? super R> resultHandler;
 
         String getNext() {
             return next;
@@ -205,7 +205,7 @@ public class WizardDialog extends Dialog<Map<String, Object>> {
             return pane;
         }
 
-        void setPane(D pane, ResultHandler<R> resultHandler) {
+        void setPane(D pane, ResultHandler<? super R> resultHandler) {
             this.pane = pane;
             this.resultHandler = resultHandler;
         }

@@ -236,7 +236,7 @@ public final class FxRefresh {
      */
     public synchronized void setActive(boolean flag) {
         LOG.debug("[{}] setActive({})", name, flag);
-        this.active.set(flag);
+        active.set(flag);
         signal();
     }
 

@@ -9,13 +9,13 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-class SimpleInputControl<C extends Control, R> implements InputControl<R> {
+public class SimpleInputControl<C extends Control, R> implements InputControl<R> {
 
     private final C control;
     private final State<R> state;
-    private final Supplier<R> dflt;
+    private final Supplier<? extends R> dflt;
 
-    protected SimpleInputControl(C control, Property<R> value, Supplier<R> dflt, Function<R, Optional<String>> validate) {
+    protected SimpleInputControl(C control, Property<R> value, Supplier<? extends R> dflt, Function<R, Optional<String>> validate) {
         this.control = control;
         this.state = new State<>(value, dflt, validate);
         this.dflt = dflt;

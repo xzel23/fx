@@ -59,7 +59,7 @@ public class FxFontUtil implements FontUtil<Font> {
     }
 
     @Override
-    public List<com.dua3.utility.text.Font> loadFonts(InputStream in) throws IOException {
+    public List<com.dua3.utility.text.Font> loadFonts(InputStream in) {
         Font[] fxFonts = Font.loadFonts(in, 0);
         if (fxFonts == null || fxFonts.length == 0) {
             return Collections.emptyList();

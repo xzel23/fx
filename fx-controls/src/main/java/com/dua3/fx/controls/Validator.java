@@ -118,7 +118,7 @@ public class Validator {
             c.textProperty().addListener(changeListener);
             disposeList.add(() -> c.textProperty().removeListener(changeListener));
         } else {
-            control.focusedProperty().addListener((v, o, n) -> this.validateNode(control));
+            control.focusedProperty().addListener((v, o, n) -> validateNode(control));
             disposeList.add(() -> control.focusedProperty().removeListener(changeListener));
         }
         return new ArrayList<>();

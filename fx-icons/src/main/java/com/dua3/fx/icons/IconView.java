@@ -97,7 +97,7 @@ public class IconView extends Control {
 
     public IconView() {
         this.pane = new StackPane();
-        this.getChildren().setAll(this.pane);
+        getChildren().setAll(pane);
         iconIdentifier.addListener((v, o, n) -> setIcon(n));
     }
 
@@ -125,8 +125,8 @@ public class IconView extends Control {
             icon1 = IconUtil.emptyIcon();
         }
 
-        icon1.iconSizeProperty().bind(this.iconSize);
-        icon1.iconColorProperty().bind(this.iconColor);
+        icon1.iconSizeProperty().bind(iconSize);
+        icon1.iconColorProperty().bind(iconColor);
 
         iconSize.set(size);
         iconColor.set(color);

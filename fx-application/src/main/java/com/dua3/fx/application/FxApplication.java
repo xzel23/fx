@@ -191,7 +191,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      */
     @SuppressWarnings("unchecked")
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) {
         LOG.info("starting application");
 
         try {

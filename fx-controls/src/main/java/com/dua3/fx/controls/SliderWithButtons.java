@@ -28,7 +28,7 @@ public class SliderWithButtons extends Region {
 
     private static final Pattern PATTERN_DIGIT = Pattern.compile("\\d");
     private final Mode mode;
-    private final BiFunction<Double, Double, String> formatter;
+    private final BiFunction<? super Double, Double, String> formatter;
     private final Slider slider;
     private final Button btnIncrement;
     private final Button btnDecrement;
@@ -37,7 +37,7 @@ public class SliderWithButtons extends Region {
     private TextField tfValue;
     private Label label;
 
-    SliderWithButtons(Mode mode, BiFunction<Double, Double, String> formatter) {
+    SliderWithButtons(Mode mode, BiFunction<? super Double, Double, String> formatter) {
         this.mode = mode;
         this.formatter = formatter;
 
@@ -70,8 +70,8 @@ public class SliderWithButtons extends Region {
             }
         }
 
-        slider.valueProperty().addListener((v, o, n) -> this.valueChanged(o, n));
-        slider.maxProperty().addListener((v, o, n) -> this.updateLabel());
+        slider.valueProperty().addListener((v, o, n) -> valueChanged(o, n));
+        slider.maxProperty().addListener((v, o, n) -> updateLabel());
 
         initPane();
     }
@@ -148,7 +148,7 @@ public class SliderWithButtons extends Region {
     }
 
     public Mode getMode() {
-        return this.mode;
+        return mode;
     }
 
     public void setDecrementText(String value) {

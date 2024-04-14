@@ -31,19 +31,19 @@ import java.util.function.Supplier;
  */
 public abstract class AbstractDialogPaneBuilder<D, B extends AbstractDialogPaneBuilder<D, B, R>, R> {
 
-    private final BiConsumer<D, String> headerSetter;
-    private Supplier<D> dialogSupplier;
+    private final BiConsumer<? super D, ? super String> headerSetter;
+    private Supplier<? extends D> dialogSupplier;
     private String header = null;
     private ResultHandler<R> resultHandler = (b, r) -> true;
 
     AbstractDialogPaneBuilder(
-            BiConsumer<D, String> headerSetter
+            BiConsumer<? super D, ? super String> headerSetter
     ) {
         this.dialogSupplier = () -> {throw new IllegalStateException("call setDialogSupplier() first");};
         this.headerSetter = headerSetter;
     }
 
-    protected final void setDialogSupplier(Supplier<D> dialogSupplier) {
+    protected final void setDialogSupplier(Supplier<? extends D> dialogSupplier) {
         this.dialogSupplier = dialogSupplier;
     }
 

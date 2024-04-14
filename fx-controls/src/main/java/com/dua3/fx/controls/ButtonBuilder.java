@@ -11,7 +11,7 @@ import javafx.scene.control.Tooltip;
 import java.util.function.Supplier;
 
 public class ButtonBuilder<B extends ButtonBase> {
-    private final Supplier<B> factory;
+    private final Supplier<? extends B> factory;
     private String text = null;
     private Node graphic = null;
     private String tooltip = null;
@@ -23,7 +23,7 @@ public class ButtonBuilder<B extends ButtonBase> {
      *
      * @param factory the factory method for Button instances
      */
-    ButtonBuilder(Supplier<B> factory) {
+    ButtonBuilder(Supplier<? extends B> factory) {
         this.factory = factory;
     }
 

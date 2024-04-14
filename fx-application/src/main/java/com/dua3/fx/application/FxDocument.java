@@ -22,7 +22,7 @@ public abstract class FxDocument {
     protected final ObjectProperty<URI> locationProperty = new SimpleObjectProperty<>(VOID_URI);
 
     protected FxDocument(URI location) {
-        this.locationProperty.set(location);
+        locationProperty.set(location);
     }
 
     public String getName() {
@@ -42,7 +42,7 @@ public abstract class FxDocument {
     }
 
     public void setLocation(URI uri) {
-        this.locationProperty.set(uri);
+        locationProperty.set(uri);
     }
 
     public Path getPath() {
@@ -54,6 +54,7 @@ public abstract class FxDocument {
         write(locationProperty.get());
     }
 
+    @SuppressWarnings("RedundantThrows")
     protected abstract void write(URI uri) throws IOException;
 
     public void saveAs(URI uri) throws IOException {

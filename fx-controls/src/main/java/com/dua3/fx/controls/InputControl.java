@@ -75,7 +75,7 @@ public interface InputControl<R> {
         return new SimpleInputControl<>(control, value.asObject(), dflt, validate);
     }
 
-    static <T> SimpleInputControl<ComboBox<T>, T> comboBoxInput(Collection<T> choices, Supplier<T> dflt, Function<T, Optional<String>> validate) {
+    static <T> SimpleInputControl<ComboBox<T>, T> comboBoxInput(Collection<? extends T> choices, Supplier<T> dflt, Function<T, Optional<String>> validate) {
         ComboBox<T> control = new ComboBox<>(FXCollections.observableArrayList(choices));
         Property<T> value = control.valueProperty();
         return new SimpleInputControl<>(control, value, dflt, validate);
@@ -155,9 +155,9 @@ public interface InputControl<R> {
         private final BooleanProperty valid = new SimpleBooleanProperty(true);
         private final StringProperty error = new SimpleStringProperty("");
 
-        private Supplier<R> dflt;
+        private Supplier<? extends R> dflt;
 
-        private Function<R, Optional<String>> validate;
+        private Function<? super R, Optional<String>> validate;
 
         public State(Property<R> value) {
             this(value, freeze(value));
@@ -168,12 +168,12 @@ public interface InputControl<R> {
             this(value, dflt, s -> Optional.empty());
         }
 
-        private static <R> Supplier<R> freeze(ObservableValue<R> value) {
+        private static <R> Supplier<R> freeze(ObservableValue<? extends R> value) {
             final R frozen = value.getValue();
             return () -> frozen;
         }
 
-        public State(Property<R> value, Supplier<R> dflt, Function<R, Optional<String>> validate) {
+        public State(Property<R> value, Supplier<? extends R> dflt, Function<? super R, Optional<String>> validate) {
             this.value = value;
             this.value.addListener((v, o, n) -> updateValidState(n));
             this.dflt = dflt;
@@ -188,7 +188,7 @@ public interface InputControl<R> {
             error.setValue(result.orElse(""));
         }
 
-        public void setValidate(Function<R, Optional<String>> validate) {
+        public void setValidate(Function<? super R, Optional<String>> validate) {
             this.validate = validate;
             updateValidState(valueProperty().getValue());
         }
@@ -205,7 +205,7 @@ public interface InputControl<R> {
             return error;
         }
 
-        public void setDefault(Supplier<R> dflt) {
+        public void setDefault(Supplier<? extends R> dflt) {
             this.dflt = dflt;
         }
 

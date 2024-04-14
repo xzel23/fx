@@ -130,6 +130,6 @@ class DecorationPane extends AnchorPane {
     }
 
     void removeDecoration(Object oldDecoration) {
-        this.getChildren().remove(oldDecoration);
+        getChildren().remove(oldDecoration);
     }
 }

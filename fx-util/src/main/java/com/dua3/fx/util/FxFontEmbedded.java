@@ -44,16 +44,16 @@ public class FxFontEmbedded extends Font {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), this.fxFont);
+        return Objects.hash(super.hashCode(), fxFont);
     }
 
     @Override
     public boolean equals(@Nullable Object o) {
         if (this == o) return true;
-        if (o == null || this.getClass() != o.getClass()) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         final FxFontEmbedded that = (FxFontEmbedded) o;
-        return Objects.equals(this.fxFont, that.fxFont);
+        return Objects.equals(fxFont, that.fxFont);
     }
 
 }

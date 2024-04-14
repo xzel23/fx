@@ -21,10 +21,10 @@ public class ChoiceInputControl<T> implements InputControl<T> {
 
     private final ComboBox<ChoiceOption.Choice<T>> control;
     private final ChoiceOption<T> option;
-    private final Supplier<T> dfltValue;
+    private final Supplier<? extends T> dfltValue;
     private final Property<T> valueProperty;
 
-    public ChoiceInputControl(ChoiceOption<T> option, Supplier<T> dfltValue) {
+    public ChoiceInputControl(ChoiceOption<T> option, Supplier<? extends T> dfltValue) {
         this.option = option;
         this.dfltValue = dfltValue;
         this.control = new ComboBox<>();

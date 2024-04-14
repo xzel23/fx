@@ -6,7 +6,6 @@ import javafx.scene.image.PixelFormat;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -28,7 +27,7 @@ public final class FxImageUtil implements ImageUtil<Image> {
     }
 
     @Override
-    public FxImage load(InputStream inputStream) throws IOException {
+    public FxImage load(InputStream inputStream) {
         return new FxImage(new Image(inputStream));
     }
 

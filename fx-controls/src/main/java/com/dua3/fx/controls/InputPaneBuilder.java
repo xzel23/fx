@@ -15,21 +15,16 @@
 package com.dua3.fx.controls;
 
 import com.dua3.cabe.annotations.Nullable;
-import com.dua3.utility.data.Pair;
 import com.dua3.utility.options.Arguments;
 import com.dua3.utility.options.Option;
 import javafx.scene.Node;
-import javafx.scene.control.ButtonType;
 import javafx.stage.FileChooser;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiPredicate;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;

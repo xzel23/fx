@@ -433,15 +433,16 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 
     public Path getCurrentDir() {
         if (hasCurrentDocument() && getCurrentDocument().hasLocation()) {
-            Path parent = getCurrentDocument().getPath().getParent();
-            if (parent != null) {
-                try {
+            try {
+                Path parent = getCurrentDocument().getPath().getParent();
+                if (parent != null) {
                     return parent;
-                } catch (UnsupportedOperationException e) {
-                    LOG.warn("cannot get current directory, using home");
                 }
+            } catch (UnsupportedOperationException e) {
+                LOG.warn("cannot get current directory", e);
             }
         }
+        LOG.warn("using user home");
         return getApp().getUserHome();
     }
 

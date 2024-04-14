@@ -134,15 +134,15 @@ public class InputGrid extends GridPane {
      *
      * @param <T> the input's value type
      */
-    static class Meta<T> {
+    static final class Meta<T> {
         final String id;
         final Class<T> cls;
-        final Supplier<T> dflt;
-        final InputControl<T> control;
+        final Supplier<? extends T> dflt;
+        final InputControl<? super T> control;
         final Label label;
         final Label marker = new Label();
 
-        Meta(String id, @Nullable String label, Class<T> cls, Supplier<T> dflt, InputControl<T> control) {
+        Meta(String id, @Nullable String label, Class<T> cls, Supplier<? extends T> dflt, InputControl<? super T> control) {
             this.id = id;
             this.label = label != null ? new Label(label) : null;
             this.cls = cls;
@@ -152,7 +152,7 @@ public class InputGrid extends GridPane {
             Dimension2D dimMarker = new Dimension2D(0, 0);
             dimMarker = FxUtil.growToFit(dimMarker, marker.getBoundsInLocal());
             marker.setMinSize(dimMarker.getWidth(), dimMarker.getHeight());
-            this.marker.setText(MARKER_INITIAL);
+            marker.setText(MARKER_INITIAL);
         }
 
         void reset() {

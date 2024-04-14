@@ -152,12 +152,12 @@ public class PinBoard extends Control {
             return;
         }
 
-        this.items.addAll(itemsToPin);
+        items.addAll(itemsToPin);
 
         itemsToPin.stream()
                 .map(Item::area)
                 .reduce(FxUtil::union)
-                .map(r -> FxUtil.union(this.getArea(), r))
+                .map(r -> FxUtil.union(getArea(), r))
                 .ifPresent(r -> {
                     if (!r.equals(getArea())) {
                         areaProperty.set(r);
