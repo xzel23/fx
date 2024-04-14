@@ -142,8 +142,7 @@ public class InputGridBuilder
      */
     @Override
     public InputGridBuilder columns(int columns) {
-        LangUtil.check(columns > 0, "number of columns must be positive: %d", columns);
-        this.columns = columns;
+        this.columns = LangUtil.requirePositive(columns);
         return this;
     }
 

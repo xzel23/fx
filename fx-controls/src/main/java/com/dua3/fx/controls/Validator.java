@@ -286,8 +286,7 @@ public class Validator {
      * @param sz the new size
      */
     public void setIconSize(int sz) {
-        LangUtil.check(sz > 0, () -> new IllegalArgumentException("size must be positive: " + sz));
-        iconSize = sz;
+        iconSize = LangUtil.requirePositive(sz);
     }
 
     /**
