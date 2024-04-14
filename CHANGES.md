@@ -1,6 +1,12 @@
 Changelog
 =========
 
+### version 0.40
+
+- update dependencies
+- code cleanup
+- fix possible NPE
+
 ### version 0.39
 
 - change valdiator decoration to warning symbol
