@@ -41,5 +41,5 @@ Examples:
 Issues
 ------
 
-- On macOS documents cannot be opened by double-clicking unless the application is already running. Bug filed with
+- Cannot open documents on macOS by double-clicking unless the application is already running. Bug filed with
   review ID 9063702.
