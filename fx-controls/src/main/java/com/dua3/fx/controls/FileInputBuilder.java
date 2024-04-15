@@ -37,7 +37,7 @@ public final class FileInputBuilder {
         return this;
     }
 
-    public FileInputBuilder initialPath(Path initialPath) {
+    public FileInputBuilder initialPath(@Nullable Path initialPath) {
         this.initialPath = () -> initialPath;
         return this;
     }
