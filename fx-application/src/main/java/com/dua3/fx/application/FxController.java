@@ -18,6 +18,7 @@ import com.dua3.cabe.annotations.Nullable;
 import com.dua3.fx.controls.Dialogs;
 import com.dua3.fx.util.FxUtil;
 import com.dua3.utility.data.Pair;
+import com.dua3.utility.i18n.I18N;
 import com.dua3.utility.lang.LangUtil;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
@@ -68,7 +69,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
      */
     protected final ObjectProperty<D> currentDocumentProperty = new SimpleObjectProperty<>();
     protected URL location;
-    protected ResourceBundle resources;
+    protected I18N i18n;
     /**
      * The URI of the currently opened document.
      */
@@ -123,20 +124,17 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 
                 String header;
                 if (!doc.hasLocation()) {
-                    header = resources.getString("fx.application.message.unsaved_changes_single_document_untitled");
+                    header = i18n.get("fx.application.message.unsaved.changes.untitled");
                 } else {
-                    header = getApp().getMessage(
-                            "fx.application.message.unsaved_changes_single_document",
-                            Pair.of("document", dirtyList.getFirst().getName())
-                    );
+                    header = i18n.format("fx.application.message.unsaved.changes.{0.document}", dirtyList.getFirst().getName());
                 }
 
-                ButtonType bttSave = new ButtonType(resources.getString("fx.application.button.save"), ButtonBar.ButtonData.YES);
-                ButtonType bttDontSave = new ButtonType(resources.getString("fx.application.button.dont_save"), ButtonBar.ButtonData.NO);
+                ButtonType bttSave = new ButtonType(i18n.get("fx.application.button.save"), ButtonBar.ButtonData.YES);
+                ButtonType bttDontSave = new ButtonType(i18n.get("fx.application.button.no.save"), ButtonBar.ButtonData.NO);
 
                 Dialogs.confirmation(getApp().getStage())
                         .header(header)
-                        .text(resources.getString("fx.application.message.changes_will_be_lost"))
+                        .text(i18n.get("fx.application.message.changes_will_be_lost"))
                         .buttons(bttDontSave, bttSave, ButtonType.CANCEL)
                         .showAndWait()
                         .ifPresent(btn -> {
@@ -149,14 +147,11 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
                         });
             }
             default -> {
-                String header = getApp().getMessage(
-                        "fx.application.message.unsaved_changes_multiple_documents",
-                        Pair.of("count", String.valueOf(dirtyList.size()))
-                );
+                String header = i18n.format("fx.application.message.unsaved.changes.multiple.documents", String.valueOf(dirtyList.size()));
 
                 Dialogs.confirmation(getApp().getStage())
                         .header(header)
-                        .text(resources.getString("fx.application.message.continue_without_saving"))
+                        .text(i18n.get("fx.application.message.continue_without_saving"))
                         .buttons(ButtonType.YES, ButtonType.CANCEL)
                         .defaultButton(ButtonType.CANCEL)
                         .showAndWait()
@@ -236,7 +231,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
             return true;
         } catch (Exception e) {
             LOG.warn("error creating document", e);
-            getApp().showErrorDialog(resources.getString("fx.application.dialog.error.new_document"), e.getLocalizedMessage());
+            getApp().showErrorDialog(i18n.get("fx.application.dialog.error.new_document"), e.getLocalizedMessage());
             return false;
         }
     }
@@ -279,8 +274,8 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
         } catch (Exception e) {
             LOG.warn("error opening document", e);
             getApp().showErrorDialog(
-                    String.format("%s '%s'", resources.getString("fx.application.dialog.error.open_document"), FxUtil.asText(uri)),
-                    Objects.toString(e.getLocalizedMessage())
+                    i18n.format("fx.application.dialog.error.open.document.{0.name}", FxUtil.asText(uri)),
+                    String.valueOf(e.getLocalizedMessage())
             );
             return false;
         }
@@ -410,8 +405,8 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
         } catch (Exception e) {
             LOG.warn("error saving document", e);
             getApp().showErrorDialog(
-                    String.format("%s '%s'", resources.getString("fx.application.dialog.error.save_document"), FxUtil.asText(uri)),
-                    String.format("%s: %s", e.getClass().getSimpleName(), e.getLocalizedMessage())
+                    i18n.format("fx.application.dialog.error.save.{0.document}", FxUtil.asText(uri)),
+                    e.getLocalizedMessage()
             );
             return false;
         }
