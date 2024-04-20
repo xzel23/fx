@@ -36,11 +36,13 @@ public class AboutDialog extends Dialog<Void> {
      * Logger instance
      */
     private static final Logger LOG = LogManager.getLogger(AboutDialog.class);
+
     Label lTitle;
     Label lVersion;
     Label lCopyright;
     Hyperlink hlMail;
     Button btnOk;
+
     /**
      * The email URI, i.e. {@code "mailto:info@domain.com"}.
      */

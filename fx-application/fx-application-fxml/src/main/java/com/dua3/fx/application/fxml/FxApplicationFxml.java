@@ -16,6 +16,7 @@ package com.dua3.fx.application.fxml;
 
 import com.dua3.fx.application.FxApplication;
 import com.dua3.fx.application.FxController;
+import com.dua3.utility.i18n.I18N;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import org.apache.logging.log4j.LogManager;
@@ -46,27 +47,27 @@ public abstract class FxApplicationFxml<A extends FxApplicationFxml<A, C>, C ext
 
     /**
      * Constructor.
-     */
-    protected FxApplicationFxml() {
-    }
-
-    /**
-     * Constructor.
+     * <p>
+     * Note: i18n must contain the following mappings:
+     * <ul>
+     *     <li>"fx.application.fxml.url": the {@link URL} pointing to the FXML</li>
+     *     <li>"fx.application.fxml.bundle": the {@link ResourceBundle} to use</li>
+     * </ul>
      *
-     * @param resourceBundle the resource bundle for retrieving resources
+     * @param i18n the I18N instance for retrieving resources
      */
-    protected FxApplicationFxml(ResourceBundle resourceBundle) {
-        super(resourceBundle);
+    protected FxApplicationFxml(I18N i18n) {
+        super(i18n);
     }
 
     /**
      * Get default resource bundle.
      *
+     * @param locale the locale to use when selecting the bundle
      * @return the default resource bundle
      */
-    public static ResourceBundle getDefaultBundle() {
+    public ResourceBundle getDefaultBundle(Locale locale) {
         // load resource bundle
-        Locale locale = Locale.getDefault();
         LOG.debug("current locale is: {}", locale);
         ResourceBundle resources = ResourceBundle.getBundle(FxApplicationFxml.class.getPackageName() + "." + DEFAULT_BUNDLE, locale);
         LOG.debug("resource bundle uses locale: {}", resources.getLocale());
@@ -79,9 +80,9 @@ public abstract class FxApplicationFxml<A extends FxApplicationFxml<A, C>, C ext
     @Override
     protected Parent createParentAndInitController() throws Exception {
         // create a loader and load FXML
-        URL fxml = getFxml();
-        LOG.debug("FXML URL: {}", fxml);
-        FXMLLoader loader = new FXMLLoader(fxml, resources);
+        URL fxml = (URL) i18n.getObject("fx.application.fxml.url");
+        ResourceBundle fxmlBundle = (ResourceBundle) i18n.getObject("fx.application.fxml.bundle");
+        FXMLLoader loader = new FXMLLoader(fxml, fxmlBundle);
 
         Parent root = loader.load();
 
@@ -94,11 +95,4 @@ public abstract class FxApplicationFxml<A extends FxApplicationFxml<A, C>, C ext
         return root;
     }
 
-    /**
-     * Get application main FXML file.
-     *
-     * @return the path to the FXML file to load, relative to the
-     * application class
-     */
-    protected abstract URL getFxml();
 }

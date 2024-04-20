@@ -10,6 +10,7 @@ import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Separator;
@@ -142,6 +143,33 @@ public final class Controls {
      */
     public static Icon icon(String name) {
         return IconUtil.iconFromName(name).orElseThrow(() -> new IllegalStateException("unknown icon: " + name));
+    }
+
+    /**
+     * Create a fixed minimum width label with the given text to prevent an ellipsis being display.
+     *
+     * @param text the text to display on the label
+     * @return a new Label instance with fixed miimum width
+     * @see Label
+     */
+    public static Label rigidLabel(String text) {
+        Label label = new Label(text);
+        label.setMinWidth(Region.USE_PREF_SIZE);
+        return label;
+    }
+
+    /**
+     * Create a fixed minimum width label with the given text to prevent an ellipsis being display.
+     *
+     * @param text the text to display on the label
+     * @param node the node to display on the label
+     * @return a new Label instance with fixed miimum width
+     * @see Label
+     */
+    public static Label rigidLabel(String text, Node node) {
+        Label label = new Label(text, node);
+        label.setMinWidth(Region.USE_PREF_SIZE);
+        return label;
     }
 
     /**
