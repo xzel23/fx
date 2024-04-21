@@ -5,7 +5,6 @@ import com.dua3.utility.data.Color;
 import com.dua3.utility.logging.LogBuffer;
 import com.dua3.utility.logging.LogEntry;
 import com.dua3.utility.logging.LogUtil;
-import javafx.collections.ObservableList;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
@@ -17,7 +16,6 @@ import java.util.function.Function;
 
 public class FxLogPane extends BorderPane {
 
-    private final LogBuffer buffer;
     private final Function<LogEntry, Color> colorize;
     private TableView<LogEntryBean> tableView;
 
@@ -56,9 +54,8 @@ public class FxLogPane extends BorderPane {
     }
 
     public FxLogPane(LogBuffer buffer, Function<LogEntry, Color> colorize) {
-        this.buffer = buffer;
         this.colorize = colorize;
-        ObservableList<LogEntryBean> entries = new LogEntriesObservableList(buffer);
+        LogEntriesObservableList entries = new LogEntriesObservableList(buffer);
 
         this.tableView = new TableView<>(entries);
         tableView.setEditable(false);
