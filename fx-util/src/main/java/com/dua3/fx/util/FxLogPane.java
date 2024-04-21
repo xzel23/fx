@@ -5,10 +5,15 @@ import com.dua3.utility.data.Color;
 import com.dua3.utility.logging.LogBuffer;
 import com.dua3.utility.logging.LogEntry;
 import com.dua3.utility.logging.LogUtil;
+import javafx.collections.transformation.FilteredList;
+import javafx.geometry.Orientation;
+import javafx.scene.Node;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 
@@ -17,6 +22,7 @@ import java.util.function.Function;
 public class FxLogPane extends BorderPane {
 
     private final Function<LogEntry, Color> colorize;
+    private final TextArea details;
     private TableView<LogEntryBean> tableView;
 
     private <T> TableColumn<LogEntryBean, T> createColumn(String name, String propertyName) {
@@ -54,10 +60,12 @@ public class FxLogPane extends BorderPane {
     }
 
     public FxLogPane(LogBuffer buffer, Function<LogEntry, Color> colorize) {
-        this.colorize = colorize;
-        LogEntriesObservableList entries = new LogEntriesObservableList(buffer);
+        FilteredList<LogEntryBean> entries = new FilteredList<>(new LogEntriesObservableList(buffer), p -> true);
 
+        this.colorize = colorize;
         this.tableView = new TableView<>(entries);
+        this.details = new TextArea();
+
         tableView.setEditable(false);
         tableView.getColumns().setAll(
                 createColumn("Time", "time"),
@@ -65,7 +73,18 @@ public class FxLogPane extends BorderPane {
                 createColumn("Logger", "loggerName"),
                 createColumn("Message", "message")
         );
-        setCenter(tableView);
+        tableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection == null) {
+                details.clear();
+            } else {
+                details.setText(newSelection.getLogEntry().toString());
+            }
+        });
+
+        SplitPane splitPane = new SplitPane(tableView, details);
+        splitPane.setOrientation(Orientation.VERTICAL);
+
+        setCenter(splitPane);
     }
 
     /**
