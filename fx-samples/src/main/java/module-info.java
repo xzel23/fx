@@ -24,8 +24,14 @@ module com.dua3.fx.samples {
     requires javafx.controls;
 
     requires com.dua3.utility;
+    requires com.dua3.utility.logging;
+    requires com.dua3.utility.logging.log4j;
     requires com.dua3.fx.icons;
     requires com.dua3.fx.controls;
     requires com.dua3.fx.util;
     requires static com.dua3.cabe.annotations;
+    requires org.slf4j;
+    requires java.logging;
+    requires org.apache.logging.log4j;
+    requires org.apache.logging.log4j.jul;
 }

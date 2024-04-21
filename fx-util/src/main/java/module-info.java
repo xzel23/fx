@@ -48,6 +48,7 @@ module com.dua3.fx.util {
             with FxImageUtil;
 
     requires com.dua3.utility;
+    requires static com.dua3.utility.logging;
     requires java.prefs;
     requires javafx.controls;
     requires org.apache.logging.log4j;

@@ -31,16 +31,25 @@ dependencyResolutionManagement {
             version("javafx", "22")
             version("ikonli", "12.3.1")
             version("log4j", "2.23.1")
+            version("slf4j", "2.0.13")
 
             library("cabe-annotations", "com.dua3.cabe", "cabe-annotations").versionRef("cabe")
             library("dua3-utility", "com.dua3.utility", "utility").versionRef("dua3-utility")
             library("dua3-utility-db", "com.dua3.utility", "utility-db").versionRef("dua3-utility")
             library("dua3-utility-logging", "com.dua3.utility", "utility-logging").versionRef("dua3-utility")
+            library("dua3-utility-logging-log4j", "com.dua3.utility", "utility-logging-log4j").versionRef("dua3-utility")
+            library("dua3-utility-logging-slf4j", "com.dua3.utility", "utility-logging-slf4j").versionRef("dua3-utility")
             library("dua3-utility-swing", "com.dua3.utility", "utility-swing").versionRef("dua3-utility")
             library("ikonli-fontawesome", "org.kordamp.ikonli", "ikonli-fontawesome-pack").versionRef("ikonli")
             library("ikonli-javafx", "org.kordamp.ikonli", "ikonli-javafx").versionRef("ikonli")
             library("log4j-api", "org.apache.logging.log4j", "log4j-api").versionRef("log4j")
             library("log4j-core", "org.apache.logging.log4j", "log4j-core").versionRef("log4j")
+            library("log4j-jul", "org.apache.logging.log4j", "log4j-jul").versionRef("log4j")
+            library("log4j-slf4j2", "org.apache.logging.log4j", "log4j-slf4j2-impl").versionRef("log4j")
+            library("log4j-to-slf4j", "org.apache.logging.log4j", "log4j-to-slf4j").versionRef("log4j")
+            library("slf4j-api", "org.slf4j", "slf4j-api").versionRef("slf4j")
+            library("slf4j-simple", "org.slf4j", "slf4j-simple").versionRef("slf4j")
+            library("jul-to-slf4j", "org.slf4j", "jul-to-slf4j").versionRef("slf4j")
         }
     }
 
