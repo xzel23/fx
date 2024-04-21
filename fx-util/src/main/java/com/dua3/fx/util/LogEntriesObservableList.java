@@ -62,10 +62,10 @@ final class LogEntriesObservableList extends ObservableListBase<LogEntryBean> im
                             nextRemove(0, dataToRemove);
                         }
                         if (addedRows > 0) {
-                            nextAdd(addedRows, sz);
+                            nextAdd(sz - addedRows, sz);
                         }
                     } finally {
-                        updateWriteLock.unlock();
+                        endChange();
                     }
                 } catch (InterruptedException e) {
                     LOG.debug("interrupted", e);
@@ -73,7 +73,7 @@ final class LogEntriesObservableList extends ObservableListBase<LogEntryBean> im
                 } catch (Exception e) {
                     LOG.warn("unexpected exception in update thread: {}", e.getMessage(), e);
                 } finally {
-                    endChange();
+                    updateWriteLock.unlock();
                 }
             }
         }, "LogTableModel Update Thread");
