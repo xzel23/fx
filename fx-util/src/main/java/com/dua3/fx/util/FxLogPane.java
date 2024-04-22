@@ -48,7 +48,6 @@ public class FxLogPane extends BorderPane {
     private <T> TableColumn<LogEntryBean, T> createColumn(String name, String propertyName, String... sampleTexts) {
         TableColumn<LogEntryBean, T> column = new TableColumn<>(name);
         column.setCellValueFactory(new PropertyValueFactory<>(propertyName));
-        FxFontUtil fu = (FxFontUtil) FontUtil.getInstance();
         if (sampleTexts.length == 0) {
             column.setMaxWidth(Double.MAX_VALUE);
         }else {
