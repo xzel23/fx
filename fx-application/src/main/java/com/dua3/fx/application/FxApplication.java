@@ -80,10 +80,6 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      */
     private static final String DEFAULT_BUNDLE_NAME = "fxapp";
     /**
-     * Cleaner
-     */
-    private static Cleaner cleaner = null;
-    /**
      * List of Resource cleanup tasks to run on application stop.
      */
     private final List<Runnable> cleanupActions = new ArrayList<>();
@@ -135,18 +131,6 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
             LOG.warn("resource bundle uses fallback locale: {}", resources.getLocale());
         }
         return resources;
-    }
-
-    /**
-     * Get default Cleaner.
-     *
-     * @return the {@link Cleaner} instance
-     */
-    public static synchronized Cleaner getCleaner() {
-        if (cleaner == null) {
-            cleaner = Cleaner.create();
-        }
-        return cleaner;
     }
 
     /**
