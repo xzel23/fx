@@ -27,7 +27,6 @@ public class LogPaneSample extends Application {
     private volatile boolean done = false;
 
     public static void main(String[] args) {
-        System.out.println("available icon providers: " + IconUtil.iconProviderNames());
         launch(args);
     }
 
