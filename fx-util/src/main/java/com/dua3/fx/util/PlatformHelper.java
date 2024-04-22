@@ -35,7 +35,7 @@ public final class PlatformHelper {
     }
 
     /**
-     * Run task on the JavaFX application thread and wait for completion.
+     * Run a task on the JavaFX application thread and wait for completion.
      * Consider using {@link #runLater(Runnable)} to avoid executing tasks out of order.
      *
      * @param action the task to run
@@ -49,7 +49,7 @@ public final class PlatformHelper {
     }
 
     /**
-     * Run task on the JavaFX application thread and return result.
+     * Run a task on the JavaFX application thread and return result.
      *
      * @param <T>    the result type
      * @param action the task to run
@@ -86,7 +86,7 @@ public final class PlatformHelper {
     }
 
     /**
-     * Run task on the JavaFX application thread.
+     * Run a task on the JavaFX application thread.
      *
      * @param action the task to run
      * @throws NullPointerException if {@code action} is {@code null}
@@ -113,4 +113,14 @@ public final class PlatformHelper {
     public static void registerForCleanup(Object obj, Runnable action) {
         CLEANER.register(obj, action);
     }
+
+    /**
+     * Get default Cleaner.
+     *
+     * @return the {@link Cleaner} instance
+     */
+    public static Cleaner getCleaner() {
+        return CLEANER;
+    }
+
 }
