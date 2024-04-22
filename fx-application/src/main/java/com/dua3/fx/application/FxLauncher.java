@@ -39,6 +39,18 @@ public final class FxLauncher {
     private FxLauncher() {}
 
     /**
+     * Executes the given Runnable object.
+     * <p>
+     * Delegation the task to the launcher makes sure that the platform startup is completed
+     * before the task is run.
+     *
+     * @param r the Runnable object to be executed
+     */
+    public static void run(Runnable r) {
+        r.run();
+    }
+
+    /**
      * Start application.
      * This method is a drop-in replacement for `Application.launch(cls, args)`.
      * <ul>
