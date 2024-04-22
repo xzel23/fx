@@ -8,10 +8,13 @@ import com.dua3.utility.logging.LogLevel;
 import com.dua3.utility.logging.LogUtil;
 import com.dua3.utility.text.FontUtil;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.transformation.FilteredList;
 import javafx.geometry.Orientation;
+import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -20,10 +23,14 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToolBar;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -34,17 +41,18 @@ public class FxLogPane extends BorderPane {
     private final TextArea details;
     private final TableView<LogEntryBean> tableView;
 
+    private volatile LogEntryBean selectedItem;
+
+    private boolean autoScroll = true;
+
     private <T> TableColumn<LogEntryBean, T> createColumn(String name, String propertyName, String... sampleTexts) {
         TableColumn<LogEntryBean, T> column = new TableColumn<>(name);
         column.setCellValueFactory(new PropertyValueFactory<>(propertyName));
         FxFontUtil fu = (FxFontUtil) FontUtil.getInstance();
         if (sampleTexts.length == 0) {
-            column.setMinWidth(10);
             column.setMaxWidth(Double.MAX_VALUE);
         }else {
-            double w = sampleTexts.length == 0
-                    ? Double.MAX_VALUE
-                    : Stream.of(sampleTexts).mapToDouble(s -> new Text(s).getLayoutBounds().getWidth()).max().orElse(80);
+            double w = Stream.of(sampleTexts).mapToDouble(s -> new Text(s).getLayoutBounds().getWidth()).max().orElse(80);
             column.setPrefWidth(w + 8);
         }
         column.setCellFactory(col -> new TableCell<>() {
@@ -86,6 +94,9 @@ public class FxLogPane extends BorderPane {
         this.tableView = new TableView<>(entries);
         this.details = new TextArea();
 
+        entries.addListener(this::onEntries);
+
+        // add log level filtering to toolbar
         ComboBox<LogLevel> cbLogLevel = new ComboBox<>(FXCollections.observableArrayList(LogLevel.values()));
         cbLogLevel.setValue(LogLevel.INFO);
         cbLogLevel.valueProperty().addListener((v,o,n) -> entries.setPredicate(entry -> n.ordinal() <= entry.getLevel().ordinal()));
@@ -95,26 +106,97 @@ public class FxLogPane extends BorderPane {
                 cbLogLevel
         );
 
+        // define table columns
         tableView.setEditable(false);
+
         tableView.getColumns().setAll(
                 createColumn("Time", "time", "8888-88-88T88:88:88.8888888"),
                 createColumn("Level", "level", Arrays.stream(LogLevel.values()).map(Object::toString).toArray(String[]::new)),
                 createColumn("Logger", "loggerName", "X".repeat(40)),
                 createColumn("Message", "message", "X".repeat(80))
         );
+
+        // disable autoscroll if the selection is not empty, enable when selection is cleared while scrolled to bottom
         tableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection == null) {
                 details.clear();
+                autoScroll = autoScroll || isScrolledToBottom();
             } else {
+                this.selectedItem = newSelection;
+                autoScroll = false;
                 details.setText(newSelection.getLogEntry().toString());
             }
         });
+
+        //  ESC clears the selection
+        tableView.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.ESCAPE) {
+                clearSelection();
+                autoScroll = true;
+                event.consume();
+            }
+        });
+
+        // automatically enable/disable autoscroll when user scrolls
+        tableView.addEventFilter(ScrollEvent.ANY, this::onScrollEvent);
 
         SplitPane splitPane = new SplitPane(tableView, details);
         splitPane.setOrientation(Orientation.VERTICAL);
 
         setTop(toolBar);
         setCenter(splitPane);
+    }
+
+    private void onScrollEvent(ScrollEvent evt) {
+        if (autoScroll) {
+            // disable autoscroll when manually scrolling
+            autoScroll = false;
+        } else {
+            // enable autoscroll when scrolling ends at end of input and selection is empty
+            autoScroll = isSelectionEmpty() && isScrolledToBottom();
+        }
+    }
+
+    private Optional<ScrollBar> getScrollBar(Orientation orientation) {
+        for (Node node : tableView.lookupAll(".scroll-bar")) {
+            if (node instanceof ScrollBar sb && sb.getOrientation() == orientation) {
+                return Optional.of(sb);
+            }
+        }
+        return Optional.empty();
+    }
+
+    private boolean isSelectionEmpty() {
+        return selectedItem == null;
+    }
+
+    private void clearSelection() {
+        tableView.getSelectionModel().clearSelection();
+        selectedItem = null;
+    }
+
+    private void onEntries(ListChangeListener.Change<? extends LogEntryBean> c) {
+        if (autoScroll) {
+            PlatformHelper.runLater(this::autoScrollToBottom);
+        }
+        if (!isSelectionEmpty()) {
+            PlatformHelper.runLater(() -> tableView.getSelectionModel().select(selectedItem));
+        }
+    }
+
+    private void autoScrollToBottom() {
+        tableView.scrollTo(tableView.getItems().size()-1);
+        autoScroll = true;
+    }
+
+    private boolean isScrolledToBottom() {
+        return getScrollBar(Orientation.VERTICAL).map(sb -> {
+                    double max = sb.getMax();
+                    double current = sb.getValue();
+                    double step = max / (1.0 + tableView.getItems().size());
+                    return current >= max - step;
+                })
+                .orElse(true);
     }
 
     /**
