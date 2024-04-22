@@ -1,6 +1,13 @@
 Changelog
 =========
 
+### version 0.41
+
+- use I18N class for internationalization
+- add FxLogPane, FxLogWindow
+- FxLauncher.run() to execute task after platform startup
+- removed the Cleaner from FxApplication; use PlatformHelper.getCleaner() instead
+
 ### version 0.40
 
 - update dependencies
