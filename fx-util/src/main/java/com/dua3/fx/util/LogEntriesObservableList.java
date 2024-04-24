@@ -2,6 +2,7 @@ package com.dua3.fx.util;
 
 import com.dua3.utility.logging.LogBuffer;
 import com.dua3.utility.logging.LogEntry;
+import javafx.application.Platform;
 import javafx.collections.ObservableListBase;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,7 +28,6 @@ final class LogEntriesObservableList extends ObservableListBase<LogEntry> implem
     private final AtomicInteger queuedRemoves = new AtomicInteger();
 
     private final ReadWriteLock updateLock = new ReentrantReadWriteLock();
-    private final Lock updateReadLock = updateLock.readLock();
     private final Lock updateWriteLock = updateLock.writeLock();
     private final Condition updatesAvailableCondition = updateWriteLock.newCondition();
 
@@ -46,26 +46,25 @@ final class LogEntriesObservableList extends ObservableListBase<LogEntry> implem
                 try {
                     updatesAvailableCondition.await();
 
-                    try {
-                        beginChange();
+                    List<LogEntry> newData = Arrays.asList(buffer.toArray());
 
+                    Platform.runLater(() -> {
+                        int newSz = newData.size();
                         int oldSz = data.size();
-                        int remove = queuedRemoves.getAndSet(0);
-                        int remainingRows = oldSz - remove;
-                        List<LogEntry> dataToRemove = List.copyOf(data.subList(0, remove));
-                        data = Arrays.asList(buffer.toArray());
-                        int sz = data.size();
-                        int addedRows = sz - remainingRows;
+                        int removedRows = queuedRemoves.getAndSet(0);
+                        int remainingRows = oldSz - removedRows;
+                        int addedRows = newSz - remainingRows;
 
-                        if (!dataToRemove.isEmpty()) {
-                            nextRemove(0, dataToRemove);
+                        try {
+                            beginChange();
+                            data = newData;
+                            List<LogEntry> removed = List.copyOf(data.subList(0, removedRows));
+                            nextRemove(0, removed);
+                            nextAdd(newSz - addedRows, newSz);
+                        } finally {
+                            endChange();
                         }
-                        if (addedRows > 0) {
-                            nextAdd(sz - addedRows, sz);
-                        }
-                    } finally {
-                        endChange();
-                    }
+                    });
                 } catch (InterruptedException e) {
                     LOG.debug("interrupted", e);
                     Thread.currentThread().interrupt();
@@ -88,22 +87,14 @@ final class LogEntriesObservableList extends ObservableListBase<LogEntry> implem
 
     @Override
     public int size() {
-        updateReadLock.lock();
-        try {
-            return data.size();
-        } finally {
-            updateReadLock.unlock();
-        }
+        assert Platform.isFxApplicationThread() : "not on FX Application Thread";
+        return data.size();
     }
 
     @Override
     public LogEntry get(int idx) {
-        updateReadLock.lock();
-        try {
-            return data.get(idx);
-        } finally {
-            updateReadLock.unlock();
-        }
+        assert Platform.isFxApplicationThread() : "not on FX Application Thread";
+        return data.get(idx);
     }
 
     @Override
@@ -125,15 +116,6 @@ final class LogEntriesObservableList extends ObservableListBase<LogEntry> implem
             updatesAvailableCondition.signalAll();
         } finally {
             updateWriteLock.unlock();
-        }
-    }
-
-    public void executeRead(Runnable readTask) {
-        updateReadLock.lock();
-        try {
-            readTask.run();
-        } finally {
-            updateReadLock.unlock();
         }
     }
 

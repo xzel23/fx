@@ -38,7 +38,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -231,11 +230,13 @@ public class FxLogPane extends BorderPane {
     }
 
     private void selectLogEntry(LogEntry logEntry) {
+        assert Platform.isFxApplicationThread() : "not on FX Application Thread";
         tableView.getSelectionModel().select(logEntry);
         tableView.scrollTo(logEntry);
     }
 
     private void onScrollEvent(ScrollEvent evt) {
+        assert Platform.isFxApplicationThread() : "not on FX Application Thread";
         if (autoScroll) {
             // disable autoscroll when manually scrolling
             autoScroll = false;
@@ -255,29 +256,33 @@ public class FxLogPane extends BorderPane {
     }
 
     private boolean isSelectionEmpty() {
+        assert Platform.isFxApplicationThread() : "not on FX Application Thread";
         return selectedItem == null;
     }
 
     private void clearSelection() {
+        assert Platform.isFxApplicationThread() : "not on FX Application Thread";
         tableView.getSelectionModel().clearSelection();
         selectedItem = null;
     }
 
-    private void onEntries(ListChangeListener.Change<? extends LogEntry> c) {
+    private void onEntries(ListChangeListener.Change<? extends LogEntry> change) {
+        assert Platform.isFxApplicationThread() : "not on FX Application Thread";
         if (autoScroll) {
-            PlatformHelper.runLater(this::autoScrollToBottom);
+            // scroll to bottom
+            Platform.runLater(() -> {
+                tableView.scrollTo(tableView.getItems().size()-1);
+                autoScroll = true;
+            });
         }
         if (!isSelectionEmpty()) {
-            PlatformHelper.runLater(() -> tableView.getSelectionModel().select(selectedItem));
+            // update selection
+            Platform.runLater(() -> tableView.getSelectionModel().select(selectedItem));
         }
-    }
-
-    private void autoScrollToBottom() {
-        tableView.scrollTo(tableView.getItems().size()-1);
-        autoScroll = true;
     }
 
     private boolean isScrolledToBottom() {
+        assert Platform.isFxApplicationThread() : "not on FX Application Thread";
         return getScrollBar(Orientation.VERTICAL).map(sb -> {
                     double max = sb.getMax();
                     double current = sb.getValue();
