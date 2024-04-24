@@ -7,15 +7,18 @@ import com.dua3.utility.logging.LogBuffer;
 import com.dua3.utility.logging.LogEntry;
 import com.dua3.utility.logging.LogLevel;
 import com.dua3.utility.logging.LogUtil;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.transformation.FilteredList;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollBar;
+import javafx.scene.control.Separator;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -31,8 +34,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -110,12 +116,14 @@ public class FxLogPane extends BorderPane {
 
         entries.addListener(this::onEntries);
 
-        // add log level filtering to toolbar
+        double tfWidth = getDisplayWidth("X".repeat(32));
+
+        // filtering by log level and logger name
         ComboBox<LogLevel> cbLogLevel = new ComboBox<>(FXCollections.observableArrayList(LogLevel.values()));
         TextField tfLoggerName = new TextField();
-        tfLoggerName.setPrefWidth(getDisplayWidth("X".repeat(40)));
+        tfLoggerName.setPrefWidth(tfWidth);
 
-        Runnable updateFilter = () -> PlatformHelper.runLater(() -> {
+        Runnable updateFilter = () -> {
             LogLevel level = cbLogLevel.getSelectionModel().getSelectedItem();
             BiPredicate<String, LogLevel> predicate;
             String loggerText = tfLoggerName.getText();
@@ -125,7 +133,7 @@ public class FxLogPane extends BorderPane {
                 predicate = (name, lvl) -> name.contains(loggerText);
             }
             entries.setPredicate(new DefaultLogEntryFilter(level, predicate));
-        });
+        };
 
         cbLogLevel.valueProperty().addListener((v,o,n) -> updateFilter.run());
         tfLoggerName.textProperty().addListener((v,o,n) -> updateFilter.run());
@@ -133,11 +141,52 @@ public class FxLogPane extends BorderPane {
         cbLogLevel.setValue(LogLevel.INFO);
         tfLoggerName.clear();
 
+        // search for text
+        TextField tfSearchText = new TextField();
+        tfSearchText.setPrefWidth(tfWidth);
+        Button btnSearchUp = new Button("▲");
+        Button btnSearchDown = new Button("▼");
+
+        BiConsumer<String, Boolean> searchAction = (text, up) -> {
+            int step = up ? -1 : 1;
+            LogEntry current = selectedItem;
+            List<LogEntry> items = List.copyOf(entries);
+            int n = items.size();
+            int pos = current != null ? Math.max(0, items.indexOf(current)) : 0;
+            for (int i = 0; i < n; i++) {
+                int j = (pos + step * i) % n;
+                LogEntry logEntry = items.get(j);
+                if (logEntry.message().contains(text) && (i != 0 || current == null)) { // skip current entry if selected
+                    selectLogEntry(logEntry);
+                    break;
+                }
+            }
+        };
+
+        tfSearchText.setOnKeyReleased(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                if (event.isShiftDown()) {
+                    searchAction.accept(tfSearchText.getText(), true);
+                } else {
+                    searchAction.accept(tfSearchText.getText(), false);
+                }
+            }
+        });
+
+        btnSearchUp.setOnAction(evt -> searchAction.accept(tfSearchText.getText(), true));
+        btnSearchDown.setOnAction(evt -> searchAction.accept(tfSearchText.getText(), false));
+
+        // create toolbar
         toolBar.getItems().setAll(
                 new Label("Level:"),
                 cbLogLevel,
                 new Label("Logger:"),
-                tfLoggerName
+                tfLoggerName,
+                new Separator(Orientation.HORIZONTAL),
+                new Label("Search by Message:"),
+                tfSearchText,
+                btnSearchUp,
+                btnSearchDown
         );
 
         // define table columns
@@ -179,6 +228,11 @@ public class FxLogPane extends BorderPane {
 
         setTop(toolBar);
         setCenter(splitPane);
+    }
+
+    private void selectLogEntry(LogEntry logEntry) {
+        tableView.getSelectionModel().select(logEntry);
+        tableView.scrollTo(logEntry);
     }
 
     private void onScrollEvent(ScrollEvent evt) {
