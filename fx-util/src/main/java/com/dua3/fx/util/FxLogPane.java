@@ -6,7 +6,6 @@ import com.dua3.utility.logging.LogBuffer;
 import com.dua3.utility.logging.LogEntry;
 import com.dua3.utility.logging.LogLevel;
 import com.dua3.utility.logging.LogUtil;
-import com.dua3.utility.text.FontUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.transformation.FilteredList;
@@ -97,8 +96,8 @@ public class FxLogPane extends BorderPane {
 
         // add log level filtering to toolbar
         ComboBox<LogLevel> cbLogLevel = new ComboBox<>(FXCollections.observableArrayList(LogLevel.values()));
-        cbLogLevel.setValue(LogLevel.INFO);
         cbLogLevel.valueProperty().addListener((v,o,n) -> entries.setPredicate(entry -> n.ordinal() <= entry.getLevel().ordinal()));
+        cbLogLevel.setValue(LogLevel.INFO);
 
         toolBar.getItems().setAll(
                 new Label("Level:"),
