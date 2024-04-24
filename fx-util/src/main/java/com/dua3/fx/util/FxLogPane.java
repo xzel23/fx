@@ -6,6 +6,8 @@ import com.dua3.utility.logging.LogBuffer;
 import com.dua3.utility.logging.LogEntry;
 import com.dua3.utility.logging.LogLevel;
 import com.dua3.utility.logging.LogUtil;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.transformation.FilteredList;
@@ -27,6 +29,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
+import javafx.util.Callback;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -40,15 +43,15 @@ public class FxLogPane extends BorderPane {
     private final Function<LogEntry, Color> colorize;
     private final ToolBar toolBar;
     private final TextArea details;
-    private final TableView<LogEntryBean> tableView;
+    private final TableView<LogEntry> tableView;
 
-    private volatile LogEntryBean selectedItem;
+    private volatile LogEntry selectedItem;
 
     private boolean autoScroll = true;
 
-    private <T> TableColumn<LogEntryBean, T> createColumn(String name, String propertyName, boolean fixedWidth, String... sampleTexts) {
-        TableColumn<LogEntryBean, T> column = new TableColumn<>(name);
-        column.setCellValueFactory(new PropertyValueFactory<>(propertyName));
+    private <T> TableColumn<LogEntry, T> createColumn(String name, Function<LogEntry,T> getter, boolean fixedWidth, String... sampleTexts) {
+        TableColumn<LogEntry, T> column = new TableColumn<>(name);
+        column.setCellValueFactory(entry -> new SimpleObjectProperty<>(getter.apply(entry.getValue())));
         if (sampleTexts.length == 0) {
             column.setPrefWidth(COLUMN_WIDTH_LARGE);
             column.setMaxWidth(COLUMN_WIDTH_MAX);
@@ -66,13 +69,13 @@ public class FxLogPane extends BorderPane {
             @Override
             protected void updateItem(@Nullable T item, boolean empty) {
                 super.updateItem(item, empty);
-                TableRow<LogEntryBean> row = getTableRow();
+                TableRow<LogEntry> row = getTableRow();
                 if (empty || row == null || row.getItem() == null) {
                     setText(null);
                     setStyle(null);
                 } else {
                     setText(item == null ? "" : item.toString());
-                    Color textColor = colorize.apply(row.getItem().getLogEntry());
+                    Color textColor = colorize.apply(row.getItem());
                     setTextFill(FxUtil.convert(textColor));
                 }
                 super.updateItem(item, empty);
@@ -94,7 +97,7 @@ public class FxLogPane extends BorderPane {
     }
 
     public FxLogPane(LogBuffer buffer, Function<LogEntry, Color> colorize) {
-        FilteredList<LogEntryBean> entries = new FilteredList<>(new LogEntriesObservableList(buffer), p -> true);
+        FilteredList<LogEntry> entries = new FilteredList<>(new LogEntriesObservableList(buffer), p -> true);
 
         this.colorize = colorize;
         this.toolBar = new ToolBar();
@@ -105,7 +108,7 @@ public class FxLogPane extends BorderPane {
 
         // add log level filtering to toolbar
         ComboBox<LogLevel> cbLogLevel = new ComboBox<>(FXCollections.observableArrayList(LogLevel.values()));
-        cbLogLevel.valueProperty().addListener((v,o,n) -> entries.setPredicate(entry -> n.ordinal() <= entry.getLevel().ordinal()));
+        cbLogLevel.valueProperty().addListener((v,o,n) -> entries.setPredicate(entry -> n.ordinal() <= entry.level().ordinal()));
         cbLogLevel.setValue(LogLevel.INFO);
 
         toolBar.getItems().setAll(
@@ -117,10 +120,10 @@ public class FxLogPane extends BorderPane {
         tableView.setEditable(false);
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_LAST_COLUMN);
         tableView.getColumns().setAll(
-                createColumn("Time", "time", true, "8888-88-88T88:88:88.8888888"),
-                createColumn("Level", "level", true, Arrays.stream(LogLevel.values()).map(Object::toString).toArray(String[]::new)),
-                createColumn("Logger", "loggerName", false, "X".repeat(20)),
-                createColumn("Message", "message", false, "X".repeat(60))
+                createColumn("Time", LogEntry::time, true, "8888-88-88T88:88:88.8888888"),
+                createColumn("Level", LogEntry::level, true, Arrays.stream(LogLevel.values()).map(Object::toString).toArray(String[]::new)),
+                createColumn("Logger", LogEntry::loggerName, false, "X".repeat(20)),
+                createColumn("Message", LogEntry::message, false, "X".repeat(60))
         );
 
         // disable autoscroll if the selection is not empty, enable when selection is cleared while scrolled to bottom
@@ -131,7 +134,7 @@ public class FxLogPane extends BorderPane {
             } else {
                 this.selectedItem = newSelection;
                 autoScroll = false;
-                details.setText(newSelection.getLogEntry().toString());
+                details.setText(newSelection.toString());
             }
         });
 
@@ -182,7 +185,7 @@ public class FxLogPane extends BorderPane {
         selectedItem = null;
     }
 
-    private void onEntries(ListChangeListener.Change<? extends LogEntryBean> c) {
+    private void onEntries(ListChangeListener.Change<? extends LogEntry> c) {
         if (autoScroll) {
             PlatformHelper.runLater(this::autoScrollToBottom);
         }

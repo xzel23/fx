@@ -7,7 +7,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -19,11 +18,11 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 /**
  * This class represents a table model for displaying log entries in a Swing LogPane.
  */
-final class LogEntriesObservableList extends ObservableListBase<LogEntryBean> implements LogBuffer.LogBufferListener {
+final class LogEntriesObservableList extends ObservableListBase<LogEntry> implements LogBuffer.LogBufferListener {
     private static final Logger LOG = LogManager.getLogger(LogEntriesObservableList.class);
 
     private final LogBuffer buffer;
-    private volatile List<LogEntryBean> data = Collections.emptyList();
+    private volatile List<LogEntry> data = Collections.emptyList();
     private final AtomicInteger queuedRemoves = new AtomicInteger();
 
     private final ReadWriteLock updateLock = new ReentrantReadWriteLock();
@@ -53,8 +52,8 @@ final class LogEntriesObservableList extends ObservableListBase<LogEntryBean> im
                         int oldSz = data.size();
                         int remove = queuedRemoves.getAndSet(0);
                         int remainingRows = oldSz - remove;
-                        List<LogEntryBean> dataToRemove = List.copyOf(data.subList(0, remove));
-                        data = Arrays.stream(buffer.toArray()).map(LogEntryBean::new).toList();
+                        List<LogEntry> dataToRemove = List.copyOf(data.subList(0, remove));
+                        data = Arrays.asList(buffer.toArray());
                         int sz = data.size();
                         int addedRows = sz - remainingRows;
 
@@ -92,7 +91,7 @@ final class LogEntriesObservableList extends ObservableListBase<LogEntryBean> im
     }
 
     @Override
-    public LogEntryBean get(int idx) {
+    public LogEntry get(int idx) {
         updateReadLock.lock();
         try {
             return data.get(idx);
