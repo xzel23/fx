@@ -35,6 +35,8 @@ import java.util.stream.Stream;
 
 public class FxLogPane extends BorderPane {
 
+    public static final double COLUMN_WIDTH_MAX = Double.MAX_VALUE;
+    public static final double COLUMN_WIDTH_LARGE = 10000.0;
     private final Function<LogEntry, Color> colorize;
     private final ToolBar toolBar;
     private final TextArea details;
@@ -44,14 +46,21 @@ public class FxLogPane extends BorderPane {
 
     private boolean autoScroll = true;
 
-    private <T> TableColumn<LogEntryBean, T> createColumn(String name, String propertyName, String... sampleTexts) {
+    private <T> TableColumn<LogEntryBean, T> createColumn(String name, String propertyName, boolean fixedWidth, String... sampleTexts) {
         TableColumn<LogEntryBean, T> column = new TableColumn<>(name);
         column.setCellValueFactory(new PropertyValueFactory<>(propertyName));
         if (sampleTexts.length == 0) {
-            column.setMaxWidth(Double.MAX_VALUE);
+            column.setPrefWidth(COLUMN_WIDTH_LARGE);
+            column.setMaxWidth(COLUMN_WIDTH_MAX);
         }else {
-            double w = Stream.of(sampleTexts).mapToDouble(s -> new Text(s).getLayoutBounds().getWidth()).max().orElse(80);
-            column.setPrefWidth(w + 8);
+            double w = 8 + Stream.of(sampleTexts).mapToDouble(s -> new Text(s).getLayoutBounds().getWidth()).max().orElse(80);
+            column.setPrefWidth(w);
+            if (fixedWidth) {
+                column.setMinWidth(w);
+                column.setMaxWidth(w);
+            } else {
+                column.setMaxWidth(COLUMN_WIDTH_MAX);
+            }
         }
         column.setCellFactory(col -> new TableCell<>() {
             @Override
@@ -106,12 +115,12 @@ public class FxLogPane extends BorderPane {
 
         // define table columns
         tableView.setEditable(false);
-
+        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_LAST_COLUMN);
         tableView.getColumns().setAll(
-                createColumn("Time", "time", "8888-88-88T88:88:88.8888888"),
-                createColumn("Level", "level", Arrays.stream(LogLevel.values()).map(Object::toString).toArray(String[]::new)),
-                createColumn("Logger", "loggerName", "X".repeat(40)),
-                createColumn("Message", "message", "X".repeat(80))
+                createColumn("Time", "time", true, "8888-88-88T88:88:88.8888888"),
+                createColumn("Level", "level", true, Arrays.stream(LogLevel.values()).map(Object::toString).toArray(String[]::new)),
+                createColumn("Logger", "loggerName", false, "X".repeat(20)),
+                createColumn("Message", "message", false, "X".repeat(60))
         );
 
         // disable autoscroll if the selection is not empty, enable when selection is cleared while scrolled to bottom
