@@ -102,10 +102,10 @@ final class LogEntriesObservableList extends ObservableListBase<LogEntryBean> im
     }
 
     @Override
-    public void entries(Collection<LogEntry> entries, int replaced) {
+    public void entries(int removed, int added) {
         updateWriteLock.lock();
         try {
-            queuedRemoves.addAndGet(replaced);
+            queuedRemoves.addAndGet(removed);
             updatesAvailableCondition.signalAll();
         } finally {
             updateWriteLock.unlock();
