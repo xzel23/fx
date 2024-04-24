@@ -1,6 +1,5 @@
 package com.dua3.fx.samples;
 
-import com.dua3.fx.icons.IconUtil;
 import com.dua3.fx.util.FxLogPane;
 import com.dua3.utility.logging.LogLevel;
 import javafx.application.Application;
