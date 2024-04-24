@@ -21,7 +21,8 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 final class LogEntriesObservableList extends ObservableListBase<LogEntry> implements LogBuffer.LogBufferListener {
     private static final Logger LOG = LogManager.getLogger(LogEntriesObservableList.class);
 
-    private final LogBuffer buffer;
+    private static final long REST_TIME_IN_MS = 10;
+
     private volatile List<LogEntry> data = Collections.emptyList();
     private final AtomicInteger queuedRemoves = new AtomicInteger();
 
@@ -37,7 +38,6 @@ final class LogEntriesObservableList extends ObservableListBase<LogEntry> implem
      * @throws NullPointerException if the buffer is null
      */
     LogEntriesObservableList(LogBuffer buffer) {
-        this.buffer = buffer;
         buffer.addLogBufferListener(this);
 
         Thread updateThread = new Thread(() -> {
@@ -74,8 +74,14 @@ final class LogEntriesObservableList extends ObservableListBase<LogEntry> implem
                 } finally {
                     updateWriteLock.unlock();
                 }
+                try {
+                    Thread.sleep(REST_TIME_IN_MS);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
             }
         }, "LogTableModel Update Thread");
+        updateThread.setPriority(Thread.NORM_PRIORITY - 1);
         updateThread.setDaemon(true);
         updateThread.start();
     }
