@@ -22,6 +22,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToolBar;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -31,6 +32,7 @@ import javafx.scene.text.Text;
 
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -43,8 +45,6 @@ public class FxLogPane extends BorderPane {
     private final TextArea details;
     private final TableView<LogEntry> tableView;
 
-    private DefaultLogEntryFilter filter;
-
     private volatile LogEntry selectedItem;
 
     private boolean autoScroll = true;
@@ -56,7 +56,7 @@ public class FxLogPane extends BorderPane {
             column.setPrefWidth(COLUMN_WIDTH_LARGE);
             column.setMaxWidth(COLUMN_WIDTH_MAX);
         }else {
-            double w = 8 + Stream.of(sampleTexts).mapToDouble(s -> new Text(s).getLayoutBounds().getWidth()).max().orElse(80);
+            double w = 8 + Stream.of(sampleTexts).mapToDouble(s -> getDisplayWidth(s)).max().orElse(80);
             column.setPrefWidth(w);
             if (fixedWidth) {
                 column.setMinWidth(w);
@@ -84,6 +84,10 @@ public class FxLogPane extends BorderPane {
         return column;
     }
 
+    private static double getDisplayWidth(String s) {
+        return new Text(s).getLayoutBounds().getWidth();
+    }
+
     public FxLogPane() {
         this(LogBuffer.DEFAULT_CAPACITY);
     }
@@ -103,18 +107,37 @@ public class FxLogPane extends BorderPane {
         this.toolBar = new ToolBar();
         this.tableView = new TableView<>(entries);
         this.details = new TextArea();
-        this.filter = new DefaultLogEntryFilter(LogLevel.INFO, (s,level) -> true);
 
         entries.addListener(this::onEntries);
 
         // add log level filtering to toolbar
         ComboBox<LogLevel> cbLogLevel = new ComboBox<>(FXCollections.observableArrayList(LogLevel.values()));
-        cbLogLevel.valueProperty().addListener((v,o,n) -> entries.setPredicate(filter.withLevel(n)));
-        cbLogLevel.setValue(filter.getLevel());
+        TextField tfLoggerName = new TextField();
+        tfLoggerName.setPrefWidth(getDisplayWidth("X".repeat(40)));
+
+        Runnable updateFilter = () -> PlatformHelper.runLater(() -> {
+            LogLevel level = cbLogLevel.getSelectionModel().getSelectedItem();
+            BiPredicate<String, LogLevel> predicate;
+            String loggerText = tfLoggerName.getText();
+            if (loggerText.isEmpty()) {
+                predicate = (String name, LogLevel lvl) -> true;
+            } else {
+                predicate = (name, lvl) -> name.contains(loggerText);
+            }
+            entries.setPredicate(new DefaultLogEntryFilter(level, predicate));
+        });
+
+        cbLogLevel.valueProperty().addListener((v,o,n) -> updateFilter.run());
+        tfLoggerName.textProperty().addListener((v,o,n) -> updateFilter.run());
+
+        cbLogLevel.setValue(LogLevel.INFO);
+        tfLoggerName.clear();
 
         toolBar.getItems().setAll(
                 new Label("Level:"),
-                cbLogLevel
+                cbLogLevel,
+                new Label("Logger:"),
+                tfLoggerName
         );
 
         // define table columns
