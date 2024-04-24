@@ -2,12 +2,12 @@ package com.dua3.fx.util;
 
 import com.dua3.cabe.annotations.Nullable;
 import com.dua3.utility.data.Color;
+import com.dua3.utility.logging.DefaultLogEntryFilter;
 import com.dua3.utility.logging.LogBuffer;
 import com.dua3.utility.logging.LogEntry;
 import com.dua3.utility.logging.LogLevel;
 import com.dua3.utility.logging.LogUtil;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.transformation.FilteredList;
@@ -23,13 +23,11 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToolBar;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
-import javafx.util.Callback;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -44,6 +42,8 @@ public class FxLogPane extends BorderPane {
     private final ToolBar toolBar;
     private final TextArea details;
     private final TableView<LogEntry> tableView;
+
+    private DefaultLogEntryFilter filter;
 
     private volatile LogEntry selectedItem;
 
@@ -103,13 +103,14 @@ public class FxLogPane extends BorderPane {
         this.toolBar = new ToolBar();
         this.tableView = new TableView<>(entries);
         this.details = new TextArea();
+        this.filter = new DefaultLogEntryFilter(LogLevel.INFO, (s,level) -> true);
 
         entries.addListener(this::onEntries);
 
         // add log level filtering to toolbar
         ComboBox<LogLevel> cbLogLevel = new ComboBox<>(FXCollections.observableArrayList(LogLevel.values()));
-        cbLogLevel.valueProperty().addListener((v,o,n) -> entries.setPredicate(entry -> n.ordinal() <= entry.level().ordinal()));
-        cbLogLevel.setValue(LogLevel.INFO);
+        cbLogLevel.valueProperty().addListener((v,o,n) -> entries.setPredicate(filter.withLevel(n)));
+        cbLogLevel.setValue(filter.getLevel());
 
         toolBar.getItems().setAll(
                 new Label("Level:"),
