@@ -35,6 +35,7 @@ import javafx.scene.text.Text;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
@@ -125,11 +126,11 @@ public class FxLogPane extends BorderPane {
         Runnable updateFilter = () -> {
             LogLevel level = cbLogLevel.getSelectionModel().getSelectedItem();
             BiPredicate<String, LogLevel> predicate;
-            String loggerText = tfLoggerName.getText();
+            String loggerText = tfLoggerName.getText().toLowerCase(Locale.ROOT);
             if (loggerText.isEmpty()) {
                 predicate = (String name, LogLevel lvl) -> true;
             } else {
-                predicate = (name, lvl) -> name.contains(loggerText);
+                predicate = (name, lvl) -> name.toLowerCase(Locale.ROOT).contains(loggerText);
             }
             entries.setPredicate(new DefaultLogEntryFilter(level, predicate));
         };
@@ -147,6 +148,7 @@ public class FxLogPane extends BorderPane {
         Button btnSearchDown = new Button("▼");
 
         BiConsumer<String, Boolean> searchAction = (text, up) -> {
+            String lowercaseText = text.toLowerCase(Locale.ROOT);
             int step = up ? -1 : 1;
             LogEntry current = selectedItem;
             List<LogEntry> items = List.copyOf(entries);
@@ -155,7 +157,7 @@ public class FxLogPane extends BorderPane {
             for (int i = 0; i < n; i++) {
                 int j = (pos + step * i) % n;
                 LogEntry logEntry = items.get(j);
-                if (logEntry.message().contains(text) && (i != 0 || current == null)) { // skip current entry if selected
+                if (logEntry.message().toLowerCase(Locale.ROOT).contains(lowercaseText) && (i != 0 || current == null)) { // skip current entry if selected
                     selectLogEntry(logEntry);
                     break;
                 }
