@@ -10,6 +10,7 @@ import javafx.stage.Stage;
  */
 public class FxLogWindow extends Stage {
 
+    public static final String DEFAULT_WINDOW_TITLE = "Log";
     private final LogBuffer logBuffer;
     private final FxLogPane logPane;
 
@@ -17,7 +18,16 @@ public class FxLogWindow extends Stage {
      * Create a new FxLogWindow instance with a new {@link LogBuffer} using the default capacity;
      */
     public FxLogWindow() {
-        this(new LogBuffer());
+        this(DEFAULT_WINDOW_TITLE);
+    }
+
+    /**
+     * Create a new FxLogWindow instance with a new {@link LogBuffer} using the default capacity;
+     *
+     * @param title the window title
+     */
+    public FxLogWindow(String title) {
+        this(title, new LogBuffer());
     }
 
     /**
@@ -26,7 +36,17 @@ public class FxLogWindow extends Stage {
      * @param maxLines the maximum number of lines to display in the log window
      */
     public FxLogWindow(int maxLines) {
-        this(new LogBuffer(maxLines));
+        this(DEFAULT_WINDOW_TITLE, maxLines);
+    }
+
+    /**
+     * Constructs a new instance of {@code FxLogWindow} with the specified maximum number of lines.
+     *
+     * @param title the window title
+     * @param maxLines the maximum number of lines to display in the log window
+     */
+    public FxLogWindow(String title, int maxLines) {
+        this(title, new LogBuffer(maxLines));
     }
 
     /**
@@ -35,10 +55,20 @@ public class FxLogWindow extends Stage {
      * @param logBuffer the LogBuffer to use
      */
     public FxLogWindow(LogBuffer logBuffer) {
+        this(DEFAULT_WINDOW_TITLE, logBuffer);
+    }
+
+    /**
+     * Constructs a new instance of {@code FxLogWindow} using the provided {@link LogBuffer}.
+     *
+     * @param title the window title
+     * @param logBuffer the LogBuffer to use
+     */
+    public FxLogWindow(String title, LogBuffer logBuffer) {
         this.logBuffer = logBuffer;
         logPane = new FxLogPane(this.logBuffer);
         Scene scene = new Scene(logPane, 800, 400);
         setScene(scene);
-        setTitle("Log");
+        setTitle(title);
     }
 }
