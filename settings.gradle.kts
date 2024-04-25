@@ -27,6 +27,7 @@ dependencyResolutionManagement {
             plugin("javafx", "org.openjfx.javafxplugin").version("0.1.0")
 
             version("cabe", "2.0")
+            version("commons-logging", "1.3.1")
             version("dua3-utility", "12.3.0-SNAPSHOT")
             version("javafx", "22")
             version("ikonli", "12.3.1")
@@ -34,6 +35,7 @@ dependencyResolutionManagement {
             version("slf4j", "2.0.13")
 
             library("cabe-annotations", "com.dua3.cabe", "cabe-annotations").versionRef("cabe")
+            library("commons-logging", "commons-logging", "commons-logging").versionRef("commons-logging")
             library("dua3-utility", "com.dua3.utility", "utility").versionRef("dua3-utility")
             library("dua3-utility-db", "com.dua3.utility", "utility-db").versionRef("dua3-utility")
             library("dua3-utility-logging", "com.dua3.utility", "utility-logging").versionRef("dua3-utility")
@@ -45,6 +47,7 @@ dependencyResolutionManagement {
             library("log4j-api", "org.apache.logging.log4j", "log4j-api").versionRef("log4j")
             library("log4j-core", "org.apache.logging.log4j", "log4j-core").versionRef("log4j")
             library("log4j-jul", "org.apache.logging.log4j", "log4j-jul").versionRef("log4j")
+            library("log4j-jcl", "org.apache.logging.log4j", "log4j-jcl").versionRef("log4j")
             library("log4j-slf4j2", "org.apache.logging.log4j", "log4j-slf4j2-impl").versionRef("log4j")
             library("log4j-to-slf4j", "org.apache.logging.log4j", "log4j-to-slf4j").versionRef("log4j")
             library("slf4j-api", "org.slf4j", "slf4j-api").versionRef("slf4j")

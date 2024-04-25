@@ -2,9 +2,12 @@ package com.dua3.fx.samples;
 
 import com.dua3.fx.util.FxLogPane;
 import com.dua3.utility.logging.LogLevel;
+import com.dua3.utility.logging.log4j.LogUtilLog4J;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.slf4j.LoggerFactory;
 
 import java.util.Random;
@@ -13,19 +16,17 @@ import java.util.stream.IntStream;
 
 public class LogPaneSample extends Application {
 
-    static {
-        System.setProperty("java.util.logging.manager", "org.apache.logging.log4j.jul.LogManager");
-    }
-
-    public static final int AVERAGE_SLEEP_MILLIS = 10;
-    public static final int LOG_BUFFER_SIZE = 10000;
+    public static final int AVERAGE_SLEEP_MILLIS = 5;
+    public static final int LOG_BUFFER_SIZE = 100000;
     private final org.slf4j.Logger SLF4J_LOGGER = LoggerFactory.getLogger("SLF4J." + getClass().getName());
+    private final Log JCL_LOGGER = LogFactory.getLog("JCL." + getClass().getName());
     private final java.util.logging.Logger JUL_LOGGER = java.util.logging.Logger.getLogger("JUL." + getClass().getName());
     private final org.apache.logging.log4j.Logger LOG4J_LOGGER = org.apache.logging.log4j.LogManager.getLogger("LOG4J." + getClass().getName());
     private final AtomicInteger n = new AtomicInteger();
     private volatile boolean done = false;
 
     public static void main(String[] args) {
+        LogUtilLog4J.init(LogLevel.TRACE);
         launch(args);
     }
 
@@ -44,9 +45,9 @@ public class LogPaneSample extends Application {
 
     private void startLoggingThreads() {
         // start threads
-        final int numberOfImplementations = 3;
+        final int numberOfImplementations = 4;
         Random random = new Random();
-        for (final int implementation : IntStream.range(0, numberOfImplementations).toArray()) {// for (int implementation = 0; implementation < 3; implementation++) {
+        for (final int implementation : IntStream.range(0, numberOfImplementations).toArray()) {
             Thread thread = new Thread(() -> {
                 try {
                     Thread.sleep(1000);
@@ -55,18 +56,24 @@ public class LogPaneSample extends Application {
                 }
 
                 while (!done) {
-                    long wait = random.nextLong(2 * AVERAGE_SLEEP_MILLIS * numberOfImplementations);
-                    try {
-                        Thread.sleep(wait);
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
+                    if (AVERAGE_SLEEP_MILLIS > 0) {
+                        long wait = random.nextLong(2 * AVERAGE_SLEEP_MILLIS * numberOfImplementations);
+                        try {
+                            Thread.sleep(wait);
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                        }
                     }
 
                     int nr = n.incrementAndGet();
 
-                    int bound = implementation == 1 ? 6 : 5;
+                    int bound = switch (implementation) {
+                        case 1, 3 -> 6;
+                        default -> 5;
+                    };
+
                     int levelInt = random.nextInt(bound);
-                    LogLevel level = LogLevel.values()[implementation == 1 ? Math.max(0, levelInt - 1) : levelInt];
+                    LogLevel level = LogLevel.values()[implementation == 1 || implementation == 3 ? Math.max(0, levelInt - 1) : levelInt];
 
                     String msg = "Message #%d, imp %s, original integer level %d, level %s".formatted(nr, implementation, levelInt, level);
 
@@ -99,6 +106,17 @@ public class LogPaneSample extends Application {
                                 case 2 -> LOG4J_LOGGER.info(msg);
                                 case 3 -> LOG4J_LOGGER.warn(msg);
                                 case 4 -> LOG4J_LOGGER.error(msg, generateThrowable(random));
+                                default -> throw new IllegalStateException("integer out of range");
+                            }
+                        }
+                        case 3 -> {
+                            switch (levelInt) {
+                                case 0 -> JCL_LOGGER.trace(msg);
+                                case 1 -> JCL_LOGGER.debug(msg);
+                                case 2 -> JCL_LOGGER.info(msg);
+                                case 3 -> JCL_LOGGER.warn(msg);
+                                case 4 -> JCL_LOGGER.error(msg);
+                                case 5 -> JCL_LOGGER.fatal(msg, generateThrowable(random));
                                 default -> throw new IllegalStateException("integer out of range");
                             }
                         }

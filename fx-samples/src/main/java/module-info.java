@@ -32,6 +32,7 @@ module com.dua3.fx.samples {
     requires static com.dua3.cabe.annotations;
     requires org.slf4j;
     requires java.logging;
+    requires org.apache.commons.logging;
     requires org.apache.logging.log4j;
     requires org.apache.logging.log4j.jul;
 }
