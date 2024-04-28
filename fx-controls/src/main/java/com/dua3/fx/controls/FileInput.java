@@ -1,7 +1,7 @@
 package com.dua3.fx.controls;
 
 import com.dua3.cabe.annotations.Nullable;
-import com.dua3.fx.util.FxUtil;
+import com.dua3.utility.fx.FxUtil;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringExpression;
 import javafx.beans.property.BooleanProperty;

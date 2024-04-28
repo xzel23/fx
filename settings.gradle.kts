@@ -42,6 +42,7 @@ dependencyResolutionManagement {
             library("dua3-utility-logging-log4j", "com.dua3.utility", "utility-logging-log4j").versionRef("dua3-utility")
             library("dua3-utility-logging-slf4j", "com.dua3.utility", "utility-logging-slf4j").versionRef("dua3-utility")
             library("dua3-utility-swing", "com.dua3.utility", "utility-swing").versionRef("dua3-utility")
+            library("dua3-utility-fx", "com.dua3.utility", "utility-fx").versionRef("dua3-utility")
             library("ikonli-fontawesome", "org.kordamp.ikonli", "ikonli-fontawesome-pack").versionRef("ikonli")
             library("ikonli-javafx", "org.kordamp.ikonli", "ikonli-javafx").versionRef("ikonli")
             library("log4j-api", "org.apache.logging.log4j", "log4j-api").versionRef("log4j")

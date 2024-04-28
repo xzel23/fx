@@ -1,6 +1,6 @@
 package com.dua3.fx.samples;
 
-import com.dua3.fx.util.FxLogPane;
+import com.dua3.utility.fx.FxLogPane;
 import com.dua3.utility.logging.LogLevel;
 import com.dua3.utility.logging.log4j.LogUtilLog4J;
 import javafx.application.Application;

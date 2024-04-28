@@ -94,8 +94,10 @@ subprojects {
         // Cabe (source annotations)
         compileOnly(rootProject.libs.cabe.annotations)
 
-        // SLF4J
+        // LOG4J
         implementation(rootProject.libs.log4j.api)
+
+        api(rootProject.libs.dua3.utility.fx)
     }
 
     idea {

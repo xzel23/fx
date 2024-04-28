@@ -35,4 +35,5 @@ module com.dua3.fx.samples {
     requires org.apache.commons.logging;
     requires org.apache.logging.log4j;
     requires org.apache.logging.log4j.jul;
+    requires com.dua3.utility.fx;
 }

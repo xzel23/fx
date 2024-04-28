@@ -15,7 +15,7 @@
 package com.dua3.fx.application;
 
 import com.dua3.fx.controls.Dialogs;
-import com.dua3.fx.util.FxUtil;
+import com.dua3.utility.fx.FxUtil;
 import com.dua3.utility.i18n.I18N;
 import com.dua3.utility.lang.LangUtil;
 import com.dua3.utility.text.TextUtil;
@@ -35,7 +35,6 @@ import java.awt.desktop.OpenURIEvent;
 import java.awt.desktop.PreferencesEvent;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.lang.ref.Cleaner;
 import java.net.URI;
 import java.net.URL;
 import java.nio.file.Files;

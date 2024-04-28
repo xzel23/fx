@@ -50,4 +50,5 @@ module com.dua3.fx.application {
     requires javafx.controls;
     requires java.desktop;
     requires static com.dua3.cabe.annotations;
+    requires com.dua3.utility.fx;
 }

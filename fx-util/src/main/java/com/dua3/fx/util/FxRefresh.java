@@ -12,7 +12,7 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * A class intended for controlling possibly long-running update operations. Refreshs happen mutually exclusive, i.e.
  * the update tasks do not have to be explicitly synchronized as long as not called directly from other code.
- * An example is updating a JavaFX node. I.e. if redraw requests come in before the current drawing finishes,
+ * An example is updating a JavaFX node. I.e., if redraw requests come in before the current drawing finishes,
  * the application becomes sluggish or burns CPU cycles for drawing outdated data. The FxRefresher automatically
  * skips intermediate frames if redraw requests come in too fast for the drawing to come up with.
  */
