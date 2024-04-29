@@ -6,9 +6,9 @@
 package com.dua3.fx.controls;
 
 import com.dua3.fx.util.FxRefresh;
-import com.dua3.fx.util.PlatformHelper;
 import com.dua3.utility.data.Pair;
 import com.dua3.utility.fx.FxUtil;
+import com.dua3.utility.fx.PlatformHelper;
 import com.dua3.utility.lang.LangUtil;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;

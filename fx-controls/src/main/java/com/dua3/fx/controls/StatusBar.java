@@ -15,7 +15,7 @@
 package com.dua3.fx.controls;
 
 import com.dua3.fx.util.FxTaskTracker;
-import com.dua3.fx.util.PlatformHelper;
+import com.dua3.utility.fx.PlatformHelper;
 import javafx.concurrent.Task;
 import javafx.concurrent.Worker.State;
 import javafx.geometry.Pos;

@@ -14,6 +14,7 @@
 
 package com.dua3.fx.application;
 
+import com.dua3.cabe.annotations.Nullable;
 import com.dua3.fx.controls.Dialogs;
 import com.dua3.utility.fx.FxUtil;
 import com.dua3.utility.i18n.I18N;
@@ -37,6 +38,8 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URI;
 import java.net.URL;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -130,6 +133,16 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
             LOG.warn("resource bundle uses fallback locale: {}", resources.getLocale());
         }
         return resources;
+    }
+
+    /**
+     * Convert a given URI to text.
+     *
+     * @param uri the URI to convert
+     * @return the text representation of the URI
+     */
+    public static String asText(@Nullable URI uri) {
+        return uri == null ? "" : URLDecoder.decode(uri.toString(), StandardCharsets.UTF_8);
     }
 
     /**
@@ -251,7 +264,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
 
         if (document != null) {
             String locStr = document.hasLocation() ?
-                    FxUtil.asText(document.getLocation()) :
+                    asText(document.getLocation()) :
                     i18n.get("fx.application.text.untitled");
             boolean dirty = document.isDirty();
 

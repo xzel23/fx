@@ -14,8 +14,8 @@
 
 package com.dua3.fx.util.db;
 
-import com.dua3.fx.util.PlatformHelper;
 import com.dua3.utility.db.DbUtil;
+import com.dua3.utility.fx.PlatformHelper;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;

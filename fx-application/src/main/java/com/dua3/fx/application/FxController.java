@@ -271,7 +271,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
         } catch (Exception e) {
             LOG.warn("error opening document", e);
             getApp().showErrorDialog(
-                    i18n.format("fx.application.dialog.error.open.document.{0.name}", FxUtil.asText(uri)),
+                    i18n.format("fx.application.dialog.error.open.document.{0.name}", FxApplication.asText(uri)),
                     String.valueOf(e.getLocalizedMessage())
             );
             return false;
@@ -402,7 +402,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
         } catch (Exception e) {
             LOG.warn("error saving document", e);
             getApp().showErrorDialog(
-                    i18n.format("fx.application.dialog.error.save.{0.document}", FxUtil.asText(uri)),
+                    i18n.format("fx.application.dialog.error.save.{0.document}", FxApplication.asText(uri)),
                     e.getLocalizedMessage()
             );
             return false;
