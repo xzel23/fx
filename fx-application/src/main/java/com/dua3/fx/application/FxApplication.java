@@ -16,12 +16,10 @@ package com.dua3.fx.application;
 
 import com.dua3.cabe.annotations.Nullable;
 import com.dua3.fx.controls.Dialogs;
-import com.dua3.utility.fx.FxUtil;
 import com.dua3.utility.i18n.I18N;
 import com.dua3.utility.lang.LangUtil;
 import com.dua3.utility.text.TextUtil;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -30,10 +28,6 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.awt.desktop.AboutEvent;
-import java.awt.desktop.OpenFilesEvent;
-import java.awt.desktop.OpenURIEvent;
-import java.awt.desktop.PreferencesEvent;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URI;
@@ -467,28 +461,6 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
         return USER_HOME;
     }
 
-    public void openFiles(OpenFilesEvent e) {
-        e.getFiles().forEach(f -> Platform.runLater(() -> {
-            if (f.exists()) {
-                mainStage.show();
-                controller.open(f.toURI());
-            } else {
-                LOG.warn("openFiles: ignoring non-existent file: {}", f);
-            }
-        }));
-    }
-
-    public void openURI(OpenURIEvent e) {
-        Platform.runLater(() -> {
-            mainStage.show();
-            controller.open(e.getURI());
-        });
-    }
-
-    public void handleAbout(AboutEvent e) {
-        Platform.runLater(this::showAboutDialog);
-    }
-
     /**
      * Show this application's about dialog.
      */
@@ -530,10 +502,6 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      * @return version string
      */
     public abstract String getVersion();
-
-    public void handlePreferences(PreferencesEvent e) {
-        Platform.runLater(this::showPreferencesDialog);
-    }
 
     /**
      * Show this application's preferences dialog.
