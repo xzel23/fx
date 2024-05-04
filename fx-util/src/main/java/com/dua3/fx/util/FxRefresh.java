@@ -5,7 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -27,11 +27,11 @@ public final class FxRefresh {
     /**
      * The revision number of the last completed update operation.
      */
-    private final AtomicInteger currentRevision = new AtomicInteger();
+    private final AtomicLong currentRevision = new AtomicLong();
     /**
      * The revision number of the last request. {@code currentRevision < requestedRevision} implies a pending update.
      */
-    private final AtomicInteger requestedRevision = new AtomicInteger();
+    private final AtomicLong requestedRevision = new AtomicLong();
 
     // synchronization
     private final ReentrantLock lock = new ReentrantLock();
@@ -89,7 +89,7 @@ public final class FxRefresh {
 
             // run task and update revision
             if (active.get()) {
-                int myRevision = requestedRevision.get();
+                long myRevision = requestedRevision.get();
                 if (myRevision != currentRevision.getAndSet(myRevision)) {
                     try {
                         LOG.debug("[{}] starting refresh with revision: {}", name, myRevision);
@@ -253,7 +253,7 @@ public final class FxRefresh {
         LOG.debug("[{}] refresh requested", name);
         lock.lock();
         try {
-            int revision = requestedRevision.incrementAndGet();
+            long revision = requestedRevision.incrementAndGet();
             LOG.debug("[{}] requested revision {}", name, revision);
             trigger.signalAll();
         } finally {
