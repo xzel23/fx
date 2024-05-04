@@ -12,9 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import com.dua3.utility.fx.FxFontUtil;
-import com.dua3.utility.fx.FxImageUtil;
-
 /**
  * Utility module for JavaFX.
  * <p>
@@ -43,7 +40,6 @@ module com.dua3.fx.util {
 
     requires com.dua3.utility;
     requires com.dua3.utility.fx;
-    requires static com.dua3.utility.logging;
     requires java.prefs;
     requires javafx.controls;
     requires org.apache.logging.log4j;
