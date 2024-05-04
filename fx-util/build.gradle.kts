@@ -20,5 +20,4 @@ javafx {
 
 dependencies {
     implementation(rootProject.libs.dua3.utility)
-    compileOnly(rootProject.libs.dua3.utility.logging)
 }
