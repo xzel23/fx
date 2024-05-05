@@ -1,5 +1,6 @@
 package com.dua3.fx.controls;
 
+import com.dua3.utility.fx.FxUtil;
 import javafx.scene.Cursor;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
@@ -47,23 +48,31 @@ final class DragResizer {
     public static void makeResizable(Region region, int resizeMargin, Border... borders) {
         final DragResizer resizer = new DragResizer(region, resizeMargin, borders);
 
-        region.setOnMousePressed(resizer::mousePressed);
-        region.setOnMouseDragged(resizer::mouseDragged);
-        region.setOnMouseMoved(resizer::mouseOver);
-        region.setOnMouseReleased(resizer::mouseReleased);
+        FxUtil.addMouseEventHandler(region, MouseEvent.MOUSE_PRESSED, resizer::mousePressed);
+        FxUtil.addMouseEventHandler(region, MouseEvent.MOUSE_DRAGGED, resizer::mouseDragged);
+        FxUtil.addMouseEventHandler(region, MouseEvent.MOUSE_MOVED, resizer::mouseOver);
+        FxUtil.addMouseEventHandler(region, MouseEvent.MOUSE_RELEASED, resizer::mouseReleased);
+    }
+
+    private boolean isDragging() {
+        return draggingTop || draggingRight || draggingBottom || draggingLeft;
     }
 
     private void mousePressed(MouseEvent event) {
-        event.consume();
-
         draggingTop = isInDraggableZoneTop(event);
         draggingRight = isInDraggableZoneRight(event);
         draggingBottom = isInDraggableZoneBottom(event);
         draggingLeft = isInDraggableZoneLeft(event);
+
+        if (isDragging()) {
+            event.consume();
+        }
     }
 
     private void mouseDragged(MouseEvent event) {
-        event.consume();
+        if (isDragging()) {
+            event.consume();
+        }
 
         if (draggingBottom) {
             resizeBottom(event);
