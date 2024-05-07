@@ -28,7 +28,7 @@ dependencyResolutionManagement {
 
             version("cabe", "2.0")
             version("commons-logging", "1.3.1")
-            version("dua3-utility", "13.0-BETA")
+            version("dua3-utility", "13.0-BETA2-SNAPSHOT")
             version("javafx", "22")
             version("ikonli", "12.3.1")
             version("log4j", "2.23.1")
