@@ -19,8 +19,7 @@ javafx {
 }
 
 dependencies {
-    api(project(":fx-util"))
-    api(project(":fx-controls"))
-
-    implementation(rootProject.libs.dua3.utility)
+    api(rootProject.libs.dua3.utility)
+    api(rootProject.libs.dua3.utility.fx)
+    api(rootProject.libs.dua3.utility.fx.controls)
 }

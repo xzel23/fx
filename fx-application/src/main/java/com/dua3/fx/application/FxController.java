@@ -15,8 +15,7 @@
 package com.dua3.fx.application;
 
 import com.dua3.cabe.annotations.Nullable;
-import com.dua3.fx.controls.Dialogs;
-import com.dua3.utility.fx.FxUtil;
+import com.dua3.utility.fx.controls.Dialogs;
 import com.dua3.utility.i18n.I18N;
 import com.dua3.utility.lang.LangUtil;
 import javafx.beans.property.BooleanProperty;

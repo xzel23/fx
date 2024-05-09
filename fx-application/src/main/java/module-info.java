@@ -14,32 +14,13 @@
 
 /**
  * Provides classes and interfaces for building and managing JavaFX applications.
- * <p>
- * This module exports the {@link com.dua3.fx.application} package, which contains
- * classes and interfaces for creating and managing JavaFX applications. It also opens
- * the same package for reflective access.
- * <p>
- * Look into the module com.dua3.fx.application.fxml when using FXML to declare the user interface.
- * <p>
- * This module requires the transitive modules {@link com.dua3.fx.util} and {@link com.dua3.fx.controls},
- * which provide utility classes and controls for building JavaFX applications.
- * It also requires the non-transitive module {@link com.dua3.utility}, which provides
- * general utility classes.
- * <p>
- * This module requires the module {@code org.apache.logging.log4j} for logging.
- * <p>
- * This module requires the modules {@code java.prefs}, {@code javafx.base}, {@code javafx.controls},
- * and {@code java.desktop} for core functionality and user interface rendering.
- * <p>
- * This module also requires the module {@code com.dua3.cabe.annotations} for automatic generation of runtime
- * null checks in the compiled classes.
  */
 module com.dua3.fx.application {
     exports com.dua3.fx.application;
     opens com.dua3.fx.application;
 
-    requires transitive com.dua3.fx.util;
-    requires transitive com.dua3.fx.controls;
+    requires transitive com.dua3.utility.fx;
+    requires transitive com.dua3.utility.fx.controls;
 
     requires com.dua3.utility;
 
@@ -49,5 +30,4 @@ module com.dua3.fx.application {
     requires javafx.base;
     requires javafx.controls;
     requires static com.dua3.cabe.annotations;
-    requires com.dua3.utility.fx;
 }

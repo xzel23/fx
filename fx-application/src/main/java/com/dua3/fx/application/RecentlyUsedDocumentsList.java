@@ -1,4 +1,4 @@
-package com.dua3.fx.util;
+package com.dua3.fx.application;
 
 import com.dua3.utility.data.Pair;
 import com.dua3.utility.io.IoUtil;

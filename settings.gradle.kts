@@ -1,16 +1,8 @@
 rootProject.name = "dua3-fx"
 val projectVersion = "0.41.0-SNAPSHOT"
 
-include("fx-util")
-include("fx-util-db")
 include("fx-application")
 include("fx-application:fx-application-fxml")
-include("fx-controls")
-include("fx-icons")
-include("fx-icons:fx-icons-ikonli")
-include("fx-web")
-// samples and apps
-include("fx-samples")
 
 dependencyResolutionManagement {
 
@@ -28,9 +20,8 @@ dependencyResolutionManagement {
 
             version("cabe", "2.0")
             version("commons-logging", "1.3.1")
-            version("dua3-utility", "13.0-BETA2-SNAPSHOT")
+            version("dua3-utility", "13.0-BETA2")
             version("javafx", "22")
-            version("ikonli", "12.3.1")
             version("log4j", "2.23.1")
             version("slf4j", "2.0.13")
 
@@ -43,8 +34,7 @@ dependencyResolutionManagement {
             library("dua3-utility-logging-slf4j", "com.dua3.utility", "utility-logging-slf4j").versionRef("dua3-utility")
             library("dua3-utility-swing", "com.dua3.utility", "utility-swing").versionRef("dua3-utility")
             library("dua3-utility-fx", "com.dua3.utility", "utility-fx").versionRef("dua3-utility")
-            library("ikonli-fontawesome", "org.kordamp.ikonli", "ikonli-fontawesome-pack").versionRef("ikonli")
-            library("ikonli-javafx", "org.kordamp.ikonli", "ikonli-javafx").versionRef("ikonli")
+            library("dua3-utility-fx-controls", "com.dua3.utility", "utility-fx-controls").versionRef("dua3-utility")
             library("log4j-api", "org.apache.logging.log4j", "log4j-api").versionRef("log4j")
             library("log4j-core", "org.apache.logging.log4j", "log4j-core").versionRef("log4j")
             library("log4j-jul", "org.apache.logging.log4j", "log4j-jul").versionRef("log4j")
