@@ -46,6 +46,15 @@ import java.util.ResourceBundle;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
+/**
+ * This abstract class represents a JavaFX application. It extends the javafx.application.Application class.
+ * <p>
+ * This class is meant to be extended by concrete implementations of JavaFX applications, and provides a basic structure and functionality for them.
+ * The concrete implementation should provide its own resource bundle and implement the createParentAndInitController method to define the UI layout.
+ *
+ * @param <A> the application class
+ * @param <C> the controller class
+ */
 public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxController<A, C, ?>>
         extends Application {
 
@@ -83,6 +92,9 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      * The resource bundle
      */
     protected final I18N i18n;
+    /**
+     * The directory containing application data.
+     */
     protected final Path applicationDataDir = initApplicationDataDir();
 
     // - instance -
@@ -117,6 +129,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
     /**
      * Get the fxapplication resource bundle.
      *
+     * @param locale the {@link Locale} for the bundle
      * @return the fxapplication resource bundle
      */
     public static ResourceBundle getFxAppBundle(Locale locale) {
@@ -190,10 +203,8 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
             // create scene
             Scene scene = new Scene(root);
 
-            URL css = getCss();
-            if (css != null) {
-                scene.getStylesheets().add(css.toExternalForm());
-            }
+            // load CSS
+            getCss().ifPresent(css -> scene.getStylesheets().add(css.toExternalForm()));
 
             // setup stage
             stage.setTitle(i18n.get("fx.application.name"));
@@ -230,8 +241,22 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
         }
     }
 
+    /**
+     * Creates the parent node for the User Interface and initializes the controller.
+     * This method must be implemented by subclasses.
+     *
+     * @return the parent node of the UI
+     * @throws Exception if an error occurs during the creation or initialization process
+     */
     protected abstract Parent createParentAndInitController() throws Exception;
 
+    /**
+     * Sets the controller for this application. The controller is responsible for handling the logic and
+     * actions of the user interface.
+     *
+     * @param controller the controller to set
+     * @throws IllegalStateException if the controller has already been set
+     */
     protected void setController(C controller) {
         if (this.controller != null) {
             throw new IllegalStateException("controller already set");
@@ -243,13 +268,20 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
     /**
      * Get application main CSS file.
      *
-     * @return the path to the CSS file to load, relative to the
-     * application class, or {@code null}
+     * @return an Optional holding the path to the CSS file to load, relative to the application class
      */
-    protected URL getCss() {
-        return null;
+    protected Optional<URL> getCss() {
+        return Optional.empty();
     }
 
+    /**
+     * Update the application title based on the current document.
+     * The application title is constructed using the following logic:
+     * 1. The title starts with the localized application name retrieved from a resource bundle.
+     * 2. If there is a current document, the title is appended with the document's location or a localized "untitled" text.
+     * 3. If the document is dirty (modified), a dirty marker is appended to the title.
+     * Finally, the updated title is set as the title of the main stage.
+     */
     protected void updateApplicationTitle() {
         StringBuilder title = new StringBuilder();
         title.append(i18n.get("fx.application.name"));
@@ -274,6 +306,14 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
         mainStage.setTitle(title.toString());
     }
 
+    /**
+     * Stops the application.
+     * This method is called when the application is being stopped.
+     * It executes any cleanup actions that have been registered, by running each action in the cleanupActions list.
+     * If an exception occurs during the execution of a cleanup action, a warning message is logged.
+     *
+     * @throws Exception if an exception occurs during the stop process
+     */
     @Override
     public void stop() throws Exception {
         super.stop();
