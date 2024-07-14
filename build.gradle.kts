@@ -27,7 +27,6 @@ plugins {
     alias(libs.plugins.test.logger)
     alias(libs.plugins.spotbugs)
     alias(libs.plugins.cabe)
-    alias(libs.plugins.javafx)
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -59,7 +58,6 @@ subprojects {
     apply(plugin = "com.adarshr.test-logger")
     apply(plugin = "com.github.spotbugs")
     apply(plugin = "com.dua3.cabe")
-    apply(plugin = "org.openjfx.javafxplugin")
 
     java {
         toolchain { languageVersion.set(JavaLanguageVersion.of(21)) }
@@ -82,11 +80,6 @@ subprojects {
 
     tasks.withType<JavaExec>().configureEach {
         javaLauncher.set(javaToolchains.launcherFor(java.toolchain))
-    }
-
-    javafx {
-        version = rootProject.libs.versions.javafx.get()
-        configuration = "compileOnly"
     }
 
     // dependencies

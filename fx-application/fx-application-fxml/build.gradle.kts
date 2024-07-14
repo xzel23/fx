@@ -14,10 +14,6 @@
 
 description = "JavaFX utilities (application using FXML)"
 
-javafx {
-    modules = listOf("javafx.fxml")
-}
-
 dependencies {
     api(rootProject.libs.dua3.utility)
     api(rootProject.libs.dua3.utility.fx)
