@@ -188,12 +188,12 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      */
     @SuppressWarnings("unchecked")
     @Override
-    public void start(Stage stage) {
+    public void start(Stage primaryStage) {
         LOG.info("starting application");
 
         try {
             // store reference to stage
-            this.mainStage = stage;
+            this.mainStage = primaryStage;
 
             // create the parent
             Parent root = createParentAndInitController();
@@ -207,8 +207,8 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
             getCss().ifPresent(css -> scene.getStylesheets().add(css.toExternalForm()));
 
             // setup stage
-            stage.setTitle(i18n.get("fx.application.name"));
-            stage.setScene(scene);
+            primaryStage.setTitle(i18n.get("fx.application.name"));
+            primaryStage.setScene(scene);
 
             // automatically update title on document change
             final ChangeListener<Boolean> dirtyStateListener = (v, o, n) -> updateApplicationTitle();
@@ -228,12 +228,12 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
                         }
                     });
 
-            stage.setOnCloseRequest(e -> {
+            primaryStage.setOnCloseRequest(e -> {
                 e.consume();
                 controller.closeApplicationWindow();
             });
 
-            stage.show();
+            primaryStage.show();
 
             LOG.debug("application started");
         } catch (Exception e) {
