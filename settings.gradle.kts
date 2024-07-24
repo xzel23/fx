@@ -1,5 +1,5 @@
 rootProject.name = "dua3-fx"
-val projectVersion = "0.41.0-BETA4-SNAPSHOT"
+val projectVersion = "0.41.0"
 
 include("fx-application")
 include("fx-application:fx-application-fxml")
@@ -19,7 +19,7 @@ dependencyResolutionManagement {
 
             version("cabe", "2.0")
             version("commons-logging", "1.3.1")
-            version("dua3-utility", "13.0-BETA6")
+            version("dua3-utility", "13.0")
             version("javafx", "22.0.1")
             version("log4j", "2.23.1")
             version("slf4j", "2.0.13")
@@ -29,8 +29,16 @@ dependencyResolutionManagement {
             library("dua3-utility", "com.dua3.utility", "utility").versionRef("dua3-utility")
             library("dua3-utility-db", "com.dua3.utility", "utility-db").versionRef("dua3-utility")
             library("dua3-utility-logging", "com.dua3.utility", "utility-logging").versionRef("dua3-utility")
-            library("dua3-utility-logging-log4j", "com.dua3.utility", "utility-logging-log4j").versionRef("dua3-utility")
-            library("dua3-utility-logging-slf4j", "com.dua3.utility", "utility-logging-slf4j").versionRef("dua3-utility")
+            library(
+                "dua3-utility-logging-log4j",
+                "com.dua3.utility",
+                "utility-logging-log4j"
+            ).versionRef("dua3-utility")
+            library(
+                "dua3-utility-logging-slf4j",
+                "com.dua3.utility",
+                "utility-logging-slf4j"
+            ).versionRef("dua3-utility")
             library("dua3-utility-swing", "com.dua3.utility", "utility-swing").versionRef("dua3-utility")
             library("dua3-utility-fx", "com.dua3.utility", "utility-fx").versionRef("dua3-utility")
             library("dua3-utility-fx-controls", "com.dua3.utility", "utility-fx-controls").versionRef("dua3-utility")
