@@ -18,9 +18,7 @@ import com.dua3.cabe.annotations.Nullable;
 import com.dua3.utility.fx.controls.Dialogs;
 import com.dua3.utility.i18n.I18N;
 import com.dua3.utility.lang.LangUtil;
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -34,7 +32,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URI;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -64,12 +61,12 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
      * The URI of the currently opened document.
      */
     protected final ObjectProperty<D> currentDocumentProperty = new SimpleObjectProperty<>();
-    protected URL location;
-    protected I18N i18n;
+
     /**
-     * The URI of the currently opened document.
+     * The {@link I18N} instance.
      */
-    protected BooleanProperty dirtyProperty = new SimpleBooleanProperty(false);
+    protected final I18N i18n = I18N.getInstance();
+
     /**
      * The application instance.
      */
