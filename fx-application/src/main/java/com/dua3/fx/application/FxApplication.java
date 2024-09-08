@@ -18,6 +18,7 @@ import com.dua3.cabe.annotations.Nullable;
 import com.dua3.utility.fx.controls.Dialogs;
 import com.dua3.utility.i18n.I18N;
 import com.dua3.utility.lang.LangUtil;
+import com.dua3.utility.lang.Platform;
 import com.dua3.utility.text.TextUtil;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -382,28 +383,33 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
     private Path initApplicationDataDir() {
         try {
             String dirName = getClass().getName();
-
-            // try to determine location by evaluating standard windows settings
-            String appData = System.getenv("LOCALAPPDATA");
-            if (appData == null) {
-                appData = System.getenv("APPLICATION_DATA_DIR");
-            }
-            if (appData != null) {
-                Path dir = Paths.get(appData).resolve(dirName);
-                Files.createDirectories(dir);
-                return dir;
-            }
-
-            // then check for macOS
             Path home = Paths.get(System.getProperty("user.home"));
-            Path macosBase = home.resolve(Paths.get("Library", "Application Support"));
-            if (Files.isDirectory(macosBase) && Files.isWritable(macosBase)) {
-                Path dir = macosBase.resolve(dirName);
-                Files.createDirectories(dir);
-                return dir;
+
+            switch(Platform.currentPlatform()) {
+                case WINDOWS -> {
+                    // try to determine location by evaluating standard windows settings
+                    String appData = System.getenv("LOCALAPPDATA");
+                    if (appData == null) {
+                        appData = System.getenv("APPLICATION_DATA_DIR");
+                    }
+                    if (appData != null) {
+                        Path dir = Paths.get(appData).resolve(dirName);
+                        Files.createDirectories(dir);
+                        return dir;
+                    }
+                }
+                case MACOS -> {
+                    // macOS
+                    Path macosBase = home.resolve(Paths.get("Library", "Application Support"));
+                    if (Files.isDirectory(macosBase) && Files.isWritable(macosBase)) {
+                        Path dir = macosBase.resolve(dirName);
+                        Files.createDirectories(dir);
+                        return dir;
+                    }
+                }
             }
 
-            // as last resort, use a dot file in user's home directory
+            // in case standard locations are not available, use a dot file in user's home directory
             Path dir = home.resolve(dirName.replace(' ', '_').toLowerCase(Locale.ROOT));
             Files.createDirectories(dir);
             return dir;

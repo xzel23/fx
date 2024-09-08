@@ -194,8 +194,16 @@ public class RecentlyUsedDocumentsList {
                 '}';
     }
 
+    /**
+     * Represents a listener that receives notification when the recently used documents list is updated.
+     */
     @FunctionalInterface
     public interface UpdateListener {
+        /**
+         * Called when the recently used documents list is updated.
+         *
+         * @param source the source RecentlyUsedDocumentsList that was updated
+         */
         void onUpdate(RecentlyUsedDocumentsList source);
     }
 }

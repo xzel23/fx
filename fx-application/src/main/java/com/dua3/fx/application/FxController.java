@@ -41,6 +41,13 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
+/**
+ * Abstract controller class for handling JavaFX applications with documents.
+ *
+ * @param <A> The type of the FxApplication
+ * @param <C> The type of the FxController
+ * @param <D> The type of the FxDocument
+ */
 public abstract class FxController<A extends FxApplication<A, C>, C extends FxController<A, C, D>, D extends FxDocument> {
 
     // - static -
@@ -78,6 +85,11 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
     protected FxController() {
     }
 
+    /**
+     * Retrieves a list of documents that have unsaved changes.
+     *
+     * @return a list of documents with unsaved changes.
+     */
     public abstract List<? extends D> dirtyDocuments();
 
     /**
@@ -211,6 +223,12 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
         currentDocumentProperty.set(null);
     }
 
+    /**
+     * Handles the creation of a new document by first processing any unsaved changes, then clearing the
+     * current document, and finally creating a new one.
+     *
+     * @return true if the new document was successfully created, false otherwise
+     */
     public boolean newDocument() {
         // handle dirty state
         if (!handleDirtyState()) {
@@ -229,6 +247,17 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
         }
     }
 
+    /**
+     * Opens a file dialog to allow the user to select a file to open.
+     * <p>
+     * The method first handles any unsaved changes by calling `handleDirtyState()`.
+     * If there are unsaved changes and the user chooses to cancel, the open operation is aborted.
+     * Otherwise, it attempts to determine an initial directory for the file chooser dialog based on the current document.
+     * If no directory is found, the user's home directory is used. The file chooser dialog is then displayed to the user.
+     * If the user selects a file, the document is opened.
+     *
+     * @return true if a file was successfully selected and opened, false otherwise
+     */
     public boolean open() {
         // handle dirty state
         if (!handleDirtyState()) {
@@ -274,14 +303,27 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
         }
     }
 
-    protected ExtensionFilter selectedOpenFilter() {
-        return null;
-    }
+    /**
+     * Retrieves the selected file extension filter to be used for the open file dialog.
+     *
+     * @return the selected {@link ExtensionFilter} for opening files
+     */
+    protected abstract ExtensionFilter selectedOpenFilter();
 
-    protected ExtensionFilter selectedSaveFilter() {
-        return null;
-    }
+    /**
+     * Retrieves the selected file extension filter to be used for the save file dialog.
+     *
+     * @return the selected {@link FileChooser.ExtensionFilter} for saving files
+     */
+    protected abstract ExtensionFilter selectedSaveFilter();
 
+    /**
+     * Saves the current document if it is available.
+     * If the document's location is not set, delegates to the `saveAs()` method to prompt for a location.
+     * Handles saving errors appropriately.
+     *
+     * @return true if the document was successfully saved, false otherwise
+     */
     public boolean save() {
         if (!hasCurrentDocument()) {
             LOG.info("no document; not saving");
@@ -312,6 +354,12 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
         return filters;
     }
 
+    /**
+     * Prompts the user with a "Save As" dialog to choose a location and filename to save the current document.
+     * If the user confirms the operation and selects a file, the document is saved to the chosen location.
+     *
+     * @return true if the document was successfully saved, false otherwise
+     */
     public boolean saveAs() {
         if (!hasCurrentDocument()) {
             LOG.info("no document; not saving as new document");
@@ -415,10 +463,22 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
         throw new UnsupportedOperationException("not implemented");
     }
 
+    /**
+     * Sets the status text for the application.
+     *
+     * @param s the status text to be set
+     */
     public void setStatusText(String s) {
         LOG.debug("status: {}", s);
     }
 
+    /**
+     * Retrieves the current directory based on the current document's location.
+     * If the current document's location is available, it returns the parent directory of the document's path.
+     * If not, it defaults to the user's home directory.
+     *
+     * @return the current directory if available, otherwise the user's home directory
+     */
     public Path getCurrentDir() {
         if (hasCurrentDocument() && getCurrentDocument().hasLocation()) {
             try {
