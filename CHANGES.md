@@ -1,6 +1,17 @@
 Changelog
 =========
 
+### version 0.43
+
+- code cleanup
+- update dependencies
+- make FxController.selectedOpenFilter()/selectedSaveFilter() abstract
+
+### version 0.42
+
+- code cleanup
+- update dependencies
+
 ### version 0.41
 
 - use I18N class for internationalization
