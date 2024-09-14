@@ -1,5 +1,5 @@
 rootProject.name = "dua3-fx"
-val projectVersion = "0.43.0"
+val projectVersion = "0.44.0-SNAPSHOT"
 
 include("fx-application")
 include("fx-application:fx-application-fxml")
