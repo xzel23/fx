@@ -14,15 +14,15 @@ dependencyResolutionManagement {
 
             plugin("versions", "com.github.ben-manes.versions").version("0.51.0")
             plugin("test-logger", "com.adarshr.test-logger").version("4.0.0")
-            plugin("spotbugs", "com.github.spotbugs").version("6.0.22")
+            plugin("spotbugs", "com.github.spotbugs").version("6.0.23")
             plugin("cabe", "com.dua3.cabe").version("2.1.2")
 
             version("cabe", "2.0")
             version("commons-logging", "1.3.1")
-            version("dua3-utility", "13.1.2")
+            version("dua3-utility", "13.2-SNAPSHOT")
             version("javafx", "23")
-            version("log4j", "2.23.1")
-            version("slf4j", "2.0.13")
+            version("log4j", "2.24.1")
+            version("slf4j", "2.0.16")
 
             library("cabe-annotations", "com.dua3.cabe", "cabe-annotations").versionRef("cabe")
             library("commons-logging", "commons-logging", "commons-logging").versionRef("commons-logging")
