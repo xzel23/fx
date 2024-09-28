@@ -22,7 +22,6 @@ dependencyResolutionManagement {
             version("dua3-utility", "13.2-SNAPSHOT")
             version("javafx", "23")
             version("log4j", "2.24.1")
-            version("slf4j", "2.0.16")
 
             library("cabe-annotations", "com.dua3.cabe", "cabe-annotations").versionRef("cabe")
             library("commons-logging", "commons-logging", "commons-logging").versionRef("commons-logging")
@@ -48,9 +47,6 @@ dependencyResolutionManagement {
             library("log4j-jcl", "org.apache.logging.log4j", "log4j-jcl").versionRef("log4j")
             library("log4j-slf4j2", "org.apache.logging.log4j", "log4j-slf4j2-impl").versionRef("log4j")
             library("log4j-to-slf4j", "org.apache.logging.log4j", "log4j-to-slf4j").versionRef("log4j")
-            library("slf4j-api", "org.slf4j", "slf4j-api").versionRef("slf4j")
-            library("slf4j-simple", "org.slf4j", "slf4j-simple").versionRef("slf4j")
-            library("jul-to-slf4j", "org.slf4j", "jul-to-slf4j").versionRef("slf4j")
         }
     }
 
