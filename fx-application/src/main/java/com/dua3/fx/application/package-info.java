@@ -1,3 +1,6 @@
+/**
+ * This package contains classes for writing JavaFX applications.
+ */
 @NotNullApi
 package com.dua3.fx.application;
 
