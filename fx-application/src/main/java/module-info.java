@@ -12,9 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import org.jspecify.annotations.NullMarked;
+
 /**
  * Provides classes and interfaces for building and managing JavaFX applications.
  */
+@NullMarked
 module com.dua3.fx.application {
     exports com.dua3.fx.application;
     opens com.dua3.fx.application;
@@ -29,5 +32,5 @@ module com.dua3.fx.application {
     requires java.prefs;
     requires javafx.base;
     requires javafx.controls;
-    requires static com.dua3.cabe.annotations;
+    requires org.jspecify;
 }

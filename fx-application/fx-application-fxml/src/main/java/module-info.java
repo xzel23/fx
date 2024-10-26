@@ -12,17 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import org.jspecify.annotations.NullMarked;
+
 /**
  * This module provides the base class for applications using FXML for declaring the user interface.
- * <p>
- * This module exports and opens the package com.dua3.fx.application.fxml, allowing other modules to access
- * its classes.
- * <p>
- * This module requires the module com.dua3.fx.application and the module org.apache.logging.log4j.
- * <p>
- * This module also requires the modules com.dua3.cabe.annotations, com.dua3.utility,
- * javafx.fxml, and javafx.graphics.
  */
+@NullMarked
 module com.dua3.fx.application.fxml {
     exports com.dua3.fx.application.fxml;
     opens com.dua3.fx.application.fxml;
@@ -31,8 +26,8 @@ module com.dua3.fx.application.fxml {
 
     requires org.apache.logging.log4j;
 
-    requires static com.dua3.cabe.annotations;
     requires com.dua3.utility;
     requires javafx.fxml;
     requires javafx.graphics;
+    requires org.jspecify;
 }

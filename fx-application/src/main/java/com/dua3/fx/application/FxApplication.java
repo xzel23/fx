@@ -14,7 +14,6 @@
 
 package com.dua3.fx.application;
 
-import com.dua3.cabe.annotations.Nullable;
 import com.dua3.utility.fx.controls.Dialogs;
 import com.dua3.utility.i18n.I18N;
 import com.dua3.utility.lang.LangUtil;
@@ -28,6 +27,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -385,7 +385,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
             String dirName = getClass().getName();
             Path home = Paths.get(System.getProperty("user.home"));
 
-            switch(Platform.currentPlatform()) {
+            switch (Platform.currentPlatform()) {
                 case WINDOWS -> {
                     // try to determine location by evaluating standard windows settings
                     String appData = System.getenv("LOCALAPPDATA");

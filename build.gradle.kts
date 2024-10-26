@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import com.adarshr.gradle.testlogger.theme.ThemeType
-import com.dua3.cabe.processor.Config
+import com.dua3.cabe.processor.Configuration
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import java.net.URI
 
@@ -67,9 +67,9 @@ subprojects {
 
     cabe {
         if (isReleaseVersion) {
-            config.set(Config.StandardConfig.STANDARD.config)
+            config.set(Configuration.StandardConfig.STANDARD.config())
         } else {
-            config.set(Config.StandardConfig.DEVELOPMENT.config)
+            config.set(Configuration.StandardConfig.DEVELOPMENT.config())
         }
     }
 
@@ -85,7 +85,7 @@ subprojects {
     // dependencies
     dependencies {
         // Cabe (source annotations)
-        compileOnly(rootProject.libs.cabe.annotations)
+        compileOnly(rootProject.libs.jspecify)
 
         // LOG4J
         implementation(rootProject.libs.log4j.api)
