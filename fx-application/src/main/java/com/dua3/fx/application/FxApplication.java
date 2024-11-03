@@ -102,11 +102,11 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
     /**
      * Preferences
      */
-    protected Preferences preferences = null;
+    protected @Nullable Preferences preferences;
     /**
      * The controller instance.
      */
-    protected C controller;
+    protected @Nullable C controller;
 
     // - UI -
 
@@ -116,7 +116,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
     /**
      * The main stage.
      */
-    private Stage mainStage;
+    private @Nullable Stage mainStage;
 
     /**
      * Constructor.
@@ -158,8 +158,8 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      *
      * @return the resource bundle or {@code null}
      */
-    protected ResourceBundle getResourceBundle() {
-        return null;
+    protected Optional<ResourceBundle> getResourceBundle() {
+        return Optional.empty();
     }
 
     /**
@@ -287,7 +287,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
         StringBuilder title = new StringBuilder();
         title.append(i18n.get("fx.application.name"));
 
-        FxDocument document = controller.getCurrentDocument();
+        FxDocument document = getController().getCurrentDocument().orElse(null);
 
         if (document != null) {
             String locStr = document.hasLocation() ?
@@ -304,7 +304,9 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
             title.append(marker).append(locStr);
         }
 
-        mainStage.setTitle(title.toString());
+        if (mainStage != null) {
+            mainStage.setTitle(title.toString());
+        }
     }
 
     /**
@@ -341,7 +343,9 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
             }
         }
 
-        mainStage.close();
+        if (mainStage != null) {
+            mainStage.close();
+        }
 
         mainStage = null; // make it garbage collectable
     }
@@ -377,6 +381,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      * @return the application's primary stage, or null if the application has been closed
      */
     public Stage getStage() {
+        LangUtil.check(mainStage != null, "no main stage");
         return mainStage;
     }
 
@@ -433,6 +438,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      * @return the controller
      */
     protected C getController() {
+        LangUtil.check(controller != null, "controller not set");
         return controller;
     }
 
@@ -499,15 +505,6 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
     }
 
     /**
-     * Get the user's home directory.
-     *
-     * @return the user's home directory
-     */
-    public Path getUserHome() {
-        return USER_HOME;
-    }
-
-    /**
      * Show this application's about dialog.
      */
     public void showAboutDialog() {
@@ -519,7 +516,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      *
      * @param css URL to the CSS data
      */
-    protected void showAboutDialog(URL css) {
+    protected void showAboutDialog(@Nullable URL css) {
         Dialogs.about(mainStage)
                 .title(i18n.format("fx.application.about.title.{0.name}", i18n.get("fx.application.name")))
                 .name(i18n.get("fx.application.name"))
@@ -570,5 +567,14 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      */
     public void removeCleanupAction(Runnable task) {
         cleanupActions.remove(task);
+    }
+
+    /**
+     * Get the user home path.
+     *
+     * @return the user home path
+     */
+    public static Path getUserHome() {
+        return USER_HOME;
     }
 }

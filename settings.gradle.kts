@@ -1,5 +1,5 @@
 rootProject.name = "dua3-fx"
-val projectVersion = "0.45-BETA-1"
+val projectVersion = "0.45-beta-2-SNAPSHOT"
 
 include("fx-application")
 include("fx-application:fx-application-fxml")
@@ -15,10 +15,10 @@ dependencyResolutionManagement {
             plugin("versions", "com.github.ben-manes.versions").version("0.51.0")
             plugin("test-logger", "com.adarshr.test-logger").version("4.0.0")
             plugin("spotbugs", "com.github.spotbugs").version("6.0.25")
-            plugin("cabe", "com.dua3.cabe").version("3.0-beta-7")
+            plugin("cabe", "com.dua3.cabe").version("3.0-beta-9")
 
             version("commons-logging", "1.3.1")
-            version("dua3-utility", "14.0-BETA-1")
+            version("dua3-utility", "14-beta-2-SNAPSHOT")
             version("javafx", "23")
             version("jspecify", "1.0.0")
             version("log4j", "2.24.1")

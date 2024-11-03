@@ -40,7 +40,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-
 /**
  * Abstract controller class for handling JavaFX applications with documents.
  *
@@ -67,7 +66,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
     /**
      * The URI of the currently opened document.
      */
-    protected final ObjectProperty<D> currentDocumentProperty = new SimpleObjectProperty<>();
+    protected final ObjectProperty<@Nullable D> currentDocumentProperty = new SimpleObjectProperty<>();
 
     /**
      * The {@link I18N} instance.
@@ -77,7 +76,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
     /**
      * The application instance.
      */
-    private A app;
+    private @Nullable A app;
 
     /**
      * The Default constructor. Just declared here to reduce visibility.
@@ -101,6 +100,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
             LOG.debug("close aborted because of dirty state");
             return;
         }
+        assert app != null;
         app.closeApplicationWindow();
     }
 
@@ -176,20 +176,19 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
     /**
      * Get current document location.
      *
-     * @return URI of the current document or {@link FxDocument#VOID_URI}
+     * @return URI of the current document
      */
-    public URI getCurrentDocumentLocation() {
-        D doc = getCurrentDocument();
-        return doc != null ? doc.getLocation() : FxDocument.VOID_URI;
+    public Optional<URI> getCurrentDocumentLocation() {
+        return getCurrentDocument().map(FxDocument::getLocation);
     }
 
     /**
      * Get current document.
      *
-     * @return the current document or {@code null}
+     * @return the current document
      */
-    public D getCurrentDocument() {
-        return currentDocumentProperty.get();
+    public Optional<D> getCurrentDocument() {
+        return Optional.ofNullable(currentDocumentProperty.get());
     }
 
     /**
@@ -265,11 +264,10 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
             return false;
         }
 
-        D document = getCurrentDocument();
-        Path initialDir = initialDir(document);
+        Path initialDir = initialDir(getCurrentDocument().orElse(null));
 
         if (initialDir == null || !Files.isDirectory(initialDir)) {
-            initialDir = getApp().getUserHome();
+            initialDir = FxApplication.getUserHome();
         }
 
         Optional<Path> file = Dialogs
@@ -325,17 +323,20 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
      * @return true if the document was successfully saved, false otherwise
      */
     public boolean save() {
-        if (!hasCurrentDocument()) {
+        //noinspection DataFlowIssue - false positive
+        D d = getCurrentDocument().orElse(null);
+
+        if (d == null) {
             LOG.info("no document; not saving");
             return false;
         }
 
-        if (!getCurrentDocument().hasLocation()) {
+        if (!d.hasLocation()) {
             LOG.debug("save: no URI set, delegating to saveAs()");
             return saveAs();
         }
 
-        return saveDocumentAndHandleErrors(getCurrentDocument());
+        return saveDocumentAndHandleErrors(d);
     }
 
     private boolean saveDocumentAndHandleErrors(D document) {
@@ -361,12 +362,14 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
      * @return true if the document was successfully saved, false otherwise
      */
     public boolean saveAs() {
-        if (!hasCurrentDocument()) {
+        //noinspection DataFlowIssue - false positive
+        D document = getCurrentDocument().orElse(null);
+
+        if (document == null) {
             LOG.info("no document; not saving as new document");
             return false;
         }
 
-        D document = getCurrentDocument();
         Path initialDir = initialDir(document);
 
         Optional<Path> file = Dialogs
@@ -400,7 +403,8 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
      */
     private Path initialDir(@Nullable D document) {
         if (document == null) {
-            return getApp().getUserHome();
+            getApp();
+            return FxApplication.getUserHome();
         }
 
         Path parent = null;
@@ -411,7 +415,8 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
             } else {
                 String lastDocument = getApp().getPreference(PREF_DOCUMENT, "");
                 if (lastDocument.isBlank()) {
-                    parent = getApp().getUserHome();
+                    getApp();
+                    parent = FxApplication.getUserHome();
                     LOG.debug("initialDir() - last document location not set, using user home as parent: {}", parent);
                 } else {
                     try {
@@ -420,7 +425,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
                         LOG.debug("initialDir() - using last document location as parent: {}", parent);
                     } catch (IllegalArgumentException e) {
                         LOG.warn("could not retrieve last document location", e);
-                        parent = app.getUserHome();
+                        parent = FxApplication.getUserHome();
                     }
                 }
             }
@@ -433,7 +438,8 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 
         if (initialDir == null || !Files.isDirectory(initialDir)) {
             LOG.warn("initialDir() - initial directory invalid, using user home instead: {}", initialDir);
-            initialDir = getApp().getUserHome();
+            getApp();
+            initialDir = FxApplication.getUserHome();
         }
 
         return initialDir;
@@ -480,9 +486,10 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
      * @return the current directory if available, otherwise the user's home directory
      */
     public Path getCurrentDir() {
-        if (hasCurrentDocument() && getCurrentDocument().hasLocation()) {
+        FxDocument document = getCurrentDocument().orElse(null);
+        if (document != null && document.hasLocation()) {
             try {
-                Path parent = getCurrentDocument().getPath().getParent();
+                Path parent = document.getPath().getParent();
                 if (parent != null) {
                     return parent;
                 }
@@ -491,7 +498,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
             }
         }
         LOG.warn("using user home");
-        return getApp().getUserHome();
+        return FxApplication.getUserHome();
     }
 
     /**
