@@ -1,3 +1,5 @@
+import org.gradle.internal.extensions.stdlib.toDefaultLowerCase
+
 rootProject.name = "dua3-fx"
 val projectVersion = "0.45-beta-2-SNAPSHOT"
 
@@ -6,7 +8,17 @@ include("fx-application:fx-application-fxml")
 
 dependencyResolutionManagement {
 
-    val isSnapshot = projectVersion.endsWith("SNAPSHOT")
+    fun isDevelopmentVersion(versionString : String) : Boolean {
+        val v = versionString.toDefaultLowerCase()
+        val markers = listOf("snapshot", "alpha", "beta")
+        for (marker in markers) {
+            if (v.contains("-$marker") || v.contains(".$marker")) {
+                return true
+            }
+        }
+        return false
+    }
+    val isSnapshot = isDevelopmentVersion(projectVersion)
 
     versionCatalogs {
         create("libs") {
@@ -14,11 +26,11 @@ dependencyResolutionManagement {
 
             plugin("versions", "com.github.ben-manes.versions").version("0.51.0")
             plugin("test-logger", "com.adarshr.test-logger").version("4.0.0")
-            plugin("spotbugs", "com.github.spotbugs").version("6.0.25")
-            plugin("cabe", "com.dua3.cabe").version("3.0-beta-9")
+            plugin("spotbugs", "com.github.spotbugs").version("6.0.26")
+            plugin("cabe", "com.dua3.cabe").version("3.0-beta-10")
 
             version("commons-logging", "1.3.1")
-            version("dua3-utility", "14-beta-2-SNAPSHOT")
+            version("dua3-utility", "14-beta-3")
             version("javafx", "23")
             version("jspecify", "1.0.0")
             version("log4j", "2.24.1")
