@@ -1,24 +1,18 @@
 import org.gradle.internal.extensions.stdlib.toDefaultLowerCase
 
 rootProject.name = "dua3-fx"
-val projectVersion = "0.45-beta-2-SNAPSHOT"
+val projectVersion = "0.45-beta-2"
 
 include("fx-application")
 include("fx-application:fx-application-fxml")
 
 dependencyResolutionManagement {
 
-    fun isDevelopmentVersion(versionString : String) : Boolean {
-        val v = versionString.toDefaultLowerCase()
-        val markers = listOf("snapshot", "alpha", "beta")
-        for (marker in markers) {
-            if (v.contains("-$marker") || v.contains(".$marker")) {
-                return true
-            }
-        }
-        return false
+    val isSnapshot = projectVersion.toDefaultLowerCase().contains("snapshot")
+
+    if (isSnapshot) {
+        println("SNAPSHOT version detected, using local Maven repository")
     }
-    val isSnapshot = isDevelopmentVersion(projectVersion)
 
     versionCatalogs {
         create("libs") {
