@@ -266,7 +266,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
 
         Path initialDir = initialDir(getCurrentDocument().orElse(null));
 
-        if (initialDir == null || !Files.isDirectory(initialDir)) {
+        if (!Files.isDirectory(initialDir)) {
             initialDir = FxApplication.getUserHome();
         }
 

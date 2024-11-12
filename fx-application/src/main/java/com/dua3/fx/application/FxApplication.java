@@ -14,6 +14,7 @@
 
 package com.dua3.fx.application;
 
+import com.dua3.utility.fx.controls.AboutDialogBuilder;
 import com.dua3.utility.fx.controls.Dialogs;
 import com.dua3.utility.i18n.I18N;
 import com.dua3.utility.lang.LangUtil;
@@ -217,7 +218,8 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
 
             final ChangeListener<@Nullable URI> locationListener = (v, o, n) -> updateApplicationTitle();
 
-            ChangeListener<? super @Nullable FxDocument> lst = new ChangeListener<FxDocument>() {
+            //noinspection Convert2Lambda - @Nullable annotations don't work in this case with lambda
+            controller.currentDocumentProperty.addListener(new ChangeListener<FxDocument>() {
                 @Override
                 public void changed(ObservableValue<? extends FxDocument> observable, @Nullable FxDocument o, @Nullable FxDocument n) {
                     updateApplicationTitle();
@@ -230,8 +232,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
                         n.locationProperty.addListener(locationListener);
                     }
                 }
-            };
-            controller.currentDocumentProperty.addListener(lst);
+            });
 
             primaryStage.setOnCloseRequest(e -> {
                 e.consume();
@@ -397,8 +398,10 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
             switch (Platform.currentPlatform()) {
                 case WINDOWS -> {
                     // try to determine location by evaluating standard windows settings
+                    //noinspection CallToSystemGetenv
                     String appData = System.getenv("LOCALAPPDATA");
                     if (appData == null) {
+                        //noinspection CallToSystemGetenv
                         appData = System.getenv("APPLICATION_DATA_DIR");
                     }
                     if (appData != null) {
@@ -415,6 +418,9 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
                         Files.createDirectories(dir);
                         return dir;
                     }
+                }
+                default -> {
+                    // handled below switch
                 }
             }
 
@@ -521,7 +527,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      * @param css URL to the CSS data
      */
     protected void showAboutDialog(@Nullable URL css) {
-        Dialogs.about(mainStage)
+        AboutDialogBuilder aboutDialogBuilder = Dialogs.about(mainStage)
                 .title(i18n.format("fx.application.about.title.{0.name}", i18n.get("fx.application.name")))
                 .name(i18n.get("fx.application.name"))
                 .version(getVersion())
@@ -537,10 +543,13 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
                                 i18n.get("fx.application.name")
                                         + " "
                                         + getVersion()))
-                .expandableContent(i18n.get("fx.application.about.detail"))
-                .css(css)
-                .build()
-                .showAndWait();
+                .expandableContent(i18n.get("fx.application.about.detail"));
+
+        if (css != null) {
+            aboutDialogBuilder.css(css);
+        }
+
+        aboutDialogBuilder.build().showAndWait();
     }
 
     /**
