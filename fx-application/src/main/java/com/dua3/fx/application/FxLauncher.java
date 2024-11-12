@@ -106,6 +106,7 @@ public final class FxLauncher {
      * @return the reparsed argument array
      * @deprecated this method is a workaround that will be removed once the underlying issue is fixed in the JDK.
      */
+    @SuppressWarnings("DeprecatedIsStillUsed")
     @Deprecated
     private static List<String> reparseCommandLine(String[] args) {
         if (!Platform.isWindows() || args.length < 2) {
