@@ -21,6 +21,7 @@ import com.dua3.utility.lang.Platform;
 import com.dua3.utility.text.TextUtil;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.FileChooser;
@@ -214,20 +215,23 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
             // automatically update title on document change
             final ChangeListener<Boolean> dirtyStateListener = (v, o, n) -> updateApplicationTitle();
 
-            final ChangeListener<URI> locationListener = (v, o, n) -> updateApplicationTitle();
+            final ChangeListener<@Nullable URI> locationListener = (v, o, n) -> updateApplicationTitle();
 
-            controller.currentDocumentProperty.addListener(
-                    (v, o, n) -> {
-                        updateApplicationTitle();
-                        if (o != null) {
-                            o.dirtyProperty.removeListener(dirtyStateListener);
-                            o.locationProperty.removeListener(locationListener);
-                        }
-                        if (n != null) {
-                            n.dirtyProperty.addListener(dirtyStateListener);
-                            n.locationProperty.addListener(locationListener);
-                        }
-                    });
+            ChangeListener<? super @Nullable FxDocument> lst = new ChangeListener<FxDocument>() {
+                @Override
+                public void changed(ObservableValue<? extends FxDocument> observable, @Nullable FxDocument o, @Nullable FxDocument n) {
+                    updateApplicationTitle();
+                    if (o != null) {
+                        o.dirtyProperty.removeListener(dirtyStateListener);
+                        o.locationProperty.removeListener(locationListener);
+                    }
+                    if (n != null) {
+                        n.dirtyProperty.addListener(dirtyStateListener);
+                        n.locationProperty.addListener(locationListener);
+                    }
+                }
+            };
+            controller.currentDocumentProperty.addListener(lst);
 
             primaryStage.setOnCloseRequest(e -> {
                 e.consume();
