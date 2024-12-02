@@ -79,7 +79,7 @@ subprojects {
 
     cabe {
         if (isReleaseVersion) {
-            config.set(Configuration.STANDARD)
+            config.set(Configuration.parse("publicApi=THROW_IAE:privateApi=ASSERT"))
         } else {
             config.set(Configuration.DEVELOPMENT)
         }
@@ -96,10 +96,11 @@ subprojects {
 
     // dependencies
     dependencies {
-        // Cabe (source annotations)
+        // JSpecify (source annotations)
         compileOnly(rootProject.libs.jspecify)
 
         // LOG4J
+        implementation(platform(rootProject.libs.log4j.bom))
         implementation(rootProject.libs.log4j.api)
 
         api(rootProject.libs.dua3.utility.fx)
