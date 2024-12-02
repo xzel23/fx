@@ -23,11 +23,11 @@ public abstract class FxDocument {
      */
     public static final URI VOID_URI = URI.create("");
 
-    protected final BooleanProperty dirtyProperty = new SimpleBooleanProperty(false);
-    protected final ObjectProperty<URI> locationProperty = new SimpleObjectProperty<>(VOID_URI);
+    private final BooleanProperty dirtyProperty = new SimpleBooleanProperty(false);
+    private final ObjectProperty<URI> locationProperty = new SimpleObjectProperty<>(VOID_URI);
 
     protected FxDocument(URI location) {
-        locationProperty.set(location);
+        locationProperty().set(location);
     }
 
     /**
@@ -51,7 +51,7 @@ public abstract class FxDocument {
      * @return true if the document has a location, false otherwise.
      */
     public boolean hasLocation() {
-        return !locationProperty.get().equals(VOID_URI);
+        return !locationProperty().get().equals(VOID_URI);
     }
 
     /**
@@ -60,7 +60,7 @@ public abstract class FxDocument {
      * @return the URI representing the location of the document.
      */
     public URI getLocation() {
-        return locationProperty.get();
+        return locationProperty().get();
     }
 
     /**
@@ -69,7 +69,7 @@ public abstract class FxDocument {
      * @param uri the URI representing the new location of the document.
      */
     public void setLocation(URI uri) {
-        locationProperty.set(uri);
+        locationProperty().set(uri);
     }
 
     /**
@@ -91,7 +91,7 @@ public abstract class FxDocument {
      */
     public void save() throws IOException {
         LangUtil.check(hasLocation(), "location not set");
-        write(locationProperty.get());
+        write(locationProperty().get());
     }
 
     @SuppressWarnings("RedundantThrows")
@@ -115,11 +115,19 @@ public abstract class FxDocument {
      * @return true if the document is in a "dirty" state (i.e., it has been modified), false otherwise.
      */
     public boolean isDirty() {
-        return dirtyProperty.get();
+        return dirtyProperty().get();
     }
 
     @Override
     public String toString() {
         return getLocation().toString();
+    }
+
+    public BooleanProperty dirtyProperty() {
+        return dirtyProperty;
+    }
+
+    public ObjectProperty<URI> locationProperty() {
+        return locationProperty;
     }
 }

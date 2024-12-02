@@ -224,12 +224,12 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
                 public void changed(ObservableValue<? extends FxDocument> observable, @Nullable FxDocument o, @Nullable FxDocument n) {
                     updateApplicationTitle();
                     if (o != null) {
-                        o.dirtyProperty.removeListener(dirtyStateListener);
-                        o.locationProperty.removeListener(locationListener);
+                        o.dirtyProperty().removeListener(dirtyStateListener);
+                        o.locationProperty().removeListener(locationListener);
                     }
                     if (n != null) {
-                        n.dirtyProperty.addListener(dirtyStateListener);
-                        n.locationProperty.addListener(locationListener);
+                        n.dirtyProperty().addListener(dirtyStateListener);
+                        n.locationProperty().addListener(locationListener);
                     }
                 }
             });
