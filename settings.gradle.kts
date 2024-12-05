@@ -1,7 +1,7 @@
 import org.gradle.internal.extensions.stdlib.toDefaultLowerCase
 
 rootProject.name = "dua3-fx"
-val projectVersion = "1.0.1-SNAPSHOT"
+val projectVersion = "1.0.1"
 
 include("fx-application")
 include("fx-application:fx-application-fxml")
@@ -23,7 +23,7 @@ dependencyResolutionManagement {
             plugin("spotbugs", "com.github.spotbugs").version("6.0.26")
             plugin("cabe", "com.dua3.cabe").version("3.0.1")
 
-            version("dua3-utility", "14.2.0-SNAPSHOT")
+            version("dua3-utility", "15.0.0")
             version("javafx", "23")
             version("jspecify", "1.0.0")
             version("log4j-bom", "2.24.2")
