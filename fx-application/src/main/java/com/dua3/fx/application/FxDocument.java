@@ -123,10 +123,23 @@ public abstract class FxDocument {
         return getLocation().toString();
     }
 
+    /**
+     * Provides access to the BooleanProperty that represents the "dirty" state of the document.
+     * This property can be observed or bound to determine whether the document has been modified
+     * since it was last saved or opened.
+     *
+     * @return the BooleanProperty indicating the "dirty" state of the document.
+     */
     public BooleanProperty dirtyProperty() {
         return dirtyProperty;
     }
 
+    /**
+     * Provides access to the ObjectProperty representing the document's location.
+     * This property can be observed or bound to track changes to the document's location.
+     *
+     * @return the ObjectProperty containing the URI that represents the document's location.
+     */
     public ObjectProperty<URI> locationProperty() {
         return locationProperty;
     }
