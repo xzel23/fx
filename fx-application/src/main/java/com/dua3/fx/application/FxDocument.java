@@ -26,6 +26,12 @@ public abstract class FxDocument {
     private final BooleanProperty dirtyProperty = new SimpleBooleanProperty(false);
     private final ObjectProperty<URI> locationProperty = new SimpleObjectProperty<>(VOID_URI);
 
+    /**
+     * Constructs a new FxDocument with the specified location.
+     *
+     * @param location the URI representing the document's location. This URI is used to set
+     *                 the initial location property of the document.
+     */
     protected FxDocument(URI location) {
         locationProperty().set(location);
     }
@@ -94,6 +100,14 @@ public abstract class FxDocument {
         write(locationProperty().get());
     }
 
+    /**
+     * Writes the document's content to the specified location represented by the given URI.
+     * <p>
+     * <strong>NOTE:</strong> Implementations should update the document URI on successful save.
+     *
+     * @param uri the loacation the document should be written to
+     * @throws IOException on error
+     * */
     @SuppressWarnings("RedundantThrows")
     protected abstract void write(URI uri) throws IOException;
 

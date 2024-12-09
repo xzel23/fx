@@ -287,6 +287,12 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
         return open(file.get().toUri());
     }
 
+    /**
+     * Opens a document from the specified URI and updates the document URI upon success.
+     *
+     * @param uri the URI from which to open the document
+     * @return true if the document was successfully opened, false otherwise
+     */
     protected boolean open(URI uri) {
         try {
             setCurrentDocument(loadDocument(uri));
@@ -343,12 +349,28 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
         return saveDocumentAndHandleErrors(document, document.getLocation());
     }
 
+    /**
+     * Retrieves a list of file extension filters to be used in an open file dialog.
+     *
+     * <p>This method returns a list that includes a single filter that allows all file types.
+     * Applications should add their supported filters to the list.
+     *
+     * @return a list of {@link FileChooser.ExtensionFilter} with filters applied to the open file dialog
+     */
     protected List<FileChooser.ExtensionFilter> openFilters() {
         List<FileChooser.ExtensionFilter> filters = new ArrayList<>();
         filters.add(getApp().getExtensionFilterAllFiles());
         return filters;
     }
 
+    /**
+     * Retrieves a list of file extension filters for saving files.
+     *
+     * <p>This method returns a list that includes a single filter that allows all file types.
+     * Applications should add their supported filters to the list.
+     *
+     * @return a list of {@link FileChooser.ExtensionFilter} with filters applied to the save file dialog
+     */
     protected List<FileChooser.ExtensionFilter> saveFilters() {
         List<FileChooser.ExtensionFilter> filters = new ArrayList<>();
         filters.add(getApp().getExtensionFilterAllFiles());
@@ -459,11 +481,30 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
         }
     }
 
+    /**
+     * Creates a new document. This method is a placeholder and not yet implemented.
+     *
+     * S<p>ubclasses should override this method to provide specific functionality
+     * for creating a new document.
+     *
+     * @throws UnsupportedOperationException indicating that the method needs to be implemented.
+     */
     @SuppressWarnings("static-method")
     protected void createDocument() {
         throw new UnsupportedOperationException("not implemented");
     }
 
+    /**
+     * Loads a document from the specified URI.
+     *
+     * S<p>ubclasses should override this method to provide specific functionality
+     * for creating a new document.
+
+     * @param uri the URI from which to load the document
+     * @return the document loaded from the specified URI
+     * @throws IOException if an I/O error occurs while loading the document
+     * @throws UnsupportedOperationException indicating that the method needs to be implemented.
+     */
     @SuppressWarnings({"static-method", "unused", "RedundantThrows"})
     protected D loadDocument(URI uri) throws IOException {
         throw new UnsupportedOperationException("not implemented");
@@ -536,6 +577,14 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
         init(app);
     }
 
+    /**
+     * Initializes the controller with the given application instance.
+     * This method is protected and meant to be overridden by subclasses
+     * to perform specific initialization tasks. The default implementation
+     * does nothing.
+     *
+     * @param app the application instance to be associated with this controller
+     */
     protected void init(A app) {
         // do nothing in the default implementation
     }

@@ -18,9 +18,8 @@ import org.jspecify.annotations.NullMarked;
  * Provides classes and interfaces for building and managing JavaFX applications.
  */
 @NullMarked
-module com.dua3.fx.application {
+open module com.dua3.fx.application {
     exports com.dua3.fx.application;
-    opens com.dua3.fx.application;
 
     requires transitive com.dua3.utility.fx;
     requires transitive com.dua3.utility.fx.controls;
