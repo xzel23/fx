@@ -16,6 +16,8 @@ description = "JavaFX utilities (application)"
 
 dependencies {
     api(rootProject.libs.dua3.utility)
+    api(rootProject.libs.dua3.utility.logging)
+    api(rootProject.libs.dua3.utility.logging.log4j)
     api(rootProject.libs.dua3.utility.fx)
     api(rootProject.libs.dua3.utility.fx.controls)
 }

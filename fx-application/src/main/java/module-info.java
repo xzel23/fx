@@ -25,6 +25,8 @@ open module com.dua3.fx.application {
     requires transitive com.dua3.utility.fx.controls;
 
     requires com.dua3.utility;
+    requires com.dua3.utility.logging;
+    requires com.dua3.utility.logging.log4j;
 
     requires org.apache.logging.log4j;
 
