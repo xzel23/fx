@@ -23,6 +23,10 @@ import java.util.regex.Pattern;
  * and command-line argument parsing. This class provides utility methods to manage logging options, assertion
  * handling, and dynamic application startup.
  *
+ * <p><strong>Note:</strong> The application class must not be a top level class when using the
+ * {@link FxApplicationHelper} to start the application as JavaFX "hacks" the startup code to
+ * start the JavaFX platform before {@code main()} is called which will lead to a runtime exception.
+ *
  * <p>This class is a utility and is not meant to be instantiated.
  */
 public final class FxApplicationHelper {
