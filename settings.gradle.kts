@@ -1,18 +1,15 @@
 import org.gradle.internal.extensions.stdlib.toDefaultLowerCase
 
 rootProject.name = "dua3-fx"
-val projectVersion = "1.0.4-SNAPSHOT"
+val projectVersion = "1.0.4-RC1"
 
 include("fx-application")
 include("fx-application:fx-application-fxml")
 
 dependencyResolutionManagement {
 
-    val isSnapshot = projectVersion.toDefaultLowerCase().contains("snapshot")
-
-    if (isSnapshot) {
-        println("SNAPSHOT version detected, using local Maven repository")
-    }
+    val isSnapshot = projectVersion.toDefaultLowerCase().contains("-snapshot")
+    val isReleaseCandidate = projectVersion.toDefaultLowerCase().contains("-rc")
 
     versionCatalogs {
         create("libs") {
@@ -23,7 +20,7 @@ dependencyResolutionManagement {
             plugin("spotbugs", "com.github.spotbugs").version("6.1.3")
             plugin("cabe", "com.dua3.cabe").version("3.0.2")
 
-            version("dua3-utility", "15.2.0-SNAPSHOT")
+            version("dua3-utility", "15.2.0-RC1")
             version("javafx", "23")
             version("jspecify", "1.0.0")
             version("log4j-bom", "2.24.3")
@@ -80,7 +77,30 @@ dependencyResolutionManagement {
         }
 
         if (isSnapshot) {
-            // local maven repository
+            println("snapshot version detected, adding local and snapshot Maven repositories")
+            mavenLocal()
+
+            // Sonatype Snapshots
+            maven {
+                name = "oss.sonatype.org-snapshots"
+                url = java.net.URI("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+                mavenContent {
+                    snapshotsOnly()
+                }
+            }
+
+            // Apache snapshots
+            maven {
+                name = "apache-snapshots"
+                url = java.net.URI("https://repository.apache.org/content/repositories/snapshots/")
+                mavenContent {
+                    snapshotsOnly()
+                }
+            }
+        }
+
+        if (isReleaseCandidate) {
+            println("release candidate version detected, adding local and staging Maven repositories")
             mavenLocal()
 
             // Sonatype Snapshots
@@ -101,14 +121,6 @@ dependencyResolutionManagement {
                 }
             }
 
-            // Apache snapshots
-            maven {
-                name = "apache-snapshots"
-                url = java.net.URI("https://repository.apache.org/content/repositories/snapshots/")
-                mavenContent {
-                    snapshotsOnly()
-                }
-            }
         }
     }
 

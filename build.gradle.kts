@@ -58,6 +58,7 @@ subprojects {
         }
         return false
     }
+
     val isReleaseVersion = !isDevelopmentVersion(project.version.toString())
     val isSnapshot = project.version.toString().toDefaultLowerCase().contains("snapshot")
 
