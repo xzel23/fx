@@ -330,19 +330,19 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
      */
     public boolean save() {
         //noinspection DataFlowIssue - false positive
-        D d = getCurrentDocument().orElse(null);
+        D doc = getCurrentDocument().orElse(null);
 
-        if (d == null) {
+        if (doc == null) {
             LOG.info("no document; not saving");
             return false;
         }
 
-        if (!d.hasLocation()) {
+        if (!doc.hasLocation()) {
             LOG.debug("save: no URI set, delegating to saveAs()");
             return saveAs();
         }
 
-        return saveDocumentAndHandleErrors(d);
+        return saveDocumentAndHandleErrors(doc);
     }
 
     private boolean saveDocumentAndHandleErrors(D document) {
@@ -484,7 +484,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
     /**
      * Creates a new document. This method is a placeholder and not yet implemented.
      *
-     * S<p>ubclasses should override this method to provide specific functionality
+     * <p>Subclasses should override this method to provide specific functionality
      * for creating a new document.
      *
      * @throws UnsupportedOperationException indicating that the method needs to be implemented.
@@ -497,9 +497,9 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
     /**
      * Loads a document from the specified URI.
      *
-     * S<p>ubclasses should override this method to provide specific functionality
+     * <p>Subclasses should override this method to provide specific functionality
      * for creating a new document.
-
+     *
      * @param uri the URI from which to load the document
      * @return the document loaded from the specified URI
      * @throws IOException if an I/O error occurs while loading the document
