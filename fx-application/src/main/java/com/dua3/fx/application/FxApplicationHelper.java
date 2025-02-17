@@ -31,9 +31,18 @@ import java.util.regex.Pattern;
  */
 public final class FxApplicationHelper {
 
+    /**
+     * Exit code indicating successful execution of the application.
+     */
+    public static final int RC_SUCCESS = 0;
+    /**
+     * Exit code indicating that an error occurred during the execution of the application.
+     */
+    public static final int RC_ERROR = 1;
+
     private static volatile @Nullable LogBuffer logBuffer;
-    private static volatile boolean showLogWindow = false;
-    private static volatile boolean showLogPane = false;
+    private static volatile boolean showLogWindow;
+    private static volatile boolean showLogPane;
 
     private FxApplicationHelper() {
         // utility class
@@ -87,8 +96,9 @@ public final class FxApplicationHelper {
         var arguments = ap.parse(args);
 
         if (arguments.isSet(flagHelp)) {
+            //noinspection UseOfSystemOutOrSystemErr
             System.out.println(ap.help());
-            System.exit(0);
+            return RC_SUCCESS;
         }
 
         boolean enableAssertions = arguments.isSet(flagEnableAssertions);
@@ -128,10 +138,10 @@ public final class FxApplicationHelper {
             Class<? extends Application> applicationClass = (Class<? extends Application>) loader.loadClass(applicationClassName);
             log.info("starting application: {}", applicationClass.getName());
             FxLauncher.launch(applicationClass, args);
-            rc = 0;
+            rc = RC_SUCCESS;
         } catch (Exception e) {
             log.error("exception caught", e);
-            rc = 1;
+            rc = RC_ERROR;
         }
 
         log.info("finished with rc: {}", rc);
@@ -206,6 +216,6 @@ public final class FxApplicationHelper {
             return Optional.empty();
         }
 
-        return Optional.of(new FxLogPane(FxApplicationHelper.getLogBuffer().orElseThrow()));
+        return Optional.of(new FxLogPane(getLogBuffer().orElseThrow()));
     }
 }
