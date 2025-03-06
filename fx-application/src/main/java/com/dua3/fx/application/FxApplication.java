@@ -127,6 +127,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      */
     protected FxApplication(I18N i18n) {
         this.i18n = i18n;
+        this.i18n.mergeBundle(FxApplication.class.getPackageName() + ".application", i18n.getLocale());
     }
 
     /**

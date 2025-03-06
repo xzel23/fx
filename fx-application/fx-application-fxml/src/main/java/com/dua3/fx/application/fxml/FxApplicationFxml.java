@@ -23,7 +23,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.net.URL;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -40,10 +39,6 @@ public abstract class FxApplicationFxml<A extends FxApplicationFxml<A, C>, C ext
      * Logger
      */
     private static final Logger LOG = LogManager.getLogger(FxApplicationFxml.class);
-    /**
-     * The name of the default bundle that is used if the application does not provide its own bundle.
-     */
-    private static final String DEFAULT_BUNDLE = "fxapp";
 
     /**
      * Constructor.
@@ -58,20 +53,6 @@ public abstract class FxApplicationFxml<A extends FxApplicationFxml<A, C>, C ext
      */
     protected FxApplicationFxml(I18N i18n) {
         super(i18n);
-    }
-
-    /**
-     * Get default resource bundle.
-     *
-     * @param locale the locale to use when selecting the bundle
-     * @return the default resource bundle
-     */
-    public ResourceBundle getDefaultBundle(Locale locale) {
-        // load resource bundle
-        LOG.debug("current locale is: {}", locale);
-        ResourceBundle resources = ResourceBundle.getBundle(FxApplicationFxml.class.getPackageName() + "." + DEFAULT_BUNDLE, locale);
-        LOG.debug("resource bundle uses locale: {}", resources.getLocale());
-        return resources;
     }
 
     /**
