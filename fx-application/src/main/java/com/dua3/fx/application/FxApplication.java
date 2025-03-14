@@ -368,7 +368,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
     /**
      * Get the Preferences instance for this application.
      * <p>
-     * The Preferences instance will be created on demand if it doesn't exist yet,
+     * The Preferences instance will be created on demand if it doesn't exist yet.
      *
      * @return the preferences object for this application
      */

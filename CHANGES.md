@@ -37,7 +37,7 @@ Changelog
 
 ### version 0.38
 
-- add javadoc
+- add Javadoc
 - update gradle
 - update dependencies
 - use jvm-test-suite plugin
@@ -64,7 +64,7 @@ Changelog
 - fix standard dialogs not returning values
 - fix validation issues
 - remove obsolete null checks
-- add javadoc
+- add Javadoc
 - add logging to samples
 - code cleanup
 - update utility
@@ -183,7 +183,7 @@ Changelog
 - update to JavaFX 14
 - update to ikonli 11.5.0
 - remove dependency on ControlsFX
-- update gradle to 6.3 (for JDK 14 support)
+- update Gradle to 6.3 (for JDK 14 support)
 - update SpotBugs and SpotBugs gradle plugin
 - update utility
 
@@ -244,7 +244,7 @@ Changelog
 #### Version 0.8.4
 
 - new publish to local repository
-- allow to set CSS for AboutDialog and Alert
+- allow setting CSS for AboutDialog and Alert
 - update utility to 5.1.2
 
 #### Version 0.8.3
@@ -260,7 +260,7 @@ Changelog
 
 #### Version 0.8.1
 
-- fix scroll to first line in markdown editor if first line is not labeled (i.e. when using `${toc}`).
+- fix scroll to first line in Markdown editor if first line is not labeled (i.e., when using `${toc}`).
 - set graphics in AboutDialogBuilder
 - set expandableContent in AboutDialogBuilder
 
@@ -300,7 +300,7 @@ Changelog
 
 #### Version 0.6.0
 
-- use gradle 6
+- use Gradle 6
 - update dependencies
 - fix markdown-editor formula rendering
 - update dependencies
@@ -311,10 +311,10 @@ Changelog
 - removed the fx-editor subproject which contained two sample applications
 - module descriptors changed from com.dua3.fx to dua3_fx
 - fx-icons: IconView class, many fixes
-- fx-web: redirecting javaScript console to Java
+- fx-web: redirecting JavaScript console to Java
 - fx-editors: switch to Monaco Editor
 - fx-editors: add markdown support
-- fx-editors: math support in markdown using kaTeX
+- fx-editors: math support in Markdown using kaTeX
 - log filtering (use `--log=<global_level>,<package_name>:,...)
 
 #### Version 0.4.2

@@ -48,7 +48,7 @@ object Meta {
 subprojects {
     project.version = rootProject.libs.versions.projectVersion.get()
 
-    fun isDevelopmentVersion(versionString : String) : Boolean {
+    fun isDevelopmentVersion(versionString: String): Boolean {
         val v = versionString.toDefaultLowerCase()
         val markers = listOf("snapshot", "alpha", "beta")
         for (marker in markers) {
