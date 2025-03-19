@@ -1,6 +1,52 @@
 Changelog
 =========
 
+### version 1.1.0
+
+- update utility to 16.2.0 (breaking change in Font class)
+
+### version 1.0.7
+
+- i18n: merge the default bundle into the parent bundle
+- update dependencies
+- small documentation fixes
+
+### version 1.0.6
+
+- introduce constants for exit codes
+- do not use System.exit(0) when --help is passed on the command line
+- suppress warning when printing help message to the terminal
+- code cleanup
+
+### version 1.0.5 (unreleased)
+
+- dependency updates
+
+### version 1.0.4
+
+- add FxApplicationHelper
+- update dependencies, gradle
+
+### version 1.0.1, 1.0.2, 1.0.3
+
+- Javadoc
+- update dependencies
+
+### version 1.0
+
+- encapsulate properties
+- use log4j BOM
+
+### version 0.45
+
+- remove SLF4J
+- improve/add Javadoc
+- fix nullability problems
+
+### version 0.44
+
+- JavaFX 23
+
 ### version 0.43
 
 - code cleanup
