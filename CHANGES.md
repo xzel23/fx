@@ -1,6 +1,11 @@
 Changelog
 =========
 
+### version 1.2.0
+
+- update utility to 17.0.0
+- fix CI build including Qodana scan
+
 ### version 1.1.0
 
 - update utility to 16.2.0 (breaking change in Font class)
