@@ -105,7 +105,7 @@ public abstract class FxDocument {
      * <p>
      * <strong>NOTE:</strong> Implementations should update the document URI on successful save.
      *
-     * @param uri the loacation the document should be written to
+     * @param uri the location the document should be written to
      * @throws IOException on error
      * */
     @SuppressWarnings("RedundantThrows")

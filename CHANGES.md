@@ -78,7 +78,7 @@ Changelog
 
 ### version 0.39
 
-- change valdiator decoration to warning symbol
+- change validator decoration to warning symbol
 - use daemon thread for FxRefresh
 - add Cleaner support to PlatformHelper
 

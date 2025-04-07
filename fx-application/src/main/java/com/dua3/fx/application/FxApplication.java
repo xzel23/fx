@@ -98,7 +98,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
     /**
      * The directory containing application data.
      */
-    protected final Path applicationDataDir = initApplicationDataDir();
+    protected final Path dataDir = initApplicationDataDir();
 
     // - instance -
     /**
@@ -440,7 +440,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      * @return the data folder for this application
      */
     public Path getDataDir() {
-        return applicationDataDir;
+        return dataDir;
     }
 
     /**
