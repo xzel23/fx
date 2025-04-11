@@ -95,6 +95,14 @@ subprojects {
         options.release.set(java.targetCompatibility.majorVersion.toInt())
     }
 
+    tasks.compileTestJava {
+        options.encoding = "UTF-8"
+    }
+
+    tasks.javadoc {
+        options.encoding = "UTF-8"
+    }
+
     tasks.withType<JavaExec>().configureEach {
         javaLauncher.set(javaToolchains.launcherFor(java.toolchain))
     }
@@ -133,21 +141,6 @@ subprojects {
 
     testlogger {
         theme = ThemeType.STANDARD
-    }
-
-    tasks.compileJava {
-        options.encoding = "UTF-8"
-        options.compilerArgs.add("-Xlint:deprecation")
-        options.javaModuleVersion.set(provider { project.version as String })
-        options.release.set(java.targetCompatibility.majorVersion.toInt())
-    }
-
-    tasks.compileTestJava {
-        options.encoding = "UTF-8"
-    }
-
-    tasks.javadoc {
-        options.encoding = "UTF-8"
     }
 
     // === publication: MAVEN = == >
