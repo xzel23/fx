@@ -1,6 +1,11 @@
 Changelog
 =========
 
+### version 1.3.x
+
+- update utility to 18.x
+- code cleanup
+
 ### version 1.2.0
 
 - update utility to 17.0.0
