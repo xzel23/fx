@@ -144,7 +144,7 @@ public abstract class FxDocument {
      *
      * @return the BooleanProperty indicating the "dirty" state of the document.
      */
-    public BooleanProperty dirtyProperty() {
+    public final BooleanProperty dirtyProperty() {
         return dirtyProperty;
     }
 
@@ -154,7 +154,7 @@ public abstract class FxDocument {
      *
      * @return the ObjectProperty containing the URI that represents the document's location.
      */
-    public ObjectProperty<URI> locationProperty() {
+    public final ObjectProperty<URI> locationProperty() {
         return locationProperty;
     }
 }
