@@ -21,10 +21,11 @@ dependencyResolutionManagement {
             plugin("cabe", "com.dua3.cabe").version("3.0.2")
             plugin("forbiddenapis", "de.thetaphi.forbiddenapis").version("3.9")
 
-            version("dua3-utility", "18.0.0")
+            version("dua3-utility", "18.1.0")
             version("javafx", "23")
             version("jspecify", "1.0.0")
             version("log4j-bom", "2.24.3")
+            version("spotbugs", "4.9.3")
 
             library("dua3-utility", "com.dua3.utility", "utility").versionRef("dua3-utility")
             library("dua3-utility-db", "com.dua3.utility", "utility-db").versionRef("dua3-utility")
