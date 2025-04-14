@@ -1,7 +1,7 @@
 import org.gradle.internal.extensions.stdlib.toDefaultLowerCase
 
 rootProject.name = "dua3-fx"
-val projectVersion = "1.3.1-SNAPSHOT"
+val projectVersion = "1.3.1"
 
 include("fx-application")
 include("fx-application:fx-application-fxml")
