@@ -22,7 +22,7 @@ dependencyResolutionManagement {
             plugin("forbiddenapis", "de.thetaphi.forbiddenapis").version("3.9")
 
             version("dua3-utility", "19.0.0")
-            version("javafx", "24")
+            version("javafx", "23")
             version("jspecify", "1.0.0")
             version("log4j-bom", "2.24.3")
             version("spotbugs", "4.9.3")
