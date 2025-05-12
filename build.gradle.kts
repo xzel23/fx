@@ -136,6 +136,15 @@ subprojects {
                 dependencies {
                     implementation(rootProject.libs.log4j.core)
                 }
+
+                targets {
+                    all {
+                        testTask {
+                            // enable exceptions in tests
+                            jvmArgs("ea")
+                        }
+                    }
+                }
             }
         }
     }
@@ -220,7 +229,7 @@ subprojects {
     tasks.withType<com.github.spotbugs.snom.SpotBugsTask> {
         reports.create("html") {
             required.set(true)
-            outputLocation.set(file("$buildDir/reports/spotbugs.html"))
+            outputLocation = project.layout.buildDirectory.file("reports/spotbugs.xml").get().asFile
             setStylesheet("fancy-hist.xsl")
         }
     }
@@ -240,20 +249,14 @@ allprojects {
     // versions plugin configuration
     fun isStable(version: String): Boolean {
         val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.uppercase().contains(it) }
-        val regex = "[0-9,.v-]+-(rc|alpha|beta|b)(-?[0-9]*)?".toRegex()
+        val regex = "[0-9,.v-]+-(rc|alpha|beta|b|M)(-?[0-9]*)?".toRegex()
         val isStable = stableKeyword || !regex.matches(version)
         return isStable
     }
 
     tasks.withType<DependencyUpdatesTask> {
-        resolutionStrategy {
-            componentSelection {
-                all {
-                    if (!isStable(candidate.version)) {
-                        reject("Release candidate")
-                    }
-                }
-            }
+        rejectVersionIf {
+            !isStable(candidate.version)
         }
     }
 }
