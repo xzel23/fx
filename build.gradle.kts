@@ -75,7 +75,7 @@ subprojects {
     apply(plugin = "de.thetaphi.forbiddenapis")
 
     java {
-        toolchain { languageVersion.set(JavaLanguageVersion.of(21)) }
+        toolchain { languageVersion.set(JavaLanguageVersion.of(24)) }
         withSourcesJar()
         withJavadocJar()
     }
