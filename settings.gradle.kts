@@ -17,12 +17,12 @@ dependencyResolutionManagement {
 
             plugin("versions", "com.github.ben-manes.versions").version("0.52.0")
             plugin("test-logger", "com.adarshr.test-logger").version("4.0.0")
-            plugin("spotbugs", "com.github.spotbugs").version("6.1.11")
+            plugin("spotbugs", "com.github.spotbugs").version("6.1.13")
             plugin("cabe", "com.dua3.cabe").version("3.0.2")
             plugin("forbiddenapis", "de.thetaphi.forbiddenapis").version("3.9")
 
-            version("dua3-utility", "19.0.0")
-            version("javafx", "23")
+            version("dua3-utility", "19.1.0-SNAPSHOT")
+            version("javafx", "24")
             version("jspecify", "1.0.0")
             version("log4j-bom", "2.24.3")
             version("spotbugs", "4.9.3")
