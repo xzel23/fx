@@ -24,12 +24,14 @@ plugins {
     id("maven-publish")
     id("signing")
     id("idea")
+    id("jacoco")
     alias(libs.plugins.versions)
     alias(libs.plugins.test.logger)
     alias(libs.plugins.spotbugs)
     alias(libs.plugins.cabe)
     alias(libs.plugins.forbiddenapis)
     alias(libs.plugins.javafx)
+    alias(libs.plugins.sonar)
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -69,6 +71,7 @@ subprojects {
     apply(plugin = "maven-publish")
     apply(plugin = "signing")
     apply(plugin = "idea")
+    apply(plugin = "jacoco")
 
     apply(plugin = rootProject.libs.plugins.versions.get().pluginId)
     apply(plugin = rootProject.libs.plugins.test.logger.get().pluginId)
@@ -109,6 +112,27 @@ subprojects {
 
     tasks.withType<JavaExec>().configureEach {
         javaLauncher.set(javaToolchains.launcherFor(java.toolchain))
+    }
+
+    // JaCoCo
+    tasks.withType<JacocoReport> {
+        reports {
+            xml.required.set(true)
+            html.required.set(false)
+        }
+    }
+
+    // Configure test task to use JaCoCo
+    tasks.withType<Test> {
+        useJUnitPlatform()
+        finalizedBy(tasks.jacocoTestReport)
+    }
+
+    // Sonar
+    sonar {
+        properties {
+            property("sonar.coverage.jacoco.xmlReportPaths", "**/build/reports/jacoco/test/jacocoTestReport.xml")
+        }
     }
 
     // dependencies
