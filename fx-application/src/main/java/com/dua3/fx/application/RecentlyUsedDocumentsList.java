@@ -15,7 +15,6 @@ import java.util.Map;
 import java.util.function.Predicate;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
-import java.util.stream.Collectors;
 
 /**
  * An implementation of an LRU list for documents with automatic storage/ retrieval via preferences API.
@@ -183,7 +182,7 @@ public class RecentlyUsedDocumentsList {
      * @return the list of stored items
      */
     public List<Pair<URI, String>> entries() {
-        return items.entrySet().stream().map(Pair::of).collect(Collectors.toList());
+        return items.entrySet().stream().map(Pair::of).toList();
     }
 
     @Override

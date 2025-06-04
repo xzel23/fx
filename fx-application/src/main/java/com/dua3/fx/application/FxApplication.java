@@ -88,6 +88,10 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      */
     private static final String DEFAULT_BUNDLE_NAME = "fxapp";
     /**
+     * Represents the key for retrieving the application name from the resource bundle.
+     */
+    private static final String FX_APPLICATION_NAME = "fx.application.name";
+    /**
      * List of Resource cleanup tasks to run on application stop.
      */
     private final List<Runnable> cleanupActions = new ArrayList<>();
@@ -211,7 +215,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
             getCss().ifPresent(css -> scene.getStylesheets().add(css.toExternalForm()));
 
             // setup stage
-            primaryStage.setTitle(i18n.get("fx.application.name"));
+            primaryStage.setTitle(i18n.get(FX_APPLICATION_NAME));
             primaryStage.setScene(scene);
 
             // automatically update title on document change
@@ -291,7 +295,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      */
     protected void updateApplicationTitle() {
         StringBuilder title = new StringBuilder();
-        title.append(i18n.get("fx.application.name"));
+        title.append(i18n.get(FX_APPLICATION_NAME));
 
         FxDocument document = getController().getCurrentDocument().orElse(null);
 
@@ -529,8 +533,8 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      */
     protected void showAboutDialog(@Nullable URL css) {
         AboutDialogBuilder aboutDialogBuilder = Dialogs.about(mainStage)
-                .title(i18n.format("fx.application.about.title.{0.name}", i18n.get("fx.application.name")))
-                .name(i18n.get("fx.application.name"))
+                .title(i18n.format("fx.application.about.title.{0.name}", i18n.get(FX_APPLICATION_NAME)))
+                .name(i18n.get(FX_APPLICATION_NAME))
                 .version(getVersion())
                 .copyright(i18n.get("fx.application.about.copyright"))
                 .graphic(LangUtil.getResourceURL(
@@ -541,7 +545,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
                         i18n.get("fx.application.about.email"),
                         TextUtil.generateMailToLink(
                                 i18n.get("fx.application.about.email"),
-                                i18n.get("fx.application.name")
+                                i18n.get(FX_APPLICATION_NAME)
                                         + " "
                                         + getVersion()))
                 .expandableContent(i18n.get("fx.application.about.detail"));

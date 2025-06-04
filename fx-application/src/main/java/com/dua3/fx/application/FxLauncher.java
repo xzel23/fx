@@ -32,6 +32,7 @@ public final class FxLauncher {
                 break;
             } catch (InterruptedException e) {
                 LOG.debug("interrupted while waiting for platform startup", e);
+                Thread.currentThread().interrupt(); // Restore the interrupt status
             }
         }
     }
