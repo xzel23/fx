@@ -14,6 +14,11 @@
 
 description = "JavaFX utilities (application)"
 
+javafx {
+    version = rootProject.libs.versions.javafx.get()
+    modules("javafx.controls")
+}
+
 dependencies {
     api(rootProject.libs.dua3.utility)
     api(rootProject.libs.dua3.utility.logging)

@@ -29,6 +29,7 @@ plugins {
     alias(libs.plugins.spotbugs)
     alias(libs.plugins.cabe)
     alias(libs.plugins.forbiddenapis)
+    alias(libs.plugins.javafx)
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -68,11 +69,13 @@ subprojects {
     apply(plugin = "maven-publish")
     apply(plugin = "signing")
     apply(plugin = "idea")
-    apply(plugin = "com.github.ben-manes.versions")
-    apply(plugin = "com.adarshr.test-logger")
-    apply(plugin = "com.github.spotbugs")
-    apply(plugin = "com.dua3.cabe")
-    apply(plugin = "de.thetaphi.forbiddenapis")
+
+    apply(plugin = rootProject.libs.plugins.versions.get().pluginId)
+    apply(plugin = rootProject.libs.plugins.test.logger.get().pluginId)
+    apply(plugin = rootProject.libs.plugins.spotbugs.get().pluginId)
+    apply(plugin = rootProject.libs.plugins.cabe.get().pluginId)
+    apply(plugin = rootProject.libs.plugins.forbiddenapis.get().pluginId)
+    apply(plugin = rootProject.libs.plugins.javafx.get().pluginId)
 
     java {
         toolchain { languageVersion.set(JavaLanguageVersion.of(21)) }

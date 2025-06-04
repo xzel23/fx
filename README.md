@@ -13,7 +13,7 @@ The framework consists of the following libraries:
 
 - **fx-util:** JavaFX related utility classes
 
-    - **fx-util-db:** JavaFX classes related to databases
+- **fx-util-db:** JavaFX classes related to databases
 
 - **fx-web:** classes related to the JavaFX WebView component
 
