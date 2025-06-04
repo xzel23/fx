@@ -160,9 +160,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
                         .buttons(ButtonType.YES, ButtonType.CANCEL)
                         .defaultButton(ButtonType.CANCEL)
                         .showAndWait()
-                        .ifPresent(btn -> {
-                            goOn.set(btn == ButtonType.YES); // only continue if "YES" was clicked
-                        });
+                        .ifPresent(btn -> goOn.set(btn == ButtonType.YES)); // only continue if "YES" was clicked
             }
         }
 
