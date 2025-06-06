@@ -25,4 +25,31 @@ dependencies {
     api(rootProject.libs.dua3.utility.logging.log4j)
     api(rootProject.libs.dua3.utility.fx)
     api(rootProject.libs.dua3.utility.fx.controls)
+
+    // Test dependencies
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.2")
+}
+
+// Configure tests to run in a forked VM
+tasks.test {
+    useJUnitPlatform()
+
+    // Run tests in a forked VM
+    forkEvery = 1
+
+    // Set JVM arguments for the forked VM
+    jvmArgs = listOf(
+        "--add-exports=javafx.graphics/com.sun.javafx.application=ALL-UNNAMED",
+        "--add-opens=javafx.graphics/com.sun.javafx.application=ALL-UNNAMED",
+        "-Djava.awt.headless=true",
+        "-Dtestfx.robot=glass",
+        "-Dtestfx.headless=true",
+        "-Dprism.order=sw"
+    )
+
+    // Print test output to console
+    testLogging {
+        events("passed", "skipped", "failed")
+    }
 }
