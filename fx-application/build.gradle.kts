@@ -25,10 +25,6 @@ dependencies {
     api(rootProject.libs.dua3.utility.logging.log4j)
     api(rootProject.libs.dua3.utility.fx)
     api(rootProject.libs.dua3.utility.fx.controls)
-
-    // Test dependencies
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.2")
 }
 
 // Configure tests to run in a forked VM
