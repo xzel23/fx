@@ -15,7 +15,7 @@ import java.util.Optional;
  * Test class for FxApplication.
  * This class tests basic functionality of the FxApplication class.
  */
-public class FxApplicationTest extends FxTestBase {
+class FxApplicationTest extends FxTestBase {
 
     /**
      * A simple implementation of FxApplication for testing.
@@ -105,7 +105,7 @@ public class FxApplicationTest extends FxTestBase {
      * This test verifies that the platform is running after initialization.
      */
     @Test
-    public void testPlatformInitialization() {
+    void testPlatformInitialization() {
         // This test will pass if the platform is initialized correctly
         // The @BeforeAll method in FxTestBase should have initialized the platform
         Assertions.assertTrue(javafx.application.Platform.isFxApplicationThread() || true, 
@@ -120,7 +120,7 @@ public class FxApplicationTest extends FxTestBase {
      * Test the static method getFxAppBundle.
      */
     @Test
-    public void testGetFxAppBundle() {
+    void testGetFxAppBundle() {
         // Test that we can get the resource bundle
         java.util.ResourceBundle bundle = FxApplication.getFxAppBundle(Locale.ENGLISH);
         Assertions.assertNotNull(bundle, "Resource bundle should not be null");
@@ -130,7 +130,7 @@ public class FxApplicationTest extends FxTestBase {
      * Test the asText method.
      */
     @Test
-    public void testAsText() {
+    void testAsText() {
         // Test with a null URI
         String nullText = FxApplication.asText(null);
         Assertions.assertEquals("", nullText, "asText should return empty string for null URI");

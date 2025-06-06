@@ -10,7 +10,7 @@ import java.net.URI;
  * Test class for FxDocument.
  * This class tests basic functionality of the FxDocument class.
  */
-public class FxDocumentTest extends FxTestBase {
+class FxDocumentTest extends FxTestBase {
 
     /**
      * A simple implementation of FxDocument for testing.
@@ -18,11 +18,11 @@ public class FxDocumentTest extends FxTestBase {
     static class TestDocument extends FxDocument {
         private boolean writeWasCalled = false;
 
-        public TestDocument() {
+        TestDocument() {
             super(VOID_URI);
         }
 
-        public TestDocument(URI location) {
+        TestDocument(URI location) {
             super(location);
         }
 
@@ -33,7 +33,7 @@ public class FxDocumentTest extends FxTestBase {
             System.out.println("Writing document to: " + uri);
         }
 
-        public boolean wasWriteCalled() {
+        boolean wasWriteCalled() {
             return writeWasCalled;
         }
     }
@@ -42,7 +42,7 @@ public class FxDocumentTest extends FxTestBase {
      * Test the constructor and location property.
      */
     @Test
-    public void testConstructorAndLocation() {
+    void testConstructorAndLocation() {
         // Test with VOID_URI
         TestDocument doc1 = new TestDocument();
         Assertions.assertEquals(FxDocument.VOID_URI, doc1.getLocation(), "Location should be VOID_URI");
@@ -59,7 +59,7 @@ public class FxDocumentTest extends FxTestBase {
      * Test the getName method.
      */
     @Test
-    public void testGetName() {
+    void testGetName() {
         // Test with VOID_URI
         TestDocument doc1 = new TestDocument();
         Assertions.assertEquals("", doc1.getName(), "Name should be empty for VOID_URI");
@@ -74,7 +74,7 @@ public class FxDocumentTest extends FxTestBase {
      * Test the dirty property.
      */
     @Test
-    public void testDirtyProperty() {
+    void testDirtyProperty() {
         TestDocument doc = new TestDocument();
         
         // Initially, document should not be dirty
@@ -93,7 +93,7 @@ public class FxDocumentTest extends FxTestBase {
      * Test the save and saveAs methods.
      */
     @Test
-    public void testSaveAndSaveAs() throws IOException {
+    void testSaveAndSaveAs() throws IOException {
         TestDocument doc = new TestDocument();
         URI testUri = URI.create("file:///test/document.txt");
         
@@ -114,11 +114,11 @@ public class FxDocumentTest extends FxTestBase {
      * Test that save throws an exception when location is not set.
      */
     @Test
-    public void testSaveWithoutLocation() {
+    void testSaveWithoutLocation() {
         TestDocument doc = new TestDocument(); // No location set
-        
+
         // Attempting to save without a location should throw an exception
-        Assertions.assertThrows(IllegalStateException.class, doc::save, 
-            "Save should throw an exception when location is not set");
+        Assertions.assertThrows(IllegalStateException.class, doc::save,
+                "Save should throw an exception when location is not set");
     }
 }
