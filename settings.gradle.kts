@@ -27,7 +27,7 @@ dependencyResolutionManagement {
             plugin("sonar", "org.sonarqube").version("6.2.0.5505")
             plugin("javafx", "org.openjfx.javafxplugin").version("0.1.0")
 
-            version("dua3-utility", "19.1.0")
+            version("dua3-utility", "19.2.1")
             version("javafx", "23")
             version("jspecify", "1.0.0")
             version("log4j-bom", "2.24.3")
