@@ -89,7 +89,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
      *
      * @return a list of documents with unsaved changes.
      */
-    public abstract List<? extends D> dirtyDocuments();
+    public abstract List<D> dirtyDocuments();
 
     /**
      * Request application close as if the close-window-button was clicked.

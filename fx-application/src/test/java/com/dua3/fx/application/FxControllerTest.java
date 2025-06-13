@@ -91,7 +91,7 @@ class FxControllerTest extends FxTestBase {
         private TestDocument currentDocument;
 
         @Override
-        public List<? extends TestDocument> dirtyDocuments() {
+        public List<TestDocument> dirtyDocuments() {
             return documents.stream().filter(TestDocument::isDirty).toList();
         }
 

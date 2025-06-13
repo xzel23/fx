@@ -55,7 +55,7 @@ class FxApplicationTest extends FxTestBase {
      */
     static class TestController extends FxController<TestApplication, TestController, TestDocument> {
         @Override
-        public java.util.List<? extends TestDocument> dirtyDocuments() {
+        public java.util.List<TestDocument> dirtyDocuments() {
             return java.util.Collections.emptyList();
         }
 
