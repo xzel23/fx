@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Assertions;
 
 import java.net.URI;
 import java.util.Locale;
-import java.util.Optional;
 
 /**
  * Test class for FxApplication.
@@ -98,22 +97,6 @@ class FxApplicationTest extends FxTestBase {
             // No-op for testing
             System.out.println("Writing document to: " + uri);
         }
-    }
-
-    /**
-     * Test that the FxTestBase correctly initializes the JavaFX platform.
-     * This test verifies that the platform is running after initialization.
-     */
-    @Test
-    void testPlatformInitialization() {
-        // This test will pass if the platform is initialized correctly
-        // The @BeforeAll method in FxTestBase should have initialized the platform
-        Assertions.assertTrue(javafx.application.Platform.isFxApplicationThread() || true, 
-            "This test may not be running on the FX application thread, but the platform should be initialized");
-
-        // FIXME: This assertion is not ideal as it will always pass. In a real test environment,
-        // we would need a better way to verify that the platform is initialized.
-        // One approach would be to use Platform.runLater() and wait for the task to complete.
     }
 
     /**
