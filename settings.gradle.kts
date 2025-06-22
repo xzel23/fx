@@ -30,7 +30,7 @@ dependencyResolutionManagement {
             version("dua3-utility", "20.0.0-SNAPSHOT")
             version("javafx", "23.0.2")
             version("jspecify", "1.0.0")
-            version("log4j-bom", "2.24.3")
+            version("log4j-bom", "2.25.0")
             version("spotbugs", "4.9.3")
 
             library("dua3-utility", "com.dua3.utility", "utility").versionRef("dua3-utility")
