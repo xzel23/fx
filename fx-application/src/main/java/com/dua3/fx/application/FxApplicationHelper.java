@@ -8,6 +8,8 @@ import com.dua3.utility.logging.LogLevel;
 import com.dua3.utility.logging.LogUtil;
 import com.dua3.utility.logging.log4j.LogUtilLog4J;
 import com.dua3.utility.options.ArgumentsParser;
+import com.dua3.utility.options.ArgumentsParserBuilder;
+import com.dua3.utility.options.Repetitions;
 import javafx.application.Application;
 import javafx.stage.Window;
 import org.apache.logging.log4j.LogManager;
@@ -15,6 +17,7 @@ import org.apache.logging.log4j.Logger;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
@@ -60,9 +63,19 @@ public final class FxApplicationHelper {
      * @param copyright            the copyright notice of the application
      * @param developerMail        the developer's contact email
      * @param appDescription       a brief description of the application
+     * @param addOptions          variable-length array of consumers that add additional command-line options to the parser
      * @return the exit code of the application; 0 indicates successful execution, 1 indicates an error
      */
-    public static int runApplication(String applicationClassName, String[] args, String appName, String version, String copyright, String developerMail, String appDescription) {
+    public static int runApplication(
+            String applicationClassName,
+            String[] args,
+            String appName,
+            String version,
+            String copyright,
+            String developerMail,
+            String appDescription,
+            Consumer<ArgumentsParserBuilder>... addOptions
+    ) {
         var agp = ArgumentsParser.builder()
                 .name(appName)
                 .description("Version " + version + "\n"
@@ -73,24 +86,56 @@ public final class FxApplicationHelper {
                 )
                 .positionalArgs(0, 0);
 
-        var flagHelp = agp.flag("--help", "-h").description("show help and quit");
-        var flagEnableAssertions = agp.flag("--enable-assertions", "-ea")
-                .description("enable runtime checks");
-        var flagShowLogWindow = agp.flag("--log-window", "-lw")
-                .description("show log messages in a second window");
-        var flagShowLogPane = agp.flag("--log-pane", "-lp")
-                .description("show log messages in main window");
-        var optLogLevel = agp.simpleOption(LogLevel.class, "--log-level", "-ll")
-                .description("set log global level")
-                .argName("level")
-                .defaultValue(LogLevel.INFO);
-        var optLogNameFilter = agp.simpleOption(String.class, "--log-filter", "-lf")
-                .description("set global filter for logger names")
-                .argName("regex");
-        var optLogBufferSize = agp.simpleOption(Integer.class, "--log-buffer-size", "-ls")
-                .description("set size of log buffer")
-                .argName("n")
-                .defaultValue(DEFAULT_LOG_BUFFER_SIZE);
+        var flagHelp = agp.addFlag(
+                "Help",
+                "Show Help and quit.",
+                "--help", "-h"
+        );
+        var flagEnableAssertions = agp.addFlag(
+                "Runtime Checks",
+                "Enable runtime checks.",
+                "--enable-assertions", "-ea"
+        );
+        var flagShowLogWindow = agp.addFlag(
+                "Show Log Window",
+                "Show Log Messages in a separate Window.",
+                "--log-window", "-lw"
+        );
+        var flagShowLogPane = agp.addFlag(
+                "Show Log Messages",
+                "Show Log Messages in Main Window.",
+                "--log-pane", "-lp"
+        );
+        var optLogLevel = agp.addEnumOption(
+                "Log Level",
+                "Set the global Log Level.",
+                Repetitions.ZERO_OR_ONE,
+                "level",
+                () -> LogLevel.INFO,
+                LogLevel.class,
+                "--log-level", "-ll"
+        );
+        var optLogNameFilter = agp.addStringOption(
+                "Log Filfter",
+                "Set global Filter for Logger Names.",
+                Repetitions.ZERO_OR_ONE,
+                "regex",
+                () -> null,
+                "--log-filter", "-lf"
+        );
+        var optLogBufferSize = agp.addIntegerOption(
+                "Log Buffer Size",
+                "Set the Size of the Log Buffer.",
+                Repetitions.ZERO_OR_ONE,
+                "size",
+                () -> DEFAULT_LOG_BUFFER_SIZE,
+                "--log-buffer-size", "-ls"
+        );
+
+        for (Consumer<ArgumentsParserBuilder> addOption : addOptions) {
+            addOption.accept(agp);
+        }
+
         ArgumentsParser ap = agp.build(flagHelp);
 
         var arguments = ap.parse(args);
