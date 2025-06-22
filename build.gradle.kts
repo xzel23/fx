@@ -38,7 +38,6 @@ plugins {
 object Meta {
     const val GROUP = "com.dua3.fx"
     const val SCM = "https://github.com/xzel23/fx.git"
-    const val REPO = "public"
     const val LICENSE_NAME = "The Apache Software License, Version 2.0"
     const val LICENSE_URL = "https://www.apache.org/licenses/LICENSE-2.0.txt"
     const val DEVELOPER_ID = "axh"
@@ -142,6 +141,7 @@ subprojects {
 
         // LOG4J
         implementation(platform(rootProject.libs.log4j.bom))
+        implementation(platform(rootProject.libs.dua3.utility.bom))
         implementation(rootProject.libs.log4j.api)
 
         api(rootProject.libs.dua3.utility.fx)
@@ -157,7 +157,7 @@ subprojects {
 
     testing {
         suites {
-            val test by getting(JvmTestSuite::class) {
+            named<JvmTestSuite>("test") {
                 useJUnitJupiter()
 
                 dependencies {

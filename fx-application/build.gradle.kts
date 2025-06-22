@@ -36,8 +36,6 @@ tasks.test {
 
     // Set JVM arguments for the forked VM
     jvmArgs = listOf(
-        "--add-exports=javafx.graphics/com.sun.javafx.application=ALL-UNNAMED",
-        "--add-opens=javafx.graphics/com.sun.javafx.application=ALL-UNNAMED",
         "-Djava.awt.headless=true",
         "-Dtestfx.robot=glass",
         "-Dtestfx.headless=true",

@@ -27,29 +27,30 @@ dependencyResolutionManagement {
             plugin("sonar", "org.sonarqube").version("6.2.0.5505")
             plugin("javafx", "org.openjfx.javafxplugin").version("0.1.0")
 
-            version("dua3-utility", "20.0.0-SNAPSHOT")
+            version("dua3-utility", "20.0.0-BETA1")
             version("javafx", "23.0.2")
             version("jspecify", "1.0.0")
             version("log4j-bom", "2.25.0")
             version("spotbugs", "4.9.3")
 
-            library("dua3-utility", "com.dua3.utility", "utility").versionRef("dua3-utility")
-            library("dua3-utility-db", "com.dua3.utility", "utility-db").versionRef("dua3-utility")
-            library("dua3-utility-logging", "com.dua3.utility", "utility-logging").versionRef("dua3-utility")
+            library("dua3-utility-bom", "com.dua3.utility", "utility-bom").versionRef("dua3-utility")
+            library("dua3-utility", "com.dua3.utility", "utility").withoutVersion()
+            library("dua3-utility-db", "com.dua3.utility", "utility-db").withoutVersion()
+            library("dua3-utility-logging", "com.dua3.utility", "utility-logging").withoutVersion()
             library("jspecify", "org.jspecify", "jspecify").versionRef("jspecify")
             library(
                 "dua3-utility-logging-log4j",
                 "com.dua3.utility",
                 "utility-logging-log4j"
-            ).versionRef("dua3-utility")
+            ).withoutVersion()
             library(
                 "dua3-utility-logging-slf4j",
                 "com.dua3.utility",
                 "utility-logging-slf4j"
-            ).versionRef("dua3-utility")
-            library("dua3-utility-swing", "com.dua3.utility", "utility-swing").versionRef("dua3-utility")
-            library("dua3-utility-fx", "com.dua3.utility", "utility-fx").versionRef("dua3-utility")
-            library("dua3-utility-fx-controls", "com.dua3.utility", "utility-fx-controls").versionRef("dua3-utility")
+            ).withoutVersion()
+            library("dua3-utility-swing", "com.dua3.utility", "utility-swing").withoutVersion()
+            library("dua3-utility-fx", "com.dua3.utility", "utility-fx").withoutVersion()
+            library("dua3-utility-fx-controls", "com.dua3.utility", "utility-fx-controls").withoutVersion()
             library("log4j-bom", "org.apache.logging.log4j", "log4j-bom").versionRef("log4j-bom")
             library("log4j-api", "org.apache.logging.log4j", "log4j-api").withoutVersion()
             library("log4j-core", "org.apache.logging.log4j", "log4j-core").withoutVersion()
