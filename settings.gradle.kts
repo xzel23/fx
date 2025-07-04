@@ -69,7 +69,7 @@ dependencyResolutionManagement {
 
         // Sonatype Releases
         maven {
-            name = "oss.sonatype.org-releases"
+            name = "Central Portal Releases"
             url = java.net.URI("https://s01.oss.sonatype.org/content/repositories/releases/")
             mavenContent {
                 releasesOnly()
@@ -87,12 +87,11 @@ dependencyResolutionManagement {
 
         if (isSnapshot) {
             println("snapshot version detected, adding local and snapshot Maven repositories")
-            mavenLocal()
 
             // Sonatype Snapshots
             maven {
-                name = "oss.sonatype.org-snapshots"
-                url = java.net.URI("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+                name = "Central Portal Snapshots"
+                url = java.net.URI("https://central.sonatype.com/repository/maven-snapshots/")
                 mavenContent {
                     snapshotsOnly()
                 }
@@ -109,17 +108,7 @@ dependencyResolutionManagement {
         }
 
         if (isReleaseCandidate) {
-            println("release candidate version detected, adding local and staging Maven repositories")
-            mavenLocal()
-
-            // Sonatype Snapshots
-            maven {
-                name = "oss.sonatype.org-snapshots"
-                url = java.net.URI("https://s01.oss.sonatype.org/content/repositories/snapshots/")
-                mavenContent {
-                    snapshotsOnly()
-                }
-            }
+            println("release candidate version detected, adding staging Maven repositories")
 
             // Apache staging
             maven {

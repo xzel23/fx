@@ -136,12 +136,13 @@ subprojects {
 
     // dependencies
     dependencies {
+        implementation(platform(rootProject.libs.log4j.bom))
+        implementation(platform(rootProject.libs.dua3.utility.bom))
+
         // JSpecify (source annotations)
         compileOnly(rootProject.libs.jspecify)
 
         // LOG4J
-        implementation(platform(rootProject.libs.log4j.bom))
-        implementation(platform(rootProject.libs.dua3.utility.bom))
         implementation(rootProject.libs.log4j.api)
 
         api(rootProject.libs.dua3.utility.fx)
