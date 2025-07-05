@@ -67,10 +67,8 @@ tasks.named<JacocoReport>("testCodeCoverageReport") {
 // SonarQube root project config
 sonar {
     properties {
-        property(
-            "sonar.coverage.jacoco.xmlReportPaths",
-            "${layout.buildDirectory.get()}/reports/jacoco/testCodeCoverageReport/testCodeCoverageReport.xml"
-        )
+        property("sonar.coverage.jacoco.xmlReportPaths", "${layout.buildDirectory.get()}/reports/jacoco/testCodeCoverageReport/testCodeCoverageReport.xml")
+        property("sonar.coverage.exclusions", "**/samples/**")
     }
 }
 
@@ -386,6 +384,7 @@ tasks.named("jreleaserDeploy") {
 jreleaser {
     project {
         name.set(rootProject.name)
+        description.set(rootProject.description)
         version.set(rootProject.libs.versions.projectVersion.get())
         group = Meta.GROUP
         authors.set(listOf(Meta.DEVELOPER_NAME))
