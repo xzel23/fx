@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-description = "JavaFX utilities (application using FXML)"
+project.description = "JavaFX utilities (application using FXML)"
 
 javafx {
     version = rootProject.libs.versions.javafx.get()

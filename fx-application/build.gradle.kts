@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-description = "JavaFX utilities (application)"
+project.description = "JavaFX utilities (application)"
 
 javafx {
     version = rootProject.libs.versions.javafx.get()
