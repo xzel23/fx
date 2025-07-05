@@ -19,16 +19,19 @@ dependencyResolutionManagement {
         create("libs") {
             version("projectVersion", projectVersion)
 
-            plugin("versions", "com.github.ben-manes.versions").version("0.52.0")
-            plugin("test-logger", "com.adarshr.test-logger").version("4.0.0")
-            plugin("spotbugs", "com.github.spotbugs").version("6.2.0")
             plugin("cabe", "com.dua3.cabe").version("3.1.0")
             plugin("forbiddenapis", "de.thetaphi.forbiddenapis").version("3.9")
-            plugin("sonar", "org.sonarqube").version("6.2.0.5505")
             plugin("javafx", "org.openjfx.javafxplugin").version("0.1.0")
+            plugin("jmh", "me.champeau.jmh").version("0.7.3")
+            plugin("jreleaser", "org.jreleaser").version("1.19.0")
+            plugin("sonar", "org.sonarqube").version("6.2.0.5505")
+            plugin("spotbugs", "com.github.spotbugs").version("6.2.0")
+            plugin("test-logger", "com.adarshr.test-logger").version("4.0.0")
+            plugin("versions", "com.github.ben-manes.versions").version("0.52.0")
 
             version("dua3-utility", "20.0.0-SNAPSHOT")
             version("javafx", "23.0.2")
+            version("jmh", "1.37")
             version("jspecify", "1.0.0")
             version("log4j-bom", "2.25.0")
             version("spotbugs", "4.9.3")
@@ -69,8 +72,8 @@ dependencyResolutionManagement {
 
         // Sonatype Releases
         maven {
-            name = "Central Portal Releases"
-            url = java.net.URI("https://s01.oss.sonatype.org/content/repositories/releases/")
+            name = "central.sonatype.com-releases"
+            url = java.net.URI("https://central.sonatype.com/content/repositories/releases/")
             mavenContent {
                 releasesOnly()
             }
@@ -86,7 +89,7 @@ dependencyResolutionManagement {
         }
 
         if (isSnapshot) {
-            println("snapshot version detected, adding local and snapshot Maven repositories")
+            println("snapshot version detected, adding Maven snapshot repositories")
 
             // Sonatype Snapshots
             maven {
@@ -108,7 +111,7 @@ dependencyResolutionManagement {
         }
 
         if (isReleaseCandidate) {
-            println("release candidate version detected, adding staging Maven repositories")
+            println("release candidate version detected, adding Maven staging repositories")
 
             // Apache staging
             maven {
