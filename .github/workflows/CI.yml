@@ -108,7 +108,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: >
           ./gradlew sonar
-          -Dsonar.projectKey=xzel23_utility
+          -Dsonar.projectKey=xzel23_fx
           -Dsonar.organization=xzel23
           -Dsonar.host.url=https://sonarcloud.io
           -Dsonar.coverage.jacoco.xmlReportPaths=**/build/reports/jacoco/test/jacocoTestReport.xml
