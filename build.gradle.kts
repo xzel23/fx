@@ -422,6 +422,7 @@ jreleaser {
                     active.set(org.jreleaser.model.Active.SNAPSHOT)
                     snapshotUrl.set("https://central.sonatype.com/repository/maven-snapshots/")
                     applyMavenCentralRules.set(true)
+                    verifyPom.set(false)
                     snapshotSupported.set(true)
                     closeRepository.set(true)
                     releaseRepository.set(true)
