@@ -300,7 +300,6 @@ subprojects {
 
                     pom {
                         name.set(project.name)
-                        description.set(project.description)
                         url.set(Meta.SCM)
 
                         licenses {
@@ -389,7 +388,7 @@ jreleaser {
         name.set(rootProject.name)
         version.set(rootProject.libs.versions.projectVersion.get())
         group = Meta.GROUP
-        description.set(project.description)
+        description.set(rootProject.description)
         authors.set(listOf(Meta.DEVELOPER_NAME))
         license.set(Meta.LICENSE_NAME)
         links {
