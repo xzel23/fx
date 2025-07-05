@@ -362,6 +362,19 @@ subprojects {
             }
         }
     }
+
+    // set the project description after evaluation because it is not yet visible when the POM is first created
+    afterEvaluate {
+        project.extensions.configure<PublishingExtension> {
+            publications.withType<MavenPublication> {
+                pom {
+                    if (description.orNull.isNullOrBlank()) {
+                        description.set(project.description ?: "No description provided")
+                    }
+                }
+            }
+        }
+    }
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -384,7 +397,6 @@ tasks.named("jreleaserDeploy") {
 jreleaser {
     project {
         name.set(rootProject.name)
-        description.set(rootProject.description)
         version.set(rootProject.libs.versions.projectVersion.get())
         group = Meta.GROUP
         authors.set(listOf(Meta.DEVELOPER_NAME))
