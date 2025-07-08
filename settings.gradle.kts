@@ -30,6 +30,7 @@ dependencyResolutionManagement {
             plugin("versions", "com.github.ben-manes.versions").version("0.52.0")
 
             version("dua3-utility", "20.0.0-SNAPSHOT")
+            version("dua3-license", "0.0.1-SNAPSHOT")
             version("javafx", "23.0.2")
             version("jmh", "1.37")
             version("jspecify", "1.0.0")
@@ -40,20 +41,13 @@ dependencyResolutionManagement {
             library("dua3-utility", "com.dua3.utility", "utility").withoutVersion()
             library("dua3-utility-db", "com.dua3.utility", "utility-db").withoutVersion()
             library("dua3-utility-logging", "com.dua3.utility", "utility-logging").withoutVersion()
-            library("jspecify", "org.jspecify", "jspecify").versionRef("jspecify")
-            library(
-                "dua3-utility-logging-log4j",
-                "com.dua3.utility",
-                "utility-logging-log4j"
-            ).withoutVersion()
-            library(
-                "dua3-utility-logging-slf4j",
-                "com.dua3.utility",
-                "utility-logging-slf4j"
-            ).withoutVersion()
+            library("dua3-utility-logging-log4j", "com.dua3.utility", "utility-logging-log4j").withoutVersion()
+            library("dua3-utility-logging-slf4j", "com.dua3.utility", "utility-logging-slf4j").withoutVersion()
             library("dua3-utility-swing", "com.dua3.utility", "utility-swing").withoutVersion()
             library("dua3-utility-fx", "com.dua3.utility", "utility-fx").withoutVersion()
             library("dua3-utility-fx-controls", "com.dua3.utility", "utility-fx-controls").withoutVersion()
+            library("dua3-license", "com.dua3.license", "license").versionRef("dua3-license")
+            library("jspecify", "org.jspecify", "jspecify").versionRef("jspecify")
             library("log4j-bom", "org.apache.logging.log4j", "log4j-bom").versionRef("log4j-bom")
             library("log4j-api", "org.apache.logging.log4j", "log4j-api").withoutVersion()
             library("log4j-core", "org.apache.logging.log4j", "log4j-core").withoutVersion()

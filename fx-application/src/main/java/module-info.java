@@ -28,6 +28,8 @@ open module com.dua3.fx.application {
     requires com.dua3.utility.logging;
     requires com.dua3.utility.logging.log4j;
 
+    requires com.dua3.license;
+
     requires org.apache.logging.log4j;
 
     requires java.prefs;

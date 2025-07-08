@@ -20,6 +20,7 @@ import com.dua3.utility.i18n.I18N;
 import com.dua3.utility.lang.LangUtil;
 import com.dua3.utility.lang.Platform;
 import com.dua3.utility.text.TextUtil;
+import com.dua3.license.License;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -103,6 +104,10 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      * The directory containing application data.
      */
     protected final Path dataDir = initApplicationDataDir();
+    /**
+     * The current license used for the application.
+     */
+    private @Nullable License license;
 
     // - instance -
     /**
@@ -128,10 +133,30 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      * Constructor.
      *
      * @param i18n the I18N instance for retrieving resources
+     * @param license the license, if software is licensed
      */
-    protected FxApplication(I18N i18n) {
+    protected FxApplication(I18N i18n, @Nullable License license) {
         this.i18n = i18n;
         this.i18n.mergeBundle(FxApplication.class.getPackageName() + ".application", i18n.getLocale());
+        this.license = license;
+    }
+
+    /**
+     * Retrieves the license associated with this application, if available.
+     *
+     * @return an {@link Optional} containing the license if it has been set, or an empty {@link Optional} otherwise
+     */
+    protected Optional<License> getLicense() {
+        return Optional.ofNullable(license);
+    }
+
+    /**
+     * Sets the license for the application.
+     *
+     * @param license the {@link License} instance to associate with the application
+     */
+    protected void setLicense(License license) {
+        this.license = license;
     }
 
     /**
@@ -532,7 +557,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
     protected void showAboutDialog(@Nullable URL css) {
         AboutDialogBuilder aboutDialogBuilder = Dialogs.about(mainStage)
                 .title(i18n.format("fx.application.about.title.{0.name}", i18n.get(FX_APPLICATION_NAME)))
-                .name(i18n.get(FX_APPLICATION_NAME))
+                .applicationName(i18n.get(FX_APPLICATION_NAME))
                 .version(getVersion())
                 .copyright(i18n.get("fx.application.about.copyright"))
                 .graphic(LangUtil.getResourceURL(
@@ -547,6 +572,18 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
                                         + " "
                                         + getVersion()))
                 .expandableContent(i18n.get("fx.application.about.detail"));
+
+        getLicense().ifPresent(license -> {
+            aboutDialogBuilder.license(
+                    "License valid until " + license.getExpiryDate(),
+                    () -> Dialogs.information(getStage())
+                            .title("License Details")
+                            .header("License valid until " + license.getExpiryDate())
+                            .text(license.getLicenseString())
+                            .build()
+                            .show()
+            );
+        });
 
         if (css != null) {
             aboutDialogBuilder.css(css);

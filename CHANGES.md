@@ -1,6 +1,11 @@
 Changelog
 =========
 
+### version 1.5.x
+
+- Add License parameter to FxApplication constructor
+- update utility to 20.x
+
 ### version 1.3.x
 
 - update utility to 18.x

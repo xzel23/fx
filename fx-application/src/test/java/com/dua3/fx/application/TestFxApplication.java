@@ -15,7 +15,7 @@ public abstract class TestFxApplication<A extends TestFxApplication<A, C>, C ext
      * Constructor.
      */
     protected TestFxApplication() {
-        super(I18N.getInstance());
+        super(I18N.getInstance(), null);
     }
 
 }

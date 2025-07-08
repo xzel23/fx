@@ -16,11 +16,13 @@ package com.dua3.fx.application.fxml;
 
 import com.dua3.fx.application.FxApplication;
 import com.dua3.fx.application.FxController;
+import com.dua3.license.License;
 import com.dua3.utility.i18n.I18N;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jspecify.annotations.Nullable;
 
 import java.net.URL;
 import java.util.Objects;
@@ -50,9 +52,10 @@ public abstract class FxApplicationFxml<A extends FxApplicationFxml<A, C>, C ext
      * </ul>
      *
      * @param i18n the I18N instance for retrieving resources
+     * @param license the license, if software is licensed
      */
-    protected FxApplicationFxml(I18N i18n) {
-        super(i18n);
+    protected FxApplicationFxml(I18N i18n, @Nullable License license) {
+        super(i18n, license);
     }
 
     /**
