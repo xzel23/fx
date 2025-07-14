@@ -1,7 +1,7 @@
 import org.gradle.internal.extensions.stdlib.toDefaultLowerCase
 
 rootProject.name = "dua3-fx"
-val projectVersion = "1.5.0-SNAPSHOT"
+val projectVersion = "1.5.0-beta2"
 
 include("fx-application")
 include("fx-application:fx-application-fxml")
@@ -29,7 +29,7 @@ dependencyResolutionManagement {
             plugin("test-logger", "com.adarshr.test-logger").version("4.0.0")
             plugin("versions", "com.github.ben-manes.versions").version("0.52.0")
 
-            version("dua3-utility", "20.0.0-SNAPSHOT")
+            version("dua3-utility", "20.0.0-beta2")
             version("dua3-license", "0.0.1-SNAPSHOT")
             version("javafx", "23.0.2")
             version("jmh", "1.37")
