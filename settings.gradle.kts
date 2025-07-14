@@ -1,7 +1,7 @@
 import org.gradle.internal.extensions.stdlib.toDefaultLowerCase
 
 rootProject.name = "dua3-fx"
-val projectVersion = "1.5.0-beta3-snapshot"
+val projectVersion = "1.5.0-beta3-SNAPSHOT"
 
 include("fx-application")
 include("fx-application:fx-application-fxml")
@@ -19,22 +19,22 @@ dependencyResolutionManagement {
         create("libs") {
             version("projectVersion", projectVersion)
 
-            plugin("cabe", "com.dua3.cabe").version("3.1.0")
+            plugin("cabe", "com.dua3.cabe").version("3.2.0")
             plugin("forbiddenapis", "de.thetaphi.forbiddenapis").version("3.9")
             plugin("javafx", "org.openjfx.javafxplugin").version("0.1.0")
             plugin("jmh", "me.champeau.jmh").version("0.7.3")
             plugin("jreleaser", "org.jreleaser").version("1.19.0")
             plugin("sonar", "org.sonarqube").version("6.2.0.5505")
-            plugin("spotbugs", "com.github.spotbugs").version("6.2.0")
+            plugin("spotbugs", "com.github.spotbugs").version("6.2.2")
             plugin("test-logger", "com.adarshr.test-logger").version("4.0.0")
             plugin("versions", "com.github.ben-manes.versions").version("0.52.0")
 
-            version("dua3-utility", "20.0.0-beta2")
-            version("dua3-license", "0.1.0-beta1")
+            version("dua3-utility", "20.0.0-beta4-SNAPSHOT")
+            version("dua3-license", "0.1.0-beta3-SNAPSHOT")
             version("javafx", "23.0.2")
             version("jmh", "1.37")
             version("jspecify", "1.0.0")
-            version("log4j-bom", "2.25.0")
+            version("log4j-bom", "2.25.1")
             version("spotbugs", "4.9.3")
 
             library("dua3-utility-bom", "com.dua3.utility", "utility-bom").versionRef("dua3-utility")
