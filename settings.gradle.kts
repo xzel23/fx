@@ -19,7 +19,7 @@ dependencyResolutionManagement {
         create("libs") {
             version("projectVersion", projectVersion)
 
-            plugin("cabe", "com.dua3.cabe").version("3.2.0")
+            plugin("cabe", "com.dua3.cabe").version("3.3.0")
             plugin("forbiddenapis", "de.thetaphi.forbiddenapis").version("3.9")
             plugin("javafx", "org.openjfx.javafxplugin").version("0.1.0")
             plugin("jmh", "me.champeau.jmh").version("0.7.3")
@@ -29,8 +29,8 @@ dependencyResolutionManagement {
             plugin("test-logger", "com.adarshr.test-logger").version("4.0.0")
             plugin("versions", "com.github.ben-manes.versions").version("0.52.0")
 
-            version("dua3-utility", "20.0.0-beta4-SNAPSHOT")
-            version("dua3-license", "0.1.0-beta3-SNAPSHOT")
+            version("dua3-utility", "20.0.0-beta4")
+            version("dua3-license", "0.1.0-beta3.1")
             version("javafx", "23.0.2")
             version("jmh", "1.37")
             version("jspecify", "1.0.0")
