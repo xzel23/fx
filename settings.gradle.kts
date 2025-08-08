@@ -1,7 +1,7 @@
 import org.gradle.internal.extensions.stdlib.toDefaultLowerCase
 
 rootProject.name = "dua3-fx"
-val projectVersion = "1.5.0-beta3"
+val projectVersion = "1.5.0-beta4"
 
 include("fx-application")
 include("fx-application:fx-application-fxml")
@@ -25,12 +25,12 @@ dependencyResolutionManagement {
             plugin("jmh", "me.champeau.jmh").version("0.7.3")
             plugin("jreleaser", "org.jreleaser").version("1.19.0")
             plugin("sonar", "org.sonarqube").version("6.2.0.5505")
-            plugin("spotbugs", "com.github.spotbugs").version("6.2.2")
+            plugin("spotbugs", "com.github.spotbugs").version("6.2.3")
             plugin("test-logger", "com.adarshr.test-logger").version("4.0.0")
             plugin("versions", "com.github.ben-manes.versions").version("0.52.0")
 
-            version("dua3-utility", "20.0.0-beta4")
-            version("dua3-license", "0.1.0-beta3.1")
+            version("dua3-utility", "20.0.0-beta8")
+            version("dua3-license", "0.1.0-beta5")
             version("javafx", "23.0.2")
             version("jmh", "1.37")
             version("jspecify", "1.0.0")
