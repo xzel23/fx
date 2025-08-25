@@ -1,7 +1,7 @@
 package com.dua3.fx.application;
 
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.URI;
@@ -11,32 +11,6 @@ import java.net.URI;
  * This class tests basic functionality of the FxDocument class.
  */
 class FxDocumentTest extends FxTestBase {
-
-    /**
-     * A simple implementation of FxDocument for testing.
-     */
-    static class TestDocument extends FxDocument {
-        private boolean writeWasCalled = false;
-
-        TestDocument() {
-            super(VOID_URI);
-        }
-
-        TestDocument(URI location) {
-            super(location);
-        }
-
-        @Override
-        protected void write(URI uri) throws IOException {
-            // Just mark that write was called
-            writeWasCalled = true;
-            System.out.println("Writing document to: " + uri);
-        }
-
-        boolean wasWriteCalled() {
-            return writeWasCalled;
-        }
-    }
 
     /**
      * Test the constructor and location property.
@@ -76,14 +50,14 @@ class FxDocumentTest extends FxTestBase {
     @Test
     void testDirtyProperty() {
         TestDocument doc = new TestDocument();
-        
+
         // Initially, document should not be dirty
         Assertions.assertFalse(doc.isDirty(), "Document should not be dirty initially");
-        
+
         // Set dirty property to true
         doc.dirtyProperty().set(true);
         Assertions.assertTrue(doc.isDirty(), "Document should be dirty after setting property");
-        
+
         // Set dirty property back to false
         doc.dirtyProperty().set(false);
         Assertions.assertFalse(doc.isDirty(), "Document should not be dirty after clearing property");
@@ -96,15 +70,15 @@ class FxDocumentTest extends FxTestBase {
     void testSaveAndSaveAs() throws IOException {
         TestDocument doc = new TestDocument();
         URI testUri = URI.create("file:///test/document.txt");
-        
+
         // Test saveAs
         doc.saveAs(testUri);
         Assertions.assertTrue(doc.wasWriteCalled(), "Write method should have been called");
         Assertions.assertEquals(testUri, doc.getLocation(), "Location should be updated after saveAs");
-        
+
         // Reset the write flag
         TestDocument doc2 = new TestDocument(testUri);
-        
+
         // Test save
         doc2.save();
         Assertions.assertTrue(doc2.wasWriteCalled(), "Write method should have been called");
@@ -120,5 +94,31 @@ class FxDocumentTest extends FxTestBase {
         // Attempting to save without a location should throw an exception
         Assertions.assertThrows(IllegalStateException.class, doc::save,
                 "Save should throw an exception when location is not set");
+    }
+
+    /**
+     * A simple implementation of FxDocument for testing.
+     */
+    static class TestDocument extends FxDocument {
+        private boolean writeWasCalled = false;
+
+        TestDocument() {
+            super(VOID_URI);
+        }
+
+        TestDocument(URI location) {
+            super(location);
+        }
+
+        @Override
+        protected void write(URI uri) {
+            // Just mark that write was called
+            writeWasCalled = true;
+            System.out.println("Writing document to: " + uri);
+        }
+
+        boolean wasWriteCalled() {
+            return writeWasCalled;
+        }
     }
 }

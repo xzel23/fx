@@ -248,7 +248,6 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
 
             final ChangeListener<@Nullable URI> locationListener = (v, o, n) -> updateApplicationTitle();
 
-            //noinspection Convert2Lambda - @Nullable annotations don't work in this case with lambda
             controller.currentDocumentProperty.addListener(
                     (ObservableValue<? extends FxDocument> observable, @Nullable FxDocument o, @Nullable FxDocument n) -> {
                         updateApplicationTitle();

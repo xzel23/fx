@@ -36,5 +36,4 @@ open module com.dua3.fx.application {
     requires javafx.base;
     requires javafx.controls;
     requires org.jspecify;
-    requires java.logging;
 }

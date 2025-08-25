@@ -327,7 +327,6 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
      * @return true if the document was successfully saved, false otherwise
      */
     public boolean save() {
-        //noinspection DataFlowIssue - false positive
         D doc = getCurrentDocument().orElse(null);
 
         if (doc == null) {
@@ -382,7 +381,6 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
      * @return true if the document was successfully saved, false otherwise
      */
     public boolean saveAs() {
-        //noinspection DataFlowIssue - false positive
         D document = getCurrentDocument().orElse(null);
 
         if (document == null) {

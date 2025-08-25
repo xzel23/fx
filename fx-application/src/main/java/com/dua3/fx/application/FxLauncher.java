@@ -55,7 +55,7 @@ public final class FxLauncher {
      * Start application.
      * This method is a drop-in replacement for `Application.launch(cls, args)`.
      * <ul>
-     *     <li><strong>Command line arguments</strong> are re-parsed on windows, for details see
+     *     <li><strong>Command line arguments</strong> are reparsed on windows, for details see
      *     {@link #reparseCommandLine(String[])}.
      * </ul>
      *
@@ -75,12 +75,12 @@ public final class FxLauncher {
     }
 
     /**
-     * Re-parse command line arguments.
+     * Reparse command line arguments.
      * <ul>
      * <li><strong>Windows:</strong>
      * At least when using a jpackaged application with file-associations, command line arguments get messed up
      * when the application start is the result of double-clicking on a registered file type.
-     * The command line args are split on whitespace, i. e. paths containing spaces
+     * The command line args are split on whitespace, i.e. paths containing spaces
      * will be split into multiple parts. This method tries to restore what was probably meant.
      * It works by iterating over the given array of arguments like this:
      * <pre>

@@ -66,6 +66,7 @@ public final class FxApplicationHelper {
      * @param addOptions          variable-length array of consumers that add additional command-line options to the parser
      * @return the exit code of the application; 0 indicates successful execution, 1 indicates an error
      */
+    @SafeVarargs
     public static int runApplication(
             String applicationClassName,
             String[] args,

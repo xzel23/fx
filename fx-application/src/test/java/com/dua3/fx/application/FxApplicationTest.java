@@ -20,7 +20,7 @@ class FxApplicationTest extends FxTestBase {
      * A simple implementation of FxApplication for testing.
      */
     static class TestApplication extends FxApplication<TestApplication, TestController> {
-        public TestApplication() {
+        TestApplication() {
             super(I18N.getInstance(), null);
         }
 
@@ -84,11 +84,11 @@ class FxApplicationTest extends FxTestBase {
      * A simple implementation of FxDocument for testing.
      */
     static class TestDocument extends FxDocument {
-        public TestDocument() {
+        TestDocument() {
             super(VOID_URI);
         }
 
-        public TestDocument(URI location) {
+        TestDocument(URI location) {
             super(location);
         }
 

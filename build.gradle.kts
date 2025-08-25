@@ -67,7 +67,10 @@ tasks.named<JacocoReport>("testCodeCoverageReport") {
 // SonarQube root project config
 sonar {
     properties {
-        property("sonar.coverage.jacoco.xmlReportPaths", "${layout.buildDirectory.get()}/reports/jacoco/testCodeCoverageReport/testCodeCoverageReport.xml")
+        property(
+            "sonar.coverage.jacoco.xmlReportPaths",
+            "${layout.buildDirectory.get()}/reports/jacoco/testCodeCoverageReport/testCodeCoverageReport.xml"
+        )
         property("sonar.coverage.exclusions", "**/samples/**")
     }
 }
@@ -354,7 +357,7 @@ subprojects {
     afterEvaluate {
         configure<SigningExtension> {
             val shouldSign = !project.version.toString().lowercase().contains("snapshot")
-            setRequired(shouldSign && gradle.taskGraph.hasTask("publish"))
+            isRequired = shouldSign && gradle.taskGraph.hasTask("publish")
 
             val publishing = project.extensions.getByType<PublishingExtension>()
 
