@@ -1,7 +1,7 @@
 import org.gradle.internal.extensions.stdlib.toDefaultLowerCase
 
 rootProject.name = "dua3-fx"
-val projectVersion = "1.5.0-beta8"
+val projectVersion = "1.5.0-beta9-SNAPSHOT"
 
 include("fx-application")
 include("fx-application:fx-application-fxml")
@@ -35,7 +35,7 @@ dependencyResolutionManagement {
             version("jmh", "1.37")
             version("jspecify", "1.0.0")
             version("log4j-bom", "2.25.1")
-            version("spotbugs", "4.9.4")
+            version("spotbugs", "4.9.5")
 
             library("dua3-utility-bom", "com.dua3.utility", "utility-bom").versionRef("dua3-utility")
             library("dua3-utility", "com.dua3.utility", "utility").withoutVersion()
