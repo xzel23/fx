@@ -1,7 +1,7 @@
 import org.gradle.internal.extensions.stdlib.toDefaultLowerCase
 
 rootProject.name = "dua3-fx"
-val projectVersion = "1.5.0-beta13-SNAPSHOT"
+val projectVersion = "1.5.0-beta13"
 
 include("fx-application")
 include("fx-application:fx-application-fxml")
@@ -29,8 +29,8 @@ dependencyResolutionManagement {
             plugin("test-logger", "com.adarshr.test-logger").version("4.0.0")
             plugin("versions", "com.github.ben-manes.versions").version("0.53.0")
 
-            version("dua3-utility", "20.0.0-beta25-SNAPSHOT")
-            version("dua3-license", "0.1.0-beta14-SNAPSHOT")
+            version("dua3-utility", "20.0.0-beta25")
+            version("dua3-license", "0.1.0-beta14")
             version("javafx", "23.0.2")
             version("jmh", "1.37")
             version("jspecify", "1.0.0")
@@ -67,7 +67,7 @@ dependencyResolutionManagement {
         // Sonatype Releases
         maven {
             name = "central.sonatype.com-releases"
-            url = java.net.URI("https://central.sonatype.com/content/repositories/releases/")
+            url = java.net.URI("https://oss.sonatype.org/content/repositories/releases/")
             mavenContent {
                 releasesOnly()
             }
