@@ -22,6 +22,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.stage.FileChooser;
@@ -137,7 +138,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
                 ButtonType bttSave = new ButtonType(i18n.get("fx.application.button.save"), ButtonBar.ButtonData.YES);
                 ButtonType bttDontSave = new ButtonType(i18n.get("fx.application.button.no.save"), ButtonBar.ButtonData.NO);
 
-                Dialogs.confirmation(getApp().getStage())
+                Dialogs.alert(getApp().getStage(), AlertType.CONFIRMATION)
                         .header(header)
                         .text(i18n.get("fx.application.message.changes_will_be_lost"))
                         .buttons(bttDontSave, bttSave, ButtonType.CANCEL)
@@ -154,7 +155,7 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
             default -> {
                 String header = i18n.format("fx.application.message.unsaved.changes.multiple.documents", String.valueOf(dirtyList.size()));
 
-                Dialogs.confirmation(getApp().getStage())
+                Dialogs.alert(getApp().getStage(), AlertType.CONFIRMATION)
                         .header(header)
                         .text(i18n.get("fx.application.message.continue_without_saving"))
                         .buttons(ButtonType.YES, ButtonType.CANCEL)
@@ -269,12 +270,12 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
         }
 
         Optional<Path> file = Dialogs
-                .chooseFile()
+                .chooseFile(getApp().getStage())
                 .initialDir(initialDir)
                 .initialFileName("")
                 .filter(openFilters())
                 .selectedFilter(selectedOpenFilter())
-                .showOpenDialog(getApp().getStage());
+                .showOpenDialog();
 
         if (file.isEmpty()) {
             LOG.debug("open(): no file was chosen");
@@ -391,12 +392,12 @@ public abstract class FxController<A extends FxApplication<A, C>, C extends FxCo
         Path initialDir = initialDir(document);
 
         Optional<Path> file = Dialogs
-                .chooseFile()
+                .chooseFile(getApp().getStage())
                 .initialDir(initialDir)
                 .initialFileName("")
                 .filter(saveFilters())
                 .selectedFilter(selectedSaveFilter())
-                .showSaveDialog(getApp().getStage());
+                .showSaveDialog();
 
         if (file.isEmpty()) {
             LOG.debug("saveAs(): no file was chosen");

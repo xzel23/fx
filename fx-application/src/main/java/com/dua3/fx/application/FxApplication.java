@@ -24,6 +24,7 @@ import com.dua3.license.License;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.FileChooser;
@@ -486,7 +487,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      * @param text   the text
      */
     public void showErrorDialog(String header, String text) {
-        Dialogs.error(mainStage)
+        Dialogs.alert(mainStage, AlertType.ERROR)
                 .title("%s", i18n.get("fx.application.dialog.error.title"))
                 .header("%s", header)
                 .text("%s", text)
@@ -575,7 +576,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
         getLicense().ifPresent(license -> {
             aboutDialogBuilder.license(
                     "License valid until " + license.getExpiryDate(),
-                    () -> Dialogs.information(getStage())
+                    () -> Dialogs.alert(getStage(), AlertType.INFORMATION)
                             .title("License Details")
                             .header("License valid until " + license.getExpiryDate())
                             .text(license.getLicenseString())

@@ -30,7 +30,7 @@ dependencyResolutionManagement {
             plugin("versions", "com.github.ben-manes.versions").version("0.53.0")
 
             version("dua3-utility", "20.0.0-beta26-SNAPSHOT")
-            version("dua3-license", "0.1.0-beta14")
+            version("dua3-license", "0.1.0-beta15-SNAPSHOT")
             version("javafx", "23.0.2")
             version("jmh", "1.37")
             version("jspecify", "1.0.0")
