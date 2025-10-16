@@ -575,7 +575,9 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
 
         getLicense().ifPresent(license -> {
             aboutDialogBuilder.license(
-                    "License valid until " + license.getExpiryDate(),
+                    "License valid until " + license.getExpiryDate()
+            );
+            aboutDialogBuilder.onShowLicenseDetails(
                     () -> Dialogs.alert(getStage(), AlertType.INFORMATION)
                             .title("License Details")
                             .header("License valid until " + license.getExpiryDate())
