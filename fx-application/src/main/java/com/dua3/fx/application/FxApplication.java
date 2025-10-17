@@ -17,6 +17,7 @@ package com.dua3.fx.application;
 import com.dua3.utility.fx.controls.AboutDialogBuilder;
 import com.dua3.utility.fx.controls.Dialogs;
 import com.dua3.utility.i18n.I18N;
+import com.dua3.utility.io.IoUtil;
 import com.dua3.utility.lang.LangUtil;
 import com.dua3.utility.lang.Platform;
 import com.dua3.utility.text.TextUtil;
@@ -81,10 +82,6 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      * Marker to indicate unmodified state in title.
      */
     protected static final String MARKER_UNMODIFIED = " ";
-    /**
-     * The user's home folder.
-     */
-    protected static final Path USER_HOME = Paths.get(System.getProperty("user.home"));
     /**
      * The name of the default bundle that is used if the application does not provide its own bundle.
      */
@@ -421,7 +418,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
     private Path initApplicationDataDir() {
         try {
             String dirName = getClass().getName();
-            Path home = Paths.get(System.getProperty("user.home"));
+            Path home = IoUtil.getUserDir();
 
             switch (Platform.currentPlatform()) {
                 case WINDOWS -> {
@@ -630,6 +627,6 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      * @return the user home path
      */
     public static Path getUserHome() {
-        return USER_HOME;
+        return IoUtil.getUserDir();
     }
 }
