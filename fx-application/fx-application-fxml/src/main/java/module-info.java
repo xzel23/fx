@@ -30,5 +30,4 @@ module com.dua3.fx.application.fxml {
     requires javafx.fxml;
     requires javafx.graphics;
     requires org.jspecify;
-    requires com.dua3.license;
 }

@@ -29,8 +29,7 @@ dependencyResolutionManagement {
             plugin("test-logger", "com.adarshr.test-logger").version("4.0.0")
             plugin("versions", "com.github.ben-manes.versions").version("0.53.0")
 
-            version("dua3-utility", "20.0.0-beta28-SNAPSHOT")
-            version("dua3-license", "0.1.0-beta17-SNAPSHOT")
+            version("dua3-utility", "20.0.0-beta29-SNAPSHOT")
             version("javafx", "23.0.2")
             version("jmh", "1.37")
             version("jspecify", "1.0.0")
@@ -46,7 +45,6 @@ dependencyResolutionManagement {
             library("dua3-utility-swing", "com.dua3.utility", "utility-swing").withoutVersion()
             library("dua3-utility-fx", "com.dua3.utility", "utility-fx").withoutVersion()
             library("dua3-utility-fx-controls", "com.dua3.utility", "utility-fx-controls").withoutVersion()
-            library("dua3-license", "com.dua3.license", "license").versionRef("dua3-license")
             library("jspecify", "org.jspecify", "jspecify").versionRef("jspecify")
             library("log4j-bom", "org.apache.logging.log4j", "log4j-bom").versionRef("log4j-bom")
             library("log4j-api", "org.apache.logging.log4j", "log4j-api").withoutVersion()

@@ -16,7 +16,7 @@ package com.dua3.fx.application.fxml;
 
 import com.dua3.fx.application.FxApplication;
 import com.dua3.fx.application.FxController;
-import com.dua3.license.License;
+import com.dua3.utility.application.LicenseData;
 import com.dua3.utility.i18n.I18N;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -54,7 +54,7 @@ public abstract class FxApplicationFxml<A extends FxApplicationFxml<A, C>, C ext
      * @param i18n the I18N instance for retrieving resources
      * @param license the license, if software is licensed
      */
-    protected FxApplicationFxml(I18N i18n, @Nullable License license) {
+    protected FxApplicationFxml(I18N i18n, @Nullable LicenseData license) {
         super(i18n, license);
     }
 

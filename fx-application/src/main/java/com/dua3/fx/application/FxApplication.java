@@ -14,6 +14,7 @@
 
 package com.dua3.fx.application;
 
+import com.dua3.utility.application.LicenseData;
 import com.dua3.utility.fx.controls.AboutDialogBuilder;
 import com.dua3.utility.fx.controls.Dialogs;
 import com.dua3.utility.i18n.I18N;
@@ -21,7 +22,6 @@ import com.dua3.utility.io.IoUtil;
 import com.dua3.utility.lang.LangUtil;
 import com.dua3.utility.lang.Platform;
 import com.dua3.utility.text.TextUtil;
-import com.dua3.license.License;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -105,7 +105,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
     /**
      * The current license used for the application.
      */
-    private @Nullable License license;
+    private @Nullable LicenseData license;
 
     // - instance -
     /**
@@ -133,7 +133,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      * @param i18n the I18N instance for retrieving resources
      * @param license the license, if software is licensed
      */
-    protected FxApplication(I18N i18n, @Nullable License license) {
+    protected FxApplication(I18N i18n, @Nullable LicenseData license) {
         this.i18n = i18n;
         this.i18n.mergeBundle(FxApplication.class.getPackageName() + ".application", i18n.getLocale());
         this.license = license;
@@ -144,16 +144,16 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      *
      * @return an {@link Optional} containing the license if it has been set, or an empty {@link Optional} otherwise
      */
-    protected Optional<License> getLicense() {
+    protected Optional<LicenseData> getLicense() {
         return Optional.ofNullable(license);
     }
 
     /**
      * Sets the license for the application.
      *
-     * @param license the {@link License} instance to associate with the application
+     * @param license the {@link LicenseData} instance to associate with the application
      */
-    protected void setLicense(License license) {
+    protected void setLicense(LicenseData license) {
         this.license = license;
     }
 
@@ -418,7 +418,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
     private Path initApplicationDataDir() {
         try {
             String dirName = getClass().getName();
-            Path home = IoUtil.getUserDir();
+            Path home = IoUtil.getUserHome();
 
             switch (Platform.currentPlatform()) {
                 case WINDOWS -> {
@@ -571,17 +571,7 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
                 .expandableContent(i18n.get("fx.application.about.detail"));
 
         getLicense().ifPresent(license -> {
-            aboutDialogBuilder.license(
-                    "License valid until " + license.getExpiryDate()
-            );
-            aboutDialogBuilder.onShowLicenseDetails(
-                    () -> Dialogs.alert(getStage(), AlertType.INFORMATION)
-                            .title("License Details")
-                            .header("License valid until " + license.getExpiryDate())
-                            .text(license.getLicenseString())
-                            .build()
-                            .show()
-            );
+            aboutDialogBuilder.license(license);
         });
 
         if (css != null) {
@@ -627,6 +617,6 @@ public abstract class FxApplication<A extends FxApplication<A, C>, C extends FxC
      * @return the user home path
      */
     public static Path getUserHome() {
-        return IoUtil.getUserDir();
+        return IoUtil.getUserHome();
     }
 }

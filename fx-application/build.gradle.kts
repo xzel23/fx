@@ -25,7 +25,6 @@ dependencies {
     api(rootProject.libs.dua3.utility.logging.log4j)
     api(rootProject.libs.dua3.utility.fx)
     api(rootProject.libs.dua3.utility.fx.controls)
-    api(rootProject.libs.dua3.license)
 }
 
 // Configure tests to run in a forked VM
