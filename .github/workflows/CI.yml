@@ -77,9 +77,7 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           cat > qodana.yaml << 'EOF'
-          version: "1.0"
-          linter: jetbrains/qodana-jvm-community:2025.2.1
-          profile:
+          version: "1.0"          profile:
             name: qodana.starter
           exclude:
             - name: All
