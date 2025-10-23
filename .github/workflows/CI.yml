@@ -77,14 +77,14 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           cat > qodana.yaml << 'EOF'
-          version: "1.0"          profile:
+          version: "1.0"
+          profile:
             name: qodana.starter
           exclude:
             - name: All
               paths:
                 - "**/jmh/**"
           EOF
-
       - name: 'Qodana Scan'
         if: runner.os == 'Linux'
         uses: JetBrains/qodana-action@v2025.2
