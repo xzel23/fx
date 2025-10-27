@@ -128,7 +128,7 @@ subprojects {
 
         cabe {
             if (isReleaseVersion) {
-                config.set(Configuration.parse("publicApi=THROW_IAE:privateApi=ASSERT"))
+                config.set(Configuration.parse("publicApi=THROW_NPE:privateApi=ASSERT"))
             } else {
                 config.set(Configuration.DEVELOPMENT)
             }
