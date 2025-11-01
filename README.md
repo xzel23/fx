@@ -1,3 +1,11 @@
+# !!! PROJECT OBSOLETE - DO NOT USE !!!
+
+Most of the functionality has been moved to subprojecrs of the [utility](https://github.com/xzel23/fx-application) project.
+
+The remaining bits have been moved to the [fx-application](https://github.com/xzel23/fx-application) project.
+
+-----------------------------------------------------------------------------------------------------------------------------
+
 # fx Application Framework
 [![Apache License](https://img.shields.io/badge/license-Apache-blue)](LICENSE)
 [![Language](https://img.shields.io/badge/language-Java-blue.svg?style=flat-square)](https://github.com/topics/java)
